@@ -24,6 +24,8 @@
 			border: 1px solid #777;
 			margin: 0 auto;
 			background: #fff;
+			display: flex;
+			flex-direction: column;
 		}
 		
 		header{
@@ -91,6 +93,9 @@
 		
 		footer {
 			margin: 10px 0.5in 0.25in;
+			flex: 1 0;
+			display: flex;
+			flex-direction: column-reverse;
 		}
 		
 		h1 {
@@ -193,13 +198,14 @@
 		@media(prefers-color-scheme: dark){
 			body, article#resume{
 				background: #131111;
-				color: #ccc;
+				color: #f3e4df;
 			}
 			#namebox{
-				border: 1px solid #fff;
+				border: 1px solid #f3e4df;
+				background: none;
 			}
 			h1{
-				border-bottom-color: #fff;
+				border-bottom-color: #f3e4df;
 			}
 		}
 		
@@ -252,14 +258,14 @@
 					<li>Cut server footprint in half while expanding capabilities, improving reliability and performance</li>
 					<li>Modernized and expanded campus network on limited budget with segmentation, link redundancy, 802.1x RADIUS auth, wireless performance analysis</li>
 					<li>Monitored, managed, serviced campus network/server infrastructure proactively and in response to tickets</li>
-					<li>Analyzed, planned, and deployed cost-effective solutions for MFA, server & appliance backups, network monitoring, mobile device management, software deployment, asset tracking, video conferencing, team chat, employee information portal, CCTV VMS, live video streaming, and ID card management</li>
-					<li>Mitigated security risks with industry best practices; reduced exposed services & replaced legacy systems
+					<li>Analyzed, planned, and deployed cost-effective solutions for MFA, server &amp; appliance backups, network monitoring, mobile device management, software deployment, asset tracking, video conferencing, team chat, employee information portal, CCTV VMS, live video streaming, and ID card management</li>
+					<li>Mitigated security risks with industry best practices; reduced exposed services &amp; replaced legacy systems
 					<li>Managed ><b>1400</b> end-user devices with MDM including Chromebooks, iPads, Macs, Windows workstations</li>
 					<li>Lead hybrid migration from on-premises Exchange 2010 to Exchange Online with local SMTP relay</li>
 					<li>Developed PowerShell scripts to create and manage over <b>1300</b> accounts across multiple systems</li>
 					<li>Hardened workstations against vulnerabilities, removed distractions, deployed software, printers, network shares, certificates, and menu layouts, configured third-party software with Microsoft Group Policy</li>
 					<li>Designed technology lifecycle reports facilitating efficient budgeting and maintaining vendor support</li>
-					<li>Developed a Django web app frontend for access control system for door control & attendance tracking</li>
+					<li>Developed a Django web app frontend for access control system for door control &amp; attendance tracking</li>
 				</ul>
 			</details>
 			<details open>
@@ -267,11 +273,11 @@
 					<h2><strong>IT Solutions Architect</strong> at Gtex Computers</h2> <span class="dates">December 2015 - July 2017</span>
 				</summary>
 				<ul>
-					<li>Planned, priced, proposed, & implemented hardware, software, & business process overhauls for clientele</li>
-					<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for complete coverage & high performance</li>
+					<li>Planned, priced, proposed, &amp; implemented hardware, software, &amp; business process overhauls for clientele</li>
+					<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for complete coverage &amp; high performance</li>
 					<li>Automated monthly PC maintenance with PowerShell, reducing technician hands-on time by <strong>80%</strong></li>
-					<li>Developed an ROI tracking & reporting tool with Google Apps Script & WordPress customer portal</li>
-					<li>Built modern responsive websites employing HTML5 + CSS3 on WordPress and Bootstrap frameworks</li>
+					<li>Developed a client ROI reporting portal with Google Apps Script &amp; WordPress</li>
+					<li>Built modern responsive websites employing HTML5 + CSS3 on WordPress &amp; Bootstrap frameworks</li>
 				</ul>
 			</details>
 		</section>
@@ -289,7 +295,7 @@
 			<p><strong>Scripting</strong>: Experienced with Python and PowerShell. Some work with C, C#, C++, Java, JS, Bash.
 		</section>
 		<footer>
-			<p>Written and typeset in HTML/CSS by Wesley Deal. Updated 2024-04-19. Latest copy available at <a href="https://github.com/wesleydeal/resume">github.com/wesleydeal/resume</a>
+			<p>Written and typeset in HTML/CSS. Updated <time datetime="2024-04-20">2024-04-20</time>. Latest copy available at <a href="https://github.com/wesleydeal/resume">github.com/wesleydeal/resume</a>
 		</footer>
 	</article>
 	<button class="printlink" onclick="javascript:if(window.print)window.print()">Print</a>
