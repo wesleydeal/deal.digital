@@ -11,6 +11,7 @@
 			font-size: 11pt;
 			box-sizing: border-box;
 			background: #aaa;
+			line-height: 1.4;
 		}
 		
 		p {
@@ -142,6 +143,7 @@
 		
 		li {
 			text-indent: -20px;
+			margin: 1px 0;
 		}
 		
 		li:before {
@@ -200,6 +202,10 @@
 		}
 		
 		@media print{
+			@page{
+				size: 8.5in 11in;
+				margin: 0.25in 0.5in;
+			}
 			body{
 				margin: 0;
 				padding: 0;
