@@ -170,11 +170,30 @@
 			font-size: .8em;
 			line-height: 1;
 		}
-		.printlink{
+
+		#printbtn{
 			position: fixed;
 			bottom: 10px;
 			left: 10px;
 		}
+		#toolsbtn{
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+		}
+		#tools{
+			position: fixed;
+			bottom: 40px;
+			right: 10px;
+			background: #1a7;
+			color: #fff;
+			border: 1px solid #afc;
+			display: none;
+			padding: 10px;
+			flex-direction: column;
+		}
+
+
 
 		@media only screen and (max-width: 9in){
 			body{
@@ -198,16 +217,39 @@
 		}
 
 		@media(prefers-color-scheme: dark){
-			body, main#resume{
-				background: #131111;
-				color: #f3e4df;
+			body:not(.light){
+				background: #000;
+				color: #fff;
+
+				& main#resume{
+					background: #131111;
+					color: #f3e4df;
+				}
+				& #namebox{
+					border: 1px solid #f3e4df;
+					background: none;
+				}
+				& h1{
+					border-bottom-color: #f3e4df;
+				}
 			}
-			#namebox{
-				border: 1px solid #f3e4df;
-				background: none;
-			}
-			h1{
-				border-bottom-color: #f3e4df;
+		}
+		@media only screen{
+			body.dark{
+				background: #000;
+				color: #fff;
+
+				& main#resume{
+					background: #131111;
+					color: #f3e4df;
+				}
+				& #namebox{
+					border: 1px solid #f3e4df;
+					background: none;
+				}
+				& h1{
+					border-bottom-color: #f3e4df;
+				}
 			}
 		}
 		
@@ -236,8 +278,8 @@
 				position: absolute;
 				bottom: 0.25in;
 			}
-			.printlink{
-				display: none;
+			button, #tools{
+				display: none !important;
 			}
 		}
 	</style>
@@ -304,5 +346,10 @@
 			<p>Written and typeset in HTML/CSS. Updated <time datetime="2024-04-20">2024-04-20</time>. Latest copy available at <a href="https://github.com/wesleydeal/resume">github.com/wesleydeal/resume</a>
 		</footer>
 	</main>
-	<button class="printlink" onclick="javascript:if(window.print)window.print()">Print</button>
+	<button id="printbtn" onclick="javascript:if(window.print)window.print()">Print</button>
+	<button id="toolsbtn" onclick="javascript:document.getElementById('tools').style.display=(document.getElementById('tools').style.display=='flex'?'none':'flex')">Tools</button>
+	<div id="tools">
+		<button id="darklightbtn" onclick="javascript:document.body.classList=(document.body.classList=='light'?'dark':'light');document.getElementById('darklightbtn').innerHTML='Theme: '+document.body.classList">Toggle light</button>
+		<button id="editablebtn" onclick="javascript:document.getElementById('resume').contentEditable=true">Make editable</button>
+	</div>
 </html>
