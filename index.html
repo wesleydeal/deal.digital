@@ -191,9 +191,17 @@
 			display: none;
 			padding: 10px;
 			flex-direction: column;
+			width: 200px;
+			gap: 10px;
+			font: 14px/1 sans-serif;
 		}
-
-
+		#tools form{
+			display: flex;
+			justify-content: space-between;
+		}
+		#tools #base-size{
+			width: 150px;
+		}
 
 		@media only screen and (max-width: 9in){
 			body{
@@ -343,7 +351,7 @@
 			<p><strong>Scripting</strong>: Experienced with Python and PowerShell. Some work with C, C#, C++, Java, JS, Bash.
 		</section>
 		<footer>
-			<p>Written and typeset in HTML/CSS. Updated <time datetime="2024-04-20">2024-04-20</time>. Latest copy available at <a href="https://github.com/wesleydeal/resume">github.com/wesleydeal/resume</a>
+			<p>Written and typeset in HTML/CSS. Updated <time datetime="2024-04-23">2024-04-23</time>. Latest copy available at <a href="https://github.com/wesleydeal/resume">github.com/wesleydeal/resume</a>
 		</footer>
 	</main>
 	<button id="printbtn" onclick="javascript:if(window.print)window.print()">Print</button>
@@ -351,20 +359,24 @@
 	<div id="tools">
 		<button id="darklightbtn" onclick="javascript:document.body.classList=(document.body.classList=='light'?'dark':'light');document.getElementById('darklightbtn').innerHTML='Theme: '+document.body.classList">Toggle light</button>
 		<button id="editablebtn" onclick="javascript:document.getElementById('resume').contentEditable=true">Make editable</button>
-		<span>
+		<form>
 			<label for="text_fonts">Text: </label>
 			<select id="text_fonts" onchange="javascript:document.head.insertAdjacentHTML('beforeend','<style>'+this.value+'</style>')">
 				<option value="@import url(https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i);body{font-family: Spectral}">Spectral</option>
 				<option value="@import url(https://fonts.bunny.net/css?family=archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);body{font-family: Archivo}">Archivo</option>
 			</select>
-		</span>
-		<span>
+		</form>
+		<form>
+			<label for="base-size">11pt</label>
+			<input type="range" id="base-size" min="8" max="16" value="11" step=0.25 onchange="javascript:document.body.style.fontSize=this.value+'pt'; document.querySelector('label[for=base-size]').innerHTML=this.value+'pt'">
+		</form>
+		<form>
 			<label for="title_fonts">Titles: </label>
 			<select id="title_fonts" onchange="javascript:document.head.insertAdjacentHTML('beforeend','<style>'+this.value+'</style>')">
 				<option value="@import url(https://fonts.bunny.net/css?family=spectral-sc:500);h1{font-family: 'Spectral SC'; font-weight: 500; letter-spacing: .04em; text-transform: none}">Spectral SC</option>
 				<option value="@import url(https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i);h1{font-family: Spectral; font-weight: 500; letter-spacing: 0; text-transform: none}">Spectral</option>
 				<option value="@import url(https://fonts.bunny.net/css?family=archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);h1{font-family: Archivo; font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Archivo</option>
 			</select>
-		</span>
+		</form>
 	</div>
 </html>
