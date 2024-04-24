@@ -365,6 +365,8 @@
 	<div id="tools">
 		<button id="darklightbtn" onclick="javascript:document.body.classList=(document.body.classList=='light'?'dark':'light');document.getElementById('darklightbtn').innerHTML='Theme: '+document.body.classList">Toggle light</button>
 		<button id="editablebtn" onclick="javascript:document.getElementById('resume').contentEditable=true">Make editable</button>
+		<button id="ligaturesbtn" onclick="javascript:document.body.style.fontVariantLigatures='none'">Disable ligatures</button>
+		<button id="bulletsbtn" onclick="javascript:document.head.insertAdjacentHTML('beforeend','<style>li:before{content:\'•\'; font-size: inherit; padding-right: .6em}</style>')">Round bullets</button>
 		<form>
 			<label for="text_fonts">Text: </label>
 			<select id="text_fonts" onchange="javascript:document.head.insertAdjacentHTML('beforeend','<style>'+this.value+'</style>')">
