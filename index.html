@@ -5,11 +5,18 @@
 	<title>Wesley Deal - Resume</title>
 	<style>
 		@import url(https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:500);
-
+		
+		html {
+			box-sizing: border-box;
+		}
+		
+		*, *:before, *:after{
+			box-sizing: inherit;
+		}
+		
 		body {
 			font-family: Spectral;
 			font-size: 11pt;
-			box-sizing: border-box;
 			background: #aaa;
 			line-height: 1.4;
 		}
@@ -35,12 +42,12 @@
 			display: flex;
 			justify-content: flex-start;
 			flex-direction: row-reverse;
-			gap: 0 20px;
+			gap: 10px 20px;
 			flex-wrap: wrap-reverse;
 		}
 		
 		#contact {
-			padding: 5px 10px;
+			padding: 0;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -172,30 +179,31 @@
 			font-size: .8em;
 			line-height: 1;
 		}
-
-		#printbtn{
+		.buttonbar{
 			position: fixed;
-			bottom: 10px;
-			left: 10px;
-		}
-		#toolsbtn{
-			position: fixed;
-			bottom: 10px;
-			right: 10px;
+			bottom: 0;
+			left: 0;
+			padding: 5px;
+			background: #333;
+			border-radius: 0 5px 0 0;
 		}
 		#tools{
 			position: fixed;
-			bottom: 40px;
-			right: 10px;
+			bottom: 30px;
+			left: 5px;
 			background: #1a7;
 			color: #fff;
 			border: 1px solid #afc;
+			border-radius: 3px;
 			display: none;
 			padding: 10px;
 			flex-direction: column;
-			width: 200px;
+			width: 220px;
 			gap: 10px;
 			font: 14px/1 sans-serif;
+			opacity: 0.9;
+			max-height: calc(100vh - 40px);
+			overflow-y: auto;
 		}
 		#tools form{
 			display: flex;
@@ -218,15 +226,12 @@
 				margin: 0;
 				padding: 20px;
 			}
-			/*header, section, footer{
-				margin-left: 20px !important;
-				margin-right: 20px;
-			}*/
 			section:nth-child(2) {
-				margin: 20px 20px 0;
+				margin-top: 20px;
 			}
 			header {
 				flex-direction: row;
+				justify-content: center;
 			}
 		}
 
@@ -360,8 +365,10 @@
 			<p>Written and typeset in HTML/CSS. Updated <time datetime="2024-04-23">2024-04-23</time>. Latest copy available at <a href="https://github.com/wesleydeal/resume">github.com/wesleydeal/resume</a>
 		</footer>
 	</main>
-	<button id="printbtn" onclick="javascript:if(window.print)window.print()">Print</button>
-	<button id="toolsbtn" onclick="javascript:document.getElementById('tools').style.display=(document.getElementById('tools').style.display=='flex'?'none':'flex')">Tools</button>
+	<div class="buttonbar">
+		<button id="printbtn" onclick="javascript:if(window.print)window.print()">Print</button>
+		<button id="toolsbtn" onclick="javascript:document.getElementById('tools').style.display=(document.getElementById('tools').style.display=='flex'?'none':'flex')">Tools</button>
+	</div>
 	<div id="tools">
 		<button id="darklightbtn" onclick="javascript:document.body.classList=(document.body.classList=='light'?'dark':'light');document.getElementById('darklightbtn').innerHTML='Theme: '+document.body.classList">Toggle light</button>
 		<button id="editablebtn" onclick="javascript:document.getElementById('resume').contentEditable=true">Make editable</button>
