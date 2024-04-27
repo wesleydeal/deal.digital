@@ -154,15 +154,16 @@
 		
 		
 		ul{
-			margin: 0;
+			margin: 0 0 0 0.1em;
 			padding-left: 1.2em;
 		}
 		li::marker{
 			content: '⬥  ';
+			font-size: 0.9em;
 		}
 		
 		li {
-			margin: 1px 0;
+			margin: 0.1em 0;
 		}
 
 		p.withabove{
@@ -366,7 +367,7 @@
 				</summary>
 				<ul>
 					<li>Planned, priced, proposed, &amp; implemented hardware, software, &amp; business process overhauls for clientele</li>
-					<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for complete coverage &amp; high performance</li>
+					<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for coverage &amp; high performance</li>
 					<li>Automated monthly PC maintenance with PowerShell, reducing technician hands-on time by <strong>80%</strong></li>
 					<li>Developed a client ROI reporting portal with Google Apps Script &amp; WordPress</li>
 					<li>Built modern responsive websites employing HTML5 + CSS3 on WordPress &amp; Bootstrap frameworks</li>
@@ -400,7 +401,7 @@
 		<button id="darklightbtn" onclick="javascript:document.body.classList=(document.body.classList=='light'?'dark':'light');document.getElementById('darklightbtn').innerHTML='Theme: '+document.body.classList">Toggle light</button>
 		<button id="editablebtn" onclick="javascript:document.getElementById('resume').contentEditable=true">Make editable</button>
 		<button id="ligaturesbtn" onclick="javascript:document.body.style.fontVariantLigatures='none'">Disable ligatures</button>
-		<button id="bulletsbtn" onclick="javascript:document.head.insertAdjacentHTML('beforeend','<style>li:before{content:\'•\'; font-size: inherit; padding-right: .6em}</style>')">Round bullets</button>
+		<button id="bulletsbtn" onclick="javascript:document.head.insertAdjacentHTML('beforeend','<style>li::marker{content:\'•  \'; font-size: inherit} ul{margin: 0;}</style>')">Round bullets</button>
 		<form>
 			<label for="text_fonts">Text: </label>
 			<select id="text_fonts" onchange="javascript:document.head.insertAdjacentHTML('beforeend','<style>'+this.value+'</style>')">
