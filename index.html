@@ -19,6 +19,7 @@
 			font-size: 11pt;
 			background: #aaa;
 			line-height: 1.4;
+			overflow-y: scroll;
 		}
 		
 		p {
@@ -155,19 +156,15 @@
 		ul{
 			margin: 0;
 			padding-left: 1.2em;
-			list-style: none;
+		}
+		li::marker{
+			content: '⬥  ';
 		}
 		
 		li {
-			text-indent: -1.15em;
 			margin: 1px 0;
 		}
-		
-		li:before {
-			content: "⬥";
-			padding-right: .4em;
-			font-size: 0.9em;
-		}
+
 		p.withabove{
 			margin-top: 0;
 			padding-left: 1.2em;
@@ -222,6 +219,19 @@
 			font-weight: bold;
 			padding: 5px 10px;
 		}
+		#zoominbtn, #zoomoutbtn {
+			position: fixed;
+			opacity: 0.8;
+			font-size: 2em;
+			width: 60px;
+			height: 60px;
+			bottom: 10px;
+			right: 10px;
+		}
+		
+		#zoominbtn {
+			bottom: 70px;
+		}
 
 		@media only screen and (max-width: 9in){
 			body{
@@ -242,6 +252,9 @@
 			header {
 				flex-direction: row;
 				justify-content: center;
+			}
+			#zoominbtn, #zoomoutbtn{
+				display: none;
 			}
 		}
 
@@ -299,6 +312,7 @@
 				padding: 0;
 				width: auto;
 				height: auto;
+				zoom: inherit !important;
 			}
 			header, section, footer{
 				margin: 0;
@@ -361,14 +375,14 @@
 		</section>
 		<section id="education-certs">
 			<h1>Education & Certifications</h1>
-			<h3 style="margin-bottom: 0;"><span><b>Bachelors of Science in Information Technology</b> at Kennesaw State University</span> <span class="dates">May 2023</span></h3>
+			<h3 style="margin-bottom: 0;"><span><b>Bachelor of Science in Information Technology</b> at Kennesaw State University</span> <span class="dates">May 2023</span></h3>
 			<p class="withabove">Concentration: <b>Cyber Operations Security</b>, Minor: <b>Computer Science</b>, Graduated <i>magna cum laude</i>
 			<h3><span><b>CompTIA Security+</b> Certification</span> <span class="dates">April 2024</span></h3>
 			<h3><span><b>Cisco Certified Network Associate (CCNA)</b> Routing &amp; Switching</span> <span class="dates">May 2022</span></h3>
 		</section>
 		<section id="skills">
 			<h1>Technology Administration Skills</h1>
-			<p><strong>Systems</strong>: Microsoft 365, Azure/Entra, Active Directory, Hyper-V, SCCM/MDT, DNS, DHCP, Google Workspace, VoIP, PaperCut, VEEAM, Duo MFA, Docker, Proxmox/KVM, Debian, Ubuntu, CentOS/RHEL, Oracle Linux, MariaDB/MySQL, MS SQL.
+			<p><strong>Software</strong>: Microsoft 365, Azure/Entra, Active Directory, Hyper-V, SCCM/MDT, DNS, DHCP, Google Workspace, VoIP, PaperCut, VEEAM, Duo MFA, Docker, Proxmox/KVM, Debian, Ubuntu, CentOS/RHEL, Oracle Linux, MariaDB/MySQL, MS SQL.
 			<p><strong>Networks</strong>: access points, point-to-point wireless links, switches, routers, firewalls from Cisco, Fortinet, HPE/Aruba, Brocade, Ruckus, Ubiquiti, Avaya, SonicWall, Zyxel; LibreNMS, Graylog, inter-VLAN routing with ACLs, tuning high density Wi-Fi installations, preparing & securing site-to-site and remote access VPNs
 			<p><strong>Scripting</strong>: Experienced with Python and PowerShell. Some work with C, C#, C++, Java, JS, Bash.
 		</section>
@@ -379,6 +393,8 @@
 	<div class="buttonbar">
 		<button id="printbtn" onclick="javascript:if(window.print)window.print()">Print</button>
 		<button id="toolsbtn" onclick="javascript:document.getElementById('tools').style.display=(document.getElementById('tools').style.display=='flex'?'none':'flex')">Tools</button>
+		<button id="zoominbtn" onclick="javascript:document.getElementById('resume').style.zoom=0.2+(document.getElementById('resume').style.zoom=='')+1*document.getElementById('resume').style.zoom">+</button>
+		<button id="zoomoutbtn" onclick="javascript:document.getElementById('resume').style.zoom=-0.2+(document.getElementById('resume').style.zoom=='')+1*document.getElementById('resume').style.zoom">-</button>
 	</div>
 	<div id="tools">
 		<button id="darklightbtn" onclick="javascript:document.body.classList=(document.body.classList=='light'?'dark':'light');document.getElementById('darklightbtn').innerHTML='Theme: '+document.body.classList">Toggle light</button>
