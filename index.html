@@ -17,7 +17,7 @@
 		body {
 			font-family: Spectral;
 			font-size: 11pt;
-			background: #aaa;
+			background: #eee;
 			line-height: 1.4;
 			overflow-y: scroll;
 		}
@@ -30,9 +30,7 @@
 			width: 8.5in;
 			height: 11in;
 			padding: 0.25in 0.5in;
-			border: 1px solid #777;
 			margin: 0 auto;
-			background: #fff;
 			display: flex;
 			flex-direction: column;
 			box-sizing: border-box;
@@ -261,13 +259,9 @@
 
 		@media(prefers-color-scheme: dark){
 			body:not(.light){
-				background: #000;
-				color: #fff;
+				background: #131111;
+				color: #fffafa;
 
-				& main#resume{
-					background: #131111;
-					color: #fffafa;
-				}
 				& #namebox{
 					border: 1px solid #f3e4df;
 					background: none;
@@ -279,13 +273,9 @@
 		}
 		@media only screen{
 			body.dark{
-				background: #000;
-				color: #fff;
+				background: #131111;
+				color: #f3e4df;
 
-				& main#resume{
-					background: #131111;
-					color: #f3e4df;
-				}
 				& #namebox{
 					border: 1px solid #f3e4df;
 					background: none;
@@ -314,6 +304,8 @@
 				width: auto;
 				height: auto;
 				zoom: inherit !important;
+				background: #fff;
+				color: #000;
 			}
 			header, section, footer{
 				margin: 0;
