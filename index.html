@@ -46,7 +46,6 @@
 		}
 		
 		#contact {
-			padding: 0;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -58,8 +57,8 @@
 			text-decoration: none;
 		}
 		
-		a:hover {
-			background-color: black;
+		a:hover, a:active {
+			background: black;
 			box-shadow: 0 0 0 3px #000;
 			color: #fff;
 		}
@@ -136,13 +135,13 @@
 			font-weight: inherit;
 		}
 		
-		h3{
+		#education-certs p:not(.withabove){
 			display: flex;
-			width: 100%;
-			font-size: inherit;
-			margin: 5px 0;
-			font-weight: normal;
 			justify-content: space-between;
+		}
+		
+		#education-certs p .dates {
+			align-self: end;
 		}
 		
 		span.dates {
@@ -160,8 +159,20 @@
 			font-size: 0.9em;
 		}
 		
+		.roundbullets{
+			li::marker{
+				content:'•  ';
+				font-size: inherit;
+			}
+			ul{margin: 0;}
+		}
+		
 		li {
 			margin: 0.1em 0;
+		}
+
+		p:has(+ p.withabove){
+			margin-bottom: 0;
 		}
 
 		p.withabove{
@@ -187,7 +198,7 @@
 			position: fixed;
 			bottom: 30px;
 			left: 5px;
-			background: #1a7;
+			background: #000;
 			color: #fff;
 			border: 1px solid #afc;
 			border-radius: 3px;
@@ -201,6 +212,13 @@
 			max-height: calc(100vh - 40px);
 			overflow-y: auto;
 		}
+		#tools>label:has(> input){
+			background: #a00;
+			padding: 2px 0 6px;
+		}
+		#tools>label:has(> input:checked){
+			background: #075;
+		}
 		#tools form{
 			display: flex;
 			justify-content: space-between;
@@ -209,32 +227,30 @@
 			width: 150px;
 		}
 		.homelink {
-			font-family: monospace;
 			position: absolute;
 			top: 0;
 			left: 0;
 			background: #000;
 			color: #fff;
 			font-weight: bold;
-			padding: 5px 10px;
+			padding: 5px 8px 3px;
+			border: 1px solid #7fa;
 		}
 		#zoominbtn, #zoomoutbtn {
 			position: fixed;
 			opacity: 0.8;
-			font-size: 2em;
+			font-size: 32px;
 			width: 60px;
 			height: 60px;
 			bottom: 10px;
 			right: 10px;
 		}
-		
 		#zoominbtn {
 			bottom: 70px;
 		}
 
 		@media only screen and (max-width: 9in){
 			body{
-				background: #fff;
 				margin: 0;
 				padding: 0;
 			}
@@ -263,7 +279,7 @@
 				color: #fffafa;
 
 				& #namebox{
-					border: 1px solid #f3e4df;
+					box-shadow: 0 0 0 1px #f3e4df;
 					background: none;
 				}
 				& h1{
@@ -274,10 +290,10 @@
 		@media only screen{
 			body.dark{
 				background: #131111;
-				color: #f3e4df;
+				color: #fffafa;
 
 				& #namebox{
-					border: 1px solid #f3e4df;
+					box-shadow: 0 0 0 1px #f3e4df;
 					background: none;
 				}
 				& h1{
@@ -368,10 +384,10 @@
 		</section>
 		<section id="education-certs">
 			<h1>Education & Certifications</h1>
-			<h3 style="margin-bottom: 0;"><span><b>Bachelor of Science in Information Technology</b> at Kennesaw State University</span> <span class="dates">May 2023</span></h3>
+			<p><span><b>Bachelor of Science in Information Technology</b> at Kennesaw State University</span> <span class="dates">May 2023</span></p>
 			<p class="withabove">Concentration: <b>Cyber Operations Security</b>, Minor: <b>Computer Science</b>, Graduated <i>magna cum laude</i>
-			<h3><span><b>CompTIA Security+</b> Certification</span> <span class="dates">April 2024</span></h3>
-			<h3><span><b>Cisco Certified Network Associate (CCNA)</b> Routing &amp; Switching</span> <span class="dates">May 2022</span></h3>
+			<p><span><b>CompTIA Security+</b> Certification</span> <span class="dates">April 2024</span>
+			<p><span><b>Cisco Certified Network Associate (CCNA)</b> Routing &amp; Switching</span> <span class="dates">May 2022</span>
 		</section>
 		<section id="skills">
 			<h1>Skills</h1>
@@ -390,10 +406,10 @@
 		<button id="zoomoutbtn" onclick="javascript:document.getElementById('resume').style.zoom=-0.2+(document.getElementById('resume').style.zoom=='')+1*document.getElementById('resume').style.zoom">-</button>
 	</div>
 	<div id="tools">
-		<button id="darklightbtn" onclick="javascript:document.body.classList=(document.body.classList=='light'?'dark':'light');document.getElementById('darklightbtn').innerHTML='Theme: '+document.body.classList">Toggle light</button>
-		<button id="editablebtn" onclick="javascript:document.getElementById('resume').contentEditable=true">Make editable</button>
-		<button id="ligaturesbtn" onclick="javascript:document.body.style.fontVariantLigatures='none'">Disable ligatures</button>
-		<button id="bulletsbtn" onclick="javascript:document.head.insertAdjacentHTML('beforeend','<style>li::marker{content:\'•  \'; font-size: inherit} ul{margin: 0;}</style>')">Round bullets</button>
+		<label><input type="checkbox" id="darklight" onchange="javascript:if(window.matchMedia('(prefers-color-scheme: dark)').matches && this.checked && document.body.classList!='light'){document.body.classList='light'; this.checked=false} else {document.body.classList=this.checked?'dark':'light'}">Dark mode</label>
+		<label><input type="checkbox" id="editable" onchange="javascript:document.getElementById('resume').contentEditable=this.checked">Edit Mode</label>
+		<label><input type="checkbox" id="ligatures" onchange="javascript:document.body.style.fontVariantLigatures=this.checked?'none':'normal'" checked>Ligatures</label>
+		<label><input type="checkbox" id="ligatures" onchange="javascript:document.getElementById('resume').classList=this.checked?'':'roundbullets'" checked>Custom bullets</label>
 		<form>
 			<label for="text_fonts">Text: </label>
 			<select id="text_fonts" onchange="javascript:document.head.insertAdjacentHTML('beforeend','<style>'+this.value+'</style>')">
@@ -408,15 +424,16 @@
 				<option value="@import url(https://fonts.bunny.net/css?family=eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i);                                body{font-family: 'EB Garamond'}    ">EB Garamond</option>
 				<option value="@import url(https://fonts.bunny.net/css?family=nunito-sans:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);     body{font-family: 'Nunito Sans'}    ">Nunito Sans</option>
 				<option value="@import url(https://fonts.bunny.net/css?family=nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);          body{font-family: 'Nunito'}         ">Nunito</option>
+				<option value="@import url(https://fonts.bunny.net/css?family=rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);                    body{font-family: Rubik}            ">Rubik</option>
 				<option value="@import url(https://fonts.bunny.net/css?family=red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);    body{font-family: 'Red Hat Text'}   ">Red Hat Text</option>
 			</select>
 		</form>
 		<form>
 			<label for="base-size">11pt</label>
-			<input type="range" id="base-size" min="8" max="16" value="11" step=0.25 onchange="javascript:document.body.style.fontSize=this.value+'pt'; document.querySelector('label[for=base-size]').innerHTML=this.value+'pt'">
+			<input type="range" id="base-size" min="8" max="16" value="11" step=0.01 oninput="javascript:document.body.style.fontSize=this.value+'pt'; document.querySelector('label[for=base-size]').innerHTML=this.value+'pt'">
 		</form>
 		<form>
-			<label for="title_fonts">Titles: </label>
+			<label for="title_fonts">Headings: </label>
 			<select id="title_fonts" onchange="javascript:document.head.insertAdjacentHTML('beforeend','<style>'+this.value+'</style>')">
 				<option value="@import url(https://fonts.bunny.net/css?family=spectral-sc:500);                                                                         h1{font-family: 'Spectral SC';     font-weight: 500; letter-spacing: .04em; text-transform: none}     ">Spectral SC</option>
 				<option value="@import url(https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i);                 h1{font-family: Spectral;          font-weight: 500; letter-spacing: 0;     text-transform: none}     ">Spectral</option>
