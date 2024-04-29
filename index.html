@@ -4,10 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Wesley Deal - Resume</title>
 	<style>
-		@import url('https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:500|archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|martian-mono:100,200,300,400,500,600,700,800|eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i|nunito-sans:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Domine:400,500,600,700');
-		@import url('https://fonts.cdnfonts.com/css/latin-modern-roman');
-		
-		
+		@import url('https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:500|archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|martian-mono:100,200,300,400,500,600,700,800|eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i|nunito-sans:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Newsreader:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i');		
 		
 		html {
 			box-sizing: border-box;
@@ -426,7 +423,7 @@
 				<option value="Nunito">Nunito</option>
 				<option value="Rubik">Rubik</option>
 				<option value="Red Hat Text">Red Hat Text</option>
-				<option value="Domine">Domine</option>
+				<option value="Newsreader">Newsreader</option>
 			</select>
 		</form>
 		<form>
@@ -434,11 +431,11 @@
 			<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:document.body.style.fontSize=this.value+'pt'">
 		</form>
 		<form>
-			<label for="base-size">Line Height: </label>
-			<input type="number" id="base-size" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.body.style.lineHeight=this.value;">
+			<label for="line-height">Line Height: </label>
+			<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.body.style.lineHeight=this.value;">
 		</form>
 		<form>
-			<label for="title_fonts">Headings: </label>
+			<label for="title_fonts">H1s: </label>
 			<select id="title_fonts" onchange="javascript:document.head.insertAdjacentHTML('beforeend','<style>'+this.value+'</style>')">
 				<option value="h1{font-family: 'Spectral SC';     font-weight: 500; letter-spacing: .04em; text-transform: none}     ">Spectral SC</option>
 				<option value="h1{font-family: Spectral;          font-weight: 500; letter-spacing: 0;     text-transform: none}     ">Spectral</option>
@@ -452,7 +449,12 @@
 				<option value="h1{font-family: Nunito;            font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Nunito</option>
 				<option value="h1{font-family: Rubik;             font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Rubik</option>
 				<option value="h1{font-family: 'Red Hat Text';    font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Red Hat Text</option>
+				<option value="h1{font-family: Newsreader;        font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Newsreader</option>
 			</select>
+		</form>
+		<form>
+			<label for="h1-size">H1 Size: </label>
+			<input type="number" id="h1-size" min="1" max="2" value="1.25" step=0.01 onmousewheel oninput="javascript:document.querySelectorAll('h1').forEach(h1 => {h1.style.fontSize=this.value+'em';});">
 		</form>
 	</div>
 </html>
