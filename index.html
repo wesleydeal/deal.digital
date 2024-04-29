@@ -4,7 +4,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Wesley Deal - Resume</title>
 	<style>
-		@import url(https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:500);
+		@import url('https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:500|archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|martian-mono:100,200,300,400,500,600,700,800|eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i|nunito-sans:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Domine:400,500,600,700');
+		@import url('https://fonts.cdnfonts.com/css/latin-modern-roman');
+		
+		
 		
 		html {
 			box-sizing: border-box;
@@ -223,9 +226,6 @@
 			display: flex;
 			justify-content: space-between;
 		}
-		#tools #base-size{
-			width: 150px;
-		}
 		.homelink {
 			position: absolute;
 			top: 0;
@@ -412,41 +412,46 @@
 		<label><input type="checkbox" id="ligatures" onchange="javascript:document.getElementById('resume').classList=this.checked?'':'roundbullets'" checked>Custom bullets</label>
 		<form>
 			<label for="text_fonts">Text: </label>
-			<select id="text_fonts" onchange="javascript:document.head.insertAdjacentHTML('beforeend','<style>'+this.value+'</style>')">
-				<option value="@import url(https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i);                 body{font-family: Spectral}         ">Spectral</option>
-				<option value="                                                                                                                                         body{font-family: serif}            ">serif</option>
-				<option value="                                                                                                                                         body{font-family: sans-serif}       ">sans-serif</option>
-				<option value="                                                                                                                                         body{font-family: monospace}        ">monospace</option>
-				<option value="                                                                                                                                         body{font-family: Arial}            ">Arial</option>
-				<option value="                                                                                                                                         body{font-family: 'Times New Roman'}">Times New Roman</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);body{font-family: Archivo}          ">Archivo</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=martian-mono:100,200,300,400,500,600,700,800);                                            body{font-family: 'Martian Mono'}   ">Martian Mono</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i);                                body{font-family: 'EB Garamond'}    ">EB Garamond</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=nunito-sans:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);     body{font-family: 'Nunito Sans'}    ">Nunito Sans</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);          body{font-family: 'Nunito'}         ">Nunito</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);                    body{font-family: Rubik}            ">Rubik</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);    body{font-family: 'Red Hat Text'}   ">Red Hat Text</option>
+			<select id="text_fonts" onchange="javascript:document.body.style.fontFamily=this.value">
+				<option value="Spectral">Spectral</option>
+				<option value="serif">serif</option>
+				<option value="sans-serif">sans-serif</option>
+				<option value="monospace">monospace</option>
+				<option value="Arial">Arial</option>
+				<option value="Times New Roman">Times New Roman</option>
+				<option value="Archivo">Archivo</option>
+				<option value="Martian Mono">Martian Mono</option>
+				<option value="EB Garamond">EB Garamond</option>
+				<option value="Nunito Sans">Nunito Sans</option>
+				<option value="Nunito">Nunito</option>
+				<option value="Rubik">Rubik</option>
+				<option value="Red Hat Text">Red Hat Text</option>
+				<option value="Domine">Domine</option>
 			</select>
 		</form>
 		<form>
-			<label for="base-size">11pt</label>
-			<input type="range" id="base-size" min="8" max="16" value="11" step=0.01 oninput="javascript:document.body.style.fontSize=this.value+'pt'; document.querySelector('label[for=base-size]').innerHTML=this.value+'pt'">
+			<label for="base-size">Base Size: </label>
+			<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:document.body.style.fontSize=this.value+'pt'">
+		</form>
+		<form>
+			<label for="base-size">Line Height: </label>
+			<input type="number" id="base-size" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.body.style.lineHeight=this.value;">
 		</form>
 		<form>
 			<label for="title_fonts">Headings: </label>
 			<select id="title_fonts" onchange="javascript:document.head.insertAdjacentHTML('beforeend','<style>'+this.value+'</style>')">
-				<option value="@import url(https://fonts.bunny.net/css?family=spectral-sc:500);                                                                         h1{font-family: 'Spectral SC';     font-weight: 500; letter-spacing: .04em; text-transform: none}     ">Spectral SC</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i);                 h1{font-family: Spectral;          font-weight: 500; letter-spacing: 0;     text-transform: none}     ">Spectral</option>
-				<option value="                                                                                                                                         h1{font-family: serif;             font-weight: 400; letter-spacing: 0;     text-transform: none}     ">serif</option>
-				<option value="                                                                                                                                         h1{font-family: sans-serif;        font-weight: 400; letter-spacing: 0;     text-transform: none}     ">sans-serif</option>
-				<option value="                                                                                                                                         h1{font-family: monospace;         font-weight: 400; letter-spacing: 0;     text-transform: none}     ">monospace</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);h1{font-family: Archivo;           font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Archivo</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=martian-mono:100,200,300,400,500,600,700,800);                                            h1{font-family: 'Martian Mono';    font-weight: 400; letter-spacing: 0;     text-transform: uppercase}">Martian Mono</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i);                                h1{font-family: 'EB Garamond';     font-weight: 400; letter-spacing: 0;     text-transform: uppercase}">EB Garamond</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=nunito-sans:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);     h1{font-family: 'Nunito Sans';     font-weight: 400; letter-spacing: 0;     text-transform: uppercase}">Nunito Sans</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);          h1{font-family: Nunito;            font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Nunito</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);                    h1{font-family: Rubik;             font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Rubik</option>
-				<option value="@import url(https://fonts.bunny.net/css?family=red-hat-text:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);             h1{font-family: 'Red Hat Text';    font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Red Hat Text</option>
+				<option value="h1{font-family: 'Spectral SC';     font-weight: 500; letter-spacing: .04em; text-transform: none}     ">Spectral SC</option>
+				<option value="h1{font-family: Spectral;          font-weight: 500; letter-spacing: 0;     text-transform: none}     ">Spectral</option>
+				<option value="h1{font-family: serif;             font-weight: 400; letter-spacing: 0;     text-transform: none}     ">serif</option>
+				<option value="h1{font-family: sans-serif;        font-weight: 400; letter-spacing: 0;     text-transform: none}     ">sans-serif</option>
+				<option value="h1{font-family: monospace;         font-weight: 400; letter-spacing: 0;     text-transform: none}     ">monospace</option>
+				<option value="h1{font-family: Archivo;           font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Archivo</option>
+				<option value="h1{font-family: 'Martian Mono';    font-weight: 400; letter-spacing: 0;     text-transform: uppercase}">Martian Mono</option>
+				<option value="h1{font-family: 'EB Garamond';     font-weight: 400; letter-spacing: 0;     text-transform: uppercase}">EB Garamond</option>
+				<option value="h1{font-family: 'Nunito Sans';     font-weight: 400; letter-spacing: 0;     text-transform: uppercase}">Nunito Sans</option>
+				<option value="h1{font-family: Nunito;            font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Nunito</option>
+				<option value="h1{font-family: Rubik;             font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Rubik</option>
+				<option value="h1{font-family: 'Red Hat Text';    font-weight: 400; letter-spacing: .04em; text-transform: uppercase}">Red Hat Text</option>
 			</select>
 		</form>
 	</div>
