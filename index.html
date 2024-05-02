@@ -6,7 +6,14 @@
 	<style>
 		@import url('https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:500|archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|martian-mono:100,200,300,400,500,600,700,800|eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Newsreader:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|DM-Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i,1000,1000i|libre-caslon-text:400,400i,700|libre-baskerville:400,400i,700|stix-two-text:400,400i,500,500i,600,600i,700,700i');
 		
-		html {
+		:root {
+			--color-fg: #000;
+			--color-bg: #fffaf3;
+			--base-size: 11pt;
+			--base-line-height: 1.4;
+			--base-font: 'Spectral';
+			--enable-ligatures: true;
+			
 			box-sizing: border-box;
 		}
 		
@@ -15,10 +22,11 @@
 		}
 		
 		body {
-			font-family: Spectral;
-			font-size: 11pt;
-			background: #fffaf3;
-			line-height: 1.4;
+			font-family: var(--base-font);
+			font-size: var(--base-size);
+			background: var(--color-bg);
+			color: var(--color-fg);
+			line-height: var(--base-line-height);
 			overflow-y: scroll;
 		}
 		
@@ -318,6 +326,10 @@
 		}
 
 		@media print{
+			:root{
+				--color-fg: #000 !important;
+				--color-bg: #fff !important;
+			}
 			@page{
 				size: 8.5in 11in;
 				margin: 0.25in 0.5in;
@@ -335,8 +347,6 @@
 				width: auto;
 				height: auto;
 				zoom: inherit !important;
-				background: #fff;
-				color: #000;
 				box-shadow: none !important;
 			}
 			header, section, footer{
@@ -424,7 +434,6 @@
 		<button id="zoomoutbtn" onclick="javascript:document.getElementById('resume').style.zoom=-0.2+(document.getElementById('resume').style.zoom=='')+1*document.getElementById('resume').style.zoom">-</button>
 	</div>
 	
-	
 	<div id="tools">
 		<div class="optiongroup">
 			<label><input type="checkbox" id="darklight" onchange="javascript:if(window.matchMedia('(prefers-color-scheme: dark)').matches && this.checked && document.body.classList!='light'){document.body.classList='light'; this.checked=false} else {document.body.classList=this.checked?'dark':'light'}">Dark mode</label>
@@ -435,7 +444,7 @@
 			<label><input type="checkbox" id="ligatures" onchange="javascript:document.body.style.fontVariantLigatures=this.checked?'normal':'none'" checked>Ligatures</label>
 			<form>
 				<label for="text_fonts">Text: </label>
-				<select id="text_fonts" onchange="javascript:document.body.style.fontFamily=this.value">
+				<select id="text_fonts" onchange="javascript:document.documentElement.style.setProperty('--base-font',this.value)">
 					<option value="Spectral">Spectral</option>
 					<option value="serif">serif</option>
 					<option value="sans-serif">sans-serif</option>
@@ -457,11 +466,11 @@
 			</form>
 			<form>
 				<label for="base-size">Base Size (pt): </label>
-				<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:document.body.style.fontSize=this.value+'pt'">
+				<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-size',this.value+'pt')">
 			</form>
 			<form>
 				<label for="line-height">Line Height: </label>
-				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.body.style.lineHeight=this.value;">
+				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-line-height',this.value);">
 			</form>
 			<label><input type="checkbox" id="ligatures" onchange="javascript:document.getElementById('resume').classList=this.checked?'':'roundbullets'" checked>Custom bullets</label>
 			<form>
