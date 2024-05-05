@@ -13,6 +13,8 @@
 			--base-line-height: 1.4;
 			--base-font: 'Spectral';
 			--base-weight: 400;
+			--bold-weight: 700;
+			--dates-font-style: italic;
 			--ligatures: normal; /* values: normal or none */
 			--bullet-margin: 0.1em;
 			--h1-size: ;
@@ -38,6 +40,10 @@
 		
 		p {
 			margin: 0.3em 0;
+		}
+		
+		b {
+			font-weight: var(--bold-weight);
 		}
 		
 		main#resume{
@@ -159,7 +165,7 @@
 		
 		span.dates {
 			text-align: right;
-			font-style: italic;
+			font-style: var(--dates-font-style);
 		}
 		
 		
@@ -403,12 +409,12 @@
 			</details>
 			<details open>
 				<summary>
-					<h2><b>IT Solutions Architect</b> at Gtex Computers</h2> <span class="dates">December 2015 &ndash; July 2017</span>
+					<h2><b>IT Solutions Architect</b> at Gtex Computers</h2> <span class="dates">Dec 2015 &ndash; July 2017</span>
 				</summary>
 				<ul>
 					<li>Planned, priced, proposed, &amp; implemented hardware, software, &amp; business process overhauls for clientele</li>
 					<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for coverage &amp; high performance</li>
-					<li>Automated monthly PC maintenance with PowerShell, reducing technician hands-on time by <strong>80%</strong></li>
+					<li>Automated monthly PC maintenance with PowerShell, reducing technician hands-on time by <b>80%</b></li>
 					<li>Developed a client ROI reporting portal with Google Apps Script &amp; WordPress</li>
 					<li>Built modern responsive websites employing HTML5 + CSS3 on WordPress &amp; Bootstrap frameworks</li>
 				</ul>
@@ -478,9 +484,14 @@
 				<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-size',this.value+'pt')">
 			</form>
 			<form>
-				<label for="base-size">Weight: </label>
+				<label for="base-weight">Weight: </label>
 				<input type="number" id="base-weight" min="100" max="1000" value="400" step=5 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-weight',this.value);">
 			</form>
+			<form>
+				<label for="bold-weight">Bold Weight: </label>
+				<input type="number" id="bold-weight" min="100" max="1000" value="700" step=5 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bold-weight',this.value);">
+			</form>
+			<label><input type="checkbox" id="dates-font-style" onchange="javascript:document.documentElement.style.setProperty('--dates-font-style',this.checked?'italic':'normal')" checked>Dates Italicized</label>
 			<form>
 				<label for="line-height">Line Height: </label>
 				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-line-height',this.value);">
