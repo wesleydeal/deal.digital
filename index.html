@@ -4,7 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Wesley Deal - Resume</title>
 	<style>
-		@import url('https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:500|archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|martian-mono:100,200,300,400,500,600,700,800|eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Newsreader:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|DM-Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i,1000,1000i|libre-caslon-text:400,400i,700|libre-baskerville:400,400i,700|stix-two-text:400,400i,500,500i,600,600i,700,700i');
+		@import url('https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:500|archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|martian-mono:100,200,300,400,500,600,700,800|eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Newsreader:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|DM-Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i,1000,1000i|libre-caslon-text:400,400i,700|libre-baskerville:400,400i,700|stix-two-text:400,400i,500,500i,600,600i,700,700i|Vollkorn:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Source-Serif-4:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Inter:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 		
 		:root {
 			--color-fg: #000;
@@ -12,7 +12,14 @@
 			--base-size: 11pt;
 			--base-line-height: 1.4;
 			--base-font: 'Spectral';
-			--enable-ligatures: true;
+			--base-weight: 400;
+			--ligatures: normal; /* values: normal or none */
+			--bullet-margin: 0.1em;
+			--h1-size: ;
+			--h1-weight: ;
+			--h1-spacing: ;
+			
+			
 			
 			box-sizing: border-box;
 		}
@@ -22,11 +29,10 @@
 		}
 		
 		body {
-			font-family: var(--base-font);
-			font-size: var(--base-size);
+			font: var(--base-size)/var(--base-line-height) var(--base-font);
+			font-weight: var(--base-weight);
 			background: var(--color-bg);
 			color: var(--color-fg);
-			line-height: var(--base-line-height);
 			overflow-y: scroll;
 		}
 		
@@ -175,7 +181,7 @@
 		}
 		
 		li {
-			margin: 0.1em 0;
+			margin: var(--bullet-margin) 0;
 		}
 
 		p:has(+ p.withabove){
@@ -422,7 +428,7 @@
 			<p><b>Scripting</b>: Experienced with Python and PowerShell. Some work with C, C#, C++, Java, JS, Bash.
 		</section>
 		<footer>
-			<p>Written and typeset in HTML/CSS. Updated <time datetime="2024-04-30">2024-04-30</time>. Latest revision available at <a href="https://deal.digital/resume">deal.digital/resume</a>
+			<p>Written and typeset in HTML/CSS. Updated <time datetime="2024-04-30">2024-05-05</time>. Latest revision available at <a href="https://deal.digital/resume">deal.digital/resume</a>
 		</footer>
 	</main>
 	
@@ -441,10 +447,10 @@
 			<label><input type="checkbox" id="pageborder" onchange="javascript:document.getElementById('resume').style.boxShadow=this.checked?'0 0 0 1px #fff inset, 2px 2px 5px 0 #000':'none'">Page Border</label>
 		</div>
 		<div class="optiongroup">
-			<label><input type="checkbox" id="ligatures" onchange="javascript:document.body.style.fontVariantLigatures=this.checked?'normal':'none'" checked>Ligatures</label>
+			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.style.setProperty('--ligatures',this.checked?'normal':'none')" checked>Ligatures</label>
 			<form>
 				<label for="text_fonts">Text: </label>
-				<select id="text_fonts" onchange="javascript:document.documentElement.style.setProperty('--base-font',this.value)">
+				<select id="text_fonts" onchange="javascript:document.documentElement.style.setProperty('--base-font','\''+this.value+'\'')">
 					<option value="Spectral">Spectral</option>
 					<option value="serif">serif</option>
 					<option value="sans-serif">sans-serif</option>
@@ -461,12 +467,19 @@
 					<option value="DM Sans">DM Sans</option>
 					<option value="Libre Baskerville">Libre Baskerville</option>
 					<option value="Libre Caslon Text">Libre Caslon Text</option>
-					<option value="Stix Two Text">Stix Two Text</option>
+					<option value="STIX Two Text">STIX Two Text</option>
+					<option value="Vollkorn">Vollkorn</option>
+					<option value="Source Serif 4">Source Serif 4</option>
+					<option value="Inter">Inter</option>
 				</select>
 			</form>
 			<form>
 				<label for="base-size">Base Size (pt): </label>
 				<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-size',this.value+'pt')">
+			</form>
+			<form>
+				<label for="base-size">Weight: </label>
+				<input type="number" id="base-weight" min="100" max="1000" value="400" step=5 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-weight',this.value);">
 			</form>
 			<form>
 				<label for="line-height">Line Height: </label>
@@ -475,7 +488,7 @@
 			<label><input type="checkbox" id="ligatures" onchange="javascript:document.getElementById('resume').classList=this.checked?'':'roundbullets'" checked>Custom bullets</label>
 			<form>
 				<label for="li-margin">Bullet Margin (em): </label>
-				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:document.head.insertAdjacentHTML('beforeEnd','<style>li{margin:'+this.value+'em 0}</style>')">
+				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bullet-margin',this.value+'em');">
 			</form>
 		</div>
 		<div class="optiongroup">
@@ -501,7 +514,11 @@
 					<option value="DM Sans">DM Sans</option>
 					<option value="Libre Baskerville">Libre Baskerville</option>
 					<option value="Libre Caslon Text">Libre Caslon Text</option>
-					<option value="Stix Two Text">Stix Two Text</option>
+					<option value="STIX Two Text">STIX Two Text</option>
+					<option value="Vollkorn">Vollkorn</option>
+					<option value="Source Serif 4">Source Serif 4</option>
+					<option value="Inter">Inter</option>
+					<option value="Inter Tight">Inter Tight</option>
 				</select>
 			</form>
 			<form>
@@ -510,7 +527,7 @@
 			</form>
 			<form>
 				<label for="h1-weight">Weight: </label>
-				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="100" onmousewheel oninput="javascript:document.querySelectorAll('h1').forEach(h1 => {h1.style.fontWeight=this.value;});">
+				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="5" onmousewheel oninput="javascript:document.querySelectorAll('h1').forEach(h1 => {h1.style.fontWeight=this.value;});">
 			</form>
 			<form>
 				<label for="h1-space">Spacing (em): </label>
@@ -538,7 +555,10 @@
 					<option value="DM Sans">DM Sans</option>
 					<option value="Libre Baskerville">Libre Baskerville</option>
 					<option value="Libre Caslon Text">Libre Caslon Text</option>
-					<option value="Stix Two Text">Stix Two Text</option>
+					<option value="STIX Two Text">STIX Two Text</option>
+					<option value="Vollkorn">Vollkorn</option>
+					<option value="Source Serif 4">Source Serif 4</option>
+					<option value="Inter">Inter</option>
 				</select>
 			</form>
 			<form>
