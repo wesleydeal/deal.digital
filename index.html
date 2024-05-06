@@ -17,11 +17,14 @@
 			--dates-font-style: italic;
 			--ligatures: normal; /* values: normal or none */
 			--bullet-margin: 0.1em;
-			--h1-size: ;
-			--h1-weight: ;
-			--h1-spacing: ;
-			
-			
+			--h1-size: 1.25;
+			--h1-weight: 500;
+			--h1-spacing: .04em;
+			--h1-typeface: 'Spectral SC';
+			--name-pad-top: 10px;
+			--name-gap: 0px;
+			--name-pad-bottom: 10px;
+			--name-typeface: inherit;
 			
 			box-sizing: border-box;
 		}
@@ -90,12 +93,14 @@
 			background: #000;
 			color: #fff;
 			text-align: center;
-			padding: 10px 20px;
+			padding: var(--name-pad-top) 20px var(--name-pad-bottom);
 			line-height: 1;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			white-space: nowrap;
+			gap: var(--name-gap);
+			font-family: var(--name-typeface);
 		}
 		
 		#namebox .name {
@@ -126,15 +131,15 @@
 		}
 		
 		h1 {
-			font-size: 1.25em;
+			font-size: var(--h1-size);
 			display: block;
 			margin: .4em 0;
 			padding: 0;
 			border-bottom: 1pt solid #000;
-			font-family: 'Spectral SC';
+			font-family: var(--h1-typeface);
 			line-height: 1.1;
-			font-weight: 500;
-			letter-spacing: .04em;
+			font-weight: var(--h1-weight);
+			letter-spacing: var(--h1-spacing);
 		}
 		
 		summary{
@@ -450,13 +455,13 @@
 		<div class="optiongroup">
 			<label><input type="checkbox" id="darklight" onchange="javascript:if(window.matchMedia('(prefers-color-scheme: dark)').matches && this.checked && document.body.classList!='light'){document.body.classList='light'; this.checked=false} else {document.body.classList=this.checked?'dark':'light'}">Dark mode</label>
 			<label><input type="checkbox" id="editable" onchange="javascript:document.getElementById('resume').contentEditable=this.checked">Content Editable</label>
-			<label><input type="checkbox" id="pageborder" onchange="javascript:document.getElementById('resume').style.boxShadow=this.checked?'0 0 0 1px #fff inset, 2px 2px 5px 0 #000':'none'">Page Border</label>
+			<label><input type="checkbox" id="pageborder" onchange="javascript:document.getElementById('resume').style.boxShadow=this.checked?'0 0 0 1px #fff inset, 2px 2px 5px 0 #000':''">Page Border</label>
 		</div>
 		<div class="optiongroup">
 			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.style.setProperty('--ligatures',this.checked?'normal':'none')" checked>Ligatures</label>
 			<form>
 				<label for="text_fonts">Text: </label>
-				<select id="text_fonts" onchange="javascript:document.documentElement.style.setProperty('--base-font','\''+this.value+'\'')">
+				<select id="text_fonts" onchange="javascript:document.documentElement.style.setProperty('--base-font',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
 					<option value="Spectral">Spectral</option>
 					<option value="serif">serif</option>
 					<option value="sans-serif">sans-serif</option>
@@ -496,7 +501,7 @@
 				<label for="line-height">Line Height: </label>
 				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-line-height',this.value);">
 			</form>
-			<label><input type="checkbox" id="ligatures" onchange="javascript:document.getElementById('resume').classList=this.checked?'':'roundbullets'" checked>Custom bullets</label>
+			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'" checked>Custom bullets</label>
 			<form>
 				<label for="li-margin">Bullet Margin (em): </label>
 				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bullet-margin',this.value+'em');">
@@ -506,7 +511,7 @@
 			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.querySelectorAll('h1').forEach(h1 => {h1.style.textTransform=this.checked?'uppercase':'none';});">Uppercase Headings</label>
 			<form>
 				<label for="title_fonts">H1s: </label>
-				<select id="title_fonts" onchange="javascript:document.querySelectorAll('h1').forEach(h1 => {h1.style.fontFamily=this.value});">
+				<select id="title_fonts" onchange="javascript:document.documentElement.style.setProperty('--h1-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
 					<option value="Spectral SC">Spectral SC</option>
 					<option value="inherit">inherit</option>
 					<option value="Spectral">Spectral</option>
@@ -533,22 +538,22 @@
 				</select>
 			</form>
 			<form>
-				<label for="h1-size">Size: </label>
-				<input type="number" id="h1-size" min="1" max="2" value="1.25" step="0.01" onmousewheel oninput="javascript:document.querySelectorAll('h1').forEach(h1 => {h1.style.fontSize=this.value+'em';});">
+				<label for="h1-size">Size (em): </label>
+				<input type="number" id="h1-size" min="1" max="2" value="1.25" step="0.01" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-size',this.value+'em');">
 			</form>
 			<form>
 				<label for="h1-weight">Weight: </label>
-				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="5" onmousewheel oninput="javascript:document.querySelectorAll('h1').forEach(h1 => {h1.style.fontWeight=this.value;});">
+				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="5" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-weight',this.value)">
 			</form>
 			<form>
 				<label for="h1-space">Spacing (em): </label>
-				<input type="number" id="h1-space" min="-1.0" max="2.0" value="0.04" step="0.01" onmousewheel oninput="javascript:document.querySelectorAll('h1').forEach(h1 => {h1.style.letterSpacing=this.value+'em';});">
+				<input type="number" id="h1-space" min="-1.0" max="2.0" value="0.04" step="0.01" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-spacing',this.value+'em')">
 			</form>
 		</div>
 		<div class="optiongroup">
 			<form>
 				<label for="name_fonts">Name: </label>
-				<select id="name_fonts" onchange="javascript:document.getElementById('namebox').style.fontFamily=this.value" selected="inherit">
+				<select id="name_fonts" onchange="javascript:document.documentElement.style.setProperty('--name-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);" selected="inherit">
 					<option value="inherit">inherit</option>
 					<option value="Spectral">Spectral</option>
 					<option value="serif">serif</option>
@@ -573,16 +578,16 @@
 				</select>
 			</form>
 			<form>
-				<label for="name-pad-top">Name Pad Top: </label>
-				<input type="number" id="name-pad-top" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:document.getElementById('namebox').style.paddingTop=this.value+'px'">
+				<label for="name-pad-top">Name Pad Top (px): </label>
+				<input type="number" id="name-pad-top" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-pad-top',this.value+'px')">
 			</form>
 			<form>
-				<label for="name-gap">Name Gap: </label>
-				<input type="number" id="name-gap" min="0" max="20" value="0" step="1" onmousewheel oninput="javascript:document.getElementById('namebox').style.gap=this.value+'px'">
+				<label for="name-gap">Name Gap (px): </label>
+				<input type="number" id="name-gap" min="0" max="20" value="0" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-gap',this.value+'px')">
 			</form>
 			<form>
-				<label for="name-pad-bottom">Name Pad Bottom: </label>
-				<input type="number" id="name-pad-bottom" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:document.getElementById('namebox').style.paddingBottom=this.value+'px'">
+				<label for="name-pad-bottom">Name Pad Bottom (px): </label>
+				<input type="number" id="name-pad-bottom" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-pad-bottom',this.value+'px')">
 			</form>
 		</div>
 	</div>
