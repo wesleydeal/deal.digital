@@ -22,6 +22,7 @@
 			--h1-weight: 500;
 			--h1-spacing: .04em;
 			--h1-typeface: 'Spectral SC';
+			--h1-transform: inherit;
 			--name-pad-top: 10px;
 			--name-gap: 0px;
 			--name-pad-bottom: 10px;
@@ -39,6 +40,7 @@
 			font-weight: var(--base-weight);
 			background: var(--color-bg);
 			color: var(--color-fg);
+			font-variant-ligatures: var(--ligatures);
 			overflow-y: scroll;
 		}
 		
@@ -141,6 +143,7 @@
 			line-height: 1.1;
 			font-weight: var(--h1-weight);
 			letter-spacing: var(--h1-spacing);
+			text-transform: var(--h1-transform);
 		}
 		
 		summary{
@@ -372,7 +375,8 @@
 			}
 			footer{
 				position: absolute;
-				bottom: 0.25in;
+				margin: 0;
+				bottom: .05in;
 			}
 			button, #tools, .buttonbar, .homelink{
 				display: none !important;
@@ -440,7 +444,7 @@
 			<p><b>Scripting</b>: Experienced with Python and PowerShell. Some work with C, C#, C++, Java, JS, Bash.
 		</section>
 		<footer>
-			<p>Written and typeset in HTML/CSS. Updated <time datetime="2024-04-30">2024-05-05</time>. Latest revision available at <a href="https://deal.digital/resume">deal.digital/resume</a>
+			<p>Updated <time datetime="2024-05-06">2024-05-06</time>. Latest revision available at <a href="https://deal.digital/resume">deal.digital/resume</a>
 		</footer>
 	</main>
 	
@@ -513,7 +517,7 @@
 			</form>
 		</div>
 		<div class="optiongroup">
-			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.querySelectorAll('h1').forEach(h1 => {h1.style.textTransform=this.checked?'uppercase':'none';});">Uppercase Headings</label>
+			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.documentElement.style.setProperty('--h1-transform',this.checked?'uppercase':'none');">Uppercase Headings</label>
 			<form>
 				<label for="title_fonts">H1s: </label>
 				<select id="title_fonts" onchange="javascript:document.documentElement.style.setProperty('--h1-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
