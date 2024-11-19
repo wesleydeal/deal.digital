@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interpret Seagate read&#x2F;seek error rates - Wesley Deal</title>
+<link rel="stylesheet" href="/style.css">
+<body id="smart-seagate">
+<header>
+	<nav>
+		
+		<a href="/">Wesley Deal</a>
+		
+		
+		
+		
+		
+		
+		
+		<span>/</span>
+		
+		<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;">Blog</a>
+		
+		<span>/</span>
+		<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;smart-seagate&#x2F;">●</a>
+		
+	</nav>
+</header>
+<section class="content">
+	
+<h1 class="title">
+	Reading &amp; Interpreting SMART Read&#x2F;Seek Error Data on Seagate Drives
+</h1>
+<p>Seagate hard drives often report extremely high read and seek error rates in SMART data. After pronouncing a string of drives defective based on these fields, I did some digging and found that Seagate drives use non-standard formatting for these values. Every piece of disk-monitoring software I had used reports these values incorrectly. Incidentally, this was good for our bottom line at the computer shop where we sold quite a few customers SSD upgrades partly on the basis of these mistaken readings. While the easiest advice on this subject is to ignore these values in the absence of other drive issues, there is a way to read them.</p>
+<h2 id="the-process"><a class="zola-anchor" href="#the-process" aria-label="Anchor link for: the-process">#</a>The Process</h2>
+<p>The vast majority of programs that read SMART data rely on smartctl (<a href="https://sourceforge.net/projects/smartmontools/files/latest/download?source=files">Windows download</a>), which we’ll use to read these values.</p>
+<p>Assuming that our disk is located at /dev/hda (which is typical for smartctl on Windows and older Linuxes), we can get the disk status using <code>smartctl -A /dev/hda</code>. The raw read error rate will be reported as something like <strong>130917967</strong> and the seek something like <strong>13219996990</strong>. This is clearly wrong, because the drive hasn’t failed or reported any SMART errors, and the normalized value still shows this attribute to be within acceptable margins.</p>
+<p>This is because the read and seek error rates are actually recorded as 48-bit hexadecimal values, where the first 16 bits (4 hex digits) represent the total number of read or seek errors and the last 32 bits (8 hex digits) represent the total number of reads or seeks attempted. We can get these values with the command <code>smartctl -v 1,hex48 -v 7,hex48 -A /dev/hda</code>.</p>
+<p>Using this command, our read and seek error values become <strong>0x<u>0000</u>07cda64f</strong> and <strong>0x<u>0003</u>13f9253e</strong> respectively. The first four digits following the x (emphasized) are the total number of errors. As you can see, read and seek errors are only 0 and 3 respectively for this particular drive. And the total number of reads are 130917967 and 335095102 respectively, obtained by taking the last eight digits and converting from hexadecimal to decimal numbers.</p>
+<h2 id="additional-reading"><a class="zola-anchor" href="#additional-reading" aria-label="Anchor link for: additional-reading">#</a>Additional Reading</h2>
+<ul>
+<li>
+<p>my primary source: <a href="http://web.archive.org/web/20211208195204/http://www.users.on.net/~fzabkar/HDD/Seagate_SER_RRER_HEC.html">an article by <em>fzabkar</em></a></p>
+</li>
+<li>
+<p>a <a href="http://sgros.blogspot.com/2013/01/seagate-disk-smart-values.html">good blog post on the subject by Stjepan Groš</a></p>
+</li>
+<li>
+<p>this <a href="https://superuser.com/questions/393257/brand-new-seagate-hdd-has-high-raw-read-error-rate">StackExchange SuperUser question</a></p>
+</li>
+</ul>
+
+
+<section class="article-signoff">
+	
+	<p class="author">—Wesley Deal</p>
+	
+	
+	<p class="created-at">written <time datetime="2017-09-17">2017-09-17</time></p>
+	
+	
+	<p class="updated-at">updated <time datetime="2024-05-02">2024-05-02</time></p>
+	
+</section>
+
+
+</section>
+<footer>
+	No rights reserved. <a href="https://github.com/wesleydeal/deal.digital/edit/master/content/blog&#x2F;smart-seagate.md">View source here</a>. Provided as-is, no warranty, etc.
+	Built 2024-11-19 01:09:27 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages.
+	Thanks to Red Hat for <a href="https://www.redhat.com/en/about/brand/standards/typography">the typefaces</a>.
+</footer>
+</body>
+</html>
