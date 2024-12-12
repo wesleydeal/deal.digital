@@ -21,6 +21,7 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 * [Mark Boulton](https://markboulton.co.uk/), product designer
 * [Aleksandr Hovhannisyan](https://www.aleksandrhovhannisyan.com/) (note his article on [font fallbacks without layout shift](https://www.aleksandrhovhannisyan.com/blog/perfect-font-fallbacks/))
 * [rsapkf](https://rsapkf.org/)
+* [Amelia Wattenberger](https://wattenberger.com/) (check out: [fish eyes](https://wattenberger.com/thoughts/fish-eye))
 
 ### *nix
 * [dade](https://0xda.de/blog/)
@@ -54,6 +55,9 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 
 ### VPS & Hosting
 * [LowEndBox](https://lowendbox.com/) has a bunch of promotions for cheap VPS, dedicated, and shared web hosting
+
+### Stories
+* [The case of the 500-mile email](https://www.ibiblio.org/harris/500milemail.html)
 
 ## Typography
 
