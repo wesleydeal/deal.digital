@@ -43,6 +43,7 @@ form div.length-container{
 	font-size: 1.5em;
 	border: 1px dashed #52abab;
 	margin: 10px 0;
+	overflow-x: auto;
 }
 #result.smaller{
 	font-size: 1em;
@@ -64,7 +65,7 @@ form div.length-container{
 }
 .content{
 	display: flex;
-	max-width: initial;
+	max-width: 100%;
 	align-items: center;
 	flex-direction: column;
 	gap: 20px 0;
