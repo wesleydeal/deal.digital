@@ -160,7 +160,7 @@ const maxUInt32 = (function(){
 })();
 const ambiguousAlphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 const unambiguousAlphaNumeric = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
-const symbols = '`~!@#$%^&*()_+-=[]{}\|;:\'",<.>/?';
+const symbols = '`~!@#$%^&*()_+-=[]{}\\|;:\'",<.>/?';
 const separators = "-_+=";
 	
 var genButton = document.getElementById("generate");
@@ -214,7 +214,7 @@ function pwgen() {
 	
 	var resultInnerHTML = "<ul>";
 	for (i=0; i<30; i++) {
-		resultInnerHTML += "<li>" + Array.from({length: pwlen}, () => charSet[secureRand(0,charSet.length - 1)]).join("").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\n","\\n");
+		resultInnerHTML += "<li>" + Array.from({length: pwlen}, () => charSet[secureRand(0,charSet.length - 1)]).join("").replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\",'&#39;');
 	}
 	resultInnerHTML += "</ul>"
 	document.getElementById("result").innerHTML = resultInnerHTML;
