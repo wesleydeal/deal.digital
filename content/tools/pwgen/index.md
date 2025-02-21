@@ -14,12 +14,29 @@ shorttitle = "Password Generator"
 #length_val{
 	width: 50px;
 }
+form {
+	display: flex;
+	gap: 5px;
+	flex-direction: column;
+}
 form div{
 	padding: 5px 10px;
 }
+form div.lengthfields{
+	display: flex;
+	gap: 5px;
+}
+#length{
+	width: 256px;
+}
 #result{
-	font-family: Consolas, monospace;
+	font-family: "Red Hat Mono",Consolas,monospace;
 	font-size: 1.5em;
+	border: 1px dashed #52abab;
+	margin: 10px 0;
+}
+#result.smaller{
+	font-size: 1em;
 }
 #result ul{
 	display: flex;
@@ -34,6 +51,16 @@ form div{
 	color: #5cc;
 	font-style: italic;
 }
+.content{
+	display: flex;
+	max-width: initial;
+	align-items: center;
+	flex-direction: column;
+	gap: 20px 0;
+}
+.content > *:not(div#result) {
+	width: calc(min(780px,100%));
+}
 </style>
 <form>
 	<div>
@@ -43,7 +70,7 @@ form div{
 		</select>
 	</div>
 	<div>
-		<label for="length">Length</label>
+		<label for="length">Length: </label>
 		<input type="range" id="length" min="1" max="128" onchange="document.getElementById('length_val').value=this.value; pwgen()" value="16">
 		<input type="number" id="length_val" value="16" onchange="document.getElementById('length').value=this.value; pwgen()" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
 	</div>
@@ -88,13 +115,23 @@ const ambiguousAlphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvw
 const unambiguousAlphaNumeric = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
 const symbols = '`~!@#$%^&*()_+-=[]{}\|;:\'",<.>/?';
 const separators = "-_+=";
+	
 var genButton = document.getElementById("generate");
-var genButtonHeld = false
-
+var genButtonHeld = false;
 genButton.addEventListener('touchstart', (event) => { genButtonHeld = true })
 genButton.addEventListener('touchend', (event) => { genButtonHeld = false; colorize(); })
 genButton.addEventListener('mousedown', (event) => { genButtonHeld = true })
 genButton.addEventListener('mouseup', (event) => { genButtonHeld = false; colorize(); })
+
+var results = document.getElementById("result");
+var length = document.getElementById("length");
+results.addEventListener('change', (event) => {
+	if (results).value > 16 {
+		results.classList.add("smaller");
+	} else {
+		results.classList.remove("smaller");
+	}
+}
 
 function secureRand(min, max) {
 	var [randInt] = crypto.getRandomValues(new Uint32Array(1));
