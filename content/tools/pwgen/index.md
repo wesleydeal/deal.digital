@@ -26,15 +26,13 @@ input[type=number]::-webkit-inner-spin-button {
 }
 form {
 	display: flex;
-	gap: 5px;
+	gap: 10px;
 	flex-direction: column;
-}
-form div{
-	padding: 5px 10px;
 }
 form div.length-container{
 	display: flex;
 	gap: 5px;
+	flex-wrap: wrap;
 }
 #length{
 	width: 256px;
@@ -97,6 +95,13 @@ button#generate:hover {
 	justify-content: space-between;
 	flex-wrap: wrap;
 	gap: 10px;
+}
+select{
+	border: 1px solid var(--color-fg);
+	border-radius: 3px;
+	font: inherit;
+	background: none;
+	padding: 2px;
 }
 </style>
 <div id="settings">
