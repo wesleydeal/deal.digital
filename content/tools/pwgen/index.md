@@ -108,7 +108,7 @@ button#generate:hover {
 			</select>
 		</div>
 		<div class="length-container">
-			<input type="range" id="length" min="1" max="128" value="16">
+			<input type="range" id="length" min="8" max="128" value="16">
 			<input type="number" id="length_val" value="16" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
    			<label for="length"> characters</label>
 		</div>
@@ -193,7 +193,7 @@ function pwgen() {
 	var result = "";
 	var modeElement = document.getElementById("mode");
 	var mode = modeElement.options[modeElement.selectedIndex].value;
-	var pwlen = parseInt(document.getElementById("length").value);
+	var pwlen = parseInt(document.getElementById("length_val").value);
 	var specials = document.getElementById("specials").checked;
 	var ambiguous = document.getElementById("ambiguous").checked;
 	var spaces = document.getElementById("spaces").checked;
