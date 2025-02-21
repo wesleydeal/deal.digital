@@ -3,6 +3,7 @@ author = "Wesley Deal"
 title = "Local Password Generator"
 date = 2025-02-21
 updated = 2025-02-21
+raw = true
 [taxonomies]
 tags = ["software", "security"]
 [extra]
@@ -41,27 +42,21 @@ form div{
 			<option value="words">Random Words (NOT YET IMPLEMENTED)</option>
 		</select>
 	</div>
-
 	<div>
 		<label for="length">Length</label>
 		<input type="range" id="length" min="1" max="128" onchange="document.getElementById('length_val').value=this.value; pwgen()" value="16">
 		<input type="number" id="length_val" value="16" onchange="document.getElementById('length').value=this.value; pwgen()" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
 	</div>
-	
 	<div>
 		<input type="checkbox" id="specials" value="specials" onchange="pwgen()">
 		<label for="specials"> Special Characters</label><br>
-
 		<input type="checkbox" id="ambiguous" value="ambiguous" onchange="pwgen()">
 		<label for="ambiguous"> Ambiguous Characters</label><br>
-
 		<input type="checkbox" id="separators" value="separators">
 		<label for="separators"> Separators (-_+=)  (NOT YET IMPLEMENTED)</label><br>
-
 		<input type="checkbox" id="spaces" value="spaces">
 		<label for="spaces"> Spaces</label><br>
 	</div>
-
 	<div>
 		<button type="button" id="generate">More</button>
 	</div>
