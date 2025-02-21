@@ -157,11 +157,11 @@ length.addEventListener('change', (event) => {
 	} else {
 		length.classList.remove("smaller");
 	}
-	document.getElementById('length_val').value=this.value;
+	document.getElementById('length_val').value=event.target.value;
 	pwgen();
 });
 length_val.addEventListener('change', (event) => {
-	document.getElementById('length').value=this.value;
+	document.getElementById('length').value=event.target.value;
 	pwgen();
 });
 	
