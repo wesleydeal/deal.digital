@@ -188,6 +188,7 @@ function onChangeLength(event) {
 }
 length_val.addEventListener('change', onChangeLength);
 length.addEventListener('input', onChangeLength);
+length_val.addEventListener('pointerup', () => length_val.select());
 function secureRand(min, max) {
 	var [randInt] = crypto.getRandomValues(new Uint32Array(1));
 	var scale = max-min;
