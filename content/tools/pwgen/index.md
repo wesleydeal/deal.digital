@@ -44,6 +44,7 @@ form div.length-container{
 	border: 1px dashed #52abab;
 	margin: 10px 0;
 	overflow-x: auto;
+	max-width: 100%;
 }
 #result.smaller{
 	font-size: 1em;
@@ -93,6 +94,8 @@ button#generate:hover {
 	flex-direction: row;
 	align-items: end;
 	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px;
 }
 </style>
 <div id="settings">
