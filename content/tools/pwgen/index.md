@@ -24,12 +24,12 @@ shorttitle = "Password Generator"
 input[type=number]::-webkit-inner-spin-button {
     opacity: 1
 }
-form {
+#settings-wrapper {
 	display: flex;
 	gap: 10px;
 	flex-direction: column;
 }
-form div.length-container{
+#settings-wrapper div.length-container{
 	display: flex;
 	gap: 5px;
 	flex-wrap: wrap;
@@ -88,7 +88,7 @@ button#generate:hover {
 	color: var(--color-bg);
 	border: 2px solid var(--color-hover);
 }
-#settings{
+#controls{
 	display: flex;
 	flex-direction: row;
 	align-items: end;
@@ -104,8 +104,8 @@ select{
 	padding: 2px;
 }
 </style>
-<div id="settings">
-	<form>
+<div id="controls">
+	<div id="settings-wrapper">
 		<div>
 			<select id="mode">
 				<option value="char">Random Characters</option>
@@ -127,7 +127,7 @@ select{
 			<input type="checkbox" id="spaces" value="spaces">
 			<label for="spaces"> Spaces</label><br>
 		</div>
-	</form>
+	</div>
 	<div id="genbutton-wrapper">
 		<button type="button" id="generate">Generate <u>M</u>ore ↩</button>
 	</div>
