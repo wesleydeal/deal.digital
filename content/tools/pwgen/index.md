@@ -107,9 +107,20 @@ button#generate:hover {
 			</select>
 		</div>
 		<div class="length-container">
-			<input type="range" id="length" min="1" max="128" value="16">
+			<input type="range" id="length" min="1" max="128" value="16" list="len-markers">
 			<input type="number" id="length_val" value="16" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
    			<label for="length"> characters</label>
+			<datalist id="len-markers">
+				<option value="8"></option>
+				<option value="12"></option>
+				<option value="16"></option>
+				<option value="20"></option>
+				<option value="32"></option>
+				<option value="48"></option>
+				<option value="64"></option>
+				<option value="96"></option>
+				<option value="128"></option>
+			</datalist>
 		</div>
 		<div>
 			<input type="checkbox" id="specials" value="specials" onchange="pwgen()">
@@ -167,26 +178,22 @@ document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" ||
 var results = document.getElementById("result");
 var length = document.getElementById("length");
 var length_val = document.getElementById("length_val");
-length.addEventListener('change', (event) => {
+function onChangeLength(event) {
 	if (event.target.value > 16) {
 		results.classList.add("smaller");
 	} else {
 		results.classList.remove("smaller");
 	}
-	document.getElementById('length_val').value=event.target.value;
-	pwgen();
-});
-length_val.addEventListener('change', (event) => {
-	if (event.target.value > 16) {
-		results.classList.add("smaller");
+	if event.target == document.getElementById('length'){
+		document.getElementById('length_val').value=event.target.value;
 	} else {
-		results.classList.remove("smaller");
+		document.getElementById('length').value=event.target.value;
 	}
-	document.getElementById('length').value=event.target.value;
 	pwgen();
-});
-	
-
+}
+length.addEventListener('change', onChangeLength);
+length_val.addEventListener('change', onChangeLength);
+length.addEventListener('drag', onChangeLength);
 function secureRand(min, max) {
 	var [randInt] = crypto.getRandomValues(new Uint32Array(1));
 	var scale = max-min;
