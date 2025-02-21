@@ -12,7 +12,16 @@ shorttitle = "Password Generator"
 
 <style type="text/css">
 #length_val{
-	width: 50px;
+	width: 3.25em;
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid var(--color-fg);
+	border-radius: 0;
+	font: inherit;
+	font-size: .8em;
+}
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1
 }
 form {
 	display: flex;
@@ -22,7 +31,7 @@ form {
 form div{
 	padding: 5px 10px;
 }
-form div.lengthfields{
+form div.length-container{
 	display: flex;
 	gap: 5px;
 }
@@ -42,6 +51,8 @@ form div.lengthfields{
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px 20px;
+	justify-content: space-evenly;
+	padding: 0;
 }
 #result li{
 	display: flex;
@@ -91,10 +102,10 @@ button#generate:hover {
 				<option value="words">Random Words (NOT YET IMPLEMENTED)</option>
 			</select>
 		</div>
-		<div>
-			<label for="length">Length: </label>
+		<div class="length-container">
 			<input type="range" id="length" min="1" max="128" value="16">
 			<input type="number" id="length_val" value="16" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
+   			<label for="length"> characters</label>
 		</div>
 		<div>
 			<input type="checkbox" id="specials" value="specials" onchange="pwgen()">
