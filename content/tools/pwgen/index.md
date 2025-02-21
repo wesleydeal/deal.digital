@@ -40,7 +40,7 @@ input[type=number]::-webkit-inner-spin-button {
 #result{
 	font-family: "Red Hat Mono",Consolas,monospace;
 	font-size: 1.5em;
-	border: 1px dashed #52abab;
+	border: 1px dashed var(--color-accent);
 	margin: 10px 0;
 	overflow-x: auto;
 	max-width: 100%;
@@ -60,7 +60,7 @@ input[type=number]::-webkit-inner-spin-button {
 	width: auto;
 }
 #result li.copied{
-	color: #5cc;
+	background: var(--color-accent);
 	font-style: italic;
 }
 .content{
