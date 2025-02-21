@@ -184,7 +184,7 @@ function onChangeLength(event) {
 	} else {
 		results.classList.remove("smaller");
 	}
-	if event.target == document.getElementById('length'){
+	if (event.target == document.getElementById('length')){
 		document.getElementById('length_val').value=event.target.value;
 	} else {
 		document.getElementById('length').value=event.target.value;
