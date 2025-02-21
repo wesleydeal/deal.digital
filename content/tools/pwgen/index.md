@@ -12,13 +12,14 @@ shorttitle = "Password Generator"
 
 <style type="text/css">
 #length_val{
-	width: 3.25em;
+	width: 3em;
 	background: transparent;
 	border: none;
 	border-bottom: 1px solid var(--color-fg);
 	border-radius: 0;
 	font: inherit;
-	font-size: .8em;
+	padding: 0;
+	text-align: center;
 }
 input[type=number]::-webkit-inner-spin-button {
     opacity: 1
@@ -107,20 +108,9 @@ button#generate:hover {
 			</select>
 		</div>
 		<div class="length-container">
-			<input type="range" id="length" min="1" max="128" value="16" list="len-markers">
+			<input type="range" id="length" min="1" max="128" value="16">
 			<input type="number" id="length_val" value="16" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
    			<label for="length"> characters</label>
-			<datalist id="len-markers">
-				<option value="8"></option>
-				<option value="12"></option>
-				<option value="16"></option>
-				<option value="20"></option>
-				<option value="32"></option>
-				<option value="48"></option>
-				<option value="64"></option>
-				<option value="96"></option>
-				<option value="128"></option>
-			</datalist>
 		</div>
 		<div>
 			<input type="checkbox" id="specials" value="specials" onchange="pwgen()">
@@ -191,9 +181,8 @@ function onChangeLength(event) {
 	}
 	pwgen();
 }
-length.addEventListener('change', onChangeLength);
 length_val.addEventListener('change', onChangeLength);
-length.addEventListener('drag', onChangeLength);
+length.addEventListener('input', onChangeLength);
 function secureRand(min, max) {
 	var [randInt] = crypto.getRandomValues(new Uint32Array(1));
 	var scale = max-min;
