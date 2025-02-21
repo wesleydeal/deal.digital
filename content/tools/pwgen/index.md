@@ -118,15 +118,15 @@ const separators = "-_+=";
 	
 var genButton = document.getElementById("generate");
 var genButtonHeld = false;
-genButton.addEventListener('touchstart', (event) => { genButtonHeld = true })
-genButton.addEventListener('touchend', (event) => { genButtonHeld = false; colorize(); })
-genButton.addEventListener('mousedown', (event) => { genButtonHeld = true })
-genButton.addEventListener('mouseup', (event) => { genButtonHeld = false; colorize(); })
+genButton.addEventListener('touchstart', (event) => { genButtonHeld = true; })
+genButton.addEventListener('touchend', (event) => { genButtonHeld = false; })
+genButton.addEventListener('mousedown', (event) => { genButtonHeld = true; })
+genButton.addEventListener('mouseup', (event) => { genButtonHeld = false; })
 
 var results = document.getElementById("result");
 var length = document.getElementById("length");
 results.addEventListener('change', (event) => {
-	if (results).value > 16 {
+	if (results.value > 16) {
 		results.classList.add("smaller");
 	} else {
 		results.classList.remove("smaller");
@@ -141,7 +141,7 @@ function secureRand(min, max) {
 }
 function pwgen() {
 	var result = "";
-	var modeElement = document.getElementById("mode")
+	var modeElement = document.getElementById("mode");
 	var mode = modeElement.options[modeElement.selectedIndex].value;
 	var pwlen = parseInt(document.getElementById("length").value);
 	var specials = document.getElementById("specials").checked;
