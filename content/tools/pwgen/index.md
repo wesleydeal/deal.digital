@@ -131,7 +131,7 @@ results.addEventListener('change', (event) => {
 	} else {
 		results.classList.remove("smaller");
 	}
-}
+});
 
 function secureRand(min, max) {
 	var [randInt] = crypto.getRandomValues(new Uint32Array(1));
