@@ -60,6 +60,15 @@ form div.lengthfields{
 }
 .content > *:not(div#result) {
 	width: calc(min(780px,100%));
+	padding: 0 10px;
+}
+button#generate {
+	font-size: 1.5em;
+	color: --color-link:
+	border: 2px solid --color-link;
+	border-radius: 3px;
+	background: --color-bg;
+	padding: 5px 15px;
 }
 </style>
 <form>
@@ -71,8 +80,8 @@ form div.lengthfields{
 	</div>
 	<div>
 		<label for="length">Length: </label>
-		<input type="range" id="length" min="1" max="128" onchange="document.getElementById('length_val').value=this.value; pwgen()" value="16">
-		<input type="number" id="length_val" value="16" onchange="document.getElementById('length').value=this.value; pwgen()" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
+		<input type="range" id="length" min="1" max="128" value="16">
+		<input type="number" id="length_val" value="16" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
 	</div>
 	<div>
 		<input type="checkbox" id="specials" value="specials" onchange="pwgen()">
@@ -85,7 +94,7 @@ form div.lengthfields{
 		<label for="spaces"> Spaces</label><br>
 	</div>
 	<div>
-		<button type="button" id="generate">More</button>
+		<button type="button" id="generate">(M)ore ↩</button>
 	</div>
 
 </form>
@@ -118,20 +127,30 @@ const separators = "-_+=";
 	
 var genButton = document.getElementById("generate");
 var genButtonHeld = false;
-genButton.addEventListener('touchstart', (event) => { genButtonHeld = true; })
-genButton.addEventListener('touchend', (event) => { genButtonHeld = false; })
-genButton.addEventListener('mousedown', (event) => { genButtonHeld = true; })
-genButton.addEventListener('mouseup', (event) => { genButtonHeld = false; })
+genButton.addEventListener('pointerdown', (event) => { genButtonHeld = true; })
+genButton.addEventListener('pointerup', (event) => { genButtonHeld = false; })
+genButton.addEventListener('pointerleave', (event) => { genButtonHeld = false; })
+genButton.addEventListener('pointercancel', (event) => { genButtonHeld = false; })
+document.body.addEventListener('keydown', (event) => { if(event.code == "Space" || event.code == "Enter" || event.code == "KeyM") genButtonHeld = true; })
+document.body.addEventListener('keyup', (event) => { if(event.code == "Space" || event.code == "Enter" || event.code == "KeyM") genButtonHeld = false; })
 
 var results = document.getElementById("result");
 var length = document.getElementById("length");
+var length_val = document.getElementById("length_val");
 length.addEventListener('change', (event) => {
 	if (length.value > 16) {
 		length.classList.add("smaller");
 	} else {
 		length.classList.remove("smaller");
 	}
+	document.getElementById('length_val').value=this.value;
+	pwgen();
 });
+length_val.addEventListener('change', (event) => {
+	document.getElementById('length').value=this.value;
+	pwgen();
+});
+	
 
 function secureRand(min, max) {
 	var [randInt] = crypto.getRandomValues(new Uint32Array(1));
