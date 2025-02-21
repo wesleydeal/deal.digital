@@ -125,11 +125,11 @@ genButton.addEventListener('mouseup', (event) => { genButtonHeld = false; })
 
 var results = document.getElementById("result");
 var length = document.getElementById("length");
-results.addEventListener('change', (event) => {
-	if (results.value > 16) {
-		results.classList.add("smaller");
+length.addEventListener('change', (event) => {
+	if (length.value > 16) {
+		length.classList.add("smaller");
 	} else {
-		results.classList.remove("smaller");
+		length.classList.remove("smaller");
 	}
 });
 
