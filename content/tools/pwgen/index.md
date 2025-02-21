@@ -186,7 +186,7 @@ function onChangeLength(event) {
 	}
 	pwgen();
 }
-length_val.addEventListener('change', onChangeLength);
+length_val.addEventListener('scroll', onChangeLength);
 length.addEventListener('input', onChangeLength);
 length_val.addEventListener('pointerup', () => length_val.select());
 length_val.addEventListener('keyup', onChangeLength);
