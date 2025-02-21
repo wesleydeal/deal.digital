@@ -80,6 +80,7 @@ button#generate:hover {
 	display: flex;
 	flex-direction: row;
 	align-items: end;
+	justify-content: space-between;
 }
 </style>
 <div id="settings">
@@ -145,22 +146,27 @@ genButton.addEventListener('pointerdown', (event) => { genButtonHeld = true; })
 genButton.addEventListener('pointerup', (event) => { genButtonHeld = false; })
 genButton.addEventListener('pointerleave', (event) => { genButtonHeld = false; })
 genButton.addEventListener('pointercancel', (event) => { genButtonHeld = false; })
-document.body.addEventListener('keydown', (event) => { if(event.code == "Space" || event.code == "Enter" || event.code == "KeyM") genButtonHeld = true; })
-document.body.addEventListener('keyup', (event) => { if(event.code == "Space" || event.code == "Enter" || event.code == "KeyM") genButtonHeld = false; })
+document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = true; })
+document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = false; })
 
 var results = document.getElementById("result");
 var length = document.getElementById("length");
 var length_val = document.getElementById("length_val");
 length.addEventListener('change', (event) => {
-	if (length.value > 16) {
-		length.classList.add("smaller");
+	if (event.target.value > 16) {
+		results.classList.add("smaller");
 	} else {
-		length.classList.remove("smaller");
+		results.classList.remove("smaller");
 	}
 	document.getElementById('length_val').value=event.target.value;
 	pwgen();
 });
 length_val.addEventListener('change', (event) => {
+	if (event.target.value > 16) {
+		results.classList.add("smaller");
+	} else {
+		results.classList.remove("smaller");
+	}
 	document.getElementById('length').value=event.target.value;
 	pwgen();
 });
