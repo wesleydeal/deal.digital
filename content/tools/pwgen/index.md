@@ -214,7 +214,7 @@ function pwgen() {
 	
 	var resultInnerHTML = "<ul>";
 	for (i=0; i<30; i++) {
-		resultInnerHTML += "<li>" + Array.from({length: pwlen}, () => charSet[secureRand(0,charSet.length - 1)]).join("").replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\",'&#39;');
+		resultInnerHTML += "<li>" + Array.from({length: pwlen}, () => charSet[secureRand(0,charSet.length - 1)]).join("").replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\\",'&#39;');
 	}
 	resultInnerHTML += "</ul>"
 	document.getElementById("result").innerHTML = resultInnerHTML;
