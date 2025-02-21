@@ -64,38 +64,52 @@ form div.lengthfields{
 }
 button#generate {
 	font-size: 1.5em;
-	color: --color-link:
-	border: 2px solid --color-link;
+	color: var(--color-link);
+	border: 2px solid var(--color-link);
 	border-radius: 3px;
-	background: --color-bg;
-	padding: 5px 15px;
+	background: var(--color-bg);
+	padding: 5px 15px 10px;
+	transition: border 250ms ease-in-out, color 250ms ease-in-out, background 250ms ease-in-out;
+}
+button#generate:hover {
+	background: var(--color-hover);
+	color: var(--color-bg);
+	border: 2px solid var(--color-hover);
+}
+#settings{
+	display: flex;
+	flex-direction: row;
+	align-items: end;
 }
 </style>
-<form>
-	<div>
-		<select id="mode">
-			<option value="char">Random Characters</option>
-			<option value="words">Random Words (NOT YET IMPLEMENTED)</option>
-		</select>
+<div id="settings">
+	<form>
+		<div>
+			<select id="mode">
+				<option value="char">Random Characters</option>
+				<option value="words">Random Words (NOT YET IMPLEMENTED)</option>
+			</select>
+		</div>
+		<div>
+			<label for="length">Length: </label>
+			<input type="range" id="length" min="1" max="128" value="16">
+			<input type="number" id="length_val" value="16" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
+		</div>
+		<div>
+			<input type="checkbox" id="specials" value="specials" onchange="pwgen()">
+			<label for="specials"> Special Characters</label><br>
+			<input type="checkbox" id="ambiguous" value="ambiguous" onchange="pwgen()">
+			<label for="ambiguous"> Ambiguous Characters</label><br>
+			<input type="checkbox" id="separators" value="separators">
+			<label for="separators"> Separators (-_+=)  (NOT YET IMPLEMENTED)</label><br>
+			<input type="checkbox" id="spaces" value="spaces">
+			<label for="spaces"> Spaces</label><br>
+		</div>
+	</form>
+	<div id="genbutton-wrapper">
+		<button type="button" id="generate">Generate <u>M</u>ore ↩</button>
 	</div>
-	<div>
-		<label for="length">Length: </label>
-		<input type="range" id="length" min="1" max="128" value="16">
-		<input type="number" id="length_val" value="16" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
-	</div>
-	<div>
-		<input type="checkbox" id="specials" value="specials" onchange="pwgen()">
-		<label for="specials"> Special Characters</label><br>
-		<input type="checkbox" id="ambiguous" value="ambiguous" onchange="pwgen()">
-		<label for="ambiguous"> Ambiguous Characters</label><br>
-		<input type="checkbox" id="separators" value="separators">
-		<label for="separators"> Separators (-_+=)  (NOT YET IMPLEMENTED)</label><br>
-		<input type="checkbox" id="spaces" value="spaces">
-		<label for="spaces"> Spaces</label><br>
-	</div>
-	<div>
-		<button type="button" id="generate">(M)ore ↩</button>
-	</div>
+</div>
 
 </form>
 
