@@ -137,7 +137,7 @@ select{
 </div>
 
 <div id="entropy-description">
-	<p>This password has <span id="entropy">0</span> bits of entropy and will take </p>
+	<p>This password has <span id="entropy">0</span> bits of entropy and would take <span id="hashtime">0</span> seconds on average to guess with an NVIDIA RTX 5090 if hashed with SHA512_256.</p>
 </form>
 
 <div id="explanation">50 passwords, freshly baked with <code>crypto.getRandomValues</code> on your local computer, are ready below. Click to instantly copy to your clipboard.</div>
@@ -199,7 +199,7 @@ function secureRand(min, max, count=1) {
 	return randInts.map(r => min + (scale*(r/maxUInt32)));
 }
 function roundTo(value, decimals) {
-	const m = Math.pow(10, digits);
+	const m = Math.pow(10, decimals);
 	return Math.round(m * value) / m;
 }
 function pwgen() {
@@ -210,7 +210,7 @@ function pwgen() {
 	var specials = document.getElementById("specials").checked;
 	var ambiguous = document.getElementById("ambiguous").checked;
 	var spaces = document.getElementById("spaces").checked;
-	var count = 50;
+	const count = 50;
 
 	var charSet = ambiguous ? ambiguousAlphaNumeric : unambiguousAlphaNumeric;
 	if(specials) {charSet += symbols;}
@@ -235,7 +235,14 @@ function pwgen() {
 		});
 	}
 
-	document.getElementById("entropy").innerHTML = roundTo(Math.log2(Math.pow(charSet.length, pwlen)),2);
+	
+
+	const hashRate = 4.852e+9;
+	var entropy = Math.log2(Math.pow(charSet.length, pwlen));
+	var hashTime = Math.pow(2, entropy) / hashRate / 2;
+
+	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
+	document.getElementById("hashtime").innerHTML = roundTo(hashTime, 0);
 }
 function monitorGenButton() {
 	if (genButtonHeld) pwgen();
