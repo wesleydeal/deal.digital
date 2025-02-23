@@ -160,6 +160,7 @@ const ambiguousAlphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvw
 const unambiguousAlphaNumeric = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
 const symbols = '`~!@#$%^&*()_+-=[]{}\\|;:\'",<.>/?';
 const separators = "-_+=";
+var durationFormatObj = Intl.DurationFormat('en-US');
 	
 var genButton = document.getElementById("generate");
 var genButtonHeld = false;
@@ -242,7 +243,7 @@ function pwgen() {
 	var hashTime = Math.pow(2, entropy) / hashRate / 2;
 
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
-	document.getElementById("hashtime").innerHTML = Intl.DurationFormat('en-US').format({seconds: hashTime});
+	document.getElementById("hashtime").innerHTML = durationFormatObj.format({seconds: hashTime});
 }
 function monitorGenButton() {
 	if (genButtonHeld) pwgen();
