@@ -163,10 +163,10 @@ const separators = "-_+=";
 	
 var genButton = document.getElementById("generate");
 var genButtonHeld = false;
-genButton.addEventListener('pointerdown', () => { genButtonHeld = true; })
-genButton.addEventListener('pointerup', () => { genButtonHeld = false; })
-genButton.addEventListener('pointerleave', () => { genButtonHeld = false; })
-genButton.addEventListener('pointercancel', () => { genButtonHeld = false; })
+genButton.addEventListener('pointerdown', (e) => { genButtonHeld = true; })
+genButton.addEventListener('pointerup', (e) => { genButtonHeld = false; })
+genButton.addEventListener('pointerleave', (e) => { genButtonHeld = false; })
+genButton.addEventListener('pointercancel', (e) => { genButtonHeld = false; })
 document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = true; })
 document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = false; })
 
