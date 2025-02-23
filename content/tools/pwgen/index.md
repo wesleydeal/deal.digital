@@ -136,11 +136,10 @@ select{
 	</div>
 </div>
 
-<div id="entropy-description">
-	<p>This password has <span id="entropy">0</span> bits of entropy and would take <span id="hashtime">0 sec</span> on average to guess with an [NVIDIA RTX 5090 if hashed with NTLM](https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c).</p>
+<div id="explanation">
+	<p>50 passwords, freshly baked with <code>crypto.getRandomValues</code> on your local computer, are ready below. Click to instantly copy to your clipboard.
+	<p>These password have <span id="entropy">0</span> bits of entropy and would take <span id="hashtime">0 sec</span> on average to guess with an <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">NVIDIA RTX 5090 if hashed with NTLM</a>.
 </div>
-
-<div id="explanation">50 passwords, freshly baked with <code>crypto.getRandomValues</code> on your local computer, are ready below. Click to instantly copy to your clipboard.</div>
 
 <div id="result"></div>
 
@@ -237,12 +236,17 @@ function pwgen() {
 
 	
 
-	const hashRate = 3.4e+11;
+	const hashRate = 3.401e+11;
 	var entropy = Math.log2(Math.pow(charSet.length, pwlen));
 	var hashTime = Math.pow(2, entropy) / hashRate / 2 / 3600 / 24 / 365;
 
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
-	document.getElementById("hashtime").innerHTML = roundTo(hashTime,2); + " years";
+
+	if(hashTime > 1 {
+		document.getElementById("hashtime").innerHTML = roundTo(hashTime, 2) + " years";
+	} else {
+		document.getElementById("hashtime").innerHTML = roundTo(hashTime*365, 5) + " days";
+	}
 }
 function monitorGenButton() {
 	if (genButtonHeld) pwgen();
