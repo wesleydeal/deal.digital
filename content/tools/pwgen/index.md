@@ -185,7 +185,7 @@ function onChangeLength(event) {
 	}
 	pwgen();
 }
-length_val.addEventListener('scroll', onChangeLength);
+length_val.addEventListener('scroll', (e) => {length_val.select(); onChangeLength();});
 length_val.addEventListener('keyup', onChangeLength);
 length_val.addEventListener('mouseup', onChangeLength);
 length_val.addEventListener('pointerup', () => length_val.select());
@@ -242,7 +242,7 @@ function pwgen() {
 
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
 
-	if(hashTime > 1 {
+	if(hashTime > 1){
 		document.getElementById("hashtime").innerHTML = roundTo(hashTime, 2) + " years";
 	} else {
 		document.getElementById("hashtime").innerHTML = roundTo(hashTime*365, 5) + " days";
