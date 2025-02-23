@@ -137,7 +137,7 @@ select{
 </div>
 
 <div id="entropy-description">
-	<p>This password has <span id="entropy">0</span> bits of entropy and would take <span id="hashtime">0 sec</span> on average to guess with an NVIDIA RTX 5090 if hashed with SHA512_256.</p>
+	<p>This password has <span id="entropy">0</span> bits of entropy and would take <span id="hashtime">0 sec</span> on average to guess with an [NVIDIA RTX 5090 if hashed with NTLM](https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c).</p>
 </div>
 
 <div id="explanation">50 passwords, freshly baked with <code>crypto.getRandomValues</code> on your local computer, are ready below. Click to instantly copy to your clipboard.</div>
@@ -160,7 +160,6 @@ const ambiguousAlphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvw
 const unambiguousAlphaNumeric = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
 const symbols = '`~!@#$%^&*()_+-=[]{}\\|;:\'",<.>/?';
 const separators = "-_+=";
-var durationFormatObj = new Intl.DurationFormat('en-US');
 	
 var genButton = document.getElementById("generate");
 var genButtonHeld = false;
@@ -238,12 +237,12 @@ function pwgen() {
 
 	
 
-	const hashRate = 4.852e+9;
+	const hashRate = 3.4e+11;
 	var entropy = Math.log2(Math.pow(charSet.length, pwlen));
 	var hashTime = Math.pow(2, entropy) / hashRate / 2 / 3600 / 24 / 365;
 
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
-	document.getElementById("hashtime").innerHTML = durationFormatObj.format({years: hashTime});
+	document.getElementById("hashtime").innerHTML = roundTo(hashTime,2); + " years";
 }
 function monitorGenButton() {
 	if (genButtonHeld) pwgen();
