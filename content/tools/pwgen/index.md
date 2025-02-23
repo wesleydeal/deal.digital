@@ -125,10 +125,10 @@ select{
 			<label for="specials"> Special Characters</label><br>
 			<input type="checkbox" id="ambiguous" value="ambiguous" onchange="pwgen()">
 			<label for="ambiguous"> Ambiguous Characters</label><br>
-			<input type="checkbox" id="separators" value="separators">
-			<label for="separators"> Separators (-_+=)  (NOT YET IMPLEMENTED)</label><br>
 			<input type="checkbox" id="spaces" value="spaces">
 			<label for="spaces"> Spaces</label><br>
+			<input type="checkbox" id="separators" value="separators" disabled>
+			<label for="separators"> Separators (-_+=)  (NOT YET IMPLEMENTED)</label><br>
 		</div>
 	</div>
 	<div id="genbutton-wrapper">
@@ -136,6 +136,8 @@ select{
 	</div>
 </div>
 
+<div id="entropy-description">
+	<p>This password has <span id="entropy">0</span> bits of entropy and will take </p>
 </form>
 
 <div id="explanation">50 passwords, freshly baked with <code>crypto.getRandomValues</code> on your local computer, are ready below. Click to instantly copy to your clipboard.</div>
@@ -153,12 +155,7 @@ AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</div>
 
 <script>
-
-const maxUInt32 = (function(){
-	var toUnderflow = new Uint32Array(1);
-	toUnderflow[0] -= 1;
-	return toUnderflow[0];
-})();
+const maxUInt32 = (new Uint32Array([-1]))[0]
 const ambiguousAlphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 const unambiguousAlphaNumeric = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
 const symbols = '`~!@#$%^&*()_+-=[]{}\\|;:\'",<.>/?';
@@ -166,10 +163,10 @@ const separators = "-_+=";
 	
 var genButton = document.getElementById("generate");
 var genButtonHeld = false;
-genButton.addEventListener('pointerdown', (event) => { genButtonHeld = true; })
-genButton.addEventListener('pointerup', (event) => { genButtonHeld = false; })
-genButton.addEventListener('pointerleave', (event) => { genButtonHeld = false; })
-genButton.addEventListener('pointercancel', (event) => { genButtonHeld = false; })
+genButton.addEventListener('pointerdown', () => { genButtonHeld = true; })
+genButton.addEventListener('pointerup', () => { genButtonHeld = false; })
+genButton.addEventListener('pointerleave', () => { genButtonHeld = false; })
+genButton.addEventListener('pointercancel', () => { genButtonHeld = false; })
 document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = true; })
 document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = false; })
 
@@ -192,13 +189,18 @@ function onChangeLength(event) {
 length_val.addEventListener('scroll', onChangeLength);
 length_val.addEventListener('keyup', onChangeLength);
 length_val.addEventListener('mouseup', onChangeLength);
-length.addEventListener('input', onChangeLength);
 length_val.addEventListener('pointerup', () => length_val.select());
+length.addEventListener('input', onChangeLength);
+
 function secureRand(min, max, count=1) {
 	var randInts = crypto.getRandomValues(new Uint32Array(count));
 	var scale = max-min;
 	var result = min;
 	return randInts.map(r => min + (scale*(r/maxUInt32)));
+}
+function roundTo(value, decimals) {
+	const m = Math.pow(10, digits);
+	return Math.round(m * value) / m;
 }
 function pwgen() {
 	var result = "";
@@ -232,6 +234,8 @@ function pwgen() {
 			e.target.closest('li').classList.add('copied');
 		});
 	}
+
+	document.getElementById("entropy").innerHTML = roundTo(Math.log2(Math.pow(charSet.length, pwlen)),2);
 }
 function monitorGenButton() {
 	if (genButtonHeld) pwgen();
