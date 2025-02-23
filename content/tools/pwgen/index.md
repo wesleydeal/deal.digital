@@ -160,7 +160,7 @@ const ambiguousAlphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvw
 const unambiguousAlphaNumeric = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
 const symbols = '`~!@#$%^&*()_+-=[]{}\\|;:\'",<.>/?';
 const separators = "-_+=";
-var durationFormatObj = Intl.DurationFormat('en-US');
+var durationFormatObj = new Intl.DurationFormat('en-US');
 	
 var genButton = document.getElementById("generate");
 var genButtonHeld = false;
