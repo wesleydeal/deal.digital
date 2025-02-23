@@ -194,11 +194,11 @@ length_val.addEventListener('keyup', onChangeLength);
 length_val.addEventListener('mouseup', onChangeLength);
 length.addEventListener('input', onChangeLength);
 length_val.addEventListener('pointerup', () => length_val.select());
-function secureRand(min, max) {
-	var [randInt] = crypto.getRandomValues(new Uint32Array(1));
+function secureRand(min, max, count=1) {
+	var randInts = crypto.getRandomValues(new Uint32Array(count));
 	var scale = max-min;
 	var result = min;
-	return Math.round(min + (scale*(randInt/maxUInt32)));
+	return randInts.map(r => min + (scale*(r/maxUInt32)));
 }
 function pwgen() {
 	var result = "";
@@ -208,14 +208,17 @@ function pwgen() {
 	var specials = document.getElementById("specials").checked;
 	var ambiguous = document.getElementById("ambiguous").checked;
 	var spaces = document.getElementById("spaces").checked;
+	var count = 50;
 
 	var charSet = ambiguous ? ambiguousAlphaNumeric : unambiguousAlphaNumeric;
 	if(specials) {charSet += symbols;}
 	if(spaces) {charSet += " ";}
 	
 	var resultInnerHTML = "<ul>";
-	for (i=0; i<50; i++) {
-		resultInnerHTML += "<li>" + Array.from({length: pwlen}, () => charSet[secureRand(0,charSet.length - 1)]).join("").replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\\",'&bsol;');
+	var randChars = secureRand(0, charSet.length-1, pwlen*count);
+	for (i=0; i<count; i++) {
+		var pw = randChars.slice(i*length,i*length+length).map(c => charSet[c]).join("");
+		resultInnerHTML += "<li>" + pw.replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\\",'&bsol;') + "</li>";
 	}
 	resultInnerHTML += "</ul>"
 	document.getElementById("result").innerHTML = resultInnerHTML;
