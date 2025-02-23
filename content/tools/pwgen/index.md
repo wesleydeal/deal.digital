@@ -185,12 +185,21 @@ function onChangeLength(event) {
 	}
 	pwgen();
 }
-length_val.addEventListener('scroll', (e) => {length_val.select(); onChangeLength();});
+length_val.addEventListener('wheel', scrollLength);
 length_val.addEventListener('keyup', onChangeLength);
 length_val.addEventListener('mouseup', onChangeLength);
 length_val.addEventListener('pointerup', () => length_val.select());
 length.addEventListener('input', onChangeLength);
+length.addEventListener('wheel', scrollLength);
 
+function scrollLength(event){
+	length.addEventListener("wheel", function(e){
+	length.value -= Math.sign(event.deltaY);
+	length_val.value = length.value;
+	pwgen();
+	event.preventDefault();
+	event.stopPropagation();
+}
 function secureRand(min, max, count=1) {
 	var randInts = crypto.getRandomValues(new Uint32Array(count));
 	var scale = max-min;
