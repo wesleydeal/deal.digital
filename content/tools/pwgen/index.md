@@ -44,7 +44,7 @@ input[type=number]::-webkit-inner-spin-button {
 	outline: 2px solid var(--color-accent);
 	margin: 10px 0;
 	overflow-x: auto;
-	max-width: 100%;
+	max-width: min(100%,1600px);
 }
 #result.smaller{
 	font-size: 1em;
@@ -71,6 +71,7 @@ input[type=number]::-webkit-inner-spin-button {
 	align-items: center;
 	flex-direction: column;
 	gap: 20px 0;
+	min-height: 100vh;
 }
 .content > *:not(div#result) {
 	width: calc(min(780px,100%));
@@ -137,7 +138,7 @@ select{
 
 </form>
 
-<div id="explanation">30 passwords, freshly baked with <code>crypto.getRandomValues</code> on your local computer, are ready below. Click to instantly copy to your clipboard.</div>
+<div id="explanation">50 passwords, freshly baked with <code>crypto.getRandomValues</code> on your local computer, are ready below. Click to instantly copy to your clipboard.</div>
 
 <div id="result"></div>
 
@@ -213,7 +214,7 @@ function pwgen() {
 	if(spaces) {charSet += " ";}
 	
 	var resultInnerHTML = "<ul>";
-	for (i=0; i<30; i++) {
+	for (i=0; i<50; i++) {
 		resultInnerHTML += "<li>" + Array.from({length: pwlen}, () => charSet[secureRand(0,charSet.length - 1)]).join("").replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\\",'&bsol;');
 	}
 	resultInnerHTML += "</ul>"
