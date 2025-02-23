@@ -240,10 +240,10 @@ function pwgen() {
 
 	const hashRate = 4.852e+9;
 	var entropy = Math.log2(Math.pow(charSet.length, pwlen));
-	var hashTime = Math.pow(2, entropy) / hashRate / 2;
+	var hashTime = Math.pow(2, entropy) / hashRate / 2 / 3600 / 24 / 365;
 
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
-	document.getElementById("hashtime").innerHTML = durationFormatObj.format({seconds: hashTime});
+	document.getElementById("hashtime").innerHTML = durationFormatObj.format({years: hashTime});
 }
 function monitorGenButton() {
 	if (genButtonHeld) pwgen();
