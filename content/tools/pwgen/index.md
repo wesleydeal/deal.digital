@@ -137,8 +137,8 @@ select{
 </div>
 
 <div id="entropy-description">
-	<p>This password has <span id="entropy">0</span> bits of entropy and would take <span id="hashtime">0</span> seconds on average to guess with an NVIDIA RTX 5090 if hashed with SHA512_256.</p>
-</form>
+	<p>This password has <span id="entropy">0</span> bits of entropy and would take <span id="hashtime">0 sec</span> on average to guess with an NVIDIA RTX 5090 if hashed with SHA512_256.</p>
+</div>
 
 <div id="explanation">50 passwords, freshly baked with <code>crypto.getRandomValues</code> on your local computer, are ready below. Click to instantly copy to your clipboard.</div>
 
@@ -242,7 +242,7 @@ function pwgen() {
 	var hashTime = Math.pow(2, entropy) / hashRate / 2;
 
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
-	document.getElementById("hashtime").innerHTML = roundTo(hashTime, 0);
+	document.getElementById("hashtime").innerHTML = Intl.DurationFormat('en-US').format({seconds: hashTime});
 }
 function monitorGenButton() {
 	if (genButtonHeld) pwgen();
