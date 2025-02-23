@@ -215,9 +215,9 @@ function pwgen() {
 	if(spaces) {charSet += " ";}
 	
 	var resultInnerHTML = "<ul>";
-	var randChars = secureRand(0, charSet.length-1, pwlen*count);
+	var randChars = Array.from(secureRand(0, charSet.length-1, pwlen*count));
 	for (i=0; i<count; i++) {
-		var pw = randChars.slice(i*length,i*length+length).map(c => charSet[c]).join("");
+		var pw = randChars.slice(i*pwlen,i*pwlen+pwlen).map(c => charSet[c]).join("");
 		resultInnerHTML += "<li>" + pw.replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\\",'&bsol;') + "</li>";
 	}
 	resultInnerHTML += "</ul>"
