@@ -206,7 +206,7 @@ function secureRand(min, max, count=1) {
 	var randInts = crypto.getRandomValues(new Uint32Array(count));
 	var scale = max-min;
 	var result = min;
-	return randInts.map(r => min + (scale*(r/maxUInt32)));
+	return randInts.map(r => min + Math.round(scale*(r/maxUInt32)));
 }
 function roundTo(value, decimals) {
 	const m = Math.pow(10, decimals);
