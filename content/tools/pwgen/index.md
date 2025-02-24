@@ -248,10 +248,10 @@ function pwgen() {
 	var entropy = Math.log2(Math.pow(charSet.length, pwlen));
 	var hashTime = Math.pow(2, entropy) / hashRate / 2 / 3600 / 24 / 365;
 	var hashTimeText = "";
-	if (hashtime < 1/365/24) {hashTimeText = roundTo(hashTime*365*24*3600, 0) + " seconds"} else
-	if (hashtime < 1/365) {hashTimeText = roundTo(hashTime*365*24, 1) + " hours"} else
-	if (hashtime < 1) { hashTimeText = roundTo(hashTime*365, 1) + " days"} else
-	hashtimeText = roundTo(hashTime, 2) + " years";
+	if (hashTime < 1/365/24) {hashTimeText = roundTo(hashTime*365*24*3600, 0) + " seconds"} else
+	if (hashTime < 1/365) {hashTimeText = roundTo(hashTime*365*24, 1) + " hours"} else
+	if (hashTime < 1) { hashTimeText = roundTo(hashTime*365, 1) + " days"} else
+	hashTimeText = roundTo(hashTime, 2) + " years";
 
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
 	document.getElementById("hashtime").innerHTML = hashTimeText;
