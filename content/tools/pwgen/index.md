@@ -237,10 +237,6 @@ function secureRand(min, max, count=1) {
 	var result = min;
 	return randInts.map(r => min + Math.round(scale*(r/maxUInt32)));
 }
-function roundTo(value, decimals) {
-	const m = Math.pow(10, decimals);
-	return Math.round(m * value) / m;
-}
 function pwgen() {
 	var result = "";
 	var modeElement = document.getElementById("mode");
@@ -277,13 +273,16 @@ function pwgen() {
 	const hashRate = 3.401e+11;
 	var entropy = Math.log2(Math.pow(charSet.length, pwlen));
 	var hashTime = Math.pow(2, entropy) / hashRate / 2 / 3600 / 24 / 365;
-	var hashTimeText = "";
-	if (hashTime < 1/365/24) {hashTimeText = roundTo(hashTime*365*24*3600, 0) + " seconds"} else
-	if (hashTime < 1/365) {hashTimeText = roundTo(hashTime*365*24, 1) + " hours"} else
-	if (hashTime < 1) { hashTimeText = roundTo(hashTime*365, 1) + " days"} else
-	if (hashTime > 100) { hashTimeText = hashTime.toPrecision(4) } else
-	hashTimeText = roundTo(hashTime, 2) + " years";
-	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
+	if (hashTime < 1/365/24) {
+		hashTimeText = (hashTime*365*24*3600).toPrecision(3) + " seconds";
+	} else if (hashTime < 1/365) {
+		hashTimeText = (hashTime*365*24).toPrecision(3) + " hours";
+	} else if (hashTime < 1) {
+		hashTimeText = (hashTime*365).toPrecision(3) + " days";
+	} else {
+		hashTimeText = hashTime.toPrecision(3) + " years";
+	}
+	document.getElementById("entropy").innerHTML = entropy.toPrecision(3);
 	document.getElementById("hashtime").innerHTML = hashTimeText;
 }
 function monitorGenButton() {
