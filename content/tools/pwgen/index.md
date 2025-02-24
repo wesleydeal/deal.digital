@@ -119,12 +119,15 @@ select{
 	background: var(--color-hover);
 	font-weight: bold;
 	transition: opacity 500ms ease-in-out;
-	padding: 20px;
+	width: auto !important;
 	border-radius: 5px;
 	border: 2px solid var(--color-fg);
 }
 #copied-caption.active{
 	opacity: 1;
+}
+#passwords-exposition p{
+	margin-top: 0;
 }
 </style>
 <div id="passwords-exposition">
