@@ -122,6 +122,7 @@ select{
 	width: auto !important;
 	border-radius: 5px;
 	border: 2px solid var(--color-fg);
+	pointer-events: none;
 }
 #copied-caption.active{
 	opacity: 1;
