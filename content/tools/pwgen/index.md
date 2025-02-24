@@ -109,6 +109,23 @@ select{
 	background: none;
 	padding: 2px;
 }
+#copied-caption{
+	opacity: 0;
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	size: 2em;
+	color: var(--color-fg);
+	background: var(--color-hover);
+	font-weight: bold;
+	transition: opacity 500ms ease-in-out;
+	padding: 20px;
+	border-radius: 5px;
+	border: 2px solid var(--color-fg);
+}
+#copied-caption.active{
+	opacity: 1;
+}
 </style>
 <div id="passwords-exposition">
 	<p>With these settings, we'll use <code>crypto.getRandomValues</code> to generate 50 passwords with <span id="entropy">0</span> bits of entropy which, if hashed with NTLM and brute forced with an <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">NVIDIA RTX 5090</a> would take <span id="hashtime">0 sec</span> on average to guess.
@@ -142,11 +159,15 @@ select{
 	</div>
 </div>
 
-<div id="explanation">
+<!--<div id="explanation">
 	<p>Click to instantly copy to your clipboard.
-</div>
+</div>-->
 
 <div id="result"></div>
+
+<div id="copied-caption">
+	COPIED TO CLIPBOARD
+</div>
 
 <div id="license">
 	<h2>License & Warranty Disclaimer</h2>
@@ -245,6 +266,8 @@ function pwgen() {
 			window.getSelection().addRange(r);
 			document.execCommand('copy');
 			e.target.closest('li').classList.add('copied');
+			document.getElementById("copied-caption").classList.add("active");
+			window.setTimeout(() => {document.getElementById("copied-caption").classList.remove("active");}, 1000);
 		});
 	}
 	const hashRate = 3.401e+11;
