@@ -74,7 +74,6 @@ input[type=number]::-webkit-inner-spin-button {
 	max-width: 100%;
 	align-items: center;
 	flex-direction: column;
-	gap: 20px 0;
 	min-height: 100vh;
 }
 .content > *:not(div#result) {
@@ -111,6 +110,9 @@ select{
 	padding: 2px;
 }
 </style>
+<div id="passwords-exposition">
+	<p>With these settings, we'll use <code>crypto.getRandomValues</code> to generate 50 passwords with <span id="entropy">0</span> bits of entropy which, if hashed with NTLM and brute forced with an <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">NVIDIA RTX 5090</a> would take <span id="hashtime">0 sec</span> on average to guess.
+</div>
 <div id="controls">
 	<div id="settings-wrapper">
 		<div>
@@ -141,21 +143,23 @@ select{
 </div>
 
 <div id="explanation">
-	<p>50 passwords, freshly baked with <code>crypto.getRandomValues</code> on your local computer, are ready below. Click to instantly copy to your clipboard.
-	<p>These password have <span id="entropy">0</span> bits of entropy and would take <span id="hashtime">0 sec</span> on average to guess with an <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">NVIDIA RTX 5090 if hashed with NTLM</a>.
+	<p>Click to instantly copy to your clipboard.
 </div>
 
 <div id="result"></div>
 
-<div id="license"><p>Permission to use, copy, modify, and/or distribute this software for
-any purpose with or without fee is hereby granted.
-<p>THE SOFTWARE IS PROVIDED “AS IS” AND THE AUTHOR DISCLAIMS ALL
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE
-FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
-DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
-AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
-OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</div>
+<div id="license">
+	<h2>License & Warranty Disclaimer</h2>
+	<p>Permission to use, copy, modify, and/or distribute this software for
+	any purpose with or without fee is hereby granted.
+	<p>THE SOFTWARE IS PROVIDED “AS IS” AND THE AUTHOR DISCLAIMS ALL
+	WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES
+	OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE
+	FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
+	DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+	AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
+	OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+</div>
 
 <script>
 const maxUInt32 = (new Uint32Array([-1]))[0]
