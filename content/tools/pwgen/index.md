@@ -200,6 +200,8 @@ genButton.addEventListener('pointercancel', (e) => { genButtonHeld = false; })
 document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = true; })
 document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = false; })
 
+var copiedTimeout;
+
 var results = document.getElementById("result");
 var length = document.getElementById("length");
 var length_val = document.getElementById("length_val");
@@ -269,7 +271,8 @@ function pwgen() {
 			document.execCommand('copy');
 			e.target.closest('li').classList.add('copied');
 			document.getElementById("copied-caption").classList.add("active");
-			window.setTimeout(() => {document.getElementById("copied-caption").classList.remove("active");}, 1000);
+			window.clearTimeout(copiedTimeout);
+			copiedTimeout = window.setTimeout(() => {document.getElementById("copied-caption").classList.remove("active");}, 1000);
 		});
 	}
 	const hashRate = 3.401e+11;
