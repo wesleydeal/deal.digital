@@ -134,7 +134,7 @@ button#generate:hover {
 }
 </style>
 <div id="passwords-exposition">
-	<p>With these settings, we'll use <code>crypto.getRandomValues</code> to generate 50 passwords with <span id="entropy">0</span> bits of entropy which, if hashed with NTLM and brute forced with an <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">NVIDIA RTX 5090</a> would take <span id="hashtime">0 sec</span> on average to guess.
+	<p>With these settings, we'll use <i><code>crypto.getRandomValues</code></i> to generate 50 passwords with <span id="entropy">0</span> bits of entropy which, if hashed with NTLM and brute forced with an <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">NVIDIA RTX 5090</a> would take <span id="hashtime">0 sec</span> on average to guess.
 </div>
 <div id="controls">
 	<div id="settings-wrapper">
