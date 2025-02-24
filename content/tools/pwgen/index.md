@@ -11,31 +11,94 @@ shorttitle = "Password Generator"
 +++
 
 <style type="text/css">
-#length_val{
-	width: 3em;
-	background: transparent;
-	border: none;
-	border-bottom: 1px solid var(--color-fg);
-	border-radius: 0;
-	font: inherit;
-	padding: 0;
-	text-align: center;
+.content{
+	display: flex;
+	max-width: 100%;
+	align-items: center;
+	flex-direction: column;
+	min-height: 100vh;
 }
-input[type=number]::-webkit-inner-spin-button {
-    opacity: 1
+.content > *:not(div#result) {
+	width: calc(min(780px,100%));
+	padding: 0 10px;
+}
+#passwords-exposition p{
+	margin-top: 0;
 }
 #settings-wrapper {
 	display: flex;
 	gap: 10px;
 	flex-direction: column;
 }
+#controls{
+	display: flex;
+	flex-direction: row;
+	align-items: end;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+select{
+	border: 1px solid var(--color-fg);
+	border-radius: 3px;
+	font: inherit;
+	background: none;
+	padding: 2px;
+}
 #settings-wrapper div.length-container{
 	display: flex;
 	gap: 5px;
 	flex-wrap: wrap;
+	flex: 1 1 300px;
 }
 #length{
-	width: 256px;
+	flex: 1 0 120px;
+}
+#length_val{
+	width: 3em;
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid var(--color-fg);
+	font: inherit;
+	padding: 0;
+	text-align: center;
+}
+input[type=number]::-webkit-inner-spin-button {
+	opacity: 1;
+}
+#genbutton-wrapper {
+	flex: 1 0 200px;
+}
+button#generate {
+	font-size: 1.5em;
+	color: var(--color-link);
+	border: 2px solid var(--color-link);
+	border-radius: 3px;
+	background: var(--color-bg);
+	padding: 5px 15px 10px;
+	transition: border 250ms ease-in-out, color 250ms ease-in-out, background 250ms ease-in-out;
+	width: 100%;
+}
+button#generate:hover {
+	background: var(--color-hover);
+	color: var(--color-bg);
+	border: 2px solid var(--color-hover);
+}
+#copied-caption{
+	opacity: 0;
+	font-size: 2em;
+	color: var(--color-fg);
+	background: var(--color-hover);
+	font-weight: bold;
+	transition: opacity 250ms ease-in-out;
+	border-radius: 5px;
+	border: 2px solid var(--color-fg);
+	pointer-events: none;
+	margin-top: 10px;
+	text-align: center;
+}
+#copied-caption.active{
+	opacity: 1;
 }
 #result{
 	font-family: "Red Hat Mono",Consolas,monospace;
@@ -69,65 +132,6 @@ input[type=number]::-webkit-inner-spin-button {
 	margin-bottom: -2px;
 	font-style: italic;
 }
-.content{
-	display: flex;
-	max-width: 100%;
-	align-items: center;
-	flex-direction: column;
-	min-height: 100vh;
-}
-.content > *:not(div#result) {
-	width: calc(min(780px,100%));
-	padding: 0 10px;
-}
-button#generate {
-	font-size: 1.5em;
-	color: var(--color-link);
-	border: 2px solid var(--color-link);
-	border-radius: 3px;
-	background: var(--color-bg);
-	padding: 5px 15px 10px;
-	transition: border 250ms ease-in-out, color 250ms ease-in-out, background 250ms ease-in-out;
-}
-button#generate:hover {
-	background: var(--color-hover);
-	color: var(--color-bg);
-	border: 2px solid var(--color-hover);
-}
-#controls{
-	display: flex;
-	flex-direction: row;
-	align-items: end;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	gap: 10px;
-}
-select{
-	border: 1px solid var(--color-fg);
-	border-radius: 3px;
-	font: inherit;
-	background: none;
-	padding: 2px;
-}
-#copied-caption{
-	opacity: 0;
-	font-size: 2em;
-	color: var(--color-fg);
-	background: var(--color-hover);
-	font-weight: bold;
-	transition: opacity 250ms ease-in-out;
-	border-radius: 5px;
-	border: 2px solid var(--color-fg);
-	pointer-events: none;
-	margin-top: 10px;
-	text-align: center;
-}
-#copied-caption.active{
-	opacity: 1;
-}
-#passwords-exposition p{
-	margin-top: 0;
-}
 </style>
 <div id="passwords-exposition">
 	<p>With these settings, we'll use <code>crypto.getRandomValues</code> to generate 50 passwords with <span id="entropy">0</span> bits of entropy which, if hashed with NTLM and brute forced with an <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">NVIDIA RTX 5090</a> would take <span id="hashtime">0 sec</span> on average to guess.
@@ -160,10 +164,6 @@ select{
 		<button type="button" id="generate">Generate <u>M</u>ore ↩</button>
 	</div>
 </div>
-
-<!--<div id="explanation">
-	<p>Click to instantly copy to your clipboard.
-</div>-->
 
 <div id="copied-caption">
 	COPIED TO CLIPBOARD
@@ -218,6 +218,12 @@ function onChangeLength(event) {
 	}
 	pwgen();
 }
+function scrollLength(event){
+	length.value -= Math.sign(event.deltaY);
+	onChangeLength(event);
+	event.preventDefault();
+	event.stopPropagation();
+}
 length_val.addEventListener('wheel', scrollLength);
 length_val.addEventListener('keyup', onChangeLength);
 length_val.addEventListener('mouseup', onChangeLength);
@@ -225,13 +231,6 @@ length_val.addEventListener('pointerup', () => length_val.select());
 length.addEventListener('input', onChangeLength);
 length.addEventListener('wheel', scrollLength);
 
-function scrollLength(event){
-	length.value -= Math.sign(event.deltaY);
-	length_val.value = length.value;
-	pwgen();
-	event.preventDefault();
-	event.stopPropagation();
-}
 function secureRand(min, max, count=1) {
 	var randInts = crypto.getRandomValues(new Uint32Array(count));
 	var scale = max-min;
@@ -282,6 +281,7 @@ function pwgen() {
 	if (hashTime < 1/365/24) {hashTimeText = roundTo(hashTime*365*24*3600, 0) + " seconds"} else
 	if (hashTime < 1/365) {hashTimeText = roundTo(hashTime*365*24, 1) + " hours"} else
 	if (hashTime < 1) { hashTimeText = roundTo(hashTime*365, 1) + " days"} else
+	if (hashTime > 100) { hashTimeText.toPrecision(4) }
 	hashTimeText = roundTo(hashTime, 2) + " years";
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
 	document.getElementById("hashtime").innerHTML = hashTimeText;
@@ -292,5 +292,4 @@ function monitorGenButton() {
 }
 monitorGenButton();
 pwgen();
-
 </script>
