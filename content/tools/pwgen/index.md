@@ -281,7 +281,7 @@ function pwgen() {
 	if (hashTime < 1/365/24) {hashTimeText = roundTo(hashTime*365*24*3600, 0) + " seconds"} else
 	if (hashTime < 1/365) {hashTimeText = roundTo(hashTime*365*24, 1) + " hours"} else
 	if (hashTime < 1) { hashTimeText = roundTo(hashTime*365, 1) + " days"} else
-	if (hashTime > 100) { hashTimeText = hashTime.toPrecision(4) }
+	if (hashTime > 100) { hashTimeText = hashTime.toPrecision(4) } else
 	hashTimeText = roundTo(hashTime, 2) + " years";
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
 	document.getElementById("hashtime").innerHTML = hashTimeText;
