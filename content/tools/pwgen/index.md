@@ -62,6 +62,7 @@ input[type=number]::-webkit-inner-spin-button {
 	padding: 0;
 	margin: 0;
 	line-height: 1;
+	white-space: pre;
 }
 #result li.copied{
 	border-bottom: 2px solid var(--color-accent);
