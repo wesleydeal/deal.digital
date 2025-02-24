@@ -2,7 +2,7 @@
 author = "Wesley Deal"
 title = "Local Password Generator"
 date = 2025-02-21
-updated = 2025-02-21
+updated = 2025-02-24
 raw = true
 [taxonomies]
 tags = ["software", "security"]
@@ -52,7 +52,7 @@ input[type=number]::-webkit-inner-spin-button {
 #result ul{
 	display: flex;
 	flex-wrap: wrap;
-	gap: 10px 20px;
+	gap: 24px 20px;
 	justify-content: space-evenly;
 	padding: 0 10px;
 }
@@ -60,9 +60,12 @@ input[type=number]::-webkit-inner-spin-button {
 	display: flex;
 	width: auto;
 	padding: 0;
+	margin: 0;
+	line-height: 1;
 }
-#result li.copied{
-	background: var(--color-accent);
+#result li.copied:not(:selected){
+	border-bottom: 2px solid var(--color-accent);
+	margin-bottom: -2px;
 	font-style: italic;
 }
 .content{
@@ -110,14 +113,14 @@ select{
 <div id="controls">
 	<div id="settings-wrapper">
 		<div>
-			<select id="mode">
+			<select id="mode" onchange="pwgen()">
 				<option value="char">Random Characters</option>
 				<option value="words">Random Words (NOT YET IMPLEMENTED)</option>
 			</select>
 		</div>
 		<div class="length-container">
 			<input type="range" id="length" min="8" max="128" value="16">
-			<input type="number" id="length_val" value="16" onmousewheel="document.getElementById('length').value=this.value; pwgen()"></input>
+			<input type="number" id="length_val" value="16"></input>
    			<label for="length"> characters</label>
 		</div>
 		<div>
@@ -125,9 +128,9 @@ select{
 			<label for="specials"> Special Characters</label><br>
 			<input type="checkbox" id="ambiguous" value="ambiguous" onchange="pwgen()">
 			<label for="ambiguous"> Ambiguous Characters</label><br>
-			<input type="checkbox" id="spaces" value="spaces">
+			<input type="checkbox" id="spaces" value="spaces" onchange="pwgen()">
 			<label for="spaces"> Spaces</label><br>
-			<input type="checkbox" id="separators" value="separators" disabled>
+			<input type="checkbox" id="separators" value="separators" onchange="pwgen()" disabled>
 			<label for="separators"> Separators (-_+=)  (NOT YET IMPLEMENTED)</label><br>
 		</div>
 	</div>
@@ -218,11 +221,9 @@ function pwgen() {
 	var ambiguous = document.getElementById("ambiguous").checked;
 	var spaces = document.getElementById("spaces").checked;
 	const count = 50;
-
 	var charSet = ambiguous ? ambiguousAlphaNumeric : unambiguousAlphaNumeric;
 	if(specials) {charSet += symbols;}
 	if(spaces) {charSet += " ";}
-	
 	var resultInnerHTML = "<ul>";
 	var randChars = Array.from(secureRand(0, charSet.length-1, pwlen*count));
 	for (i=0; i<count; i++) {
@@ -241,9 +242,6 @@ function pwgen() {
 			e.target.closest('li').classList.add('copied');
 		});
 	}
-
-	
-
 	const hashRate = 3.401e+11;
 	var entropy = Math.log2(Math.pow(charSet.length, pwlen));
 	var hashTime = Math.pow(2, entropy) / hashRate / 2 / 3600 / 24 / 365;
@@ -252,10 +250,8 @@ function pwgen() {
 	if (hashTime < 1/365) {hashTimeText = roundTo(hashTime*365*24, 1) + " hours"} else
 	if (hashTime < 1) { hashTimeText = roundTo(hashTime*365, 1) + " days"} else
 	hashTimeText = roundTo(hashTime, 2) + " years";
-
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
 	document.getElementById("hashtime").innerHTML = hashTimeText;
-
 }
 function monitorGenButton() {
 	if (genButtonHeld) pwgen();
