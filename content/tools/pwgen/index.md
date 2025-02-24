@@ -111,18 +111,16 @@ select{
 }
 #copied-caption{
 	opacity: 0;
-	position: fixed;
-	bottom: 30px;
-	right: 30px;
-	size: 2em;
+	font-size: 2em;
 	color: var(--color-fg);
 	background: var(--color-hover);
 	font-weight: bold;
-	transition: opacity 500ms ease-in-out;
-	width: auto !important;
+	transition: opacity 250ms ease-in-out;
 	border-radius: 5px;
 	border: 2px solid var(--color-fg);
 	pointer-events: none;
+	margin-top: 10px;
+	text-align: center;
 }
 #copied-caption.active{
 	opacity: 1;
@@ -167,11 +165,11 @@ select{
 	<p>Click to instantly copy to your clipboard.
 </div>-->
 
-<div id="result"></div>
-
 <div id="copied-caption">
 	COPIED TO CLIPBOARD
 </div>
+
+<div id="result"></div>
 
 <div id="license">
 	<h2>License & Warranty Disclaimer</h2>
