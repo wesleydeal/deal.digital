@@ -63,7 +63,7 @@ input[type=number]::-webkit-inner-spin-button {
 	margin: 0;
 	line-height: 1;
 }
-#result li.copied:not(:selected){
+#result li.copied{
 	border-bottom: 2px solid var(--color-accent);
 	margin-bottom: -2px;
 	font-style: italic;
