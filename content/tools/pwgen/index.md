@@ -29,6 +29,7 @@ shorttitle = "Password Generator"
 	display: flex;
 	gap: 10px;
 	flex-direction: column;
+	flex: 1 1 300px;
 }
 #controls{
 	display: flex;
@@ -49,7 +50,6 @@ select{
 	display: flex;
 	gap: 5px;
 	flex-wrap: wrap;
-	flex: 1 1 300px;
 }
 #length{
 	flex: 1 0 120px;
@@ -281,7 +281,7 @@ function pwgen() {
 	if (hashTime < 1/365/24) {hashTimeText = roundTo(hashTime*365*24*3600, 0) + " seconds"} else
 	if (hashTime < 1/365) {hashTimeText = roundTo(hashTime*365*24, 1) + " hours"} else
 	if (hashTime < 1) { hashTimeText = roundTo(hashTime*365, 1) + " days"} else
-	if (hashTime > 100) { hashTimeText.toPrecision(4) }
+	if (hashTime > 100) { hashTimeText = hashTime.toPrecision(4) }
 	hashTimeText = roundTo(hashTime, 2) + " years";
 	document.getElementById("entropy").innerHTML = roundTo(entropy, 2);
 	document.getElementById("hashtime").innerHTML = hashTimeText;
