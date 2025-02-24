@@ -193,7 +193,6 @@ length.addEventListener('input', onChangeLength);
 length.addEventListener('wheel', scrollLength);
 
 function scrollLength(event){
-	length.addEventListener("wheel", function(e){
 	length.value -= Math.sign(event.deltaY);
 	length_val.value = length.value;
 	pwgen();
