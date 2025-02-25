@@ -86,9 +86,10 @@ button#generate:hover {
 }
 #copied-caption{
 	opacity: 0;
-	font-size: 2em;
+	font-size: 1.5em;
 	color: var(--color-fg);
 	background: var(--color-hover);
+	text-shadow: 1px 1px var(--color-bg);
 	font-weight: bold;
 	transition: opacity 250ms ease-in-out;
 	border-radius: 5px;
@@ -104,7 +105,7 @@ button#generate:hover {
 	font-family: "Red Hat Mono",Consolas,monospace;
 	font-size: 1.5em;
 	border: 1px solid var(--color-fg);
-	outline: 2px solid var(--color-accent);
+	background: color-mix(in srgb, var(--color-bg) 80%, transparent);
 	margin: 10px 0;
 	overflow-x: auto;
 	max-width: min(100%,1600px);
@@ -134,14 +135,14 @@ button#generate:hover {
 }
 </style>
 <div id="passwords-exposition">
-	<p>With these settings, we'll use <i><code>crypto.getRandomValues</code></i> to generate 50 passwords with <span id="entropy">0</span> bits of entropy which, if hashed with NTLM and brute forced with an <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">NVIDIA RTX 5090</a> would take <span id="hashtime">0 sec</span> on average to guess.
+	<p>With these settings, we'll generate 50 passwords with <span id="entropy">0</span> bits of entropy which, if hashed with NTLM and brute forced with an <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">RTX 5090</a>, would take <span id="hashtime">0 sec</span> on average to guess.
 </div>
 <div id="controls">
 	<div id="settings-wrapper">
 		<div>
 			<select id="mode" onchange="pwgen()">
 				<option value="char">Random Characters</option>
-				<option value="words">Random Words (NOT YET IMPLEMENTED)</option>
+				<option value="words" disabled>Random Words</option>
 			</select>
 		</div>
 		<div class="length-container">
@@ -170,6 +171,20 @@ button#generate:hover {
 </div>
 
 <div id="result"></div>
+
+<div id="information">
+	<h2>About this tool</h2>
+	<p>I use the JavaScript function <i><code>crypto.getRandomValues</code></i> to generate secure pseudorandom unsigned 32-bit integers in the range of [0, 4294967295].
+		One Uint32 is used to pick each character of each password. On modern hardware, this happens so blazingly fast that when you hold the button, I can afford
+		to change every password for each animation frame.
+	<p>These passwords are generated entirely in your browser. You will note that this page contains absolutely no mechanism to communicate these passwords to any server.
+		Generating 50 passwords at once should act as a weak hedge against the possibility that the pseudorandom function on your system is compromised, because
+		you can select both the time to generate passwords and the specific one you use at random. (A future improvement to this site might use timing and value of your mouse and keyboard input as additional PRNG entropy.)
+		The main security advantage of this site for you is that if you view the page source, it should be short enough to parse and verify it does what it claims.
+	<p>Password entropy is determined with the formula log₂(possibleCharacters<sup>passwordLength</sup>) and the time to crack is estimated by 2<sup>entropy</sup> ÷ hashRate ÷ 2. (We divide by 2 because, on average, the password will be found halfway through the search.)
+		For the hash rate, I've selected a ~$2000 GPU (RTX 5090) and a weak but common hash (NTLM) which is used by Windows to store local and network passwords.
+		Ideally, your application should use a <em>much</em> better hash function which will take orders of magnitude longer to brute force.
+</div>
 
 <div id="license">
 	<h2>License & Warranty Disclaimer</h2>
