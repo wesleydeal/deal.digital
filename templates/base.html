@@ -19,10 +19,10 @@
 		{% endif %}
 		<span>/</span>
 		{% set section = get_section(path=ancestor) %}
-		<a href="{{ section.permalink }}">{{ section.title }}</a>
+		<a href="{{ section.permalink | safe }}">{{ section.title }}</a>
 		{% endfor %}
 		<span>/</span>
-		<a href="{{ current.permalink }}">●</a>
+		<a href="{{ current.permalink | safe }}">●</a>
 		{% endblock breadcrumb %}
 	</nav>
 </header>
