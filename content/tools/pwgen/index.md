@@ -66,6 +66,9 @@ select{
 input[type=number]::-webkit-inner-spin-button {
 	opacity: 1;
 }
+.word-settings{
+	display: none;
+}
 #genbutton-wrapper {
 	flex: 1 0 200px;
 }
@@ -150,15 +153,30 @@ button#generate:hover {
 			<input type="number" id="length_val" value="16"></input>
    			<label for="length"> characters</label>
 		</div>
-		<div>
+		<div class="char-settings">
 			<input type="checkbox" id="specials" value="specials" onchange="pwgen()">
 			<label for="specials"> Special Characters</label><br>
 			<input type="checkbox" id="ambiguous" value="ambiguous" onchange="pwgen()">
 			<label for="ambiguous"> Ambiguous Characters</label><br>
 			<input type="checkbox" id="spaces" value="spaces" onchange="pwgen()">
 			<label for="spaces"> Spaces</label><br>
-			<input type="checkbox" id="separators" value="separators" onchange="pwgen()" disabled>
-			<label for="separators"> Separators (-_+=)  (NOT YET IMPLEMENTED)</label><br>
+		</div>
+		<div class="word-settings">
+			<input type="checkbox" id="separators" value="separators" onchange="pwgen()">
+			<label for="separators"> Separators (-_+= )</label><br>
+			<select id="capitalization">
+				<option value="none">lowercase</option>
+				<option value="all">ALL CAPS</option>
+				<option value="first">First Letters</option>
+				<option value="rand-first">random First letters</option>
+				<option value="rand">raNDOm cAps</option>option>
+			</select>
+			<select id="numbers">
+				<option value="none">No numbers</option>
+				<option value="2">2 digits, start and/or end</option>
+				<option value="4">4 digits, start and/or end</option>
+				<option value="3">1-3 digits randomly placed</option>
+			</select>
 		</div>
 	</div>
 	<div id="genbutton-wrapper">
