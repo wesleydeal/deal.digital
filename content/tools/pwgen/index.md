@@ -193,14 +193,15 @@ button#generate:hover {
 <div id="information">
 	<h2>About this tool</h2>
 	<p>I use the JavaScript function <i><code>crypto.getRandomValues</code></i> to generate secure pseudorandom unsigned 32-bit integers in the range of [0, 4294967295].
-		One Uint32 is used to pick each character of each password. On modern hardware, this happens so blazingly fast that when you hold the button, I can afford
-		to change every password for each animation frame.
-	<p>These passwords are generated entirely in your browser. You will note that this page contains absolutely no mechanism to communicate these passwords to any server.
-		Generating 50 passwords at once should act as a weak hedge against the possibility that the pseudorandom function on your system is compromised, because
+		One Uint32 is used to pick each character of each password. On modern hardware, this is so blazingly fast that when you hold the button, the passwords update
+		at the refresh rate of your display.
+	<p>These passwords are generated entirely in your browser. You will note that this page contains no mechanism to send these passwords to any server.
+		Generating 50 at once should act as a weak hedge against the possibility that the pseudorandom function on your system is compromised, because
 		you can select both the time to generate passwords and the specific one you use at random. (A future improvement to this site might use timing and value of your mouse and keyboard input as additional PRNG entropy.)
 		The main security advantage of this site for you is that if you view the page source, it should be short enough to parse and verify it does what it claims.
-	<p>Password entropy is determined with the formula log₂(possibleCharacters<sup>passwordLength</sup>) and the time to crack is estimated by 2<sup>entropy</sup> ÷ hashRate ÷ 2. (We divide by 2 because, on average, the password will be found halfway through the search.)
-		For the hash rate, I've selected a ~$2000 GPU (RTX 5090) and a weak but common hash (NTLM) which is used by Windows to store local and network passwords.
+	<p>Password entropy is determined with the formula log₂(A<sup>L</sup>) where A is the alphabet and L is the length.
+	<p>The time to crack is estimated by 2<sup>entropy</sup> ÷ hashRate ÷ 2. (We divide by 2 because, on average, the password will be found halfway through the search.)
+	<p>For the hash rate, I've selected a ~$2000 GPU (RTX 5090) and a weak but common hash (NTLM) which is used by Windows to store local and network passwords.
 		Ideally, your application should use a <em>much</em> better hash function which will take orders of magnitude longer to brute force.
 </div>
 
@@ -269,6 +270,28 @@ function secureRand(min, max, count=1) {
 	var scale = max-min;
 	var result = min;
 	return randInts.map(r => min + Math.round(scale*(r/maxUInt32)));
+}
+function seededScramble(initialArray, seedStr) { // HORRIBLY BROKEN HALF-IDEA, DO NOT USE FOR ANYTHING
+	const seedHash = new Uint32Array(new TextEncoder().encode(seedStr).buffer);
+	var scrambledArray = new Array(initialArray.length);
+	var randIterator = 0;
+	var arrayPos = 0;
+	var offset = 0;
+	while (arrayPos < initialArray.length) {
+		var rand = (seedHash[randIterator] + offset) % initialArray.length;
+		console.log("Rand",rand,"arraypos",arrayPos,"offset",offset);
+		if (scrambledArray[rand] === undefined){
+			scrambledArray[rand] = initialArray[arrayPos];
+			arrayPos++;
+		}
+		if (randIterator >= 16){
+			randIterator = 0;
+			offset += 1;
+		} else {
+			randIterator++;
+		}
+	}
+	return scrambledArray;
 }
 function pwgen() {
 	var result = "";
