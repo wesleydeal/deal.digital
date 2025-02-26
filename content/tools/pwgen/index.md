@@ -199,7 +199,8 @@ button#generate:hover {
 		at the refresh rate of your display.
 	<p>These passwords are generated entirely in your browser. You will note that this page contains no mechanism to send these passwords to any server.
 		Generating 50 at once should act as a weak hedge against the possibility that the pseudorandom function on your system is compromised, because
-		you can select both the time to generate passwords and the specific one you use at random. (A future improvement to this site might use timing and value of your mouse and keyboard input as additional PRNG entropy.)
+		you can select both the time to generate passwords and the specific one you use at random. You can also opt to scramble the ordering of the alphabet used
+		based on an array of numbers derived from the timestamps and values of your mouse and keyboard input.
 		The main security advantage of this site for you is that if you view the page source, it should be short enough to parse and verify it does what it claims.
 	<p>Password entropy is determined with the formula log₂(A<sup>L</sup>) where A is the alphabet and L is the length.
 	<p>The time to crack is estimated by 2<sup>entropy</sup> ÷ hashRate ÷ 2. (We divide by 2 because, on average, the password will be found halfway through the search.)
@@ -326,7 +327,6 @@ function pwgen() {
 				[charSet[a], charSet[b]] = [charSet[b], charSet[a]];
 			}
 		}
-		console.log(charSet);
 	}
 	var resultInnerHTML = "<ul>";
 	var randChars = Array.from(secureRand(0, charSet.length-1, pwlen*count));
