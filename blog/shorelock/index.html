@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unlock a [Shore&#x2F;Mi]Tel Director - Wesley Deal</title>
+<link rel="stylesheet" href="/style.css">
+<body id="shorelock">
+<header>
+	<nav>
+		
+		<a href="/">Wesley Deal</a>
+		
+		
+		
+		
+		
+		
+		
+		<span>/</span>
+		
+		<a href="https://deal.digital/blog/">Blog</a>
+		
+		<span>/</span>
+		<a href="https://deal.digital/blog/shorelock/">●</a>
+		
+	</nav>
+</header>
+<section class="content">
+	
+<h1 class="title">
+	Fix a locked Shoretel&#x2F;Mitel Director
+</h1>
+<p>Let’s say, for the sake of argument, that you’re a very busy systems administrator. A while ago, something popped up on the top of your Shoretel management page. You noticed it when you were hastily onboarding a new employee:</p>
+<blockquote>
+<p>Due to license violation, access to Director will be locked in 38 days. Take proper action before the grace period has expired. Note that there are additional charges if you need to recover from a locked Director.</p>
+</blockquote>
+<p>You made a mental note and moved onto the next task.</p>
+<p>6 weeks later, a ticket arrives requesting a voicemail PIN reset. You go into the director but find that you’re now locked out entirely. How can you fix it?</p>
+<h2 id="the-process"><a class="zola-anchor" href="#the-process" aria-label="Anchor link for: the-process">#</a>The Process</h2>
+<p><strong>Beware</strong>: I cannot comment on the legal or technical ramifications of poking around in the running production database of your vendor software to bypass a license restriction.</p>
+<ul>
+<li>
+<p>Remote in to your Shoretel server. If Shoretel is holding your server hostage on a very old version of Windows, you might need to disable CredSSP remediation on your box with</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch"><span class="z-keyword z-command z-dosbatch">reg</span> add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters /v AllowEncryptionOracle /t REG_DWORD /d <span class="z-constant z-numeric z-integer z-decimal z-dosbatch">2</span>
+</span></code></pre>
+</li>
+<li>
+<p>Install <a href="https://dev.mysql.com/downloads/workbench/">MySQL Workbench</a> on the server.</p>
+</li>
+<li>
+<p>Add a connection with these details:</p>
+<ul>
+<li>
+<p>Hostname: <code>localhost</code></p>
+</li>
+<li>
+<p>Port: <code>4308</code></p>
+</li>
+<li>
+<p>Username: <code>root</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Connect with the password <code>shorewaredba</code></p>
+</li>
+<li>
+<p>Run this query:</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-other z-DML z-sql">select</span> UserDNID,UserDN,GuiLoginName,LicenseTypeID,ClientType <span class="z-keyword z-other z-DML z-sql">from</span> users <span class="z-keyword z-other z-DML z-sql">order by</span> licensetypeID
+</span></code></pre>
+</li>
+<li>
+<p>In the table that appears, edit the license type  numbers for LicenseTypeID and ClientType to reduce your license count. Refer to the locked director for which license you’re over on. Refer to this table for the meaning of license type numbers.</p>
+<table><thead><tr><th style="text-align: center">#</th><th style="text-align: center">LicenseTypeID</th><th style="text-align: center">ClientType</th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">?</td><td style="text-align: center">None</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">Mailbox Only</td><td style="text-align: center">?</td></tr>
+<tr><td style="text-align: center">2</td><td style="text-align: center">Phone Only</td><td style="text-align: center">?</td></tr>
+<tr><td style="text-align: center">3</td><td style="text-align: center">Phone &amp; Mailbox</td><td style="text-align: center">?</td></tr>
+<tr><td style="text-align: center">4</td><td style="text-align: center">N/A</td><td style="text-align: center">?</td></tr>
+<tr><td style="text-align: center">5</td><td style="text-align: center">N/A</td><td style="text-align: center">Shoretel Connect</td></tr>
+</tbody></table>
+</li>
+<li>
+<p>In the bottom right corner, click <strong>Apply</strong>, review the changes, and <strong>Apply</strong> again. Exit MySQL Workbench.</p>
+</li>
+<li>
+<p>Restart the Shoretel-Director service (or, if preferred, the entire server).</p>
+</li>
+</ul>
+<h2 id="by-the-way"><a class="zola-anchor" href="#by-the-way" aria-label="Anchor link for: by-the-way">#</a>By the way…</h2>
+<p>If you’re still operating under the advice that you have to avoid Windows updates for Mitel Connect, you should consider <a href="https://www.shoretelforums.com/forum/shoretel-tech/installers/80664-windows-updates">changing your approach</a>.</p>
+
+
+<section class="article-signoff">
+	
+	<p class="author">—Wesley Deal</p>
+	
+	
+	<p class="created-at">written <time datetime="2020-09-15">2020-09-15</time></p>
+	
+	
+	<p class="updated-at">updated <time datetime="2024-05-01">2024-05-01</time></p>
+	
+</section>
+
+
+</section>
+<footer>
+	No rights reserved. <a href="https://github.com/wesleydeal/deal.digital/edit/master/content/blog&#x2F;shorelock.md">View source here</a>. Provided as-is, no warranty, etc.
+	Built 2025-02-26 03:51:13 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages.
+	Thanks to Red Hat for <a href="https://www.redhat.com/en/about/brand/standards/typography">the typefaces</a>.
+</footer>
+</body>
+</html>
