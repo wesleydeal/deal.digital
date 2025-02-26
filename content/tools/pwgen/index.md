@@ -314,6 +314,16 @@ function pwgen() {
 	var charSet = ambiguous ? ambiguousAlphaNumeric : unambiguousAlphaNumeric;
 	if(specials) {charSet += symbols;}
 	if(spaces) {charSet += " ";}
+	charSet = Array.from(charSet);
+	addUserEntropy(charSet.length+spaces+ambiguous+specials+pwlen);
+	for (i=0; i<userEntropy.length; i++) {
+		if userEntropy[i]{
+			var a = i % charSet.length;
+			var b = userEntropy[i] % charSet.length;
+			[charSet[a], charSet[b]] = [charSet[b], charSet[a]];
+		}
+	}
+	console.log(charSet);
 	var resultInnerHTML = "<ul>";
 	var randChars = Array.from(secureRand(0, charSet.length-1, pwlen*count));
 	for (i=0; i<count; i++) {
