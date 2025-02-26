@@ -160,6 +160,8 @@ button#generate:hover {
 			<label for="ambiguous"> Ambiguous Characters</label><br>
 			<input type="checkbox" id="spaces" value="spaces" onchange="pwgen()">
 			<label for="spaces"> Spaces</label><br>
+			<input type="checkbox" id="user-entropy" value="user-entropy" onchange="pwgen()">
+			<label for="user-entropy"> Keyboard/Mouse Randomness</label><br>
 		</div>
 		<div class="word-settings">
 			<input type="checkbox" id="separators" value="separators" onchange="pwgen()">
@@ -239,7 +241,7 @@ document.body.addEventListener('keyup', (event) => {addUserEntropy(event.key.cha
 document.body.addEventListener('pointermove', (event) => {addUserEntropy(event.screenX + event.screenY);});
 
 var copiedTimeout;
-var userEntropy = new Uint32Array(10000);
+var userEntropy = new Uint32Array(1000);
 
 var results = document.getElementById("result");
 var length = document.getElementById("length");
@@ -277,7 +279,7 @@ function secureRand(min, max, count=1) {
 	return randInts.map(r => min + Math.round(scale*(r/maxUInt32)));
 }
 function addUserEntropy(entropy){
-	var dateEntropy = Number(Date.now().toString().slice(-4));
+	var dateEntropy = Number(Date.now().toString().slice(-3));
 	userEntropy[dateEntropy] += entropy;
 }
 function seededScramble(initialArray, seedStr) { // HORRIBLY BROKEN HALF-IDEA, DO NOT USE FOR ANYTHING
@@ -315,16 +317,17 @@ function pwgen() {
 	if(specials) {charSet += symbols;}
 	if(spaces) {charSet += " ";}
 	charSet = Array.from(charSet);
-	addUserEntropy(charSet.length+spaces+ambiguous+specials+pwlen);
-	for (i=0; i<userEntropy.length; i++) {
-		if (userEntropy[i]){
-			var a = i % charSet.length;
-			var b = userEntropy[i] % charSet.length;
-			console.log(a,b);
-			[charSet[a], charSet[b]] = [charSet[b], charSet[a]];
+	if (document.getElementById("user-entropy").checked) {
+		addUserEntropy(charSet.length+spaces+ambiguous+specials+pwlen);
+		for (i=0; i<userEntropy.length; i++) {
+			if (userEntropy[i]){
+				var a = i % charSet.length;
+				var b = userEntropy[i] % charSet.length;
+				[charSet[a], charSet[b]] = [charSet[b], charSet[a]];
+			}
 		}
+		console.log(charSet);
 	}
-	console.log(charSet);
 	var resultInnerHTML = "<ul>";
 	var randChars = Array.from(secureRand(0, charSet.length-1, pwlen*count));
 	for (i=0; i<count; i++) {
