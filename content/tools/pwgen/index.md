@@ -227,14 +227,19 @@ const separators = "-_+=";
 	
 var genButton = document.getElementById("generate");
 var genButtonHeld = false;
-genButton.addEventListener('pointerdown', (e) => { genButtonHeld = true; })
-genButton.addEventListener('pointerup', (e) => { genButtonHeld = false; })
-genButton.addEventListener('pointerleave', (e) => { genButtonHeld = false; })
-genButton.addEventListener('pointercancel', (e) => { genButtonHeld = false; })
-document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = true; })
-document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = false; })
+genButton.addEventListener('pointerdown', (e) => { genButtonHeld = true; });
+genButton.addEventListener('pointerup', (e) => { genButtonHeld = false; });
+genButton.addEventListener('pointerleave', (e) => { genButtonHeld = false; });
+genButton.addEventListener('pointercancel', (e) => { genButtonHeld = false; });
+document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = true; });
+document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = false; });
+
+document.body.addEventListener('keydown', (event) => {addUserEntropy(event.key.charCodeAt());});
+document.body.addEventListener('keyup', (event) => {addUserEntropy(event.key.charCodeAt() + 1);});
+document.body.addEventListener('pointermove', (event) => {addUserEntropy(event.screenX + event.screenY);});
 
 var copiedTimeout;
+var userEntropy = new Uint32Array(10000);
 
 var results = document.getElementById("result");
 var length = document.getElementById("length");
@@ -270,6 +275,10 @@ function secureRand(min, max, count=1) {
 	var scale = max-min;
 	var result = min;
 	return randInts.map(r => min + Math.round(scale*(r/maxUInt32)));
+}
+function addUserEntropy(entropy){
+	var dateEntropy = Number(Date.now().toString().slice(-4));
+	userEntropy[dateEntropy] += entropy;
 }
 function seededScramble(initialArray, seedStr) { // HORRIBLY BROKEN HALF-IDEA, DO NOT USE FOR ANYTHING
 	const seedHash = new Uint32Array(new TextEncoder().encode(seedStr).buffer);
