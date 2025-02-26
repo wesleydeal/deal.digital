@@ -320,6 +320,7 @@ function pwgen() {
 		if (userEntropy[i]){
 			var a = i % charSet.length;
 			var b = userEntropy[i] % charSet.length;
+			console.log(a,b);
 			[charSet[a], charSet[b]] = [charSet[b], charSet[a]];
 		}
 	}
@@ -365,5 +366,8 @@ function monitorGenButton() {
 	window.requestAnimationFrame(monitorGenButton);
 }
 monitorGenButton();
+addUserEntropy(Date.now());
+addUserEntropy(navigator.deviceMemory);
+addUserEntropy(Array.from(navigator.userAgent).map(c => c.charCodeAt()).reduce((a,b) => a+b));
 pwgen();
 </script>
