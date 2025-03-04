@@ -279,7 +279,7 @@ length_val.addEventListener('keyup', onChangeLength);
 length_val.addEventListener('mouseup', onChangeLength);
 length_val.addEventListener('pointerup', () => length_val.select());
 length.addEventListener('input', onChangeLength);
-length.addEventListener('wheel', scrollLength);
+length.addEventListener('wheel', scrollAdjustLength);
 
 function secureRand(min, max, count=1) {
 	var randInts = crypto.getRandomValues(new Uint32Array(count));
