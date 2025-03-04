@@ -11,7 +11,7 @@ output_dir = "public"
 
 author = "Wesley Deal"
 
-generate_feed = true
+generate_feeds = true
 
 taxonomies = [
 	{name = "tags", feed = true, render = false},
