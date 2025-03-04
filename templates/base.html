@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% if page.extra.shorttitle %}{{ page.extra.shorttitle }} - {% elif page.title %}{{ page.title }} - {% endif %}Wesley Deal</title>
 <link rel="stylesheet" href="/style.css">
-<body{% if page.slug %} id="{{ page.slug }}"{% endif %}>
+<body{% if page.slug %} id="{{ page.slug }}"{% elif not page.title %} id="index"{% endif %}>
 <header>
 	<nav>
 		{% block homelink %}

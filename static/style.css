@@ -167,6 +167,9 @@ header nav{
 	header nav{
 		left: calc((100vw - 780px)/2 + 10px);
 	}
+	#index {
+		gap: 100px;
+	}
 }
 
 header nav span{
@@ -466,3 +469,5 @@ a.zola-anchor:link, a.zola-anchor:visited{
 		font-size: 8pt;
 	}
 }
+
+
