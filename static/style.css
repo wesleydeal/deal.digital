@@ -156,7 +156,6 @@ header nav{
 	position: fixed;
 	left: 20px;
 	top: 12px;
-	background: #fff;
 	background: linear-gradient(358deg, color-mix(in srgb, var(--color-bg) 80%, transparent), color-mix(in srgb, color-mix(in oklab, var(--color-logo-bg) 15%, var(--color-bg)) 80%, transparent));
 	line-height: 28px;
 	box-shadow: 0 0 0 1.5px var(--color-fg), 0 3px 7px color-mix(in srgb, var(--color-fg) 25%, transparent);
@@ -170,19 +169,6 @@ header nav{
 	}
 }
 
-/*header nav span{
-	margin: 0 12px;
-	font-size: 2.3em;
-	font-weight: 200;
-	transform: scale(1,2);
-	position: relative;
-	top: -8px;
-}
-
-header nav span:nth-child(2){
-	//display: none;
-}*/
-
 header nav span{
 	font-size: 0;
 	width: 24px;
@@ -195,9 +181,6 @@ header nav span:nth-child(2){
 	margin-left: -30px;
 	z-index: 100;
 	margin-right: 8px;
-	//display: none;
-	/*background: none;
-	margin: 0;*/
 }
 
 header nav a:not(:first-child){
@@ -208,7 +191,7 @@ header nav a:not(:first-child){
 
 header nav a:link:first-child, header nav a:visited:first-child{
 	color: var(--color-logo-fg);
-	transition: background-position 250ms ease-out, box-shadow 100ms ease-in-out;
+	transition: background-position 250ms ease-out;
 	font-weight: 500;
 	background: var(--color-logo-bg);
 	background: linear-gradient(to bottom right, var(--color-logo-bg) 0%, var(--color-logo-bg) 34%, var(--color-hover) 66%);
@@ -217,12 +200,11 @@ header nav a:link:first-child, header nav a:visited:first-child{
 	padding: 3px 15px;
 	font-size: 1.2em;
 	border-radius: 3px;
-	/*font-family: 'Red Hat Mono', monospace;*/
 }
 
 header nav a:hover:first-child, header nav a:hover:first-child{
 	background-position: bottom right;
-	box-shadow: 0 0 5px 1px var(--color-hover);
+
 }
 
 header nav a:first-child:not(:last-child){
