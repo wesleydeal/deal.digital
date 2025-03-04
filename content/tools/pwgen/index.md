@@ -192,6 +192,10 @@ button#generate:hover {
 
 <div id="result"></div>
 
+<div id="alphabet-container">
+	<p>from alphabet <code id="alphabet"></code></p>
+</div>
+
 <div id="information">
 	<h2>About this tool</h2>
 	<p>I use the JavaScript function <i><code>crypto.getRandomValues</code></i> to generate secure pseudorandom unsigned 32-bit integers in the range of [0, 4294967295].
@@ -352,6 +356,7 @@ function pwgen() {
 	}
 	document.getElementById("entropy").innerHTML = entropy.toPrecision(3);
 	document.getElementById("hashtime").innerHTML = hashTimeText;
+	document.getElementById("alphabet").innerHTML = charSet.replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\\",'&bsol;');
 }
 	
 function monitorGenButton() { // generate passwords each frame
