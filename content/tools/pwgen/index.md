@@ -81,6 +81,8 @@ button#generate {
 	padding: 5px 15px 10px;
 	transition: border 250ms ease-in-out, color 250ms ease-in-out, background 250ms ease-in-out;
 	width: 100%;
+	user-select: none;
+	box-shadow: 0 2px 5px color-mix(in srgb, var(--color-fg) 20%, transparent);
 }
 button#generate:hover {
 	background: var(--color-hover);

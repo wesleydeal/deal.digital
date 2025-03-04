@@ -393,7 +393,7 @@ time {
 }
 
 .sitebuttons a:link, .sitebuttons a:visited{
-	box-shadow: 0 0 0 2px var(--color-link);
+	box-shadow: 0 0 0 2px var(--color-link), 0 2px 5px color-mix(in srgb, var(--color-fg) 30%, transparent);
 	background-size: 0 3px;
 	font-size: 1.25em;
 	padding: .5em .5em;
