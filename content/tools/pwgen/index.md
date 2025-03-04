@@ -2,7 +2,7 @@
 author = "Wesley Deal"
 title = "Local Password Generator"
 date = 2025-02-21
-updated = 2025-02-24
+updated = 2025-03-03
 raw = true
 [taxonomies]
 tags = ["software", "security"]
@@ -227,8 +227,10 @@ const ambiguousAlphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvw
 const unambiguousAlphaNumeric = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
 const symbols = '`~!@#$%^&*()_+-=[]{}\\|;:\'",<.>/?';
 const separators = "-_+=";
+
+var copiedTimeout;
 	
-var genButton = document.getElementById("generate");
+const genButton = document.getElementById("generate");
 var genButtonHeld = false;
 genButton.addEventListener('pointerdown', (e) => { genButtonHeld = true; });
 genButton.addEventListener('pointerup', (e) => { genButtonHeld = false; });
@@ -237,36 +239,42 @@ genButton.addEventListener('pointercancel', (e) => { genButtonHeld = false; });
 document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = true; });
 document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = false; });
 
+
+// Set userEntropy[last 3 milliseconds of timestamp] to pressed or released keycode or screen X or Y position
+// this creates an array where fairly random elements are determined by user input.
+// later we will loop through this to swap elements of the alphabet from userEntropyIndex % alphabetLength to userEntropyValue % alphabetLength
+var userEntropy = new Uint32Array(1000);
+function addUserEntropy(entropy){
+	var dateEntropy = Number(Date.now().toString().slice(-3));
+	userEntropy[dateEntropy] += entropy;
+}
 document.body.addEventListener('keydown', (event) => {addUserEntropy(event.key.charCodeAt());});
 document.body.addEventListener('keyup', (event) => {addUserEntropy(event.key.charCodeAt() + 1);});
 document.body.addEventListener('pointermove', (event) => {addUserEntropy(event.screenX + event.screenY);});
-
-var copiedTimeout;
-var userEntropy = new Uint32Array(1000);
 
 var results = document.getElementById("result");
 var length = document.getElementById("length");
 var length_val = document.getElementById("length_val");
 function onChangeLength(event) {
-	if (event.target.value > 16) {
+	if (event.target.value > 16) { // set password output font size
 		results.classList.add("smaller");
 	} else {
 		results.classList.remove("smaller");
 	}
-	if (event.target == document.getElementById('length')){
+	if (event.target == document.getElementById('length')){ // update the other HTML control to match
 		document.getElementById('length_val').value=event.target.value;
 	} else {
 		document.getElementById('length').value=event.target.value;
 	}
 	pwgen();
 }
-function scrollLength(event){
+function scrollAdjustLength(event){
 	length.value -= Math.sign(event.deltaY);
 	onChangeLength(event);
 	event.preventDefault();
 	event.stopPropagation();
 }
-length_val.addEventListener('wheel', scrollLength);
+length_val.addEventListener('wheel', scrollAdjustLength);
 length_val.addEventListener('keyup', onChangeLength);
 length_val.addEventListener('mouseup', onChangeLength);
 length_val.addEventListener('pointerup', () => length_val.select());
@@ -279,41 +287,18 @@ function secureRand(min, max, count=1) {
 	var result = min;
 	return randInts.map(r => min + Math.round(scale*(r/maxUInt32)));
 }
-function addUserEntropy(entropy){
-	var dateEntropy = Number(Date.now().toString().slice(-3));
-	userEntropy[dateEntropy] += entropy;
-}
-function seededScramble(initialArray, seedStr) { // HORRIBLY BROKEN HALF-IDEA, DO NOT USE FOR ANYTHING
-	const seedHash = new Uint32Array(new TextEncoder().encode(seedStr).buffer);
-	var scrambledArray = new Array(initialArray.length);
-	var randIterator = 0;
-	var arrayPos = 0;
-	var offset = 0;
-	while (arrayPos < initialArray.length) {
-		var rand = (seedHash[randIterator] + offset) % initialArray.length;
-		console.log("Rand",rand,"arraypos",arrayPos,"offset",offset);
-		if (scrambledArray[rand] === undefined){
-			scrambledArray[rand] = initialArray[arrayPos];
-			arrayPos++;
-		}
-		if (randIterator >= 16){
-			randIterator = 0;
-			offset += 1;
-		} else {
-			randIterator++;
-		}
-	}
-	return scrambledArray;
-}
+
 function pwgen() {
 	var result = "";
-	var modeElement = document.getElementById("mode");
-	var mode = modeElement.options[modeElement.selectedIndex].value;
-	var pwlen = parseInt(document.getElementById("length_val").value);
-	var specials = document.getElementById("specials").checked;
-	var ambiguous = document.getElementById("ambiguous").checked;
-	var spaces = document.getElementById("spaces").checked;
+	const modeElement = document.getElementById("mode");
+	const mode = modeElement.options[modeElement.selectedIndex].value;
+	const pwlen = parseInt(document.getElementById("length_val").value);
+	const specials = document.getElementById("specials").checked;
+	const ambiguous = document.getElementById("ambiguous").checked;
+	const spaces = document.getElementById("spaces").checked;
 	const count = 50;
+
+	// prepare alphabet
 	var charSet = ambiguous ? ambiguousAlphaNumeric : unambiguousAlphaNumeric;
 	if(specials) {charSet += symbols;}
 	if(spaces) {charSet += " ";}
@@ -328,6 +313,7 @@ function pwgen() {
 			}
 		}
 	}
+	
 	var resultInnerHTML = "<ul>";
 	var randChars = Array.from(secureRand(0, charSet.length-1, pwlen*count));
 	for (i=0; i<count; i++) {
@@ -336,7 +322,8 @@ function pwgen() {
 	}
 	resultInnerHTML += "</ul>"
 	document.getElementById("result").innerHTML = resultInnerHTML;
-	for (el of document.querySelectorAll("#result li")){
+	
+	for (el of document.querySelectorAll("#result li")){ // auto copy password on click
 		el.addEventListener('click', function(e) {
 			window.getSelection().removeAllRanges();
 			r = document.createRange();
@@ -349,6 +336,8 @@ function pwgen() {
 			copiedTimeout = window.setTimeout(() => {document.getElementById("copied-caption").classList.remove("active");}, 1000);
 		});
 	}
+
+	// determine and display time to crack
 	const hashRate = 3.401e+11;
 	var entropy = Math.log2(Math.pow(charSet.length, pwlen));
 	var hashTime = Math.pow(2, entropy) / hashRate / 2 / 3600 / 24 / 365;
@@ -364,13 +353,16 @@ function pwgen() {
 	document.getElementById("entropy").innerHTML = entropy.toPrecision(3);
 	document.getElementById("hashtime").innerHTML = hashTimeText;
 }
-function monitorGenButton() {
+	
+function monitorGenButton() { // generate passwords each frame
 	if (genButtonHeld) pwgen();
 	window.requestAnimationFrame(monitorGenButton);
 }
+	
 monitorGenButton();
-addUserEntropy(Date.now());
-addUserEntropy(navigator.deviceMemory);
-addUserEntropy(Array.from(navigator.userAgent).map(c => c.charCodeAt()).reduce((a,b) => a+b));
+addUserEntropy(Date.now()); // init user based entropy with the unix timestamp
+addUserEntropy(navigator.deviceMemory); // and the user's device memory
+addUserEntropy(Array.from(navigator.userAgent).map(c => c.charCodeAt()).reduce((a,b) => a+b)); // and the sum of the character codes of the user agent
+// (all of which are predictable, but at worst this is better than no scrambling)
 pwgen();
 </script>
