@@ -356,7 +356,7 @@ function pwgen() {
 	}
 	document.getElementById("entropy").innerHTML = entropy.toPrecision(3);
 	document.getElementById("hashtime").innerHTML = hashTimeText;
-	document.getElementById("alphabet").innerHTML = charSet.replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\\",'&bsol;');
+	document.getElementById("alphabet").innerHTML = charSet.join("").replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\\",'&bsol;');
 }
 	
 function monitorGenButton() { // generate passwords each frame
