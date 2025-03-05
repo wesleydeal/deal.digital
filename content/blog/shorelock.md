@@ -1,7 +1,7 @@
 +++
 title = "Fix a locked Shoretel/Mitel Director"
 date = 2020-09-15
-updated = 2024-05-01
+updated = 2025-03-04
 author = "Wesley Deal"
 [taxonomies]
 tags = ["software", "IT"]
@@ -48,10 +48,10 @@ You made a mental note and moved onto the next task.
 
    | # | LicenseTypeID   | ClientType       |
    |:-:|:---------------:|:----------------:|
-   | 0 | ?               | None             |
-   | 1 | Mailbox Only    | ?                |
-   | 2 | Phone Only      | ?                |
-   | 3 | Phone & Mailbox | ?                |
+   | 0 | ?               | Phone Only       |
+   | 1 | Mailbox Only    | Operator         |
+   | 2 | Phone Only      | WG Supervisor    |
+   | 3 | Phone & Mailbox | WG Agent         |
    | 4 | N/A             | ?                |
    | 5 | N/A             | Shoretel Connect |
 
