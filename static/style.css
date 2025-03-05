@@ -156,8 +156,8 @@ header nav{
 	position: fixed;
 	left: -1px;
 	top: 12px;
-	background: linear-gradient(358deg, color-mix(in srgb, var(--color-bg) 80%, transparent), color-mix(in srgb, color-mix(in oklab, var(--color-logo-bg) 15%, var(--color-bg)) 80%, transparent));
-	background: var(--color-bg);
+	background: linear-gradient(358deg, color-mix(in srgb, var(--color-bg) 80%, transparent), color-mix(in srgb, color-mix(in oklab, var(--color-hover) 15%, var(--color-bg)) 80%, transparent));
+	//background: var(--color-bg);
 	line-height: 28px;
 	box-shadow: 0 0 0 1.5px var(--color-fg), 0 3px 7px color-mix(in srgb, var(--color-fg) 25%, transparent);
 	border-radius: 3px;
