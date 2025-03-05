@@ -91,6 +91,7 @@
 
 html{
 	box-sizing: border-box;
+	scroll-padding-top: 64px;
 }
 
 *, *:before, *:after{
@@ -215,6 +216,7 @@ header nav a:first-child:not(:last-child){
 	border-radius: 1px 0 0 1px;
 	padding: 3px 38px 3px 15px;
 	clip-path: polygon(0 0, calc(100% - 8px) 0px, calc(100% - 28px) 100%, 0 100%);
+	box-shadow: none;
 }
 
 header nav a:last-child:not(:first-child){
@@ -439,6 +441,43 @@ a.zola-anchor:link, a.zola-anchor:visited{
 
 :hover > a.zola-anchor:link, :hover > a.zola-anchor:visited{
 	opacity: 1;
+}
+
+nav#toc{
+	display: none;
+}
+
+nav#toc ul{
+	padding: 0;
+	list-style-type: none;
+}
+
+nav#toc li{
+	padding: 0;
+}
+
+
+nav#toc h2{
+	margin: 10px 0;
+	padding-bottom: 5px;
+	background: linear-gradient(90deg, var(--color-fg) -20%, transparent 120%);
+	background-size: 100% 1px;
+	background-repeat: no-repeat;
+	background-position: bottom left;
+}
+
+@media screen and (min-width: 1150px){
+	nav#toc{
+		display: block;
+		position: fixed;
+		top: 80px;
+		left: 10px;
+		padding: 0 10px;
+		max-width: calc((100vw - 780px) / 2 - 24px);
+		z-index: 0;
+		background: linear-gradient(115deg, var(--color-hover) -500%, transparent 120%);
+		border-radius: 8px;
+	}
 }
 
 @media screen and (max-width: 500px){

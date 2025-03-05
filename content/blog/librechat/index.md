@@ -6,6 +6,7 @@ updated = 2024-04-26
 tags = ["software", "IT", "cloud", "AI"]
 [extra]
 shorttitle = "Deploy LibreChat for cheap LLM queries"
+toc = true
 +++
 
 Do you want to deploy an inexpensive ChatGPT-like web app for your school, business, or friends?
