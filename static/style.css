@@ -154,7 +154,7 @@ header nav{
 	align-items: center;
 	flex-wrap: wrap;
 	position: fixed;
-	left: 20px;
+	left: -1px;
 	top: 12px;
 	background: linear-gradient(358deg, color-mix(in srgb, var(--color-bg) 80%, transparent), color-mix(in srgb, color-mix(in oklab, var(--color-logo-bg) 15%, var(--color-bg)) 80%, transparent));
 	line-height: 28px;
