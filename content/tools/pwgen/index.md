@@ -375,9 +375,10 @@ function monitorGenButton() { // generate passwords each frame
 }
 	
 monitorGenButton();
-addUserEntropy(Date.now()); // init user based entropy with the unix timestamp
+addUserEntropy(window.screen.availHeight); // init user based entropy with screen height
+addUserEntropy(window.screen.availWidth); // and width
 addUserEntropy(navigator.deviceMemory); // and the user's device memory
-addUserEntropy(Array.from(navigator.userAgent).map(c => c.charCodeAt()).reduce((a,b) => a+b)); // and the sum of the character codes of the user agent
+Array.from(navigator.userAgent).map(c => addUserEntropy(c.charCodeAt())); // and the character codes of the user agent
 // (all of which are predictable, but at worst this is better than no scrambling)
 pwgen();
 </script>
