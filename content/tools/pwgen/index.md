@@ -140,7 +140,7 @@ button#generate:hover {
 }
 </style>
 <div id="passwords-exposition">
-	<p>With these settings, we'll generate 50 passwords with <span id="entropy">0</span> bits of entropy which, if hashed with NTLM and brute forced with an <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">RTX 5090</a>, would take <span id="hashtime">0 sec</span> on average to guess.
+	<p>With these settings, we'll generate 50 passwords with <span id="entropy">0</span> bits of entropy which, if hashed with NTLM and brute forced with <a href="https://gist.github.com/Chick3nman/09bac0775e6393468c2925c1e1363d5c">RTX 5090</a>s, would take <span id="hashtime">0 sec</span> on average to guess.
 </div>
 <div id="controls">
 	<div id="settings-wrapper">
@@ -348,13 +348,21 @@ function pwgen() {
 	var entropy = Math.log2(Math.pow(charSet.length, pwlen));
 	var hashTime = Math.pow(2, entropy) / hashRate / 2 / 3600 / 24 / 365;
 	if (hashTime < 1/365/24) {
-		hashTimeText = (hashTime*365*24*3600).toPrecision(3) + " seconds";
+		hashTimeText = (hashTime*365*24*3600).toPrecision(3) + " GPU-seconds";
 	} else if (hashTime < 1/365) {
-		hashTimeText = (hashTime*365*24).toPrecision(3) + " hours";
+		hashTimeText = (hashTime*365*24).toPrecision(3) + " GPU-hours";
 	} else if (hashTime < 1) {
-		hashTimeText = (hashTime*365).toPrecision(3) + " days";
+		hashTimeText = (hashTime*365).toPrecision(3) + " GPU-days";
+	} else if (hashTime < 1000000) {
+		hashTimeText = hashTime.toLocaleString("en-US", {notation: "compact", maximumSignificantDigits: 3})  + " GPU-years";
+	} else if (hashTime < 1000000000) {
+		hashTimeText = (hashTime / 1000000).toPrecision(3) + " million GPU-years";
+	} else if (hashTime < 1000000000000) {
+		hashTimeText = (hashTime / 1000000000).toPrecision(3) + " billion GPU-years";
+	} else if (hashTime < 1000000000000000) {
+		hashTimeText = (hashTime / 1000000000000).toPrecision(3) + " trillion GPU-years";
 	} else {
-		hashTimeText = hashTime.toPrecision(3) + " years";
+		hashTimeText = hashTime.toPrecision(3) + " GPU-years";
 	}
 	document.getElementById("entropy").innerHTML = entropy.toPrecision(3);
 	document.getElementById("hashtime").innerHTML = hashTimeText;
