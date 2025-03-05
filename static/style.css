@@ -157,6 +157,7 @@ header nav{
 	left: -1px;
 	top: 12px;
 	background: linear-gradient(358deg, color-mix(in srgb, var(--color-bg) 80%, transparent), color-mix(in srgb, color-mix(in oklab, var(--color-logo-bg) 15%, var(--color-bg)) 80%, transparent));
+	background: var(--color-bg);
 	line-height: 28px;
 	box-shadow: 0 0 0 1.5px var(--color-fg), 0 3px 7px color-mix(in srgb, var(--color-fg) 25%, transparent);
 	border-radius: 3px;
@@ -213,7 +214,7 @@ header nav a:hover:first-child, header nav a:hover:first-child{
 header nav a:first-child:not(:last-child){
 	border-radius: 1px 0 0 1px;
 	padding: 3px 38px 3px 15px;
-	mask-image: linear-gradient(120deg, rgba(0, 0, 0, 1) 84.2%, rgba(0, 0, 0, 0) 84.2%);
+	clip-path: polygon(0 0, calc(100% - 8px) 0px, calc(100% - 28px) 100%, 0 100%);
 }
 
 header nav a:last-child:not(:first-child){
