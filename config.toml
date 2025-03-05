@@ -36,8 +36,10 @@ highlight_themes_css = [
 
 smart_punctuation = true
 
-[extra]
-# Put all your custom variables here
-
 [search]
 index_format = "fuse_javascript"
+
+[extra]
+
+# Options: "neomillenial", "mini", "apricot", TODO: "aquatic", "obsidian"
+stylesheet = "neomillenial"
