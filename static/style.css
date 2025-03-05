@@ -454,6 +454,7 @@ nav#toc ul{
 
 nav#toc li{
 	padding: 0;
+	margin: 0 0 0.5em;
 }
 
 
@@ -471,12 +472,12 @@ nav#toc h2{
 		display: block;
 		position: fixed;
 		top: 80px;
-		left: 10px;
+		left: 0px;
 		padding: 0 10px;
 		max-width: calc((100vw - 780px) / 2 - 24px);
 		z-index: 0;
 		background: linear-gradient(115deg, var(--color-hover) -500%, transparent 120%);
-		border-radius: 8px;
+		border-radius: 0 8px 8px 0;
 	}
 }
 

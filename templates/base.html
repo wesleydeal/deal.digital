@@ -30,7 +30,7 @@
 <nav id="toc">
 	<h2>Contents</h2>
 	<ul>
-	{% for h1 in page.toc %}
+		{% for h1 in page.toc %}
 		<li>
 		<a href="{{ h1.permalink | safe }}">{{ h1.title }}</a>
 			{% if h1.children %}
@@ -43,7 +43,10 @@
 			</ul>
 			{% endif %}
 		</li>
-	{% endfor %}
+	    {% endfor %}
+		<li>
+			<a href="#" class="toplink">↑ Top of page</a>
+		</li>
 	</ul>
 </nav>
 {% endif %}
