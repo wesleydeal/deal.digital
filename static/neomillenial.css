@@ -58,7 +58,6 @@
 	--color-logo-bg: #7fa;
 	--color-accent: #7fa;
 	--blockquote-bg: linear-gradient(135deg, #7fa3, #7fa2, #7fa0);
-	//--gradient-bg: radial-gradient(ellipse at center, #fafafa 0 calc(min(max(180px,35vw),700px)), transparent), repeating-linear-gradient(#0000 0 4px, #ffa37729 4px 5px), linear-gradient(225deg, #fff0ee 0%, #eef 100%);
 	--gradient-bg: radial-gradient(ellipse at center, #fffd 0 calc(min(max(180px, 35vw), 700px)), transparent), repeating-linear-gradient(#0000 0 4px, #ffa37729 4px 5px), linear-gradient(135deg, #ffecde 0%, #e6e6ff 100%)
 }
 
