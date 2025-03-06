@@ -29,13 +29,14 @@ enough on a small screen without negatively impacting your full-size layout.
 Second, Google Docs styles don't cascade. That means that changes to the the or paragraph spacing tend to involve
 lots of clicks around the document to ensure that properties are all set the same way.
 
-Third, Google Docs is limited in style and scripting capabilities. I found that ATS scanning my
+Third, Google Docs is limited in style and interaction capabilities. I found that ATS scanning my
 resume would almost universally fail to handle ligatures like the connected "*ffi*" in *efficient*.
 But there's no way to turn these off other than to pick a font that doesn't support them. Or let's
-say I would like to add a quick button to change the font to a sans-serif. This type of
-interactivity is not what Docs is built for.
+say I would like to add a quick button to change the font to a sans-serif. Though achievable with
+custom scripting, it's clear this type of interactivity is not what Docs is built for.
 
-So let's try a stack built for responsive design, cascading style sheets, and advanced styling and scripting.
+Thankfully, there is a stack built for responsive design, cascading style sheets, and advanced
+styling and scripting. And it's already installed on all your devices.
 
 ## A Blank Slate
 
@@ -50,7 +51,9 @@ We'll start with the minimum reasonable HTML/CSS file:
 	<style>
 	</style>
 	<body>
+		<main id="resume">
 		<!-- we'll be adding stuff in here next -->
+		</main>
 	</body>
 </html>
 ```
@@ -119,5 +122,5 @@ we want our name and job title in a seperate area from our contact information, 
 Alright, so we have a structure for our resume. Now let's fill in our `<style>`sheet.
 
 ```css
-
+body
 ```
