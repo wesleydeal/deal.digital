@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>My Resume</title>
+	<style>
+	:root {
+		box-sizing: border-box; /* factor paddinginto width calculations */
+		--color-bg: #fff;
+		--color-fg: #000;
+		--color-secondary: #555;
+		font: 12pt/1.3 'Segoe UI', Myriad, Roboto, sans-serif;
+	}
+	*, *:before, *:after{
+			box-sizing: inherit;
+	}
+	body {
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around; /* center the resume page */
+		min-height: 100vh;
+		
+	}
+	main#resume {
+		max-width: 8.5in;
+		min-height: 11in;
+		padding: 0.25in 0.5in;
+		margin: 0 auto;
+		outline: 1px solid #000;
+		display: flex;
+		flex-direction: column;
+	}
+	header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 10px;
+		flex-wrap: wrap;
+	}
+	header div {
+		flex: 1 0 200px;
+	}
+	header #contact {
+		text-align: right;
+	}
+	.name {
+		font-size: 2em;
+		margin-bottom: 0;
+	}
+	h1 {
+		font-size: 1.5em;
+		font-weight: normal;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		margin: 0.5rem 0;
+	}
+	h2 {
+		font-size: 1em;
+		margin: 0;
+		padding: 0;
+	}
+	h3 {
+		font-size: 1em;
+		margin: 1em 0;
+		padding: 0;
+		font-weight: normal;
+	}
+	summary {
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 1px solid var(--color-secondary);
+		margin: 1em 0 0.5em;
+		flex-wrap: wrap;
+	}
+	ul {
+		margin: 0;
+		padding: 0 0 0 1.5em;
+	}
+	li {
+		margin: 0.5em 0;
+	}
+	footer {
+		margin-top: auto;
+	}
+	footer p{
+		margin: 10px 0 0;
+	}
+	
+	@media print {
+		@page{
+			size: 8.5in 11in;
+			margin: 0.25in 0.5in;
+		}
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		main#resume{
+			outline: 0;
+			padding: 0;
+			margin: 0;
+			//min-height: initial;
+		}
+	}
+	</style>
+	<body>
+		<main id="resume">
+			<header>
+				<div id="namebox">
+					<p class="name">John Doe
+					<p class="jobtitle">Widget Developer
+				</div>
+				<div id="contact">
+					<p><a href="tel:555-555-5555">(555) 555-5555</a>
+					<p><a href="mailto:john.doe@example.com">john.doe@example.com</a>
+					<p>Anchorage, Alaska
+				</div>
+			</header>
+			<section id="experience">
+				<h1>Work Experience</h1>
+				<details open>
+					<summary>
+						<h2><b>Widget Developer</b> at NuWidget</h2>
+						<span class="dates">May 2017 &ndash; Present</span>
+					</summary>
+					<ul>
+						<li>Spearheaded the development of a cutting-edge widget customization tool, resulting in a 30% increase in user engagement within the first quarter of release.</li>
+						<li>Collaborated with cross-functional teams to streamline widget integration processes, reducing deployment time by 40%.</li>
+						<li>Implemented innovative widget performance optimization techniques, enhancing load times by 50% and ensuring seamless user experiences across all platforms.</li>
+						<li>Led a team of developers in creating a library of reusable widget components, improving development efficiency by 25% and fostering consistency in design and functionality.</li>
+						<li>Conducted comprehensive research on emerging widget technologies and industry trends, driving continuous improvement and maintaining NuWidget's competitive edge in the market.</li>
+					</ul>
+				</details>
+				<details open>
+					<summary>
+						<h2><b>Junior Widget Developer</b> at Acme Widgets Inc.</h2>
+						<span class="dates">December 2015 &ndash; July 2017</span>
+					</summary>
+					<ul>
+						<li>Orchestrated the migration of legacy widget systems to a modern architecture, resulting in a 60% reduction in maintenance costs and improved scalability.</li>
+						<li>Championed accessibility initiatives by integrating ADA-compliant features into widget designs, expanding user base and ensuring inclusivity for all customers.</li>
+					</ul>
+				</details>
+			</section>
+			<section id="education-certs">
+				<h1>Education & Certifications</h1>
+				<h3><span><b>Bachelor of Science in Computer Science</b>, NuTech University</span> <span class="dates">2016</span></h3>
+				<p>Relevant Coursework: Advanced Software Engineering, Web Development, Data Structures and Algorithms
+			</section>
+			<section id="skills">
+				<h1>Skills</h1>
+				<p><strong>General</strong>: Problem-solving, Communication
+				<p><strong>Web Dev</strong>: JavaScript, HTML, CSS, Python, React, Vue.js, Git, Agile methodologies, Jira, Responsive design, Cross-browser compatibility, Problem-solving, Communication
+			</section>
+			<footer>
+				<p>Written and typeset in HTML/CSS. Updated <time datetime="2024-04-28">2024-04-28</time>. References available upon request.
+			</footer>
+		</main>
+	</body>
+</html>
