@@ -50,25 +50,21 @@
 }
 
 :root {
-	--color-fg: #fff9f9;
+	--color-fg: #feebff;
 	--color-bg: #111;
 	--color-link: #b094ff;
 	--color-hover: #77fffc;
 	--color-logo-fg: #77fffc;
-	--color-logo-bg: #2f2632;
+	//--color-logo-bg: #2f263290;
+	--color-logo-bg: transparent;
 	--color-accent: #77fffc;
 	--blockquote-bg: linear-gradient(135deg, #7fa1, #7fa0);
 	--gradient-bg: radial-gradient(ellipse at 50% 20%, #1a0019, #001);
+	--max-width: 780px;
 }
 
 html {
 	color-scheme: dark;
-}
-
-@media only screen {
-	html {
-		margin-left: calc(100vw - 100%);
-	}
 }
 
 html{
@@ -129,7 +125,7 @@ header{
 	max-width: 780px;
 	width: 100%;
 	margin: 0 auto .5em;
-	padding: 32px;
+	padding: 24px;
 }
 
 header nav{
@@ -139,15 +135,16 @@ header nav{
 	position: fixed;
 	left: -1px;
 	top: 12px;
-	background: linear-gradient(358deg, color-mix(in srgb, var(--color-bg) 80%, transparent), color-mix(in srgb, color-mix(in oklab, var(--color-hover) 15%, var(--color-bg)) 80%, transparent));
+	background: linear-gradient(358deg, color-mix(in srgb, var(--color-bg) 60%, transparent), color-mix(in srgb, color-mix(in oklab, var(--color-hover) 15%, var(--color-bg)) 60%, transparent));
+	backdrop-filter: blur(3px);
 	line-height: 28px;
-	box-shadow: 0 0 0 1.5px var(--color-fg), 0 3px 7px color-mix(in srgb, var(--color-fg) 25%, transparent);
+	box-shadow: 0 0 0 1px var(--color-fg), 0 3px 7px color-mix(in srgb, var(--color-fg) 25%, transparent);
 	z-index: 100;
 }
 
 @media (min-width: 800px){
 	header nav{
-		left: calc((100vw - 780px)/2 + 10px);
+		left: calc((100vw - 780px)/2 + 2px);
 	}
 	#index {
 		gap: 100px;
@@ -188,7 +185,7 @@ header nav a:link:first-child, header nav a:visited:first-child{
 
 header nav a:hover:first-child, header nav a:hover:first-child{
 	background-position: bottom right;
-	color: var(--color-logo-bg);
+	color: var(--color-bg);
 }
 
 header nav a:first-child:not(:last-child){
@@ -204,18 +201,40 @@ header nav a:last-child:not(:first-child){
 @media (max-width: 370px) {
 	nav{font-size: .85em;}
 }
-
-
-
 .content, footer{
-	max-width: calc(min(780px,100%));
+	padding: 20px min(100%,(100% - var(--max-width))/2 + 10px);
 	margin: 0 auto;
-	padding: 10px;
+}
+
+.content > * {
+	max-width: calc(var(--max-width) - 10px);
 }
 
 footer {
 	font-size: .85em;
+	background: linear-gradient(180deg, #fffa 1px, transparent 2px), linear-gradient(172deg, hsl(302deg 96% 10%) 0%, hsl(295deg 47% 12%) 18%, hsl(269deg 24% 14%) 26%, hsl(200deg 28% 12%) 33%, hsl(174deg 95% 8%) 39%, hsl(201deg 67% 11%) 44%, hsl(221deg 66% 13%) 50%, hsl(232deg 76% 14%) 56%, hsl(240deg 95% 14%) 61%, hsl(254deg 96% 11%) 67%, hsl(265deg 99% 8%) 74%, hsl(266deg 100% 5%) 82%, hsl(0deg 0% 0%) 100%);
+	background: linear-gradient(180deg, #fffa 1px, transparent 2px), linear-gradient(
+	    155deg,
+	    hsl(302deg 96% 10%) 0%,
+	    hsl(295deg 96% 10%) 15%,
+	    hsl(288deg 97% 10%) 22%,
+	    hsl(280deg 97% 10%) 28%,
+	    hsl(273deg 97% 10%) 33%,
+	    hsl(265deg 97% 10%) 37%,
+	    hsl(258deg 98% 10%) 42%,
+	    hsl(251deg 98% 9%) 46%,
+	    hsl(243deg 98% 9%) 50%,
+	    hsl(236deg 98% 9%) 54%,
+	    hsl(229deg 99% 9%) 58%,
+	    hsl(221deg 99% 9%) 63%,
+	    hsl(214deg 99% 9%) 67%,
+	    hsl(207deg 99% 8%) 72%,
+	    hsl(199deg 100% 8%) 78%,
+	    hsl(192deg 100% 8%) 85%,
+	    hsl(184deg 100% 8%) 100%
+	);
 }
+
 
 h1{
 	font: 500 1.75em/1.2 "Red Hat Display", "Red Hat Text", sans-serif;
