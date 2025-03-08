@@ -3,6 +3,7 @@ title = "Links of interest"
 updated = 2024-05-01
 [extra]
 shorttitle = "Links"
+toc = true
 +++
 
 Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brave-browser/issues/35042) and search engines are less useful by the day
