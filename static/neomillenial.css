@@ -82,6 +82,14 @@
 	}
 }
 
+@keyframes simple-fade {
+	from {
+		opacity: 0;
+	}
+	to {
+	}
+}
+
 @media only screen {
 	html {
 		margin-left: calc(100vw - 100%);
@@ -226,12 +234,11 @@ header nav a:last-child:not(:first-child){
 	nav{font-size: .85em;}
 }
 
-
-
 .content, footer{
 	max-width: calc(min(780px,100%));
 	margin: 0 auto;
 	padding: 10px;
+	//animation: simple-fade 200ms ease-out;
 }
 
 footer {
@@ -373,18 +380,10 @@ time {
 	margin: 0;
 }
 
-@keyframes greeting {
-	from {
-		opacity: 0;
-	}
-	to {
-	}
-}
-
 .landing h1.title{
 	font-size: 3em;
-	animation: greeting 500ms ease-out;
-	animation-fill-mode: backwards;
+	//animation: simple-fade 500ms ease-out;
+	//animation-fill-mode: backwards;
 	width: fit-content;
 }
 
@@ -438,8 +437,8 @@ time {
 	font-family: 'Red Hat Display', sans-serif;
 	transition: color 250ms ease-in-out, box-shadow 250ms ease-in-out, background-size 250ms ease-in-out;
 	border-radius: 5px;
-	animation: button-pop 500ms ease-out;
-	animation-fill-mode: both;
+	//animation: button-pop 500ms ease-out;
+	//animation-fill-mode: both;
 }
 
 .sitebuttons a:focus, .sitebuttons a:hover{
