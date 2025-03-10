@@ -1,0 +1,509 @@
+@import url("/syntax-dark.css") screen;
+@import url("/syntax-light.css") print;
+
+@font-face {
+  font-family: 'Red Hat Display';
+  src: url("/fonts/RedHatDisplayVF.woff2") format('woff2-variations');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Red Hat Display';
+  src: url("./fonts/RedHatDisplayVF-Italic.woff2") format('woff2-variations');
+  font-weight: 300 900;
+  font-style: italic;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Red Hat Text';
+  src: url("./fonts/RedHatTextVF.woff2") format('woff2-variations');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Red Hat Text';
+  src: url("./fonts/RedHatTextVF-Italic.woff2") format('woff2-variations');
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Red Hat Mono';
+  src: url("./fonts/RedHatMonoVF.woff2") format('woff2-variations');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Red Hat Mono';
+  src: url("./fonts/RedHatMonoVF-Italic.woff2") format('woff2-variations');
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: fallback;
+}
+
+:root {
+	--color-fg: #feebff;
+	--color-bg: #111;
+	--color-link: #b094ff;
+	--color-hover: #77fffc;
+	--color-logo-fg: #77fffc;
+	//--color-logo-bg: #2f263290;
+	--color-logo-bg: transparent;
+	--color-accent: #77fffc;
+	--blockquote-bg: linear-gradient(135deg, #7fa1, #7fa0);
+	--gradient-bg: radial-gradient(ellipse at 50% 20%, #1a0019, #001);
+	--max-width: 780px;
+}
+
+html {
+	color-scheme: dark;
+}
+
+html{
+	box-sizing: border-box;
+	scroll-padding-top: 64px;
+}
+
+*, *:before, *:after{
+	box-sizing: inherit;
+}
+
+body{
+	margin: 0;
+	padding: 0;
+	font: normal 1em/1.5 "Red Hat Text",Roboto,"Trebuchet MS","Helvetica Neue",Helvetica,Ubuntu,sans-serif;
+	color: var(--color-fg);
+	background: var(--color-bg);
+	background-image: var(--gradient-bg);
+	background-attachment: fixed;
+	word-wrap: break-word;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	justify-content: space-between;
+	text-wrap: pretty;
+}
+
+::selection{
+	background: var(--color-hover);
+	color: var(--color-bg);
+}
+
+a:link,a:visited{
+	position: relative;
+	text-decoration: none;
+	font-weight: 425;
+	color: var(--color-link);
+	background-image: linear-gradient(var(--color-hover), var(--color-hover));
+	background-size: 0 0.0625em;
+	background-position: bottom left;
+	background-repeat: no-repeat;
+	transition: color 0.2s ease-in-out, background-size 0.2s ease-in-out;
+}
+a:focus,a:hover{
+	color: var(--color-hover);
+	background-size: 100% 0.0625em;
+}
+a:focus-visible {
+	outline: 2px solid var(--color-hover);
+}
+
+img{
+	max-width: 100%;
+	border: 0;
+}
+
+header{
+	max-width: 780px;
+	width: 100%;
+	margin: 0 auto .5em;
+	padding: 24px;
+}
+
+header nav{
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	position: fixed;
+	left: -1px;
+	top: 12px;
+	background: linear-gradient(358deg, color-mix(in srgb, var(--color-bg) 60%, transparent), color-mix(in srgb, color-mix(in oklab, var(--color-hover) 15%, var(--color-bg)) 60%, transparent));
+	backdrop-filter: blur(3px);
+	line-height: 28px;
+	box-shadow: 0 0 0 1px var(--color-fg), 0 3px 7px color-mix(in srgb, var(--color-fg) 25%, transparent);
+	z-index: 100;
+}
+
+@media (min-width: 800px){
+	header nav{
+		left: calc((100vw - 780px)/2 + 2px);
+	}
+	#index {
+		gap: 100px;
+	}
+}
+
+header nav span{
+	font-size: 0;
+	width: 24px;
+	height: 34px;
+	background: linear-gradient(120deg, transparent 46%, var(--color-fg) 50%, var(--color-fg) 50%, transparent 54%);
+	margin: 0 8px;
+}
+
+header nav span:nth-child(2){
+	margin-left: -30px;
+	z-index: 100;
+	margin-right: 8px;
+}
+
+header nav a:not(:first-child){
+	top: 1px;
+	padding: 0 10px;
+}
+
+
+header nav a:link:first-child, header nav a:visited:first-child{
+	color: var(--color-logo-fg);
+	transition: background-position 250ms ease-out, color 250ms ease-out;
+	font-weight: 500;
+	background: var(--color-logo-bg);
+	background: linear-gradient(to bottom right, var(--color-logo-bg) 0%, var(--color-logo-bg) 34%, var(--color-hover) 66%);
+	background-size: 300% 300%;
+	box-shadow: 0 0 0 2px var(--color-logo-fg);
+	padding: 3px 15px;
+	font-size: 1.2em;
+}
+
+header nav a:hover:first-child, header nav a:hover:first-child{
+	background-position: bottom right;
+	color: var(--color-bg);
+}
+
+header nav a:first-child:not(:last-child){
+	padding: 3px 38px 3px 15px;
+	clip-path: polygon(0 0, calc(100% - 8px) 0px, calc(100% - 28px) 100%, 0 100%);
+	box-shadow: none;
+}
+
+header nav a:last-child:not(:first-child){
+	margin-right: 15px;
+}
+
+@media (max-width: 370px) {
+	nav{font-size: .85em;}
+}
+.content, footer{
+	padding: 20px min(100%,(100% - var(--max-width))/2 + 10px);
+	margin: 0 auto;
+}
+
+.content > * {
+	max-width: calc(var(--max-width) - 10px);
+}
+
+footer {
+	font-size: .85em;
+	background: linear-gradient(180deg, #fffa 1px, transparent 2px), linear-gradient(172deg, hsl(302deg 96% 10%) 0%, hsl(295deg 47% 12%) 18%, hsl(269deg 24% 14%) 26%, hsl(200deg 28% 12%) 33%, hsl(174deg 95% 8%) 39%, hsl(201deg 67% 11%) 44%, hsl(221deg 66% 13%) 50%, hsl(232deg 76% 14%) 56%, hsl(240deg 95% 14%) 61%, hsl(254deg 96% 11%) 67%, hsl(265deg 99% 8%) 74%, hsl(266deg 100% 5%) 82%, hsl(0deg 0% 0%) 100%);
+	background: linear-gradient(180deg, #fffa 1px, transparent 2px), linear-gradient(
+	    155deg,
+	    hsl(302deg 96% 10%) 0%,
+	    hsl(295deg 96% 10%) 15%,
+	    hsl(288deg 97% 10%) 22%,
+	    hsl(280deg 97% 10%) 28%,
+	    hsl(273deg 97% 10%) 33%,
+	    hsl(265deg 97% 10%) 37%,
+	    hsl(258deg 98% 10%) 42%,
+	    hsl(251deg 98% 9%) 46%,
+	    hsl(243deg 98% 9%) 50%,
+	    hsl(236deg 98% 9%) 54%,
+	    hsl(229deg 99% 9%) 58%,
+	    hsl(221deg 99% 9%) 63%,
+	    hsl(214deg 99% 9%) 67%,
+	    hsl(207deg 99% 8%) 72%,
+	    hsl(199deg 100% 8%) 78%,
+	    hsl(192deg 100% 8%) 85%,
+	    hsl(184deg 100% 8%) 100%
+	);
+}
+
+
+h1{
+	font: 500 1.75em/1.2 "Red Hat Display", "Red Hat Text", sans-serif;
+	line-height: 1.1;
+	margin: 0 0 .5em;
+	position: relative;
+}
+
+h2{
+	margin: 25px 0 0;
+	font: 600 1.2em/1.4 "Red Hat Display", "Red Hat Text", sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	position: relative;
+}
+
+h3{
+	font-size: 1em;
+	margin: 1.2em 0 0;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	font-weight: 500;
+	position: relative;
+}
+
+p,ol,ul{
+	margin: 0.8em 0;
+}
+
+ol,ul{
+	padding: 0 0 0 1.7em;
+}
+
+li ul, li ol{
+	margin: 0.4em 0;
+}
+
+li{
+	margin: 0 0 .25em;
+	padding: 0 0 0 .4em;
+	position: relative;
+}
+
+ol ol{
+	list-style-type: lower-alpha;
+}
+
+code{
+	font-family: "Red Hat Mono",Consolas,monospace;
+	font-size: 15px;
+	padding: 0 .125em;
+	tab-size: 4;
+}
+
+pre{
+	padding: 10px;
+	overflow: auto;
+	tab-size: 4;
+	box-shadow: 0 0 0 1px var(--color-fg);
+}
+
+code.block{
+	display: inline-block;
+	padding: 5px;
+	word-break: break-all;
+	margin: 0 0 16px;
+	font-size: .85em;
+}
+
+blockquote{
+	padding: 10px 20px;
+	margin: 0;
+	border-left: 2px solid var(--color-accent);
+	background: var(--blockquote-bg);
+}
+
+table, tbody, thead, tr, th, td{
+	border-collapse: collapse;
+}
+
+th{
+	border: 
+}
+
+td,th{
+	border: 1px solid var(--color-fg);
+	padding: 5px 15px;
+}
+
+small{
+	font-size: .85em;
+	line-height: 1;
+}
+
+.articlenav{
+	padding: 5px 15px;
+	margin-bottom: 16px;
+	display: inline-block;
+	border-left: 3px solid var(--color-accent);
+}
+
+.meta{
+	font-size: .9rem;
+}
+
+.article-signoff{
+	margin: 2em 0;
+	text-align: right;
+}
+
+.quote-signoff{
+	text-align: right;
+	margin: 10px 20px;
+}
+
+.quote-signoff a{
+	display: inline-block;
+}
+
+time {
+	font-variant-numeric: tabular-nums;
+}
+
+.article-signoff .author{
+	font-size: 1.25em;
+	margin-bottom: 0.5em;
+}
+
+.quote-signoff .author{
+	margin-bottom: 0;
+}
+
+.article-signoff p, .quote-signoff p{
+	margin: 0;
+}
+
+
+.landing h1.title{
+	font-size: 3em;
+}
+
+.landing p{
+	text-wrap: balance;
+}
+
+.landing-link-container .sitebuttons ul {
+	display: flex;
+	gap: 1em 1em;
+	flex-wrap: wrap;
+	justify-content: center;
+	list-style-type: none;
+	padding: 0;
+}
+
+.landing-link-container .sitebuttons ul li {
+	margin: 0;
+	padding: 0;
+	flex: 1 0 160px;
+}
+
+.sitebuttons a:link, .sitebuttons a:visited{
+	box-shadow: 0 0 0 2px var(--color-link), 0 2px 5px color-mix(in srgb, var(--color-fg) 30%, transparent);
+	background-size: 0 3px;
+	font-size: 1.25em;
+	padding: .5em .5em;
+	display: block;
+	font-weight: 500;
+	font-family: 'Red Hat Display', sans-serif;
+	transition: color 250ms ease-in-out, box-shadow 250ms ease-in-out, background-size 250ms ease-in-out;
+}
+
+.sitebuttons a:focus, .sitebuttons a:hover{
+	background-size: 100% 3px;
+	box-shadow: none;
+}
+
+ul.blog-listing{
+	list-style-type: none;
+	padding: 0;
+}
+
+ul.blog-listing li{
+	padding: 0;
+	display: flex;
+	justify-content: space-between;
+	gap: 1em;
+	margin: 10px 0;
+}
+
+ul.blog-listing li time{
+	flex-shrink: 0;
+}
+
+a.zola-anchor:link, a.zola-anchor:visited{
+	position: absolute;
+	left: -1em;
+	opacity: 0;
+	transition: 250ms opacity ease-in-out;
+}
+
+:hover > a.zola-anchor:link, :hover > a.zola-anchor:visited{
+	opacity: 1;
+}
+
+nav#toc{
+	display: none;
+}
+
+nav#toc ul{
+	padding: 0;
+	list-style-type: none;
+}
+
+nav#toc li{
+	padding: 0;
+	margin: 0 0 0.5em;
+}
+
+
+nav#toc h2{
+	margin: 10px 0;
+	padding-bottom: 5px;
+	background: linear-gradient(90deg, var(--color-fg) -20%, transparent 120%);
+	background-size: 100% 1px;
+	background-repeat: no-repeat;
+	background-position: bottom left;
+}
+
+@media screen and (min-width: 1150px){
+	nav#toc{
+		display: block;
+		position: fixed;
+		top: 80px;
+		left: 0px;
+		padding: 0 10px;
+		max-width: calc((100vw - 780px) / 2 - 24px);
+		z-index: 0;
+		background: linear-gradient(115deg, var(--color-hover) -500%, transparent 120%);
+	}
+}
+
+@media screen and (max-width: 500px){
+	ul.blog-listing li{
+		flex-direction: column-reverse;
+		gap: 0;
+	}
+	a.zola-anchor:link, a.zola-anchor:visited{
+		display: none;
+	}
+}
+
+
+
+@media print{
+	body{
+		background: #fff;
+		font-size: 11pt;
+	}
+	nav a:first-child{
+		-webkit-print-color-adjust:exact;
+		print-color-adjust:exact;
+	}
+	pre{
+		overflow-x: clip;
+		box-shadow: none;
+	}
+	pre code{
+		font-size: 8pt;
+	}
+}
+
+

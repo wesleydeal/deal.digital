@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scroll &amp; middle-click with a TrackPoint - Wesley Deal</title>
+
+<link rel="stylesheet" href="/neomillenial.css">
+
+<body id="tpmiddle">
+<header>
+	<nav>
+		
+		<a href="/">Wesley Deal</a>
+		
+		
+		
+		
+		
+		
+		
+		<span>/</span>
+		
+		<a href="https://deal.digital/tools/">Tools</a>
+		
+		<span>/</span>
+		<a href="https://deal.digital/tools/tpmiddle/">●</a>
+		
+	</nav>
+</header>
+
+<section class="content">
+	
+<h1 class="title">
+	Scroll &amp; middle-click with the TrackPoint
+</h1>
+<style>
+:root{
+	--color-accent: #E10020;
+	--blockquote-bg: linear-gradient(135deg, #E1002020, #E1002000);
+	--color-hover: #E10020;
+	--color-logo-bg: #E10020;
+	--color-logo-fg: #fff;
+}
+</style>
+<p>On ThinkPads running Windows, the middle mouse button below the TrackPoint can be used as a scroll modifier for the trackpoint or a middle-click/MOUSE3 button, but not both at the same time. This page covers ways to resolve this.</p>
+<h2 id="tpmiddle"><a class="zola-anchor" href="#tpmiddle" aria-label="Anchor link for: tpmiddle">#</a>TPMiddle</h2>
+<p>TPMiddle.exe is a brilliant program by Gerhard Wiesinger that allows both functions at once by detecting whether or not the mouse is moved between press and release.</p>
+<p>This tool has some issues on newer devices. Suggested replacements include <a href="https://github.com/ykon/w10wheel.net">W10Wheel.NET</a>.</p>
+<h3 id="downloads"><a class="zola-anchor" href="#downloads" aria-label="Anchor link for: downloads">#</a>Downloads</h3>
+<ul>
+<li>
+<p><a href="https://deal.digital/tools/tpmiddle/tpmiddle-0.6.exe">tpmiddle-0.6.exe</a> - <strong>Recommended</strong>, especially for Windows 10 users, 10.5kb</p>
+</li>
+<li>
+<p><a href="https://deal.digital/tools/tpmiddle/tpmiddle-0.7.exe">tpmiddle-0.7.exe</a> - Incompatible with some newer systems, 11kb<br />
+also available from the <a href="https://www.wiesinger.com/opensource/TPMiddle/V0.7/Release/tpmiddle.exe">author’s site</a></p>
+</li>
+</ul>
+<h3 id="installation"><a class="zola-anchor" href="#installation" aria-label="Anchor link for: installation">#</a>Installation</h3>
+<ol>
+<li>Make sure you have <a href="https://www.microsoft.com/en-us/download/details.aspx?id=26999">Microsoft Visual C++ 2010 Redistributables</a> installed</li>
+<li>Ensure your middle button is set to “Use for scrolling” under Control Panel &gt; Mouse &gt; ThinkPad</li>
+<li>Download the file</li>
+<li>Drop it into <code>%appdata%\Microsoft\Windows\Start Menu\Programs\Startup</code></li>
+<li>Log out and back in to start it</li>
+</ol>
+<h2 id="alternatives"><a class="zola-anchor" href="#alternatives" aria-label="Anchor link for: alternatives">#</a>Alternatives</h2>
+<p>An <a href="http://web.archive.org/web/20220125153630/http://forum.notebookreview.com/threads/ultranav-middle-click-button-scroll.423415/">AutoHotKey-based substitute</a> was listed in the Notebook Review forums a few years ago.</p>
+<h3 id="w10wheel-net"><a class="zola-anchor" href="#w10wheel-net" aria-label="Anchor link for: w10wheel-net">#</a>W10Wheel.NET</h3>
+<p><a href="https://github.com/ykon/w10wheel.net/releases/latest">W10Wheel.NET</a> by ykon (<a href="https://github.com/ykon/w10wheel.net/wiki">wiki</a>) seems to be the best option. You’ll need <a href="https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-web-installer">.NET Framework 4.x</a>.</p>
+<p>As per <a href="https://old.reddit.com/r/thinkpad/comments/q2cfup/tpmiddle_on_newer_thinkpads/">/u/JakandClank on reddit</a>:</p>
+<blockquote>
+<p>I’ve got a pretty decent workaround with w10wheel that works just about as well as tpmiddle did. Here’s how I do it:</p>
+<ol>
+<li>Download w10wheel and unzip it somewhere.</li>
+<li>Follow the instructions on <a href="https://www.tenforums.com/tutorials/57690-create-elevated-shortcut-without-uac-prompt-windows-10-a.html">this page</a> to create a UAC-less shortcut for the program. This will allow the program to run as administrator without having to allow it every time with the User Account Control prompt. You want to run it as admin so you can scroll on things like Task Manager and your clipboard history.</li>
+<li>Copy the shortcut into this directory: <code>C:\Users\(username)\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</code></li>
+</ol>
+<p>Now the w10wheel program will be installed (by just unzipping it, there’s no installer) and will launch at startup without an annoying UAC prompt.</p>
+<p>To make w10wheel work just like tpmiddle, I did this:</p>
+<ol>
+<li>Go to the trackpoint settings by going to Start-&gt; start typing “mouse settings” -&gt; click on “Mouse settings”.</li>
+<li>Under “Synaptics Trackpoint” click on <strong>Settings</strong>.</li>
+<li>Set the <strong>Middle Button Action</strong> to <strong>Middle Button</strong>.</li>
+<li>Launch w10wheel if it’s not running already.</li>
+<li>Right click on the w10wheel tray icon.</li>
+<li>Set <strong>Trigger</strong> to <strong>MiddleDrag</strong>. This makes it so that holding down the middle button will allow you to scroll. Setting it to “Middle” makes it a toggle and I don’t recommend that.</li>
+<li>Make sure that <strong>Horizontal Scroll</strong> is checked in the same menu.</li>
+<li>In the <strong>Set Number</strong> menu, set <strong>verticalThreshold</strong> to 1 and <strong>horizontalThreshold</strong> to 4. These values are the “resistance” to your mouse movement. It maxes at 500 but really anything past 5 is hard on a trackpoint but YMMV. If you’re gonna adjust it I’d recommend doing it a few ticks at a time.</li>
+<li><em>Optional</em> Enable <strong>Cursor Change</strong> in the menu. This gives you a visual indicator that you are scrolling. I am yet to find a way to change which cursor type it changes to, unfortunately. I don’t really like the “resize window” cursor it gives you.</li>
+</ol>
+</blockquote>
+
+
+<section class="article-signoff">
+	
+	
+	
+	<p class="updated-at">updated <time datetime="2024-04-25">2024-04-25</time></p>
+	
+</section>
+
+
+</section>
+<footer>
+	No rights reserved. <a href="https://github.com/wesleydeal/deal.digital/edit/master/content/tools&#x2F;tpmiddle&#x2F;index.md">View source here</a>. Provided as-is, no warranty, etc.
+	Built 2025-03-10 14:53:06 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages.
+	Thanks to Red Hat for <a href="https://www.redhat.com/en/about/brand/standards/typography">the typefaces</a>.
+</footer>
+</body>
+</html>
