@@ -469,6 +469,10 @@ ul.blog-listing li time{
 	flex-shrink: 0;
 }
 
+ul.blog-listing .article-separator{
+	display: none;
+}
+
 a.zola-anchor:link, a.zola-anchor:visited{
 	position: absolute;
 	left: -1em;
