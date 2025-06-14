@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="roundbullets">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Wesley Deal - Resume</title>
 	<style>
 		@import url('https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:500|archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|martian-mono:100,200,300,400,500,600,700,800|eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Newsreader:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|DM-Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i,1000,1000i|libre-caslon-text:400,400i,700|libre-baskerville:400,400i,700|stix-two-text:400,400i,500,500i,600,600i,700,700i|Vollkorn:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Source-Serif-4:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Inter:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Crimson-Pro:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Crimson-Text:400,400i,600,600i,700,700i');
-		
+
 		:root {
 			--color-fg: #000;
 			--color-bg: #fffaf3;
@@ -27,14 +27,14 @@
 			--name-gap: 0px;
 			--name-pad-bottom: 10px;
 			--name-typeface: inherit;
-			
+
 			box-sizing: border-box;
 		}
-		
+
 		*, *:before, *:after{
 			box-sizing: inherit;
 		}
-		
+
 		body {
 			font: var(--base-size)/var(--base-line-height) var(--base-font);
 			font-weight: var(--base-weight);
@@ -43,15 +43,15 @@
 			font-variant-ligatures: var(--ligatures);
 			overflow-y: scroll;
 		}
-		
+
 		p {
 			margin: var(--p-margin) 0;
 		}
-		
+
 		b {
 			font-weight: var(--bold-weight);
 		}
-		
+
 		main#resume{
 			width: 8.5in;
 			height: 11in;
@@ -60,7 +60,7 @@
 			display: flex;
 			flex-direction: column;
 		}
-		
+
 		header{
 			margin: 0;
 			display: flex;
@@ -69,29 +69,29 @@
 			gap: 10px 20px;
 			flex-wrap: wrap-reverse;
 		}
-		
+
 		#contact {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			text-align: right;
 		}
-		
+
 		:link, :visited {
 			color: inherit;
 			text-decoration: none;
 		}
-		
+
 		a:hover, a:active {
 			background: black;
 			box-shadow: 0 0 0 3px #000;
 			color: #fff;
 		}
-		
+
 		#contact p {
 			margin: 2px 0;
 		}
-		
+
 		#namebox {
 			background: #000;
 			color: #fff;
@@ -105,26 +105,26 @@
 			gap: var(--name-gap);
 			font-family: var(--name-typeface);
 		}
-		
+
 		#namebox .name {
 			font-weight: bold;
 			font-size: 2.5em;
 			margin: 0;
 		}
-		
+
 		#namebox .jobtitle {
 			font-size: 1.6em;
 			margin: 0;
 		}
-		
+
 		section {
 			margin: 0;
 		}
-		
+
 		section:nth-child(2) {
 			margin-top: -10px;
 		}
-		
+
 		footer {
 			margin: 0;
 			flex: 1 0;
@@ -134,7 +134,7 @@
 			text-align: center;
 			width: 100%;
 		}
-		
+
 		h1 {
 			font-size: var(--h1-size);
 			display: block;
@@ -147,7 +147,7 @@
 			letter-spacing: var(--h1-spacing);
 			text-transform: var(--h1-transform);
 		}
-		
+
 		summary{
 			display: flex;
 			width: 100%;
@@ -164,22 +164,22 @@
 			font-size: inherit;
 			font-weight: inherit;
 		}
-		
+
 		#education-certs p:not(.withabove){
 			display: flex;
 			justify-content: space-between;
 		}
-		
+
 		#education-certs p .dates {
 			align-self: end;
 		}
-		
+
 		span.dates {
 			text-align: right;
 			font-style: var(--dates-font-style);
 		}
-		
-		
+
+
 		ul{
 			margin: 0 0 0 0.1em;
 			padding-left: 1.2em;
@@ -188,7 +188,7 @@
 			content: '⬥  ';
 			font-size: 0.9em;
 		}
-		
+
 		.roundbullets{
 			li::marker{
 				content:'•  ';
@@ -196,7 +196,7 @@
 			}
 			ul{margin: 0;}
 		}
-		
+
 		li {
 			margin: var(--bullet-margin) 0;
 		}
@@ -209,7 +209,7 @@
 			margin-top: 0;
 			padding-left: 1.2em;
 		}
-		
+
 		footer p {
 			font-style: italic;
 			margin: 10px 0 0;
@@ -279,8 +279,19 @@
 			background: #000;
 			color: #fff;
 			font-weight: bold;
-			padding: 5px 8px 3px;
-			border: 1px solid #7fa;
+			padding: 5px 8px 5px;
+			border: 1px solid #777;
+			border-radius: 0 5px 5px 5px;
+			font-family: sans-serif;
+		}
+		.homelink:after{
+		    position: absolute;
+			bottom: 5px;
+			left: 5px;
+			width: calc(100% - 10px);
+			height: 1px;
+			content: '';
+			background: #7fa;
 		}
 		#zoominbtn, #zoomoutbtn {
 			position: fixed;
@@ -290,6 +301,19 @@
 			height: 60px;
 			bottom: 10px;
 			right: 10px;
+			background: radial-gradient(in oklab, #081c08, #000);
+			color: #fff;
+			border: 1px solid #777;
+			border-radius: 10px;
+			box-shadow: 0px 0px 6px 0px rgba(73, 73, 73, 0.63);;
+		}
+		#zoominbtn:hover, #zoomoutbtn:hover{
+		    color: #7fa;
+			background: radial-gradient(in oklab, #000, #275);
+		}
+		#zoominbtn:active, #zoomoutbtn:active {
+		    color: #000;
+			background: #7fa;
 		}
 		#zoominbtn {
 			bottom: 70px;
@@ -385,7 +409,7 @@
 			}
 		}
 	</style>
-	<a class="homelink" href="https://deal.digital/">◤Home</a>
+	<a class="homelink" href="https://deal.digital/">◤ Home</a>
 	<main id="resume">
 		<header>
 			<div id="namebox">
@@ -407,17 +431,17 @@
 				<ul>
 					<li>Codified institutional knowledge into standardized procedures and extensive documentation</li>
 					<li>Cut server footprint by 45% while expanding capabilities, improving reliability and performance</li>
-					<li>Spearheaded campus network modernization efforts on a tight budget with VLAN segmentation, link redundancy, 802.1x RADIUS auth; tuned wireless AP placement &amp; radio settings</li>
+					<li>Spearheaded campus network modernization, strategically deploying refurbished hardware and implementing VLAN segmentation, spanning tree, link redundancy, Wi-Fi 6, 802.1x RADIUS auth</li>
 					<li>Monitored, managed, serviced campus network/server infrastructure proactively and in response to tickets</li>
 					<li>Planned and deployed cost-effective solutions for MFA, server &amp; appliance backups, network monitoring, MDM, endpoint &amp; mail security, software deployment, asset tracking, video conferencing, team chat, employee portal, surveillance VMS, livestreaming, and ID badge management</li>
 					<li>Utilized open-source software to provide internal multi model LLM chat with tool access at low cost
-					<li>Mitigated security risks: implemented best practices, reduced exposed ports by 80%, replaced legacy systems
+					<li>Strengthened cybersecurity posture implementing best practices, MFA; reducing exposed ports by 80%
 					<li>Managed ~<b>1400</b> end-user devices with MDM including Chromebooks, iPads, Macs, Windows workstations</li>
 					<li>Led hybrid migration from on-premises Exchange 2010 to Exchange Online, overseeing planning, implementation, and successful cutover for over 160 users.</li>
-					<li>Wrote PowerShell scripts to create and manage over <b>1300</b> accounts across multiple systems</li>
+					<li>Automated account creation/management with PowerShell for over <b>1300</b> users across multiple systems</li>
 					<li>Hardened workstations against vulnerabilities, removed distractions, deployed software, printers, network shares, certificates, and menu layouts, configured third-party software with Group Policy and Intune</li>
 					<li>Designed technology lifecycle reports facilitating efficient budgeting and maintaining vendor support</li>
-					<li>Developed a Django web app frontend for access control system for door control &amp; attendance tracking</li>
+					<li>Developed a Django web app frontend to access control system for door control &amp; attendance tracking</li>
 				</ul>
 			</details>
 			<details open>
@@ -450,15 +474,15 @@
 			<p>Updated <time datetime="2025-06-13">2025-06-13</time>. Latest revision available at <a href="https://deal.digital/resume">deal.digital/resume</a>
 		</footer>
 	</main>
-	
-	
+
+
 	<div class="buttonbar">
 		<button id="printbtn" onclick="javascript:if(window.print) window.print()">Print</button>
 		<button id="toolsbtn" onclick="javascript:document.getElementById('tools').style.display=(document.getElementById('tools').style.display=='flex'?'none':'flex')">Tools</button>
 		<button id="zoominbtn" onclick="javascript:document.getElementById('resume').style.zoom=0.2+(document.getElementById('resume').style.zoom=='')+1*document.getElementById('resume').style.zoom">+</button>
 		<button id="zoomoutbtn" onclick="javascript:document.getElementById('resume').style.zoom=-0.2+(document.getElementById('resume').style.zoom=='')+1*document.getElementById('resume').style.zoom">-</button>
 	</div>
-	
+
 	<div id="tools">
 		<div class="optiongroup">
 			<label><input type="checkbox" id="darklight" onchange="javascript:if(window.matchMedia('(prefers-color-scheme: dark)').matches && this.checked && document.body.classList!='light'){document.body.classList='light'; this.checked=false} else {document.body.classList=this.checked?'dark':'light'}">Dark mode</label>
@@ -511,7 +535,7 @@
 				<label for="line-height">Line Height: </label>
 				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-line-height',this.value);">
 			</form>
-			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'" checked>Custom bullets</label>
+			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'">Custom bullets</label>
 			<form>
 				<label for="li-margin">Bullet Margin (em): </label>
 				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bullet-margin',this.value+'em');">
