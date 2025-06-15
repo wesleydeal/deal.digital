@@ -333,7 +333,7 @@
 		.buttonbar button {
 			opacity: 0.7;
 			width: 60px;
-			height: 60px;
+			height: 32px;
 			background: #000;
 			background: radial-gradient(in oklab, #000, #222);
 			color: #fff;
@@ -342,6 +342,9 @@
 			box-shadow: 0px 0px 6px 0px rgba(73, 73, 73, 0.63);
 			font-family: sans-serif;
 			position: relative;
+		}
+		#zoominbtn,#zoomoutbtn{
+		    height: 60px;
 		}
 		.buttonbar button:after{
 		    content: '';
@@ -498,7 +501,7 @@
 					<li>Planned and deployed cost-effective solutions for MFA, server &amp; appliance backups, network monitoring, MDM, endpoint &amp; mail security, software deployment, asset tracking, video conferencing, team chat, employee portal, surveillance VMS, livestreaming, and ID badge management</li>
 					<li>Utilized open-source software to provide internal multi model LLM chat with tool access at low cost
 					<li>Strengthened cybersecurity posture implementing best practices, MFA; reducing exposed ports by 80%
-					<li>Managed ~<b>1400</b> end-user devices with MDM including Chromebooks, iPads, Macs, Windows workstations</li>
+					<li>Administered ~<b>1400</b> end-user devices including Chromebooks, iPads, Macs, Windows workstations</li>
 					<li>Led hybrid migration from on-premises Exchange 2010 to Exchange Online, overseeing planning, implementation, and successful cutover for over 160 users.</li>
 					<li>Automated account creation/management with PowerShell for over <b>1300</b> users across multiple systems</li>
 					<li>Hardened workstations against vulnerabilities, removed distractions, deployed software, printers, network shares, certificates, and menu layouts, configured third-party software with Group Policy and Intune</li>
@@ -539,6 +542,7 @@
 
 
 	<div class="buttonbar">
+		<button id="mdbtn" onclick="javascript:window.open(window.URL.createObjectURL(new Blob([to_md()], {type: 'text/markdown;charset=utf-8'})))">.md</button>
 		<button id="printbtn" onclick="javascript:if(window.print) window.print()">Print</button>
 		<button id="toolsbtn" onclick="javascript:document.getElementById('tools').style.display=(document.getElementById('tools').style.display=='flex'?'none':'flex')">Tools</button>
 		<button id="zoominbtn" onclick="javascript:document.getElementById('resume').style.zoom=0.2+(document.getElementById('resume').style.zoom=='')+1*document.getElementById('resume').style.zoom">+</button>
@@ -562,13 +566,21 @@
                         document.getElementById('base-size').value = 11;
                         document.getElementById('base-weight').value = 400;
                         document.getElementById('bold-weight').value = 700;
+                        document.getElementById('dates-font-style').value = true;
+                        document.getElementById('line-height').value = 1.4;
+                        document.getElementById('custom-bullets').value= false;
+                        document.getElementById('li-margin').value = 0.1;
+                        document.getElementById('p-margin').value = 0.3;
                         document.getElementById('h1-uppercase').value = false;
              			document.getElementById('title_fonts').value = 'Spectral SC';
+                        document.getElementById('h1-size').value = 1.25;
+                        document.getElementById('h1-weight').value = 500;
+                        document.getElementById('h1-space').value = 0.04;
              			document.getElementById('name_fonts').value = 'inherit';
              			document.getElementById('name-pad-top').value = 10;
              			document.getElementById('name-gap').value = 0;
              			document.getElementById('name-pad-bottom').value = 10;
-                        for (x of ['darklight','editable','pageborder','ligatures','text_fonts','base-size','base-weight','bold-weight','h1-uppercase','title_fonts','name_fonts','name-pad-top','name-gap','name-pad-bottom']){
+                        for (x of ['darklight','editable','pageborder','ligatures','text_fonts','base-size','base-weight','bold-weight','dates-font-style','line-height','custom-bullets','li-margin','p-margin','h1-uppercase','title_fonts','h1-size','h1-weight','h1-space','name_fonts','name-pad-top','name-gap','name-pad-bottom']){
 						  el = document.getElementById(x);
 						  el.onchange?.();
 						  el.oninput?.();
@@ -576,13 +588,16 @@
 						break;
 					case 'Red Hat':
 					    document.getElementById('text_fonts').value = 'Red Hat Text';
+                        document.getElementById('dates-font-style').value = true;
 						document.getElementById('h1-uppercase').value = true;
 						document.getElementById('title_fonts').value = 'inherit';
+						document.getElementById('h1-size').value = 1.15;
+						document.getElementById('h1-space').value = 0.07;
 						document.getElementById('name_fonts').value = 'inherit';
 						document.getElementById('name-pad-top').value = 8;
 						document.getElementById('name-gap').value = 2;
 						document.getElementById('name-pad-bottom').value = 10;
-						for (x of ['text_fonts','h1-uppercase','title_fonts','name_fonts','name-pad-top','name-gap','name-pad-bottom']){
+						for (x of ['text_fonts','dates-font-style','h1-uppercase','title_fonts','h1-size','h1-space','name_fonts','name-pad-top','name-gap','name-pad-bottom']){
 						  el = document.getElementById(x);
 						  el.onchange?.();
 						  el.oninput?.();
@@ -641,7 +656,7 @@
 				<label for="line-height">Line Height: </label>
 				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-line-height',this.value);">
 			</form>
-			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'">Custom bullets</label>
+			<label><input type="checkbox" id="custom-bullets" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'">Custom bullets</label>
 			<form>
 				<label for="li-margin">● Margin (em): </label>
 				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bullet-margin',this.value+'em');">
@@ -748,5 +763,73 @@
 				document.getElementById('resume').style.zoom = (wheight-100) / rheight;
 			}
 		})();
+		function to_md(parent = "") {
+		    md = "";
+			if (parent == "") parent = document.getElementById("resume");
+			if (parent.childNodes.length < 1 && parent.nodeType != 8) {
+			    md += parent.textContent.replace(/ {4}|[\t\n\r]/gm,'');
+			    if (md == " ") md = "";
+			}
+			else for (child of parent.childNodes){
+				let el = child;
+				let classes = el.classList;
+			    switch (el.tagName){
+					case "H1":
+					    md += "\n\n# " + el.textContent;
+					    break;
+					case "H2":
+					    md += "\n\n## " + el.childNodes[0].textContent;
+					    md += "\n   " + el.childNodes[1].textContent.replace(' at ','');
+						break;
+					case "LI":
+					    md += "\n   * " + to_md(el);
+						break;
+					case "P":
+						let p = el;
+						if (p.nextElementSibling && p.nextElementSibling.classList.contains("withabove")) {
+							md += "\n" + to_md(p) + "  ";
+						} else if (p.classList.contains("withabove")) {
+							md += "\n  " + to_md(p) + "\n";
+						} else if (p.classList.contains("name")) {
+							md += "# " + to_md(p) + "\n";
+						}
+					    else {
+							md += "\n" + to_md(p) + "\n";
+						}
+						break;
+					case "I":
+					case "EM":
+					    md += "*" + to_md(el) + "*";
+						break;
+					case "B":
+					case "STRONG":
+					    md += "**" + to_md(el) + "**";
+					    break;
+					case "HEADER":
+						md += to_md(el) + "\n" + "* ".repeat(65);
+						break;
+					case "FOOTER":
+					    md += "\n" + "* ".repeat(65) + "\n" + to_md(el);
+						break;
+					case "A":
+						let href = el.href;
+						if (href != undefined){
+							md += "[" + to_md(el) + "](" + href + ")";
+						}
+						break;
+					case "SPAN":
+						if (el.classList.contains("dates")) {
+							md += ", " + to_md(el);
+						} else {
+							md += to_md(el);
+						}
+						break;
+					default:
+					    md += to_md(el);
+				}
+			}
+			if (parent.id == "resume") md += "\n";
+			return md;
+		}
 	</script>
 </html>
