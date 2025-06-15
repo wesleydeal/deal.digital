@@ -290,9 +290,13 @@
 		}
 		input[type="number"]{
 			width: 60px;
+			border: 1px solid #fff;
 		}
 		#tools select{
 		    max-width: 120px;
+			color: #fc3;
+			background: radial-gradient(ellipse 130% 100% at right in oklab, #fff3, transparent), #000;
+			border: 1px solid #fff;
 		}
 		.homelink {
 			position: absolute;
@@ -547,7 +551,7 @@
 			<label><input type="checkbox" id="editable" onchange="javascript:document.getElementById('resume').contentEditable=this.checked">Content Editable</label>
 			<label><input type="checkbox" id="pageborder" onchange="javascript:document.getElementById('resume').style.boxShadow=this.checked?'0 0 0 1px #fff inset, 2px 2px 5px 0 #000':''">Page Border</label>
 			<form>
-			    <label for="preset">Preset: </label>
+			    <label for="preset">Theme: </label>
 				<select id="preset" onchange="javascript:switch(this.value){
 			        case 'default':
 						document.getElementById('darklight').checked = false;
