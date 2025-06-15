@@ -283,13 +283,23 @@
 			top: 3px;
 			left: 3px;
 			background: #000;
-			background: radial-gradient(ellipse 130% 50% at top in oklab,#fff5,transparent), radial-gradient(ellipse 130% 50% at bottom in oklab, #040, #000);
+			background: linear-gradient(#ffff, transparent 2px), radial-gradient(ellipse 130% 50% at top in oklab,#fff3,transparent), radial-gradient(ellipse 130% 50% at bottom in oklab, #040, #000);
 			color: #fff;
 			font-weight: bold;
 			padding: 5px 8px 5px;
 			border: 1px solid #777;
 			border-radius: 5px;
 			font-family: sans-serif;
+		}
+		.homelink:before{
+		    content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 50%;
+			width: 100%;
+			background: linear-gradient(#fff6,transparent 80%);
+			border-radius: 5px 5px 20px 20px;
 		}
 		.homelink:after{
 		    position: absolute;
@@ -304,14 +314,24 @@
 			opacity: 0.7;
 			width: 60px;
 			height: 60px;
-			background: radial-gradient(in oklab, #081c08, #000 50%, #333 100%);
-			background: radial-gradient(ellipse 120% 20% at top in oklab,#fff3,transparent), radial-gradient(ellipse 120% 20% at bottom in oklab,#fff3,transparent), #000;
-			background: radial-gradient(in oklab, #000, #333);
+			background: #000;
+			background: radial-gradient(in oklab, #000, #222);
 			color: #fff;
 			border: 1px solid #777;
 			border-radius: 10px;
 			box-shadow: 0px 0px 6px 0px rgba(73, 73, 73, 0.63);
 			font-family: sans-serif;
+			position: relative;
+		}
+		.buttonbar button:after{
+		    content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 24px;
+			width: 100%;
+			background: linear-gradient(#fff6,transparent 80%);
+			border-radius: 10px 10px 25px 25px;
 		}
 		.buttonbar button:hover{
 		    color: #7fa;
@@ -326,7 +346,6 @@
 			padding-bottom: 4px;
 		}
 		#zoominbtn {
-			bottom: 74px;
 			font-size: 26px;
 		}
 
