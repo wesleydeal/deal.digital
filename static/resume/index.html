@@ -27,7 +27,8 @@
 			--name-gap: 0px;
 			--name-pad-bottom: 10px;
 			--name-typeface: inherit;
-
+			--gradient-bg-light: radial-gradient(ellipse at center, #fffd 0 calc(min(max(180px, 35vw), 700px)), transparent), repeating-linear-gradient(#0000 0 4px, #ffa37729 4px 5px), linear-gradient(135deg, #ffecde 0%, #e6e6ff 100%);
+			--gradient-bg-dark: repeating-linear-gradient(#0000 0 3px, #7771 3px 5px), radial-gradient(ellipse at 50% 20%, #1a0011, #001);
 			box-sizing: border-box;
 		}
 
@@ -39,9 +40,13 @@
 			font: var(--base-size)/var(--base-line-height) var(--base-font);
 			font-weight: var(--base-weight);
 			background: var(--color-bg);
+			background: var(--gradient-bg-light);
 			color: var(--color-fg);
 			font-variant-ligatures: var(--ligatures);
 			overflow-y: scroll;
+			min-height: 100vh;
+			background-size: cover;
+			background-attachment: fixed;
 		}
 
 		p {
@@ -218,16 +223,17 @@
 		}
 		.buttonbar{
 			position: fixed;
-			bottom: 0;
-			left: 0;
-			padding: 5px;
-			background: #333;
-			border-radius: 0 5px 0 0;
+			bottom: 10px;
+			right: 10px;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
 		}
 		#tools{
 			position: fixed;
-			bottom: 30px;
-			left: 0;
+			bottom: 10px;
+			right: 80px;
 			background: #222;
 			color: #fff;
 			border-radius: 3px;
@@ -294,26 +300,24 @@
 			content: '';
 			background: #7fa;
 		}
-		#zoominbtn, #zoomoutbtn {
-			position: fixed;
-			opacity: 0.8;
+		.buttonbar button {
+			opacity: 0.7;
 			width: 60px;
 			height: 60px;
-			bottom: 10px;
-			right: 10px;
 			background: radial-gradient(in oklab, #081c08, #000 50%, #333 100%);
-			background: radial-gradient(ellipse 130% 30% at top in oklab,#fff3,transparent), radial-gradient(ellipse 130% 30% at bottom in oklab,#fff3,transparent), radial-gradient(ellipse 100% 100% at center in oklab, #020, #000 50%);
+			background: radial-gradient(ellipse 120% 20% at top in oklab,#fff3,transparent), radial-gradient(ellipse 120% 20% at bottom in oklab,#fff3,transparent), #000;
+			background: radial-gradient(in oklab, #000, #333);
 			color: #fff;
 			border: 1px solid #777;
 			border-radius: 10px;
 			box-shadow: 0px 0px 6px 0px rgba(73, 73, 73, 0.63);
 			font-family: sans-serif;
 		}
-		#zoominbtn:hover, #zoomoutbtn:hover{
+		.buttonbar button:hover{
 		    color: #7fa;
 			background: radial-gradient(in oklab, #000, #275);
 		}
-		#zoominbtn:active, #zoomoutbtn:active {
+		.buttonbar button:active {
 		    color: #000;
 			background: #7fa;
 		}
@@ -327,6 +331,10 @@
 		}
 
 		@media only screen and (max-width: 9in){
+		    :root{
+				--gradient-bg-light: var(--color-bg);
+				--gradient-bg-dark: var(--color-fg);
+			}
 			body{
 				margin: 0;
 				padding: 0;
@@ -345,6 +353,10 @@
 				flex-direction: row;
 				justify-content: center;
 			}
+			.buttonbar button{
+			    height: 32px;
+				width: 50px;
+			}
 			#zoominbtn, #zoomoutbtn{
 				display: none;
 			}
@@ -353,6 +365,7 @@
 		@media(prefers-color-scheme: dark){
 			body:not(.light){
 				background: #131111;
+				background: var(--gradient-bg-dark);
 				color: #fffafa;
 
 				& #namebox{
@@ -367,6 +380,7 @@
 		@media only screen{
 			body.dark{
 				background: #131111;
+				background: var(--gradient-bg-dark);
 				color: #fffafa;
 
 				& #namebox{
@@ -383,6 +397,8 @@
 			:root{
 				--color-fg: #000 !important;
 				--color-bg: #fff !important;
+				--gradient-bg-light: #fff !important;
+				--gradient-bg-dark: #fff !important;
 			}
 			@page{
 				size: 8.5in 11in;
