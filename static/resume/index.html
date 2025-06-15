@@ -233,43 +233,56 @@
 		#tools{
 			position: fixed;
 			bottom: 10px;
-			right: 80px;
-			background: #222;
+			right: 74px;
+			background: #000;
 			color: #fff;
-			border-radius: 3px;
 			display: none;
 			padding: 5px;
 			flex-direction: column;
-			width: 220px;
+			width: 210px;
 			gap: 5px;
 			font: 14px/1 sans-serif;
 			opacity: 0.9;
 			max-height: calc(100vh - 40px);
 			overflow-y: auto;
 		}
+		#tools label{
+		    padding-left: 5px;
+		}
 		#tools label:has(> input){
-			background: #a00;
-			padding: 0 0 4px;
+			background: linear-gradient(230deg, #a00, #500 60px);
+			padding: 2px 5px;
+			border-radius: 3px;
+			display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #666;
 		}
 		#tools label:has(> input:checked){
-			background: #075;
+			background: linear-gradient(to left, #195, #053 60px);
+		}
+		#tools label:has(> input):hover{
+            filter: brightness(120%);
 		}
 		#tools form{
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			border-bottom: 1px solid #543;
 		}
 		.optiongroup {
-			padding: 5px 5px;
+			padding: 0;
 			border: 1px solid #fc3;
 			display: flex;
 			flex-direction: column;
-			gap: 3px;
+			gap: px;
 			background: #000;
 			border-radius: 3px;
 		}
-		.optiongroup:hover{
-			background: #002;
+		#tools form:hover{
+			background: linear-gradient(to right, #003, #008);
+			border-bottom-color: orange;
 		}
 		input{
 			color: #fc3;
@@ -277,6 +290,9 @@
 		}
 		input[type="number"]{
 			width: 60px;
+		}
+		#tools select{
+		    max-width: 120px;
 		}
 		.homelink {
 			position: absolute;
@@ -539,13 +555,16 @@
 						document.getElementById('pageborder').checked = false;
 						document.getElementById('ligatures').checked = true;
               		    document.getElementById('text_fonts').value = 'Spectral';
+                        document.getElementById('base-size').value = 11;
+                        document.getElementById('base-weight').value = 400;
+                        document.getElementById('bold-weight').value = 700;
                         document.getElementById('h1-uppercase').value = false;
              			document.getElementById('title_fonts').value = 'Spectral SC';
              			document.getElementById('name_fonts').value = 'inherit';
-             			document.getElementById('name-pad-top').value = 8;
-             			document.getElementById('name-gap').value = 2;
+             			document.getElementById('name-pad-top').value = 10;
+             			document.getElementById('name-gap').value = 0;
              			document.getElementById('name-pad-bottom').value = 10;
-                        for (x of ['darklight','editable','pageborder','ligatures','text_fonts','h1-uppercase','title_fonts','name_fonts','name-pad-top','name-gap','name-pad-bottom']){
+                        for (x of ['darklight','editable','pageborder','ligatures','text_fonts','base-size','base-weight','bold-weight','h1-uppercase','title_fonts','name_fonts','name-pad-top','name-gap','name-pad-bottom']){
 						  el = document.getElementById(x);
 						  el.onchange?.();
 						  el.oninput?.();
@@ -574,7 +593,7 @@
 		<div class="optiongroup">
 			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.style.setProperty('--ligatures',this.checked?'normal':'none')" checked>Ligatures</label>
 			<form>
-				<label for="text_fonts">Text: </label>
+				<label for="text_fonts">Body: </label>
 				<select id="text_fonts" onchange="javascript:document.documentElement.style.setProperty('--base-font',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
 					<option value="Spectral">Spectral</option>
 					<option value="serif">serif</option>
@@ -613,18 +632,18 @@
 				<label for="bold-weight">Bold Weight: </label>
 				<input type="number" id="bold-weight" min="100" max="1000" value="700" step=5 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bold-weight',this.value);">
 			</form>
-			<label><input type="checkbox" id="dates-font-style" onchange="javascript:document.documentElement.style.setProperty('--dates-font-style',this.checked?'italic':'normal')" checked>Dates Italicized</label>
+			<label><input type="checkbox" id="dates-font-style" onchange="javascript:document.documentElement.style.setProperty('--dates-font-style',this.checked?'italic':'normal')" checked><i>Italic Dates</i></label>
 			<form>
 				<label for="line-height">Line Height: </label>
 				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-line-height',this.value);">
 			</form>
 			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'">Custom bullets</label>
 			<form>
-				<label for="li-margin">Bullet Margin (em): </label>
+				<label for="li-margin">● Margin (em): </label>
 				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bullet-margin',this.value+'em');">
 			</form>
 			<form>
-				<label for="p-margin">&lt;p&gt; Margin (em): </label>
+				<label for="p-margin">¶ Margin (em): </label>
 				<input type="number" id="p-margin" min="0" max="1" value="0.3" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--p-margin',this.value+'em');">
 			</form>
 		</div>
@@ -704,15 +723,15 @@
 				</select>
 			</form>
 			<form>
-				<label for="name-pad-top">Name Pad Top (px): </label>
+				<label for="name-pad-top">Space ↥ (px): </label>
 				<input type="number" id="name-pad-top" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-pad-top',this.value+'px')">
 			</form>
 			<form>
-				<label for="name-gap">Name Gap (px): </label>
+				<label for="name-gap">Space ↕ (px): </label>
 				<input type="number" id="name-gap" min="0" max="20" value="0" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-gap',this.value+'px')">
 			</form>
 			<form>
-				<label for="name-pad-bottom">Name Pad Bottom (px): </label>
+				<label for="name-pad-bottom">Space ↧ (px): </label>
 				<input type="number" id="name-pad-bottom" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-pad-bottom',this.value+'px')">
 			</form>
 		</div>
