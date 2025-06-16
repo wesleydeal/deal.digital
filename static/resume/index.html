@@ -232,7 +232,7 @@
 			position: fixed;
 			bottom: 10px;
 			right: 74px;
-			background: #000;
+			background: #000a;
 			color: #fff;
 			display: none;
 			padding: 5px;
@@ -240,9 +240,9 @@
 			width: 180px;
 			gap: 5px;
 			font: 14px/1 "Red Hat Text", sans-serif;
-			opacity: 0.9;
 			max-height: calc(100vh - 40px);
 			overflow-y: auto;
+			border-radius: 5px;
 		}
 		#tools label{
 		    padding-left: 3px;
@@ -286,13 +286,26 @@
 		input{
 			color: #fc3;
 			background: #002;
-			box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #fff9;
+			box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #ffffff6e;
+			appearance: none;
 		}
 		input[type="number"]{
 			flex: 0 1 54px;
 			min-width: 40px;
 			max-width: 54px;
 			border: 1px solid #fff;
+		}
+		input[type="checkbox"]{
+			margin: 2px 0;
+		}
+		input[type="checkbox"]:after{
+			content: '';
+		    width: 14px;
+		    height: 14px;
+		    display: block;
+		}
+		input[type="checkbox"]:checked:after{
+			background: radial-gradient(at top left, #ffe187, #f5c943) center / 75% 75% no-repeat;
 		}
 		#tools select{
 		    flex: 1 1 100px;
