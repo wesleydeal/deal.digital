@@ -289,13 +289,13 @@
 			box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #fff9;
 		}
 		input[type="number"]{
-			flex: 0 1 60px;
+			flex: 0 1 50px;
 			min-width: 40px;
-			max-width: 60px;
+			max-width: 50px;
 			border: 1px solid #fff;
 		}
 		#tools select{
-		    flex: 1 1 120px;
+		    flex: 1 1 100px;
 			min-width: 60px;
 			color: #fc3;
 			background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(270deg, #fc3 4px, transparent 4px), #112;
@@ -558,9 +558,10 @@
 			<label><input type="checkbox" id="pageborder" onchange="javascript:document.getElementById('resume').style.boxShadow=this.checked?'0 0 0 1px #fff inset, 2px 2px 5px 0 #000':''">Page Border</label>
 			<form>
 			    <label for="preset">Theme: </label>
-				<select id="preset" onchange="javascript:setTheme(this.value)">
+				<select id="preset" onchange="javascript:setTheme(this.value)" onclick="javascript:setTheme(this.value)">
 				    <option value="default" selected>Default</option>
-					<option value="Red Hat">Red Hat Text</option>
+					<option value="modern">Modern/Red Hat</option>
+					<option value="traditional">Traditional</option>
 				</select>
 			</form>
 		</div>
@@ -595,7 +596,7 @@
 				</select>
 			</form>
 			<form>
-				<label for="base-size">Base Size (pt): </label>
+				<label for="base-size">Size (pt): </label>
 				<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-size',this.value+'pt')">
 			</form>
 			<form>
@@ -613,16 +614,16 @@
 			</form>
 			<label><input type="checkbox" id="custom-bullets" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'">Custom bullets</label>
 			<form>
-				<label for="li-margin">● Margin (em): </label>
+				<label for="li-margin">● ↕ (em): </label>
 				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bullet-margin',this.value+'em');">
 			</form>
 			<form>
-				<label for="p-margin">¶ Margin (em): </label>
+				<label for="p-margin">¶ ↕ (em): </label>
 				<input type="number" id="p-margin" min="0" max="1" value="0.3" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--p-margin',this.value+'em');">
 			</form>
 		</div>
 		<div class="optiongroup">
-			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.documentElement.style.setProperty('--h1-transform',this.checked?'uppercase':'none');">Uppercase Headings</label>
+			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.documentElement.style.setProperty('--h1-transform',this.checked?'uppercase':'none');">🡅 HEADINGS</label>
 			<form>
 				<label for="title_fonts">H1s: </label>
 				<select id="title_fonts" onchange="javascript:document.documentElement.style.setProperty('--h1-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
@@ -662,7 +663,7 @@
 				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="5" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-weight',this.value)">
 			</form>
 			<form>
-				<label for="h1-space">Spacing (em): </label>
+				<label for="h1-space">A↔a (em): </label>
 				<input type="number" id="h1-space" min="-1.0" max="2.0" value="0.04" step="0.01" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-spacing',this.value+'em')">
 			</form>
 		</div>
@@ -718,6 +719,8 @@
 				document.getElementById('resume').style.zoom = (wheight-100) / rheight;
 			}
 		})();
+
+		function fromID(id) { return document.getElementById(id); }
 		
 		function to_md(parent = "") {
 		    md = "";
@@ -799,49 +802,58 @@
 		}
 		
 		function setTheme(theme){
+			fromID('darklight').checked = false;
+			fromID('editable').checked = false;
+			fromID('pageborder').checked = false;
+			fromID('ligatures').checked = true;
+			fromID('text_fonts').value = 'Spectral';
+			fromID('base-size').value = 11;
+			fromID('base-weight').value = 400;
+			fromID('bold-weight').value = 700;
+			fromID('dates-font-style').value = true;
+			fromID('line-height').value = 1.4;
+			fromID('custom-bullets').value= false;
+			fromID('li-margin').value = 0.1;
+			fromID('p-margin').value = 0.3;
+			fromID('h1-uppercase').value = false;
+			fromID('title_fonts').value = 'Spectral SC';
+			fromID('h1-size').value = 1.25;
+			fromID('h1-weight').value = 500;
+			fromID('h1-space').value = 0.04;
+			fromID('name_fonts').value = 'inherit';
+			fromID('name-pad-top').value = 10;
+			fromID('name-gap').value = 0;
+			fromID('name-pad-bottom').value = 10;
 			switch(theme){
-				case 'default':
-					document.getElementById('darklight').checked = false;
-					document.getElementById('editable').checked = false;
-					document.getElementById('pageborder').checked = false;
-					document.getElementById('ligatures').checked = true;
-					document.getElementById('text_fonts').value = 'Spectral';
-					document.getElementById('base-size').value = 11;
-					document.getElementById('base-weight').value = 400;
-					document.getElementById('bold-weight').value = 700;
-					document.getElementById('dates-font-style').value = true;
-					document.getElementById('line-height').value = 1.4;
-					document.getElementById('custom-bullets').value= false;
-					document.getElementById('li-margin').value = 0.1;
-					document.getElementById('p-margin').value = 0.3;
-					document.getElementById('h1-uppercase').value = false;
-					document.getElementById('title_fonts').value = 'Spectral SC';
-					document.getElementById('h1-size').value = 1.25;
-					document.getElementById('h1-weight').value = 500;
-					document.getElementById('h1-space').value = 0.04;
-					document.getElementById('name_fonts').value = 'inherit';
-					document.getElementById('name-pad-top').value = 10;
-					document.getElementById('name-gap').value = 0;
-					document.getElementById('name-pad-bottom').value = 10;
+				case 'modern':
+					fromID('text_fonts').value = 'Red Hat Text';
+					fromID('dates-font-style').value = true;
+					fromID('h1-uppercase').value = true;
+					fromID('title_fonts').value = 'inherit';
+					fromID('h1-size').value = 1.15;
+					fromID('h1-space').value = 0.07;
+					fromID('name_fonts').value = 'inherit';
+					fromID('name-pad-top').value = 8;
+					fromID('name-gap').value = 2;
+					fromID('name-pad-bottom').value = 10;
 					break;
-				case 'Red Hat':
-					document.getElementById('text_fonts').value = 'Red Hat Text';
-					document.getElementById('dates-font-style').value = true;
-					document.getElementById('h1-uppercase').value = true;
-					document.getElementById('title_fonts').value = 'inherit';
-					document.getElementById('h1-size').value = 1.15;
-					document.getElementById('h1-space').value = 0.07;
-					document.getElementById('name_fonts').value = 'inherit';
-					document.getElementById('name-pad-top').value = 8;
-					document.getElementById('name-gap').value = 2;
-					document.getElementById('name-pad-bottom').value = 10;
+				case 'traditional':
+					fromID('darklight').checked = false;
+					fromID('text_fonts').value = 'STIX Two Text';
+					fromID('bold-weight').value = 600;
+					fromID('title_fonts').value = 'inherit';
+					fromID('name_fonts').value = 'inherit';
+					fromID('line-height').value = 1.33;
+					fromID('name-pad-top').value = 11;
+					fromID('name-gap').value = 0;
+					fromID('name-pad-bottom').value = 9;
 					break;
-				}
-				for (x of ['darklight','editable','pageborder','ligatures','text_fonts','base-size','base-weight','bold-weight','dates-font-style','line-height','custom-bullets','li-margin','p-margin','h1-uppercase','title_fonts','h1-size','h1-weight','h1-space','name_fonts','name-pad-top','name-gap','name-pad-bottom']){
-					el = document.getElementById(x);
-					el.onchange?.();
-					el.oninput?.();
-				}
+			}
+			for (x of ['darklight','editable','pageborder','ligatures','text_fonts','base-size','base-weight','bold-weight','dates-font-style','line-height','custom-bullets','li-margin','p-margin','h1-uppercase','title_fonts','h1-size','h1-weight','h1-space','name_fonts','name-pad-top','name-gap','name-pad-bottom']){
+				el = fromID(x);
+				el.onchange?.();
+				el.oninput?.();
+			}
 		}
 	</script>
 </html>
