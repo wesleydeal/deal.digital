@@ -248,17 +248,17 @@
 		    padding-left: 5px;
 		}
 		#tools label:has(> input){
-			background: linear-gradient(230deg, #a00, #500 60px);
+			background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(230deg, #a00, #500 60px);
 			padding: 2px 5px;
-			border-radius: 3px;
 			display: flex;
             flex-direction: row-reverse;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #666;
+			text-shadow: 1px 1px black;
 		}
 		#tools label:has(> input:checked){
-			background: linear-gradient(to left, #195, #053 60px);
+			background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(to left, #195, #053 60px);
 		}
 		#tools label:has(> input):hover{
             filter: brightness(120%);
@@ -274,7 +274,7 @@
 			border: 1px solid #fc3;
 			display: flex;
 			flex-direction: column;
-			gap: px;
+			overflow: hidden;
 			background: #000;
 			border-radius: 3px;
 		}
@@ -284,7 +284,8 @@
 		}
 		input{
 			color: #fc3;
-			background: #001;
+			background: #002;
+			box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #fff9;
 		}
 		input[type="number"]{
 			width: 60px;
@@ -293,8 +294,12 @@
 		#tools select{
 		    max-width: 120px;
 			color: #fc3;
-			background: radial-gradient(ellipse 130% 100% at right in oklab, #fff3, transparent), #000;
+			background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(270deg, #fc3 4px, transparent 4px), #112;
 			border: 1px solid #fff;
+			appearance: none;
+			box-shadow: inset 1px 1px 3px #fff4, inset -1px -1px 4px #0005;
+			padding: 1px 6px 1px 3px;
+			text-shadow: 1px 1px #000;
 		}
 		.homelink {
 			position: absolute;
