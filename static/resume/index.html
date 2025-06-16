@@ -8,7 +8,7 @@
 
 		:root {
 			--color-fg: #000;
-			--color-bg: #fffaf3;
+			--color-bg: #fff4f3;
 			--base-size: 11pt;
 			--base-line-height: 1.4;
 			--base-font: 'Spectral';
@@ -27,8 +27,8 @@
 			--name-gap: 0px;
 			--name-pad-bottom: 10px;
 			--name-typeface: inherit;
-			--image-bg-light: radial-gradient(at top right, #fff6, transparent) 0/cover fixed, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.35' filter='url(%23a)'/%3E%3C/svg%3E") 0 / 250px #fffaf3;
-			--image-bg-dark: radial-gradient(ellipse at 0 0, #ff00bb07, transparent) 0/cover fixed, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.15' filter='url(%23a)'/%3E%3C/svg%3E") 0 / 150px #120c10;
+			--image-bg-light: radial-gradient(at top right, #fff6, transparent) 0/cover fixed, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.35' filter='url(%23a)'/%3E%3C/svg%3E") 0 / 250px #fff4f3;
+			--image-bg-dark: radial-gradient(ellipse at 0 0 in oklch, #2105, transparent 60%) 0/cover, linear-gradient(300deg in oklch, #0006, transparent 50%) 0/cover fixed, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.15' filter='url(%23a)'/%3E%3C/svg%3E") 0 / 150px #110c12;
 			box-sizing: border-box;
 		}
 
@@ -219,15 +219,6 @@
 			font-size: .8em;
 			line-height: 1;
 		}
-		.buttonbar{
-			position: fixed;
-			bottom: 10px;
-			right: 10px;
-			padding: 0;
-			display: flex;
-			flex-direction: column;
-			gap: 4px;
-		}
 		#tools{
 			position: fixed;
 			bottom: 10px;
@@ -326,10 +317,10 @@
 			background: #000;
 			background: linear-gradient(#ffff, transparent 2px), radial-gradient(ellipse 130% 50% at top in oklab,#fff3,transparent), radial-gradient(ellipse 130% 50% at bottom in oklab, #040, #000);
 			color: #fff;
-			padding: 5px 8px 5px;
+			padding: 4px 8px 5px;
 			border: 1px solid #777;
 			border-radius: 5px;
-			font-family: "Red Hat Text", sans-serif;
+			font: 600 16px/1.4 "Red Hat Text", sans-serif;
 		}
 		.homelink:before{
 		    content: '';
@@ -343,12 +334,21 @@
 		}
 		.homelink:after{
 		    position: absolute;
-			bottom: 5px;
+			bottom: 4px;
 			left: 5px;
 			width: calc(100% - 10px);
 			height: 1px;
 			content: '';
 			background: #7fa;
+		}
+		.buttonbar{
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
 		}
 		.buttonbar button {
 			opacity: 0.7;
@@ -360,7 +360,7 @@
 			border: 1px solid #777;
 			border-radius: 5px;
 			box-shadow: 0px 0px 6px 0px rgba(73, 73, 73, 0.63);
-			font-family: "Red Hat Text", sans-serif;
+			font: 500 16px/1.3 "Red Hat Text", sans-serif;
 			position: relative;
 		}
 		#zoominbtn,#zoomoutbtn{
