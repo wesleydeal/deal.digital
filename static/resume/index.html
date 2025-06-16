@@ -237,12 +237,13 @@
 			display: none;
 			padding: 5px;
 			flex-direction: column;
-			width: 180px;
+			//width: 180px;
 			gap: 5px;
 			font: 14px/1 "Red Hat Text", sans-serif;
 			max-height: calc(100vh - 40px);
 			overflow-y: auto;
 			border-radius: 5px;
+			flex-wrap: wrap;
 		}
 		#tools label{
 		    padding-left: 3px;
@@ -288,12 +289,12 @@
 			background: #002;
 			box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #ffffff6e;
 			appearance: none;
+			border: 1px solid #fffa;
 		}
 		input[type="number"]{
 			flex: 0 1 54px;
 			min-width: 40px;
 			max-width: 54px;
-			border: 1px solid #fff;
 		}
 		input[type="checkbox"]{
 			margin: 2px 0;
@@ -312,7 +313,7 @@
 			min-width: 60px;
 			color: #fc3;
 			background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(270deg, #fc3 4px, transparent 4px), #112;
-			border: 1px solid #fff;
+			border: 1px solid #fffa;
 			appearance: none;
 			box-shadow: inset 1px 1px 3px #fff4, inset -1px -1px 4px #0005;
 			padding: 1px 6px 1px 3px;
@@ -636,7 +637,7 @@
 			</form>
 		</div>
 		<div class="optiongroup">
-			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.documentElement.style.setProperty('--h1-transform',this.checked?'uppercase':'none');">🡅 HEADINGS</label>
+			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.documentElement.style.setProperty('--h1-transform',this.checked?'uppercase':'none');">⇧ HEADINGS</label>
 			<form>
 				<label for="title_fonts">H1s: </label>
 				<select id="title_fonts" onchange="javascript:document.documentElement.style.setProperty('--h1-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
