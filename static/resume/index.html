@@ -289,9 +289,9 @@
 			box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #fff9;
 		}
 		input[type="number"]{
-			flex: 0 1 50px;
+			flex: 0 1 54px;
 			min-width: 40px;
-			max-width: 50px;
+			max-width: 54px;
 			border: 1px solid #fff;
 		}
 		#tools select{
@@ -721,6 +721,14 @@
 		})();
 
 		function fromID(id) { return document.getElementById(id); }
+		function setField(id, value) {
+			let el = document.getElementById(id);
+			if (el.type == "checkbox"){
+				el.checked = value;
+			} else {
+				el.value = value;
+			}
+		}
 		
 		function to_md(parent = "") {
 		    md = "";
@@ -802,12 +810,12 @@
 		}
 		
 		function setTheme(theme){
-			fromID('darklight').checked = false;
-			fromID('editable').checked = false;
-			fromID('pageborder').checked = false;
-			fromID('ligatures').checked = true;
-			fromID('text_fonts').value = 'Spectral';
-			fromID('base-size').value = 11;
+			setField('darklight', false);
+			setField('editable', false);
+			setField('pageborder', false);
+			setField('ligatures', false);
+			setField('text_fonts', 'Spectral');
+			setField('base-size', 11);
 			fromID('base-weight').value = 400;
 			fromID('bold-weight').value = 700;
 			fromID('dates-font-style').value = true;
