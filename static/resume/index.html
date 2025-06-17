@@ -252,20 +252,20 @@
 		}
 		#tools{
 			position: fixed;
-			bottom: 10px;
+			bottom: 7px;
 			right: 74px;
 			background: #000a;
 			color: #fff;
 			display: none;
-			padding: 5px;
+			padding: 4px;
 			flex-direction: column;
-			//width: 180px;
-			gap: 5px;
+			gap: 4px;
 			font: 14px/1 "Red Hat Text", sans-serif;
 			max-height: calc(100vh - 40px);
 			overflow-y: auto;
 			border-radius: 5px;
 			flex-wrap: wrap;
+			box-shadow: 0px 0px 6px 0px rgba(73, 73, 73, 0.63)
 		}
 		#tools label{
 		    padding-left: 3px;
@@ -278,11 +278,12 @@
             flex-direction: row-reverse;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #666;
+            border-bottom: 1px solid #912929;
 			text-shadow: 1px 1px black;
 		}
 		#tools label:has(> input:checked){
 			background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(to left, #195, #053 60px);
+			border-bottom: 1px solid #0f6b26;
 		}
 		#tools label:has(> input):hover{
             filter: brightness(120%);
@@ -299,8 +300,7 @@
 			display: flex;
 			flex-direction: column;
 			overflow: hidden;
-			background: #000;
-			border-radius: 3px;
+			background: #0009;
 		}
 		#tools form:hover{
 			background: linear-gradient(to right, #003, #008);
@@ -312,6 +312,8 @@
 			box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #ffffff6e;
 			appearance: none;
 			border: 1px solid #fffa;
+			font: 500 12px / 1 "Red Hat Text", sans-serif;
+			padding: 1px 2px 0;
 		}
 		input[type="number"]{
 			flex: 0 1 54px;
@@ -320,6 +322,7 @@
 		}
 		input[type="checkbox"]{
 			margin: 2px 0;
+			padding: 0;
 		}
 		input[type="checkbox"]:after{
 			content: '';
@@ -328,7 +331,7 @@
 		    display: block;
 		}
 		input[type="checkbox"]:checked:after{
-			background: radial-gradient(at top left, #ffe187, #f5c943) center / 75% 75% no-repeat;
+			background: radial-gradient(at 10% 10%, #ffefbe, #c19718) center / 75% 75% no-repeat;
 		}
 		#tools select{
 		    flex: 1 1 100px;
@@ -338,8 +341,9 @@
 			border: 1px solid #fffa;
 			appearance: none;
 			box-shadow: inset 1px 1px 3px #fff4, inset -1px -1px 4px #0005;
-			padding: 1px 6px 1px 3px;
+			padding: 2px 6px 2px 2px;
 			text-shadow: 1px 1px #000;
+			font: 500 13px / 1 "Red Hat Text", sans-serif;
 		}
 		.homelink {
 			position: absolute;
@@ -606,10 +610,10 @@
 			<label><input type="checkbox" id="editable" onchange="javascript:document.getElementById('resume').contentEditable=this.checked">Content Editable</label>
 			<label><input type="checkbox" id="pageborder" onchange="javascript:document.getElementById('resume').style.boxShadow=this.checked?'0 0 0 1px #fff inset, 2px 2px 5px 0 #000':''">Page Border</label>
 			<form>
-			    <label for="preset">Theme: </label>
+			    <label for="preset">Theme</label>
 				<select id="preset" onchange="javascript:setTheme(this.value)" onclick="javascript:setTheme(this.value)">
 				    <option value="default" selected>Default</option>
-					<option value="modern">Modern/Red Hat</option>
+					<option value="modern">Modern</option>
 					<option value="traditional">Traditional</option>
 				</select>
 			</form>
@@ -617,7 +621,7 @@
 		<div class="optiongroup">
 			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.style.setProperty('--ligatures',this.checked?'normal':'none')" checked>Ligatures</label>
 			<form>
-				<label for="text_fonts">Body: </label>
+				<label for="text_fonts">Body</label>
 				<select id="text_fonts" onchange="javascript:document.documentElement.style.setProperty('--base-font',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
 					<option value="Spectral">Spectral</option>
 					<option value="serif">serif</option>
@@ -645,36 +649,36 @@
 				</select>
 			</form>
 			<form>
-				<label for="base-size">Size (pt): </label>
+				<label for="base-size">Size (pt)</label>
 				<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-size',this.value+'pt')">
 			</form>
 			<form>
-				<label for="base-weight">Weight: </label>
+				<label for="base-weight">Weight</label>
 				<input type="number" id="base-weight" min="100" max="1000" value="400" step=5 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-weight',this.value);">
 			</form>
 			<form>
-				<label for="bold-weight">Bold Weight: </label>
+				<label for="bold-weight">Bold Weight</label>
 				<input type="number" id="bold-weight" min="100" max="1000" value="700" step=5 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bold-weight',this.value);">
 			</form>
 			<label><input type="checkbox" id="dates-font-style" onchange="javascript:document.documentElement.style.setProperty('--dates-font-style',this.checked?'italic':'normal')" checked><i>Italic Dates</i></label>
 			<form>
-				<label for="line-height">Line Height: </label>
+				<label for="line-height">Line Height</label>
 				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-line-height',this.value);">
 			</form>
 			<label><input type="checkbox" id="custom-bullets" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'">Custom bullets</label>
 			<form>
-				<label for="li-margin">● ↕ (em): </label>
+				<label for="li-margin">● ↕ (em)</label>
 				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bullet-margin',this.value+'em');">
 			</form>
 			<form>
-				<label for="p-margin">¶ ↕ (em): </label>
+				<label for="p-margin">¶ ↕ (em)</label>
 				<input type="number" id="p-margin" min="0" max="1" value="0.3" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--p-margin',this.value+'em');">
 			</form>
 		</div>
 		<div class="optiongroup">
 			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.documentElement.style.setProperty('--h1-transform',this.checked?'uppercase':'none');">⇧ HEADINGS</label>
 			<form>
-				<label for="title_fonts">H1s: </label>
+				<label for="title_fonts">H1 Font</label>
 				<select id="title_fonts" onchange="javascript:document.documentElement.style.setProperty('--h1-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
 					<option value="Spectral SC">Spectral SC</option>
 					<option value="inherit">inherit</option>
@@ -704,22 +708,22 @@
 				</select>
 			</form>
 			<form>
-				<label for="h1-size">Size (em): </label>
+				<label for="h1-size">Size (em)</label>
 				<input type="number" id="h1-size" min="1" max="2" value="1.25" step="0.01" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-size',this.value+'em');">
 			</form>
 			<form>
-				<label for="h1-weight">Weight: </label>
+				<label for="h1-weight">Weight</label>
 				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="5" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-weight',this.value)">
 			</form>
 			<form>
-				<label for="h1-space">A↔a (em): </label>
+				<label for="h1-space">A↔a (em)</label>
 				<input type="number" id="h1-space" min="-1.0" max="2.0" value="0.04" step="0.01" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-spacing',this.value+'em')">
 			</form>
 		</div>
 		<div class="optiongroup">
 			<label><input type="checkbox" id="simple-header" onchange="javascript:console.log(this);document.querySelector('header').classList[this.checked?'add':'remove']('simple');">Simple Header</label>
 			<form>
-				<label for="name_fonts">Name: </label>
+				<label for="name_fonts">Name</label>
 				<select id="name_fonts" onchange="javascript:document.documentElement.style.setProperty('--name-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);" selected="inherit">
 					<option value="inherit">inherit</option>
 					<option value="Spectral">Spectral</option>
@@ -748,15 +752,15 @@
 				</select>
 			</form>
 			<form>
-				<label for="name-pad-top">Space ↥ (px): </label>
+				<label for="name-pad-top">Space ↥ (px)</label>
 				<input type="number" id="name-pad-top" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-pad-top',this.value+'px')">
 			</form>
 			<form>
-				<label for="name-gap">Space ↕ (px): </label>
+				<label for="name-gap">Space ↕ (px)</label>
 				<input type="number" id="name-gap" min="0" max="20" value="0" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-gap',this.value+'px')">
 			</form>
 			<form>
-				<label for="name-pad-bottom">Space ↧ (px): </label>
+				<label for="name-pad-bottom">Space ↧ (px)</label>
 				<input type="number" id="name-pad-bottom" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-pad-bottom',this.value+'px')">
 			</form>
 		</div>
