@@ -615,6 +615,7 @@
 				    <option value="default" selected>Default</option>
 					<option value="modern">Modern</option>
 					<option value="traditional">Traditional</option>
+					<option value="tight">Tight</option>
 				</select>
 			</form>
 		</div>
@@ -914,6 +915,21 @@
 					setField('name_fonts', 'inherit');
 					setField('line-height', 1.33);
 					setField('h1-uppercase', true);
+					setField('simple-header', true);
+					setField('name-pad-top', 5);
+					setField('name-pad-bottom', 0);
+					break;
+				case 'tight':
+					setField('text_fonts', 'Libre Baskerville');
+					setField('base-size', 9.5);
+					setField('bold-weight', 700);
+					setField('line-height', 1.5);
+					setField('li-margin', 0.15);
+					setField('p-margin', 0.4);
+					setField('title_fonts', 'inherit');
+					setField('h1-uppercase', true);
+					setField('h1-size', 1.15);
+					setField('h1-space', 0.12);
 					setField('simple-header', true);
 					setField('name-pad-top', 5);
 					setField('name-pad-bottom', 0);
