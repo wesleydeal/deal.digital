@@ -4,7 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 	<title>Wesley Deal - Resume</title>
 	<style>
-		@import url('https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:500|archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|martian-mono:100,200,300,400,500,600,700,800|eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Newsreader:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|DM-Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i,1000,1000i|libre-caslon-text:400,400i,700|libre-baskerville:400,400i,700|stix-two-text:400,400i,500,500i,600,600i,700,700i|Vollkorn:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Source-Serif-4:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Inter:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Inter-Tight:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Crimson-Pro:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Crimson-Text:400,400i,600,600i,700,700i');
+		@import url('https://fonts.bunny.net/css?family=spectral:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|spectral-sc:200,300,400,500,600,700,800|archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|martian-mono:100,200,300,400,500,600,700,800|eb-garamond:400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|rubik:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|red-hat-text:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Newsreader:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|DM-Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i,1000,1000i|libre-caslon-text:400,400i,700|libre-baskerville:400,400i,700|stix-two-text:400,400i,500,500i,600,600i,700,700i|Vollkorn:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Source-Serif-4:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Inter:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Inter-Tight:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Crimson-Pro:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Crimson-Text:400,400i,600,600i,700,700i');
 
 		:root {
 			--color-fg: #000;
@@ -273,7 +273,7 @@
 		}
 		#tools label:has(> input){
 			background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(230deg, #a00, #500 60px);
-			padding: 1px 4px;
+			padding: 0 4px;
 			display: flex;
             flex-direction: row-reverse;
             justify-content: space-between;
@@ -619,7 +619,6 @@
 			</form>
 		</div>
 		<div class="optiongroup">
-			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.style.setProperty('--ligatures',this.checked?'normal':'none')" checked>Ligatures</label>
 			<form>
 				<label for="text_fonts">Body</label>
 				<select id="text_fonts" onchange="javascript:document.documentElement.style.setProperty('--base-font',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
@@ -660,6 +659,7 @@
 				<label for="bold-weight">Bold Weight</label>
 				<input type="number" id="bold-weight" min="100" max="1000" value="700" step=5 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bold-weight',this.value);">
 			</form>
+			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.style.setProperty('--ligatures',this.checked?'normal':'none')" checked>Ligatures</label>
 			<label><input type="checkbox" id="dates-font-style" onchange="javascript:document.documentElement.style.setProperty('--dates-font-style',this.checked?'italic':'normal')" checked><i>Italic Dates</i></label>
 			<form>
 				<label for="line-height">Line Height</label>
@@ -676,9 +676,8 @@
 			</form>
 		</div>
 		<div class="optiongroup">
-			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.documentElement.style.setProperty('--h1-transform',this.checked?'uppercase':'none');">⇧ HEADINGS</label>
 			<form>
-				<label for="title_fonts">H1 Font</label>
+				<label for="title_fonts"><u>H1s</u></label>
 				<select id="title_fonts" onchange="javascript:document.documentElement.style.setProperty('--h1-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
 					<option value="Spectral SC">Spectral SC</option>
 					<option value="inherit">inherit</option>
@@ -707,6 +706,7 @@
 					<option value="Crimson Text">Crimson Text</option>
 				</select>
 			</form>
+			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.documentElement.style.setProperty('--h1-transform',this.checked?'uppercase':'none');">ALL CAPS</label>
 			<form>
 				<label for="h1-size">Size (em)</label>
 				<input type="number" id="h1-size" min="1" max="2" value="1.25" step="0.01" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-size',this.value+'em');">
