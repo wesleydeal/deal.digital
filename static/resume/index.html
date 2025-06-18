@@ -28,6 +28,7 @@
 			--name-typeface: inherit;
 			--image-bg-light: radial-gradient(at top right, #fff6, transparent) 0/cover fixed, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.35' filter='url(%23a)'/%3E%3C/svg%3E") 0 / 250px #fff4f3;
 			--image-bg-dark: radial-gradient(ellipse at 0 0 in oklch, #2105, transparent 60%) 0/cover, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.01' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.02' filter='url(%23a)'/%3E%3C/svg%3E") 0 / cover, linear-gradient(300deg in oklch, #0006, transparent 50%) 0/cover fixed, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.1' filter='url(%23a)'/%3E%3C/svg%3E") 0 / 600px, #110c12;
+			--zoom: 1.0;
 			box-sizing: border-box;
 		}
 
@@ -61,6 +62,7 @@
 			margin: 0 auto;
 			display: flex;
 			flex-direction: column;
+			zoom: var(--zoom);
 		}
 
 		header{
@@ -249,6 +251,39 @@
 			font-size: .8em;
 			line-height: 1;
 		}
+
+		article#about {
+			max-width: 8.5in;
+			margin: 1in auto;
+			padding: .25in .5in;
+			border-top: 1px solid;
+			font: 350 1rem/1.6 "Atkinson Hyperlegible Next", sans-serif;
+			zoom: var(--zoom);
+		}
+
+		article#about h2{
+			font: 600 1.8em/1 "Atkinson Hyperlegible Next", sans-serif;
+			width: fit-content;
+		}
+
+		article#about h3{
+			font: 500 1.2em/1 "Atkinson Hyperlegible Next", sans-serif;
+			text-transform: uppercase;
+			position: relative;
+			width: fit-content;
+			padding-bottom: 2px;
+			border-bottom: 1px solid;
+		}
+
+		article#about p,ul{
+			margin: 1em 0;
+		}
+
+		article#about :link, article#about :visited{
+			text-decoration: underline;
+			font-weight: 500;
+		}
+
 		#tools{
 			position: fixed;
 			bottom: 7px;
@@ -344,7 +379,7 @@
 			text-shadow: 1px 1px #000;
 			font: 500 13px / 1 "Atkinson Hyperlegible Next", sans-serif;
 		}
-		.homelink {
+		.homelink{
 			position: absolute;
 			top: 3px;
 			left: 3px;
@@ -519,7 +554,7 @@
 				margin: 0;
 				bottom: .05in;
 			}
-			button, #tools, .buttonbar, .homelink{
+			button, #tools, .buttonbar, .homelink, #about{
 				display: none !important;
 			}
 		}
@@ -548,7 +583,7 @@
 					<li>Cut server footprint by 45% while expanding capabilities, improving reliability and performance</li>
 					<li>Spearheaded campus network modernization, strategically deploying refurbished hardware and implementing VLAN segmentation, spanning tree, link redundancy, Wi-Fi 6, 802.1x RADIUS auth</li>
 					<li>Monitored, managed, serviced campus network/server infrastructure proactively and in response to tickets</li>
-					<li>Planned and deployed cost-effective solutions for MFA, server &amp; appliance backups, network monitoring, MDM, endpoint &amp; mail security, software deployment, asset tracking, video conferencing, team chat, employee portal, surveillance VMS, livestreaming, and ID badge management</li>
+					<li>Planned, deployed, and supported solutions for server &amp; appliance backups, network monitoring, MDM, endpoint &amp; mail security, MFA single sign-on, software deployment, asset tracking, video conferencing, team chat, employee portal, surveillance VMS, livestreaming, and ID badge management</li>
 					<li>Utilized open-source software to provide internal multi model LLM chat with tool access at low cost
 					<li>Strengthened cybersecurity posture implementing best practices, MFA; reducing exposed ports by 80%
 					<li>Administered ~<b>1400</b> end-user devices including Chromebooks, iPads, Macs, Windows workstations</li>
@@ -581,7 +616,7 @@
 		</section>
 		<section id="skills">
 			<h1>Skills</h1>
-			<p><b>Software</b>: Microsoft 365, Azure/Entra, Active Directory, Defender, Hyper-V, SCCM/MDT; DNS, DHCP, Google Workspace, VoIP, PaperCut, VEEAM, Duo MFA, Docker, Proxmox/KVM, Debian, Ubuntu, CentOS/RHEL, Oracle Linux, MariaDB/MySQL, PostgreSQL, MS SQL.
+			<p><b>Software</b>: Microsoft 365, Azure/Entra, Active Directory, Intune, Defender, Hyper-V, SCCM/MDT; DNS, DHCP, Google Workspace, VoIP, PaperCut, VEEAM, Duo SSO, Docker, Proxmox/KVM, Debian, Ubuntu, CentOS/RHEL, Oracle Linux, MariaDB/MySQL, PostgreSQL, MS SQL.
 			<p><b>Networks</b>: access points, point-to-point wireless links, switches, routers, firewalls from Cisco, Fortinet, HPE/Aruba, Brocade, Ruckus, Ubiquiti, Avaya, SonicWall, Zyxel; LibreNMS, Graylog, inter-VLAN routing with ACLs, tuning high density Wi-Fi installations, preparing &amp; securing site-to-site and remote access VPNs
 			<p><b>Scripting</b>: Experienced with Python and PowerShell. Some work with C, C#, C++, Go, Java, JS, Google Apps Script, Bash.
 		</section>
@@ -590,13 +625,84 @@
 		</footer>
 	</main>
 
+	<article id="about">
+		<h2>About this page</h2>
+		<p>This is the result of a single, hand-written, &lt;50kB HTML page (+ a callout to load external fonts). No images
+		are used, there is no server-side pre-processing, and it looks just fine with JavaScript disabled. If you do have JS,
+		you've got controls in the bottom-right corner to zoom, change the fonts and
+		spacing, select prepared themes, enable inline content editing, print it, and export the live content as a markdown
+		file.
+
+		<h3>How we got here</h3>
+		<p>There are lots of commonly-cited rules guidelines building a resume. The details can vary by industry, but
+		I found some of the common ones to be:
+		<ul>
+			<li><b>Know your audience</b>: Tailor the specific content of your resume to the opportunity at hand.</li>
+			<li><b>Keep the layout simple</b>: Colorful multi-column layouts confuse ATS systems and peeve hiring managers.</li>
+			<li><b>Stand out</b>: Be memorable. (something of a tightrope: don't come across as overzealous marketing copy)</li>
+			<li><b>Plan for skimming</b>: Make sure each line says something significant about you as a prospect. Use action verbs and numbers to draw in the eye and highlight your impact.</li>
+		</ul>
+		<p>Like most, I started my resume as a basic Google Doc listing out my profile. With time, I pared down my
+		achievements to pack the most into the space and set up some nice, professional formatting. But I found that
+		for different positions, I was using different styles and altering content frequently enough that I had
+		issues keeping multiple versions of the document in sync. And then I had an idea, immediately falling into
+		the <a href="https://xkcd.com/1319/">power user trap</a>.
+
+		<h3>Solution: HTML/CSS for print</h3>
+		<p>The modern web is a remarkably capable typesetting engine. Rather than making manual modifications to a
+		document or setting up a complex build chain with tools such as LaTeX, I built my resume as an HTML file.
+		Initially, I figured I would use the browser developer tools to alter styles and content to tailor my resume
+		to specific positions. Perhaps I could swap the stylesheet. One line of CSS could change the spacing across
+		all my bullet points and paragraphs, without futzing about with the format painter.
+		<p>I'd publish it online using media queries to adapt it by device. On mobile it would scale down to fit the screen,
+		on desktop it would scale up to appear almost as a PDF preview, and I'd use <i>@media print</i> to assume control
+		of the print stylesheet to ensure that no errant spacing or elements would make it to the printer. This is all easier
+		than you might expect: CSS is happy to measure in inches and typographic points, and --variables make it easy to alter
+		aspects like color across multiple elements in response to a media query.
+
+		<h3>Inline editing</h3>
+		<p>Shortly after embarking on this project, I discovered a curiosity. Adding <i>contentEditable</i>
+		to an HTML tag lets you edit its contents (including children) live, inline, with no scripts required.
+		<span contentEditable>(you can try it here if you want)</span> It respects
+		your existing styles, it creates new list entries when you press [ENTER], in modern browsers it even uses the spell
+		checker. I decided this would make life a little easier and added a button with a bit of inline JavaScript to toggle
+		this on and off.
+		<p>I also wanted to be able to toggle light/dark mode, so I created a little control panel and hid it behind a toggle
+		button in the corner. And now that I had the menu, I thought it would be pretty easy to control the base font size
+		with a slider. This seemed rather nifty, so I kept adding.
+
+		<h3>The tools panel</h3>
+		<p>Many iterations later, I've turned the tools panel into a consistent cross-platform style editor for my resume.
+		Body text, headings, and my name all have font and space/size controls. Ligatures (like the combined letters <i>ffi</i>
+		in many typefaces) can be disabled for easier
+		parsing of the exported PDFs, bullets can be replaced with diamonds, the header style can be swapped out. Most of
+		the controls still make an inline JavaScript call, usually to modify a CSS variable of the <i>:root</i> &lt;html&gt; element.
+		The theme switcher is special: it calls a longer function that alters each of the fields and calls their attached
+		onchange/oninput functions. Form elements have entirely custom styling to ensure they look consistent across browsers
+		and platforms (and as exercise making nice-looking UI out of CSS gradients).
+
+		<h3>Markdown conversion</h3>
+		<p>Markdown is in essence the least common denominator of rich text today. GitHub, LLMs, note-taking platforms like
+		Obsidian use it as their native language. It's common to use Markdown as a source for a website generator, but here,
+		I use the webpage as a markdown generator.
+		<p>Rather than solving the general case, my solution uses assumptions about the types of tags my website uses. Starting
+		at the main resume element, it evaluates each of its child nodes. From there:
+		<ul>
+			<li>If the node is text, add the text.</li>
+			<li>If the node is an HTML tag, call the markdown generator recursively to evaluate its children and add the result as text.</li>
+			<li>If the node is a recognized formatting-relevant HTML tag such as a #heading or **bold**, add markdown tags and call the markdown generator recursively, adding its result as text.</li>
+			<li>If the node is neither text nor an HTML tag, or if it contains nothing but whitespace, do nothing.</li>
+		</ul>
+		<p>There is some additional special handling for tabs and line breaks that you can easily see by <a href="https://github.com/wesleydeal/deal.digital/blob/master/static/resume/index.html">viewing the source for this page</a> and searching for <i>to_md</i>.
+	</article>
+
 
 	<div class="buttonbar">
 		<button id="mdbtn" onclick="javascript:window.open(window.URL.createObjectURL(new Blob([to_md()], {type: 'text/markdown;charset=utf-8'})))">.md</button>
 		<button id="printbtn" onclick="javascript:if(window.print) window.print()">Print</button>
 		<button id="toolsbtn" onclick="javascript:document.getElementById('tools').style.display=(document.getElementById('tools').style.display=='flex'?'none':'flex')">Tools</button>
-		<button id="zoominbtn" onclick="javascript:document.getElementById('resume').style.zoom=0.2+(document.getElementById('resume').style.zoom=='')+1*document.getElementById('resume').style.zoom">+</button>
-		<button id="zoomoutbtn" onclick="javascript:document.getElementById('resume').style.zoom=-0.2+(document.getElementById('resume').style.zoom=='')+1*document.getElementById('resume').style.zoom">-</button>
+		<button id="zoominbtn" onclick="javascript:document.documentElement.style.setProperty('--zoom', 0.2+1*getComputedStyle(document.documentElement).getPropertyValue('--zoom'))">+</button>
+		<button id="zoomoutbtn" onclick="javascript:document.documentElement.style.setProperty('--zoom', -0.2+1*getComputedStyle(document.documentElement).getPropertyValue('--zoom'))">-</button>
 	</div>
 
 	<div id="tools">
@@ -772,7 +878,7 @@
 			rheight = document.getElementById('resume').offsetHeight;
 			wheight = window.innerHeight;
 			if (wheight - rheight > 100) {
-				document.getElementById('resume').style.zoom = (wheight-100) / rheight;
+				document.documentElement.style.setProperty('--zoom', (wheight-100) / rheight);
 			}
 
 			// update dark mode selector
