@@ -26,7 +26,7 @@
 			--base-weight: 400;
 			--bold-weight: 700;
 			--dates-font-style: italic;
-			--ligatures: normal; /* values: normal or none */
+			--ligatures: normal; /* use normal or none */
 			--bullet-margin: 0.1em;
 			--p-margin: 0.3em;
 			--h1-size: 1.25em;
@@ -38,6 +38,7 @@
 			--name-gap: 0px;
 			--name-pad-bottom: 10px;
 			--name-typeface: inherit;
+			--ui-typeface: 'Atkinson Hyperlegible Next', sans-serif;
 			--zoom: 1.0;
 			
 			box-sizing: border-box;
@@ -56,15 +57,7 @@
 			overflow-y: scroll;
 			min-height: 100vh;
 		}
-
-		p {
-			margin: var(--p-margin) 0;
-		}
-
-		b {
-			font-weight: var(--bold-weight);
-		}
-
+		
 		main#resume{
 			width: 8.5in;
 			height: 11in;
@@ -73,6 +66,23 @@
 			display: flex;
 			flex-direction: column;
 			zoom: var(--zoom);
+		}
+
+		p {
+			margin: var(--p-margin) 0;
+			
+			&:has(+ p.withabove){
+				margin-bottom: 0;
+			}
+
+			&.withabove{
+				margin-top: 0;
+				padding-left: 1.2em;
+			}
+		}
+
+		b,strong {
+			font-weight: var(--bold-weight);
 		}
 
 		header{
@@ -95,8 +105,6 @@
 			}
 			
 			& #namebox {
-				background: #000;
-				color: #fff;
 				text-align: center;
 				padding: var(--name-pad-top) 20px var(--name-pad-bottom);
 				line-height: 1;
@@ -106,6 +114,11 @@
 				white-space: nowrap;
 				gap: var(--name-gap);
 				font-family: var(--name-typeface);
+				
+				header:not(.simple) & {
+					background: #000;
+					color: #fff;
+				}
 				
 				& .name {
 					font-weight: bold;
@@ -122,15 +135,12 @@
 
 		header.simple{
 			flex-direction: column;
-			gap: 0;
+			gap: var(--name-gap);
 			align-content: center;
+			padding: var(--name-pad-top) 0 var(--name-pad-bottom);
 			
 			& #namebox {
-				background: none;
-				color: inherit;
-				box-shadow: none !important;
-				border: none;
-				padding: var(--name-pad-top) 0 var(--name-pad-bottom);
+				padding: 0;
 			}
 			
 			& .jobtitle {
@@ -139,9 +149,7 @@
 			
 			& #contact {
 				flex-direction: row;
-				justify-content: center;
 				text-align: center;
-				padding: 0 0 var(--p-margin);
 				gap: 2em;
 			}
 			
@@ -181,14 +189,18 @@
 			flex-direction: column;
 			justify-content: flex-end;
 			text-align: center;
-			width: 100%;
+			
+			& p {
+				font-style: italic;
+				margin: 10px 0 0;
+				font-size: .8em;
+				line-height: 1;
+			}
 		}
 
 		h1 {
 			font-size: var(--h1-size);
-			display: block;
 			margin: .4em 0;
-			padding: 0;
 			border-bottom: 1pt solid var(--color-soft);
 			font-family: var(--h1-typeface);
 			line-height: 1.1;
@@ -201,8 +213,7 @@
 			display: flex;
 			width: 100%;
 			font-size: 1.1em;
-			margin: .3em 0 0;
-			font-weight: 400;
+			margin: var(--p-margin) 0 0;
 			justify-content: space-between;
 			cursor: pointer;
 			
@@ -229,40 +240,23 @@
 			margin: 0 0 0 0.1em;
 			padding-left: 1.2em;
 			
-			.roundbullets &
-		}
-		
-		li::marker{
-			content: '⬥  ';
-			font-size: 0.9em;
-		}
-
-		.roundbullets{
-			li::marker{
-				content:'•  ';
-				font-size: inherit;
+			& li {
+				margin: var(--bullet-margin) 0;
 			}
-			ul{margin: 0;}
-		}
-
-		li {
-			margin: var(--bullet-margin) 0;
-		}
-
-		p:has(+ p.withabove){
-			margin-bottom: 0;
-		}
-
-		p.withabove{
-			margin-top: 0;
-			padding-left: 1.2em;
-		}
-
-		footer p {
-			font-style: italic;
-			margin: 10px 0 0;
-			font-size: .8em;
-			line-height: 1;
+			
+			& li::marker{
+				content: '⬥  ';
+				font-size: 0.9em;
+			}
+			
+			.roundbullets & {
+				margin: 0;
+				
+				& li::marker {
+					content: '•  ';
+					font-size: inherit;
+				}
+			}
 		}
 
 		article#about {
@@ -270,17 +264,17 @@
 			margin: 1in auto;
 			padding: .25in .5in;
 			border-top: 1px solid;
-			font: 350 1rem/1.6 "Atkinson Hyperlegible Next", sans-serif;
+			font: 350 1rem/1.6 var(--ui-typeface);
 			zoom: var(--zoom);
 			
 			& h1 {
-				font: 600 1.8em/1 "Atkinson Hyperlegible Next", sans-serif;
+				font: 600 1.8em/1 var(--ui-typeface);;
 				width: fit-content;
 				border: 0;
 			}
 			
 			& h2 {
-				font: 500 1.2em/1 "Atkinson Hyperlegible Next", sans-serif;
+				font: 500 1.2em/1 var(--ui-typeface);
 				text-transform: uppercase;
 				position: relative;
 				width: fit-content;
@@ -315,7 +309,7 @@
 			padding: 4px;
 			flex-direction: column;
 			gap: 4px;
-			font: 300 14px/1 "Atkinson Hyperlegible Next", sans-serif;
+			font: 300 14px/1 var(--ui-typeface);
 			max-height: calc(100vh - 40px);
 			overflow-y: auto;
 			border-radius: 5px;
@@ -323,7 +317,7 @@
 			box-shadow: 0 0 6px 0 #444a;
 			
 			& label{
-				padding-left: 3px;
+				padding: 3px 6px 3px 3px;
 				flex: 1 0 auto;
 				
 				&:has(> input){
@@ -339,10 +333,10 @@
 				
 				&:has(> input:checked){
 					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(to left, #195, #053 60px);
-					border-bottom: 1px solid #0f6b26;
+					border-bottom: 1px solid #398b62;
 				}
 				
-				&:has(> input[type="checkbox"]:hover){
+				&:has(> input:hover){
 					filter: brightness(120%);
 				}
 			}
@@ -360,11 +354,7 @@
 			}
 			
 			& .optiongroup {
-				padding: 0;
 				border: 1px solid #fc3;
-				display: flex;
-				flex-direction: column;
-				overflow: hidden;
 				background: #0009;
 			}
 			
@@ -374,8 +364,8 @@
 				box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #ffffff6e;
 				appearance: none;
 				border: 1px solid #fffa;
-				font: 400 12px / 1 "Atkinson Hyperlegible Next", sans-serif;
-				padding: 1px 2px 0;
+				font: 350 13px / 1 var(--ui-typeface);
+				padding: 0 2px;
 				
 				&[type="number"] {
 					flex: 0 1 54px;
@@ -409,7 +399,7 @@
 				box-shadow: inset 1px 1px 3px #fff4, inset -1px -1px 4px #0005;
 				padding: 2px 6px 2px 2px;
 				text-shadow: 1px 1px #000;
-				font: 500 13px / 1 "Atkinson Hyperlegible Next", sans-serif;
+				font: 500 13px / 1 var(--ui-typeface);
 			}
 		}
 
@@ -424,7 +414,7 @@
 			padding: 4px 8px 5px;
 			border: 1px solid #777;
 			border-radius: 5px;
-			font: 600 16px/1.4 "Atkinson Hyperlegible Next", sans-serif;
+			font: 600 16px/1.4 var(--ui-typeface);
 			
 			&:before {
 				content: '';
@@ -466,7 +456,7 @@
 				border: 1px solid #777;
 				border-radius: 5px;
 				box-shadow: 0 0 6px 0 #444a;
-				font: 350 16px/1.3 "Atkinson Hyperlegible Next", sans-serif;
+				font: 350 16px/1.3 var(--ui-typeface);
 				position: relative;
 				
 				&:after{
@@ -542,7 +532,7 @@
 				--bg: var(--darkmode-image-bg);
 				--color-soft: var(--darkmode-color-soft);
 
-				& #namebox{
+				& header:not(.simple) #namebox{
 					box-shadow: 0 0 0 1px var(--color-soft);
 				}
 			}
@@ -554,7 +544,7 @@
 				--bg: var(--darkmode-image-bg);
 				--color-soft: var(--darkmode-color-soft);
 
-				& #namebox{
+				& header:not(.simple) #namebox{
 					box-shadow: 0 0 0 1px var(--color-soft);
 				}
 			}
@@ -595,6 +585,7 @@
 				position: absolute;
 				margin: 0;
 				bottom: .05in;
+				right: 0;
 			}
 			#tools, .buttonbar, .homelink, #about{
 				display: none !important;
@@ -609,7 +600,7 @@
 				<p class="jobtitle">IT Systems Engineer
 			</div>
 			<div id="contact">
-				<!--<p><a href="tel:REDACTED">PHONEREDACTED</a>-->
+				<!--<p><a href="tel:xxx">PHONE</a>-->
 				<p><a href="mailto:resume@deal.digital">resume@deal.digital</a>
 				<p>Sandy Springs, Georgia
 			</div>
@@ -669,7 +660,7 @@
 
 	<article id="about">
 		<h1>About this page</h1>
-		<p>This is the result of a single, hand-written, &lt;50kB HTML page (+ a callout to load external fonts). No images
+		<p>This is the result of a single, hand-written, &lt;100kB HTML page (plus a font @import). No images
 		are used, there is no server-side pre-processing, and it looks just fine with JavaScript disabled. If you do have JS,
 		you've got controls in the bottom-right corner to zoom, change the fonts and
 		spacing, select prepared themes, enable inline content editing, print it, and export the live content as a markdown
@@ -741,7 +732,7 @@
 	<div class="buttonbar">
 		<button id="mdbtn" onclick="javascript:window.open(window.URL.createObjectURL(new Blob([to_md()], {type: 'text/markdown;charset=utf-8'})))">.md</button>
 		<button id="printbtn" onclick="javascript:if(window.print) window.print()">Print</button>
-		<button id="toolsbtn" onclick="javascript:document.getElementById('tools').style.display=(document.getElementById('tools').style.display=='flex'?'none':'flex')">Tools</button>
+		<button id="toolsbtn" onclick="javascript:fromID('tools').style.display=(fromID('tools').style.display=='flex'?'none':'flex')">Tools</button>
 		<button id="zoominbtn" onclick="javascript:document.documentElement.style.setProperty('--zoom', 0.2+1*getComputedStyle(document.documentElement).getPropertyValue('--zoom'))">+</button>
 		<button id="zoomoutbtn" onclick="javascript:document.documentElement.style.setProperty('--zoom', -0.2+1*getComputedStyle(document.documentElement).getPropertyValue('--zoom'))">-</button>
 	</div>
@@ -749,7 +740,7 @@
 	<div id="tools">
 		<div class="optiongroup">
 			<label><input type="checkbox" id="darklight" onchange="javascript:document.body.classList=this.checked?'dark':'light'">Dark mode</label>
-			<label><input type="checkbox" id="editable" onchange="javascript:document.getElementById('resume').contentEditable=this.checked">Content Editable</label>
+			<label><input type="checkbox" id="editable" onchange="javascript:fromID('resume').contentEditable=this.checked">Content Editable</label>
 			<label><input type="checkbox" id="pageborder" onchange="javascript:fromID('resume').style.boxShadow=this.checked?'0 0 0 1px #fff inset, 2px 2px 5px 0 #000':'';fromID('resume').style.background=this.checked?'var(--color-bg)':''">Page Border</label>
 			<form>
 				<label for="preset">Theme</label>
@@ -771,7 +762,7 @@
 					<option value="sans-serif">sans-serif</option>
 					<option value="monospace">monospace</option>
 					<option value="Arial">Arial</option>
-					<option value="Times New Roman">Times New Roman</option>
+					<option value="Times New Roman">Times NR</option>
 					<option value="Archivo">Archivo</option>
 					<option value="Martian Mono">Martian Mono</option>
 					<option value="EB Garamond">EB Garamond</option>
@@ -780,8 +771,8 @@
 					<option value="Red Hat Text">Red Hat Text</option>
 					<option value="Newsreader">Newsreader</option>
 					<option value="DM Sans">DM Sans</option>
-					<option value="Libre Baskerville">Libre Baskerville</option>
-					<option value="Libre Caslon Text">Libre Caslon Text</option>
+					<option value="Libre Baskerville">L Baskerville</option>
+					<option value="Libre Caslon Text">L Caslon Text</option>
 					<option value="STIX Two Text">STIX Two Text</option>
 					<option value="Vollkorn">Vollkorn</option>
 					<option value="Source Serif 4">Source Serif 4</option>
@@ -789,7 +780,7 @@
 					<option value="Inter Tight">Inter Tight</option>
 					<option value="Crimson Pro">Crimson Pro</option>
 					<option value="Crimson Text">Crimson Text</option>
-					<option value="Atkinson Hyperlegible Next">Atkinson Hyperlegible Next</option>
+					<option value="Atkinson Hyperlegible Next">Atkinson H.N.</option>
 				</select>
 			</form>
 			<form>
@@ -831,7 +822,7 @@
 					<option value="sans-serif">sans-serif</option>
 					<option value="monospace">monospace</option>
 					<option value="Arial">Arial</option>
-					<option value="Times New Roman">Times New Roman</option>
+					<option value="Times New Roman">Times NR</option>
 					<option value="Archivo">Archivo</option>
 					<option value="Martian Mono">Martian Mono</option>
 					<option value="EB Garamond">EB Garamond</option>
@@ -840,8 +831,8 @@
 					<option value="Red Hat Text">Red Hat Text</option>
 					<option value="Newsreader">Newsreader</option>
 					<option value="DM Sans">DM Sans</option>
-					<option value="Libre Baskerville">Libre Baskerville</option>
-					<option value="Libre Caslon Text">Libre Caslon Text</option>
+					<option value="Libre Baskerville">L Baskerville</option>
+					<option value="Libre Caslon Text">L Caslon Text</option>
 					<option value="STIX Two Text">STIX Two Text</option>
 					<option value="Vollkorn">Vollkorn</option>
 					<option value="Source Serif 4">Source Serif 4</option>
@@ -849,7 +840,7 @@
 					<option value="Inter Tight">Inter Tight</option>
 					<option value="Crimson Pro">Crimson Pro</option>
 					<option value="Crimson Text">Crimson Text</option>
-					<option value="Atkinson Hyperlegible Next">Atkinson Hyperlegible Next</option>
+					<option value="Atkinson Hyperlegible Next">Atkinson H.N.</option>
 				</select>
 			</form>
 			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.documentElement.style.setProperty('--h1-transform',this.checked?'uppercase':'none');">ALL CAPS</label>
@@ -877,7 +868,7 @@
 					<option value="sans-serif">sans-serif</option>
 					<option value="monospace">monospace</option>
 					<option value="Arial">Arial</option>
-					<option value="Times New Roman">Times New Roman</option>
+					<option value="Times New Roman">Times NR</option>
 					<option value="Archivo">Archivo</option>
 					<option value="Martian Mono">Martian Mono</option>
 					<option value="EB Garamond">EB Garamond</option>
@@ -886,8 +877,8 @@
 					<option value="Red Hat Text">Red Hat Text</option>
 					<option value="Newsreader">Newsreader</option>
 					<option value="DM Sans">DM Sans</option>
-					<option value="Libre Baskerville">Libre Baskerville</option>
-					<option value="Libre Caslon Text">Libre Caslon Text</option>
+					<option value="Libre Baskerville">L Baskerville</option>
+					<option value="Libre Caslon Text">L Caslon Text</option>
 					<option value="STIX Two Text">STIX Two Text</option>
 					<option value="Vollkorn">Vollkorn</option>
 					<option value="Source Serif 4">Source Serif 4</option>
@@ -895,7 +886,7 @@
 					<option value="Inter Tight">Inter Tight</option>
 					<option value="Crimson Pro">Crimson Pro</option>
 					<option value="Crimson Text">Crimson Text</option>
-					<option value="Atkinson Hyperlegible Next">Atkinson Hyperlegible Next</option>
+					<option value="Atkinson Hyperlegible Next">Atkinson H.N.</option>
 				</select>
 			</form>
 			<form>
@@ -937,11 +928,16 @@
 				el.value = value;
 			}
 		}
+		function setFields(fieldSet) {
+			for (key in fieldSet) {
+				setField(key, fieldSet[key]);
+			}
+		}
 		
 		function to_md(parent = "") {
 			md = "";
 			if (parent == "") parent = document.getElementById("resume");
-			if (parent.childNodes.length < 1 && parent.nodeType != 8) {
+			if (parent.childNodes.length < 1 && parent.nodeType != 8) { // has no children and isn't a comment
 				md += parent.textContent.replace(/ {4}|[\t\n\r]/gm,'');
 				if (md == " ") md = "";
 			}
@@ -1018,29 +1014,27 @@
 		}
 		
 		function setTheme(theme){
-			//setField('darklight', false);
-			//setField('editable', false);
-			//setField('pageborder', false);
-			//setField('ligatures', false);
-			setField('text_fonts', 'Spectral');
-			setField('base-size', 11);
-			setField('base-weight', 400);
-			setField('bold-weight', 700);
-			setField('dates-font-style', true);
-			fromID('line-height').value = 1.4;
-			fromID('custom-bullets').value= false;
-			fromID('li-margin').value = 0.1;
-			fromID('p-margin').value = 0.3;
-			setField('h1-uppercase', false);
-			setField('title_fonts', 'Spectral SC');
-			fromID('h1-size').value = 1.25;
-			fromID('h1-weight').value = 500;
-			fromID('h1-space').value = 0.04;
-			setField('simple-header', false);
-			setField('name_fonts', 'inherit');
-			setField('name-pad-top', 10);
-			setField('name-gap', 0);
-			setField('name-pad-bottom', 10);
+			setFields({
+				'text_fonts': 'Spectral',
+				'base-size': 11,
+				'base-weight': 400,
+				'bold-weight': 700,
+				'dates-font-style': true,
+				'line-height': 1.4,
+				'custom-bullets': false,
+				'li-margin': 0.1,
+				'p-margin': 0.3,
+				'title_fonts': 'Spectral SC',
+				'h1-uppercase': false,
+				'h1-size': 1.25,
+				'h1-weight': 500,
+				'h1-space': 0.04,
+				'simple-header': false,
+				'name_fonts': 'inherit',
+				'name-pad-top': 10,
+				'name-gap': 0,
+				'name-pad-bottom': 10,
+			});
 			switch(theme){
 				case 'modern':
 					setField('text_fonts', 'Red Hat Text');
@@ -1081,25 +1075,27 @@
 					setField('name-pad-bottom', 0);
 					break;
 				case 'compact-sans':
-					setField('text_fonts', 'Atkinson Hyperlegible Next');
-					setField('base-size', 10.5);
-					setField('base-weight', 350);
-					setField('bold-weight', 550);
-					setField('dates-font-style', false);
-					setField('line-height', 1.32);
-					setField('li-margin', 0.13);
-					setField('p-margin', 0.25);
-					setField('title_fonts', 'inherit');
-					setField('h1-uppercase', true);
-					setField('h1-size', 1.1);
-					setField('h1-weight', 325);
-					setField('h1-space', 0.06);
-					setField('name-pad-top', 7);
-					setField('name-pad-bottom', 9);
+					setFields({
+						'text_fonts': 'Atkinson Hyperlegible Next',
+						'base-size': 10.5,
+						'base-weight': 350,
+						'bold-weight': 550,
+						'dates-font-style': false,
+						'line-height': 1.32,
+						'li-margin': 0.13,
+						'p-margin': 0.25,
+						'title_fonts': 'inherit',
+						'h1-uppercase': true,
+						'h1-size': 1.1,
+						'h1-weight': 325,
+						'h1-space': 0.06,
+						'name-pad-top': 7,
+						'name-pad-bottom': 9,
+					});
 					break;
 			}
-			for (x of ['darklight','editable','pageborder','ligatures','text_fonts','base-size','base-weight','bold-weight','dates-font-style','line-height','custom-bullets','li-margin','p-margin','h1-uppercase','title_fonts','h1-size','h1-weight','h1-space','name_fonts','simple-header','name-pad-top','name-gap','name-pad-bottom']){
-				el = fromID(x);
+			for (let el of document.querySelectorAll("#tools input, #tools select")){
+				if (el.id == 'preset') continue;
 				el.onchange?.();
 				el.oninput?.();
 			}
