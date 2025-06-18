@@ -5,9 +5,21 @@
 	<title>Wesley Deal - Resume</title>
 	<style>
 		@import url('https://cdn.staticdelivr.com/gfonts/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Martian+Mono:wght@100..800&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&family=Rubik:ital,wght@0,300..900;1,300..900&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Spectral+SC:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap');
+
 		:root {
-			--color-fg: #000;
-			--color-bg: #fff4f3;
+			--lightmode-color-fg: #000;
+			--lightmode-color-bg: #fff4f3;
+			--lightmode-color-soft: #794a4a;
+			--lightmode-image-bg: radial-gradient(at top right, #fff6, transparent) 0/cover fixed, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.35' filter='url(%23a)'/%3E%3C/svg%3E") 0 / 250px #fff4f3;
+			--darkmode-color-fg: #fffafa;
+			--darkmode-color-bg: #131111;
+			--darkmode-color-soft: #dfa6a6;
+			--darkmode-image-bg: radial-gradient(ellipse at 0 0 in oklch, #2105, transparent 60%) 0/cover fixed, #271922;
+			
+			--color-fg: var(--lightmode-color-fg);
+			--color-bg: var(--lightmode-color-bg);
+			--color-soft: var(--lightmode-color-soft);
+			--bg: var(--lightmode-image-bg);
 			--base-size: 11pt;
 			--base-line-height: 1.4;
 			--base-font: 'Spectral';
@@ -26,9 +38,8 @@
 			--name-gap: 0px;
 			--name-pad-bottom: 10px;
 			--name-typeface: inherit;
-			--image-bg-light: radial-gradient(at top right, #fff6, transparent) 0/cover fixed, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.35' filter='url(%23a)'/%3E%3C/svg%3E") 0 / 250px #fff4f3;
-			--image-bg-dark: radial-gradient(ellipse at 0 0 in oklch, #2105, transparent 60%) 0/cover, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.01' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.02' filter='url(%23a)'/%3E%3C/svg%3E") 0 / cover, linear-gradient(300deg in oklch, #0006, transparent 50%) 0/cover fixed, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.1' filter='url(%23a)'/%3E%3C/svg%3E") 0 / 600px, #110c12;
 			--zoom: 1.0;
+			
 			box-sizing: border-box;
 		}
 
@@ -37,10 +48,9 @@
 		}
 
 		body {
-			font: var(--base-size)/var(--base-line-height) var(--base-font);
-			font-weight: var(--base-weight);
+			font: var(--base-weight) var(--base-size)/var(--base-line-height) var(--base-font);
 			background: var(--color-bg);
-			background: var(--image-bg-light);
+			background: var(--bg);
 			color: var(--color-fg);
 			font-variant-ligatures: var(--ligatures);
 			overflow-y: scroll;
@@ -72,91 +82,95 @@
 			flex-direction: row-reverse;
 			gap: 10px 20px;
 			flex-wrap: wrap-reverse;
+			
+			& #contact {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				text-align: right;
+			
+				& p {
+					margin: 2px 0;
+				}
+			}
+			
+			& #namebox {
+				background: #000;
+				color: #fff;
+				text-align: center;
+				padding: var(--name-pad-top) 20px var(--name-pad-bottom);
+				line-height: 1;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				white-space: nowrap;
+				gap: var(--name-gap);
+				font-family: var(--name-typeface);
+				
+				& .name {
+					font-weight: bold;
+					font-size: 2.5em;
+					margin: 0;
+				}
+				
+				& .jobtitle {
+					font-size: 1.6em;
+					margin: 0;
+				}
+			}
 		}
 
 		header.simple{
 			flex-direction: column;
 			gap: 0;
 			align-content: center;
-		}
-
-		#contact {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			text-align: right;
-		}
-
-		header.simple #contact {
-			flex-direction: row;
-			justify-content: center;
-			text-align: center;
-			padding: 0 0 var(--p-margin);
-			gap: 2em;
+			
+			& #namebox {
+				background: none;
+				color: inherit;
+				box-shadow: none !important;
+				border: none;
+				padding: var(--name-pad-top) 0 var(--name-pad-bottom);
+			}
+			
+			& .jobtitle {
+				display: none;
+			}
+			
+			& #contact {
+				flex-direction: row;
+				justify-content: center;
+				text-align: center;
+				padding: 0 0 var(--p-margin);
+				gap: 2em;
+			}
+			
+			& #namebox .name {
+				font-size: 2em;
+				text-transform: uppercase;
+			}
 		}
 
 		:link, :visited {
 			color: inherit;
-			text-decoration: none;
-		}
-
-		a:hover, a:active {
-			background: black;
-			box-shadow: 0 0 0 3px #000;
-			color: #fff;
-		}
-
-		#contact p {
-			margin: 2px 0;
-		}
-
-		#namebox {
-			background: #000;
-			color: #fff;
-			text-align: center;
-			padding: var(--name-pad-top) 20px var(--name-pad-bottom);
-			line-height: 1;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			white-space: nowrap;
-			gap: var(--name-gap);
-			font-family: var(--name-typeface);
-		}
-
-		header.simple #namebox {
-			background: none;
-			color: inherit;
-			box-shadow: none !important;
-			border: none;
-			padding: var(--name-pad-top) 0 var(--name-pad-bottom);
-		}
-
-		#namebox .name {
-			font-weight: bold;
-			font-size: 2.5em;
-			margin: 0;
-		}
-
-		header.simple #namebox .name {
-			font-size: 2em;
-			text-transform: uppercase;
-		}
-
-		#namebox .jobtitle {
-			font-size: 1.6em;
-			margin: 0;
-		}
-
-		header.simple .jobtitle {
-			display: none;
+			text-decoration-color: var(--color-soft);
+			
+			&:hover, &:active{
+				background: var(--color-fg);
+				box-shadow: 0 0 0 3px #000;
+				color: var(--color-bg);
+			}
+			
+			&:link[href^="mailto:"],:link[href^="tel:"] {
+				text-decoration: none;
+			}
 		}
 
 		section {
 			margin: 0;
 		}
 
-		#resume:not(:has(+ .simple)) section:nth-child(2) {
+		#resume:not(:has(+ header.simple)) section:nth-child(2) {
 			margin-top: -10px;
 		}
 
@@ -175,7 +189,7 @@
 			display: block;
 			margin: .4em 0;
 			padding: 0;
-			border-bottom: 1pt solid #000;
+			border-bottom: 1pt solid var(--color-soft);
 			font-family: var(--h1-typeface);
 			line-height: 1.1;
 			font-weight: var(--h1-weight);
@@ -191,34 +205,33 @@
 			font-weight: 400;
 			justify-content: space-between;
 			cursor: pointer;
+			
+			& h2{
+				display: inline;
+				margin: 0;
+				font-size: inherit;
+				font-weight: inherit;
+			}
 		}
 
-		summary h2{
-			display: inline;
-			margin: 0;
-			font-size: inherit;
-			font-weight: inherit;
-		}
-
-		#education-certs p:not(.withabove){
+		#education-certs p:has(.dates){
 			display: flex;
 			justify-content: space-between;
 		}
 
-		#education-certs p .dates {
-			align-self: end;
-		}
-
 		span.dates {
 			text-align: right;
+			align-self: end;
 			font-style: var(--dates-font-style);
 		}
-
 
 		ul{
 			margin: 0 0 0 0.1em;
 			padding-left: 1.2em;
+			
+			.roundbullets &
 		}
+		
 		li::marker{
 			content: '⬥  ';
 			font-size: 0.9em;
@@ -259,29 +272,37 @@
 			border-top: 1px solid;
 			font: 350 1rem/1.6 "Atkinson Hyperlegible Next", sans-serif;
 			zoom: var(--zoom);
-		}
-
-		article#about h2{
-			font: 600 1.8em/1 "Atkinson Hyperlegible Next", sans-serif;
-			width: fit-content;
-		}
-
-		article#about h3{
-			font: 500 1.2em/1 "Atkinson Hyperlegible Next", sans-serif;
-			text-transform: uppercase;
-			position: relative;
-			width: fit-content;
-			padding-bottom: 2px;
-			border-bottom: 1px solid;
-		}
-
-		article#about p,ul{
-			margin: 1em 0;
-		}
-
-		article#about :link, article#about :visited{
-			text-decoration: underline;
-			font-weight: 500;
+			
+			& h1 {
+				font: 600 1.8em/1 "Atkinson Hyperlegible Next", sans-serif;
+				width: fit-content;
+				border: 0;
+			}
+			
+			& h2 {
+				font: 500 1.2em/1 "Atkinson Hyperlegible Next", sans-serif;
+				text-transform: uppercase;
+				position: relative;
+				width: fit-content;
+				padding-bottom: 2px;
+				border-bottom: 1px solid var(--color-soft);
+			}
+			
+			& p, & ul {
+				margin: 1em 0;
+			}
+			
+			& li {
+				margin: 0.5em 0;
+			}
+			
+			& b {
+				font-weight: 600;
+			}
+			
+			& :link {
+				font-weight: 450;
+			}
 		}
 
 		#tools{
@@ -299,87 +320,101 @@
 			overflow-y: auto;
 			border-radius: 5px;
 			flex-wrap: wrap;
-			box-shadow: 0px 0px 6px 0px rgba(73, 73, 73, 0.63)
+			box-shadow: 0 0 6px 0 #444a;
+			
+			& label{
+				padding-left: 3px;
+				flex: 1 0 auto;
+				
+				&:has(> input){
+					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(230deg, #a00, #500 60px);
+					padding: 0 4px;
+					display: flex;
+					flex-direction: row-reverse;
+					justify-content: space-between;
+					align-items: center;
+					border-bottom: 1px solid #912929;
+					text-shadow: 1px 1px black;
+				}
+				
+				&:has(> input:checked){
+					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(to left, #195, #053 60px);
+					border-bottom: 1px solid #0f6b26;
+				}
+				
+				&:has(> input[type="checkbox"]:hover){
+					filter: brightness(120%);
+				}
+			}
+			
+			& form {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				border-bottom: 1px solid #543;
+				
+				&:hover {
+					background: linear-gradient(to right, #003, #008);
+					border-bottom-color: orange;
+				}
+			}
+			
+			& .optiongroup {
+				padding: 0;
+				border: 1px solid #fc3;
+				display: flex;
+				flex-direction: column;
+				overflow: hidden;
+				background: #0009;
+			}
+			
+			& input {
+				color: #fc3;
+				background: #002;
+				box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #ffffff6e;
+				appearance: none;
+				border: 1px solid #fffa;
+				font: 400 12px / 1 "Atkinson Hyperlegible Next", sans-serif;
+				padding: 1px 2px 0;
+				
+				&[type="number"] {
+					flex: 0 1 54px;
+					min-width: 40px;
+					max-width: 54px;
+				}
+				
+				&[type="checkbox"] {
+					margin: 2px 0;
+					padding: 0;
+					
+					&:after {
+						content: '';
+						width: 14px;
+						height: 14px;
+						display: block;
+					}
+					&:checked:after{
+						background: radial-gradient(at 10% 10%, #ffefbe, #c19718) center / 75% 75% no-repeat;
+					}
+				}
+			}
+			
+			& select{
+				flex: 1 1 100px;
+				min-width: 60px;
+				color: #fc3;
+				background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(270deg, #fc3 4px, transparent 4px), #112;
+				border: 1px solid #fffa;
+				appearance: none;
+				box-shadow: inset 1px 1px 3px #fff4, inset -1px -1px 4px #0005;
+				padding: 2px 6px 2px 2px;
+				text-shadow: 1px 1px #000;
+				font: 500 13px / 1 "Atkinson Hyperlegible Next", sans-serif;
+			}
 		}
-		#tools label{
-		    padding-left: 3px;
-			flex: 1 0 auto;
-		}
-		#tools label:has(> input){
-			background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(230deg, #a00, #500 60px);
-			padding: 0 4px;
-			display: flex;
-            flex-direction: row-reverse;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #912929;
-			text-shadow: 1px 1px black;
-		}
-		#tools label:has(> input:checked){
-			background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(to left, #195, #053 60px);
-			border-bottom: 1px solid #0f6b26;
-		}
-		#tools label:has(> input):hover{
-            filter: brightness(120%);
-		}
-		#tools form{
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			border-bottom: 1px solid #543;
-		}
-		.optiongroup {
-			padding: 0;
-			border: 1px solid #fc3;
-			display: flex;
-			flex-direction: column;
-			overflow: hidden;
-			background: #0009;
-		}
-		#tools form:hover{
-			background: linear-gradient(to right, #003, #008);
-			border-bottom-color: orange;
-		}
-		input{
-			color: #fc3;
-			background: #002;
-			box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #ffffff6e;
-			appearance: none;
-			border: 1px solid #fffa;
-			font: 400 12px / 1 "Atkinson Hyperlegible Next", sans-serif;
-			padding: 1px 2px 0;
-		}
-		input[type="number"]{
-			flex: 0 1 54px;
-			min-width: 40px;
-			max-width: 54px;
-		}
-		input[type="checkbox"]{
-			margin: 2px 0;
-			padding: 0;
-		}
-		input[type="checkbox"]:after{
-			content: '';
-		    width: 14px;
-		    height: 14px;
-		    display: block;
-		}
-		input[type="checkbox"]:checked:after{
-			background: radial-gradient(at 10% 10%, #ffefbe, #c19718) center / 75% 75% no-repeat;
-		}
-		#tools select{
-		    flex: 1 1 100px;
-			min-width: 60px;
-			color: #fc3;
-			background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(270deg, #fc3 4px, transparent 4px), #112;
-			border: 1px solid #fffa;
-			appearance: none;
-			box-shadow: inset 1px 1px 3px #fff4, inset -1px -1px 4px #0005;
-			padding: 2px 6px 2px 2px;
-			text-shadow: 1px 1px #000;
-			font: 500 13px / 1 "Atkinson Hyperlegible Next", sans-serif;
-		}
+
 		.homelink{
+			text-decoration: none;
 			position: absolute;
 			top: 3px;
 			left: 3px;
@@ -390,26 +425,29 @@
 			border: 1px solid #777;
 			border-radius: 5px;
 			font: 600 16px/1.4 "Atkinson Hyperlegible Next", sans-serif;
+			
+			&:before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 50%;
+				width: 100%;
+				background: linear-gradient(#fff6,transparent 80%);
+				border-radius: 5px 5px 20px 20px;
+			}
+			
+			&:after {
+				position: absolute;
+				bottom: 4px;
+				left: 5px;
+				width: calc(100% - 10px);
+				height: 1px;
+				content: '';
+				background: #7fa;
+			}
 		}
-		.homelink:before{
-		    content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 50%;
-			width: 100%;
-			background: linear-gradient(#fff6,transparent 80%);
-			border-radius: 5px 5px 20px 20px;
-		}
-		.homelink:after{
-		    position: absolute;
-			bottom: 4px;
-			left: 5px;
-			width: calc(100% - 10px);
-			height: 1px;
-			content: '';
-			background: #7fa;
-		}
+		
 		.buttonbar{
 			position: fixed;
 			bottom: 10px;
@@ -418,48 +456,52 @@
 			display: flex;
 			flex-direction: column;
 			gap: 4px;
-		}
-		.buttonbar button {
-			opacity: 0.7;
-			width: 60px;
-			height: 32px;
-			background: #000;
-			background: radial-gradient(in oklab, #000, #222);
-			color: #fff;
-			border: 1px solid #777;
-			border-radius: 5px;
-			box-shadow: 0px 0px 6px 0px rgba(73, 73, 73, 0.63);
-			font: 350 16px/1.3 "Atkinson Hyperlegible Next", sans-serif;
-			position: relative;
-		}
-		.buttonbar button:after{
-		    content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 24px;
-			width: 100%;
-			background: linear-gradient(#fff6,transparent 80%);
-			border-radius: 5px 5px 25px 25px;
-		}
-		.buttonbar button:hover{
-		    color: #7fa;
-			background: radial-gradient(in oklab, #000, #275);
-		}
-		.buttonbar button:active {
-		    color: #000;
-			background: #7fa;
-		}
-		#zoominbtn, #zoomoutbtn {
-			height: 60px;
-			font-size: 36px;
-			padding-bottom: 4px;
+			
+			& button {
+				opacity: 0.7;
+				width: 60px;
+				height: 32px;
+				background: radial-gradient(in oklab, #000, #222), #000;
+				color: #fff;
+				border: 1px solid #777;
+				border-radius: 5px;
+				box-shadow: 0 0 6px 0 #444a;
+				font: 350 16px/1.3 "Atkinson Hyperlegible Next", sans-serif;
+				position: relative;
+				
+				&:after{
+					content: '';
+					position: absolute;
+					top: 0;
+					left: 0;
+					height: 24px;
+					width: 100%;
+					background: linear-gradient(#fff6,transparent 80%);
+					border-radius: 5px 5px 25px 25px;
+				}
+				
+				&:hover{
+					color: #7fa;
+					background: radial-gradient(in oklch, #000, #275);
+				}
+				
+				&:active {
+					color: #000;
+					background: #7fa;
+				}
+				
+				&#zoominbtn, &#zoomoutbtn {
+					height: 60px;
+					font-size: 36px;
+					padding-bottom: 4px;
+				}
+			}
 		}
 
 		@media only screen and (max-width: 9in){
 			:root {
-				--image-bg-light: #fff4f3;
-				--image-bg-dark: #110c12;
+				--darkmode-image-bg: #110c12;
+				--lightmode-image-bg: #fff4f3;
 			}
 			body{
 				margin: 0;
@@ -471,16 +513,21 @@
 				height: auto;
 				margin: 0;
 				padding: 40px 20px;
-			}
-			#resume:not(:has(+ .simple)) section:nth-child(2) {
-				margin-top: 20px;
+				
+				&:not(:has(+ header.simple)) section:nth-child(2){
+					margin-top: 20px;
+				}
 			}
 			header {
 				flex-direction: row;
 				justify-content: center;
+				
+				& #contact {
+					text-align: center;
+				}
 			}
 			.buttonbar button{
-			    height: 32px;
+				height: 32px;
 				width: 50px;
 			}
 			#zoominbtn, #zoomoutbtn{
@@ -489,32 +536,26 @@
 		}
 
 		@media(prefers-color-scheme: dark){
-			body:not(.light){
-				background: #131111;
-				background: var(--image-bg-dark);
-				color: #fffafa;
+			:root:has(body:not(.light)){
+				--color-bg: var(--darkmode-color-bg);
+				--color-fg: var(--darkmode-color-fg);
+				--bg: var(--darkmode-image-bg);
+				--color-soft: var(--darkmode-color-soft);
 
 				& #namebox{
-					box-shadow: 0 0 0 1px #f3e4df;
-					background: none;
-				}
-				& h1{
-					border-bottom-color: #f3e4df;
+					box-shadow: 0 0 0 1px var(--color-soft);
 				}
 			}
 		}
 		@media only screen{
-			body.dark{
-				background: #131111;
-				background: var(--image-bg-dark);
-				color: #fffafa;
+			:root:has(body.dark){
+				--color-bg: var(--darkmode-color-bg);
+				--color-fg: var(--darkmode-color-fg);
+				--bg: var(--darkmode-image-bg);
+				--color-soft: var(--darkmode-color-soft);
 
 				& #namebox{
-					box-shadow: 0 0 0 1px #f3e4df;
-					background: none;
-				}
-				& h1{
-					border-bottom-color: #f3e4df;
+					box-shadow: 0 0 0 1px var(--color-soft);
 				}
 			}
 		}
@@ -525,6 +566,7 @@
 				--color-bg: #fff !important;
 				--gradient-bg-light: #fff !important;
 				--gradient-bg-dark: #fff !important;
+				--color-soft: #000 !important;
 			}
 			@page{
 				size: 8.5in 11in;
@@ -554,7 +596,7 @@
 				margin: 0;
 				bottom: .05in;
 			}
-			button, #tools, .buttonbar, .homelink, #about{
+			#tools, .buttonbar, .homelink, #about{
 				display: none !important;
 			}
 		}
@@ -626,20 +668,19 @@
 	</main>
 
 	<article id="about">
-		<h2>About this page</h2>
+		<h1>About this page</h1>
 		<p>This is the result of a single, hand-written, &lt;50kB HTML page (+ a callout to load external fonts). No images
 		are used, there is no server-side pre-processing, and it looks just fine with JavaScript disabled. If you do have JS,
 		you've got controls in the bottom-right corner to zoom, change the fonts and
 		spacing, select prepared themes, enable inline content editing, print it, and export the live content as a markdown
 		file.
 
-		<h3>How we got here</h3>
-		<p>There are lots of commonly-cited rules guidelines building a resume. The details can vary by industry, but
-		I found some of the common ones to be:
+		<h2>How we got here</h2>
+		<p>There are lots of commonly-cited guidelines for building a resume. For example:
 		<ul>
 			<li><b>Know your audience</b>: Tailor the specific content of your resume to the opportunity at hand.</li>
 			<li><b>Keep the layout simple</b>: Colorful multi-column layouts confuse ATS systems and peeve hiring managers.</li>
-			<li><b>Stand out</b>: Be memorable. (something of a tightrope: don't come across as overzealous marketing copy)</li>
+			<li><b>Stand out</b>: It should be memorable, though not like overzealous marketing copy.</li>
 			<li><b>Plan for skimming</b>: Make sure each line says something significant about you as a prospect. Use action verbs and numbers to draw in the eye and highlight your impact.</li>
 		</ul>
 		<p>Like most, I started my resume as a basic Google Doc listing out my profile. With time, I pared down my
@@ -648,7 +689,7 @@
 		issues keeping multiple versions of the document in sync. And then I had an idea, immediately falling into
 		the <a href="https://xkcd.com/1319/">power user trap</a>.
 
-		<h3>Solution: HTML/CSS for print</h3>
+		<h2>Solution: HTML/CSS for print</h2>
 		<p>The modern web is a remarkably capable typesetting engine. Rather than making manual modifications to a
 		document or setting up a complex build chain with tools such as LaTeX, I built my resume as an HTML file.
 		Initially, I figured I would use the browser developer tools to alter styles and content to tailor my resume
@@ -660,10 +701,10 @@
 		than you might expect: CSS is happy to measure in inches and typographic points, and --variables make it easy to alter
 		aspects like color across multiple elements in response to a media query.
 
-		<h3>Inline editing</h3>
+		<h2>Inline editing</h2>
 		<p>Shortly after embarking on this project, I discovered a curiosity. Adding <i>contentEditable</i>
 		to an HTML tag lets you edit its contents (including children) live, inline, with no scripts required.
-		<span contentEditable>(you can try it here if you want)</span> It respects
+		<span contentEditable>(Try it here.)</span> It respects
 		your existing styles, it creates new list entries when you press [ENTER], in modern browsers it even uses the spell
 		checker. I decided this would make life a little easier and added a button with a bit of inline JavaScript to toggle
 		this on and off.
@@ -671,7 +712,7 @@
 		button in the corner. And now that I had the menu, I thought it would be pretty easy to control the base font size
 		with a slider. This seemed rather nifty, so I kept adding.
 
-		<h3>The tools panel</h3>
+		<h2>The tools panel</h2>
 		<p>Many iterations later, I've turned the tools panel into a consistent cross-platform style editor for my resume.
 		Body text, headings, and my name all have font and space/size controls. Ligatures (like the combined letters <i>ffi</i>
 		in many typefaces) can be disabled for easier
@@ -681,7 +722,7 @@
 		onchange/oninput functions. Form elements have entirely custom styling to ensure they look consistent across browsers
 		and platforms (and as exercise making nice-looking UI out of CSS gradients).
 
-		<h3>Markdown conversion</h3>
+		<h2>Markdown conversion</h2>
 		<p>Markdown is in essence the least common denominator of rich text today. GitHub, LLMs, note-taking platforms like
 		Obsidian use it as their native language. It's common to use Markdown as a source for a website generator, but here,
 		I use the webpage as a markdown generator.
@@ -709,11 +750,11 @@
 		<div class="optiongroup">
 			<label><input type="checkbox" id="darklight" onchange="javascript:document.body.classList=this.checked?'dark':'light'">Dark mode</label>
 			<label><input type="checkbox" id="editable" onchange="javascript:document.getElementById('resume').contentEditable=this.checked">Content Editable</label>
-			<label><input type="checkbox" id="pageborder" onchange="javascript:document.getElementById('resume').style.boxShadow=this.checked?'0 0 0 1px #fff inset, 2px 2px 5px 0 #000':''">Page Border</label>
+			<label><input type="checkbox" id="pageborder" onchange="javascript:fromID('resume').style.boxShadow=this.checked?'0 0 0 1px #fff inset, 2px 2px 5px 0 #000':'';fromID('resume').style.background=this.checked?'var(--color-bg)':''">Page Border</label>
 			<form>
-			    <label for="preset">Theme</label>
+				<label for="preset">Theme</label>
 				<select id="preset" onchange="javascript:setTheme(this.value)" onclick="javascript:setTheme(this.value)">
-				    <option value="default" selected>Default</option>
+					<option value="default" selected>Default</option>
 					<option value="modern">Modern</option>
 					<option value="traditional">Traditional</option>
 					<option value="tight">Tight</option>
@@ -826,7 +867,7 @@
 			</form>
 		</div>
 		<div class="optiongroup">
-			<label><input type="checkbox" id="simple-header" onchange="javascript:console.log(this);document.querySelector('header').classList[this.checked?'add':'remove']('simple');">Simple Header</label>
+			<label><input type="checkbox" id="simple-header" onchange="javascript:document.querySelector('header').classList[this.checked?'add':'remove']('simple');">Simple Header</label>
 			<form>
 				<label for="name_fonts">Name</label>
 				<select id="name_fonts" onchange="javascript:document.documentElement.style.setProperty('--name-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);" selected="inherit">
@@ -898,28 +939,28 @@
 		}
 		
 		function to_md(parent = "") {
-		    md = "";
+			md = "";
 			if (parent == "") parent = document.getElementById("resume");
 			if (parent.childNodes.length < 1 && parent.nodeType != 8) {
-			    md += parent.textContent.replace(/ {4}|[\t\n\r]/gm,'');
-			    if (md == " ") md = "";
+				md += parent.textContent.replace(/ {4}|[\t\n\r]/gm,'');
+				if (md == " ") md = "";
 			}
 			else for (child of parent.childNodes){
 				let el = child;
 				let classes = el.classList;
-			    switch (el.tagName){
+				switch (el.tagName){
 					case "H1":
-					    md += "\n\n# " + el.textContent + "\n";
-					    break;
+						md += "\n\n# " + el.textContent + "\n";
+						break;
 					case "H2":
-					    md += "\n\n## " + el.childNodes[0].textContent;
-					    md += "\n   " + el.childNodes[1].textContent.replace(' at ','');
+						md += "\n\n## " + el.childNodes[0].textContent;
+						md += "\n   " + el.childNodes[1].textContent.replace(' at ','');
 						break;
 					case "SUMMARY":
 						md += to_md(el) + "\n";
 						break;
 					case "LI":
-					    md += "\n   * " + to_md(el);
+						md += "\n   * " + to_md(el);
 						break;
 					case "P":
 						let p = el;
@@ -934,23 +975,23 @@
 						} else if (parent.id == "contact") {
 							md += "  " + to_md(p) + "  \n";
 						}
-					    else {
+						else {
 							md += "\n" + to_md(p) + "\n";
 						}
 						break;
 					case "I":
 					case "EM":
-					    md += "*" + to_md(el) + "*";
+						md += "*" + to_md(el) + "*";
 						break;
 					case "B":
 					case "STRONG":
-					    md += "**" + to_md(el) + "**";
-					    break;
+						md += "**" + to_md(el) + "**";
+						break;
 					case "HEADER":
 						md += to_md(el) + "\n" + "* ".repeat(65);
 						break;
 					case "FOOTER":
-					    md += "\n" + "* ".repeat(65) + "\n" + to_md(el);
+						md += "\n" + "* ".repeat(65) + "\n" + to_md(el);
 						break;
 					case "A":
 						let href = el.href;
@@ -966,7 +1007,7 @@
 						}
 						break;
 					default:
-					    md += to_md(el);
+						md += to_md(el);
 				}
 			}
 			if (parent.id == "resume"){
@@ -983,35 +1024,35 @@
 			//setField('ligatures', false);
 			setField('text_fonts', 'Spectral');
 			setField('base-size', 11);
-			fromID('base-weight').value = 400;
-			fromID('bold-weight').value = 700;
+			setField('base-weight', 400);
+			setField('bold-weight', 700);
 			setField('dates-font-style', true);
 			fromID('line-height').value = 1.4;
 			fromID('custom-bullets').value= false;
 			fromID('li-margin').value = 0.1;
 			fromID('p-margin').value = 0.3;
 			setField('h1-uppercase', false);
-			fromID('title_fonts').value = 'Spectral SC';
+			setField('title_fonts', 'Spectral SC');
 			fromID('h1-size').value = 1.25;
 			fromID('h1-weight').value = 500;
 			fromID('h1-space').value = 0.04;
 			setField('simple-header', false);
-			fromID('name_fonts').value = 'inherit';
-			fromID('name-pad-top').value = 10;
-			fromID('name-gap').value = 0;
-			fromID('name-pad-bottom').value = 10;
+			setField('name_fonts', 'inherit');
+			setField('name-pad-top', 10);
+			setField('name-gap', 0);
+			setField('name-pad-bottom', 10);
 			switch(theme){
 				case 'modern':
-					fromID('text_fonts').value = 'Red Hat Text';
+					setField('text_fonts', 'Red Hat Text');
 					setField('dates-font-style', true);
 					setField('h1-uppercase', true);
-					fromID('title_fonts').value = 'inherit';
-					fromID('h1-size').value = 1.15;
-					fromID('h1-space').value = 0.07;
-					fromID('name_fonts').value = 'inherit';
-					fromID('name-pad-top').value = 8;
-					fromID('name-gap').value = 2;
-					fromID('name-pad-bottom').value = 10;
+					setField('title_fonts', 'inherit');
+					setField('h1-size', 1.15);
+					setField('h1-space', 0.07);
+					setField('name_fonts', 'inherit');
+					setField('name-pad-top', 8);
+					setField('name-gap', 2);
+					setField('name-pad-bottom', 10);
 					break;
 				case 'traditional':
 					setField('text_fonts', 'STIX Two Text');
