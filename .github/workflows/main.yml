@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build and deploysite
+    name: Build and deploy site
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -29,3 +29,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BUILD_FLAGS: --output-dir out
           OUT_DIR: out
+      - name: Render Resume PDF
+        uses: fifsky/html-to-pdf-action@master
+        with:
+          htmlFile: ./out/resume/index.html
+          outputFile: ./out/resume.pdf
+          pdfOptions: '{"format": "letter", "page-ranges": "1"}'
