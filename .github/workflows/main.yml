@@ -23,10 +23,10 @@ jobs:
       - name: Checkout Master
         uses: actions/checkout@v4
       - name: Render Resume PDF
-        uses: markwilson/html2pdf@v1.0
+        uses: frnode/html-to-pdf-action@master
         with:
-          htmlPath: 'static/resume/index.html'
-          pdfName: 'static/resume'
+          htmlFile: './static/resume/index.html'
+          outputFile: './static/resume.pdf'
       - name: Build
         uses: shalzz/zola-deploy-action@v0.20.0
         env:
