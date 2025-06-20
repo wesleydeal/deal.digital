@@ -213,20 +213,15 @@
 			text-transform: var(--h1-transform);
 		}
 
-		summary{
+		h2{
 			display: flex;
 			width: 100%;
 			font-size: 1.1em;
 			margin: var(--p-margin) 0 0;
-			justify-content: space-between;
-			cursor: pointer;
-			
-			& h2{
-				display: inline;
-				margin: 0;
-				font-size: inherit;
-				font-weight: inherit;
-			}
+			justify-content: flex-start;
+			gap: 0 0.5ch;
+			font-weight: inherit;
+			flex-wrap: wrap;
 		}
 
 		#education-certs p:has(.dates){
@@ -236,8 +231,8 @@
 
 		span.dates {
 			text-align: right;
-			align-self: end;
 			font-style: var(--dates-font-style);
+			flex: 1 1 fit-content;
 		}
 
 		ul{
@@ -733,38 +728,30 @@
 		</header>
 		<section id="experience">
 			<h1>Work Experience</h1>
-			<details open>
-				<summary>
-					<h2><b>IT Systems Engineer</b> at Fellowship Christian School</h2> <span class="dates">May 2017 &ndash; Present</span>
-				</summary>
-				<ul>
-					<li>Codified institutional knowledge into standardized procedures and extensive documentation</li>
-					<li>Cut server footprint by 45% while expanding capabilities, improving reliability and performance</li>
-					<li>Spearheaded campus network modernization, strategically deploying refurbished hardware and implementing VLAN segmentation, spanning tree, link redundancy, Wi-Fi 6, 802.1x RADIUS auth</li>
-					<li>Monitored, managed, serviced campus network/server infrastructure proactively and in response to tickets</li>
-					<li>Planned, deployed, and supported solutions for server &amp; appliance backups, network monitoring, MDM, endpoint &amp; mail security, MFA single sign-on, software deployment, asset tracking, video conferencing, team chat, employee portal, surveillance VMS, livestreaming, and ID badge management</li>
-					<li>Utilized open-source software to provide internal multi model LLM chat with tool access at low cost
-					<li>Strengthened cybersecurity posture implementing best practices, MFA; reducing exposed ports by 80%
-					<li>Administered ~<b>1400</b> end-user devices including Chromebooks, iPads, Macs, Windows workstations</li>
-					<li>Led hybrid migration from on-premises Exchange 2010 to Exchange Online, overseeing planning, implementation, and successful cutover for over 160 users.</li>
-					<li>Automated account creation/management with PowerShell for over <b>1300</b> users across multiple systems</li>
-					<li>Hardened workstations against vulnerabilities, removed distractions, deployed software, printers, network shares, certificates, and menu layouts, configured third-party software with Group Policy and Intune</li>
-					<li>Designed technology lifecycle reports facilitating efficient budgeting and maintaining vendor support</li>
-					<li>Developed a Django web app frontend to access control system for door control &amp; attendance tracking</li>
-				</ul>
-			</details>
-			<details open>
-				<summary>
-					<h2><b>IT Solutions Architect</b> at Gtex Computers</h2> <span class="dates">Dec 2015 &ndash; July 2017</span>
-				</summary>
-				<ul>
-					<li>Planned, priced, proposed, &amp; implemented hardware, software, &amp; business process overhauls for clientele</li>
-					<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for coverage &amp; high performance</li>
-					<li>Automated monthly PC maintenance with PowerShell, reducing technician hands-on time by <b>80%</b></li>
-					<li>Developed a client ROI reporting portal with Google Apps Script &amp; WordPress</li>
-					<li>Built modern responsive websites employing HTML5 + CSS3 on WordPress &amp; Bootstrap frameworks</li>
-				</ul>
-			</details>
+			<h2><b>IT Systems Engineer</b> at Fellowship Christian School <span class="dates">May 2017 &ndash; Present</span></h2>
+			<ul>
+				<li>Codified institutional knowledge into standardized procedures and extensive documentation</li>
+				<li>Cut server footprint by 45% while expanding capabilities, improving reliability and performance</li>
+				<li>Spearheaded campus network modernization, strategically deploying refurbished hardware and implementing VLAN segmentation, spanning tree, link redundancy, Wi-Fi 6, 802.1x RADIUS auth</li>
+				<li>Monitored, managed, serviced campus network/server infrastructure proactively and in response to tickets</li>
+				<li>Planned, deployed, and supported solutions for server &amp; appliance backups, network monitoring, MDM, endpoint &amp; mail security, MFA single sign-on, software deployment, asset tracking, video conferencing, team chat, employee portal, surveillance VMS, livestreaming, and ID badge management</li>
+				<li>Utilized open-source software to provide internal multi model LLM chat with tool access at low cost
+				<li>Strengthened cybersecurity posture implementing best practices, MFA; reducing exposed ports by 80%
+				<li>Administered ~<b>1400</b> end-user devices including Chromebooks, iPads, Macs, Windows workstations</li>
+				<li>Led hybrid migration from on-premises Exchange 2010 to Exchange Online, overseeing planning, implementation, and successful cutover for over 160 users.</li>
+				<li>Automated account creation/management with PowerShell for over <b>1300</b> users across multiple systems</li>
+				<li>Hardened workstations against vulnerabilities, removed distractions, deployed software, printers, network shares, certificates, and menu layouts, configured third-party software with Group Policy and Intune</li>
+				<li>Designed technology lifecycle reports facilitating efficient budgeting and maintaining vendor support</li>
+				<li>Developed a Django web app frontend to access control system for door control &amp; attendance tracking</li>
+			</ul>
+			<h2><b>IT Solutions Architect</b> at Gtex Computers <span class="dates">Dec 2015 &ndash; July 2017</span></h2>
+			<ul>
+				<li>Planned, priced, proposed, &amp; implemented hardware, software, &amp; business process overhauls for clientele</li>
+				<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for coverage &amp; high performance</li>
+				<li>Automated monthly PC maintenance with PowerShell, reducing technician hands-on time by <b>80%</b></li>
+				<li>Developed a client ROI reporting portal with Google Apps Script &amp; WordPress</li>
+				<li>Built modern responsive websites employing HTML5 + CSS3 on WordPress &amp; Bootstrap frameworks</li>
+			</ul>
 		</section>
 		<section id="education-certs">
 			<h1>Education &amp; Certifications</h1>
@@ -1285,7 +1272,7 @@
 		let editorParent = null;
 		let editorToolbarTop = 0;
 		let editorToolbarLeft = 0;
-		const selParentTypes = ['P', 'LI', 'SUMMARY', 'H1', 'H2', 'DIV'];
+		const selParentTypes = ['P', 'LI', 'H1', 'H2', 'DIV'];
 		document.addEventListener('selectionchange', () => {
 			const sel = window.getSelection();
 			const resume = document.getElementById('resume');
@@ -1303,16 +1290,14 @@
 					}
 				}
 
-				if (editorParent != null) {
-					if (!parent.isSameNode(editorParent)){
-						editorParent.classList.remove('hasEditorFocus');
-						editorParent = parent;
-						parent.classList.add('hasEditorFocus');
-					}
+				if (editorParent != null && !parent.isSameNode(editorParent)) {
+					editorParent.classList.remove('hasEditorFocus');
 				} else {
 					editorParent = parent;
 					parent.classList.add('hasEditorFocus');
 				}
+				editorParent = parent;
+				parent.classList.add('hasEditorFocus');
 
 				if (parent.nodeName != "P") {
 					fromID('editor-indent').disabled = true;
@@ -1321,8 +1306,9 @@
 					fromID('editor-indent').checked = parent.classList.contains("withabove");
 				}
 
-				editorToolbarTop = parent.offsetTop - document.getElementById('editor-toolbar').offsetHeight - 10;
-				editorToolbarLeft = parent.offsetLeft - 10;
+				let parentRect = parent.getBoundingClientRect();
+				editorToolbarTop = parentRect.top - document.getElementById('editor-toolbar').offsetHeight - 10;
+				editorToolbarLeft = parentRect.left - 10;
 				document.getElementById('editor-toolbar').style.top = editorToolbarTop + "px";
 				document.getElementById('editor-toolbar').style.left = editorToolbarLeft + "px";
 			}
@@ -1345,6 +1331,12 @@
 				case 'LI':
 					editorParent.insertAdjacentHTML('beforebegin', '<li>&NoBreak;');
 					break;
+				case 'H2':
+					editorParent.insertAdjacentHTML('beforebegin', '<h2><b>Position</b> at Company <span class="dates">Date</span></h2>')
+					break;
+				case 'H1':
+					editorParent.parentElement.insertAdjacentHTML('beforebegin', '<section><h1>Section</h1><p>&NoBreak;</section>')
+					break;
 				default:
 					editorParent.insertAdjacentHTML('beforebegin', '<p>&NoBreak;')
 			}
@@ -1359,13 +1351,18 @@
 			}
 		});
 		fromID('editor-moveup').addEventListener('click', () => {
-			if(editorParent.previousElementSibling.nodeName == editorParent.nodeName){
-				editorParent.parentNode.insertBefore(editorParent, editorParent.previousElementSibling);
+			switch(editorParent.nodeName) {
+				case editorParent.previousElementSibling.nodeName:
+					editorParent.parentNode.insertBefore(editorParent, editorParent.previousElementSibling);
+					break;
 			}
 		});
 		fromID('editor-movedown').addEventListener('click', () => {
-			if(editorParent.nextElementSibling.nodeName == editorParent.nodeName){
-				editorParent.parentNode.insertBefore(editorParent.nextElementSibling, editorParent);
+			switch(editorParent.nodeName) {
+				case editorParent.nextElementSibling.nodeName:
+					editorParent.parentNode.insertBefore(editorParent.nextElementSibling, editorParent);
+					break;
+
 			}
 		});
 		fromID('editor-delete').addEventListener('click', () => {
