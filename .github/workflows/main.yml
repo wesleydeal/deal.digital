@@ -23,11 +23,10 @@ jobs:
       - name: Checkout Master
         uses: actions/checkout@v4
       - name: Render Resume PDF
-        uses: fifsky/html-to-pdf-action@master
+        uses: markwilson/html2pdf@v1.0
         with:
-          htmlFile: ./static/resume/index.html
-          outputFile: ./static/resume.pdf
-          pdfOptions: '{"format": "letter", "page-ranges": "1"}'
+          htmlPath: 'static/resume/index.html'
+          pdfName: 'static/resume'
       - name: Build
         uses: shalzz/zola-deploy-action@v0.20.0
         env:
