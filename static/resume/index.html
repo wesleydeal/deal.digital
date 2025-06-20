@@ -347,6 +347,7 @@
 		}
 
 		#tools{
+			user-select: none;
 			position: fixed;
 			bottom: 7px;
 			right: 74px;
@@ -450,6 +451,59 @@
 			}
 		}
 
+		#editor-toolbar {
+			display: none;
+			body:has(#editable:checked) & {
+				display: flex;
+			}
+			user-select: none;
+			flex-direction: row;
+			padding: 3px;
+			gap: 2px;
+			position: absolute;
+			top: 20px;
+			left: 30px;
+			background: #000a;
+			font: 600 16px/1 var(--ui-typeface);
+
+			& label:has(input[type="checkbox"]), & button {
+				background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), #17a;
+				color: #fff;
+				border: 1px solid;
+				display: block;
+				width: 24px;
+				height: 24px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 0;
+				border-radius: 2px;
+				&#editor-insert {
+					//padding-bottom: 2px;
+					padding-top: 0;
+					font-size: 1.2em;
+				}
+				&:has(input) {
+					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), #900;
+				}
+				&:has(:checked) {
+					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), #195;
+				}
+				& input{
+					display: none;
+				}
+				&:hover {
+					filter: brightness(120%);
+				}
+				&:active {
+					filter: saturate(5);
+				}
+				&:disabled {
+					background: #333;
+				}
+			}
+		}
+
 		.homelink{
 			text-decoration: none;
 			position: absolute;
@@ -533,6 +587,10 @@
 					padding-bottom: 4px;
 				}
 			}
+		}
+
+		.hasEditorFocus {
+			backdrop-filter: sepia(100%) invert(10%) hue-rotate(75deg);
 		}
 
 		@media only screen and (max-width: 9in){
@@ -634,8 +692,11 @@
 				bottom: .05in;
 				right: 0;
 			}
-			#tools, .buttonbar, .homelink, #about {
+			#tools, .buttonbar, .homelink, #about, #editor-toolbar {
 				display: none !important;
+			}
+			.hasEditorFocus {
+				backdrop-filter: none;
 			}
 			#about:has(:checked) {
 				display: inherit !important;
@@ -824,8 +885,8 @@
 		<button id="mdbtn" onclick="javascript:window.open(window.URL.createObjectURL(new Blob([markify()], {type: 'text/markdown;charset=utf-8'})))">.md</button>
 		<button id="printbtn" onclick="javascript:if(window.print) window.print()">Print</button>
 		<button id="toolsbtn" onclick="javascript:fromID('tools').style.display=(fromID('tools').style.display=='flex'?'none':'flex')">Tools</button>
-		<button id="zoominbtn" onclick="javascript:document.documentElement.style.setProperty('--zoom', 0.2+1*getComputedStyle(document.documentElement).getPropertyValue('--zoom'))">+</button>
-		<button id="zoomoutbtn" onclick="javascript:document.documentElement.style.setProperty('--zoom', -0.2+1*getComputedStyle(document.documentElement).getPropertyValue('--zoom'))">-</button>
+		<button id="zoominbtn" onclick="javascript:rootVar('--zoom', 0.2+1*rootVar('--zoom'))">+</button>
+		<button id="zoomoutbtn" onclick="javascript:rootVar('--zoom', -0.2+1*rootVar('--zoom'))">-</button>
 	</div>
 
 	<div id="tools">
@@ -847,7 +908,7 @@
 		<div class="optiongroup">
 			<form>
 				<label for="text_fonts">Body</label>
-				<select id="text_fonts" onchange="javascript:document.documentElement.style.setProperty('--base-font',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
+				<select id="text_fonts" onchange="javascript:rootVar('--base-font',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
 					<option value="Spectral">Spectral</option>
 					<option value="serif">serif</option>
 					<option value="sans-serif">sans-serif</option>
@@ -876,36 +937,36 @@
 			</form>
 			<form>
 				<label for="base-size">Size (pt)</label>
-				<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-size',this.value+'pt')">
+				<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:rootVar('--base-size',this.value+'pt')">
 			</form>
 			<form>
 				<label for="base-weight">Weight</label>
-				<input type="number" id="base-weight" min="100" max="1000" value="400" step=5 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-weight',this.value);">
+				<input type="number" id="base-weight" min="100" max="1000" value="400" step=5 onmousewheel oninput="javascript:rootVar('--base-weight',this.value);">
 			</form>
 			<form>
 				<label for="bold-weight">Bold Weight</label>
-				<input type="number" id="bold-weight" min="100" max="1000" value="700" step=5 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bold-weight',this.value);">
+				<input type="number" id="bold-weight" min="100" max="1000" value="700" step=5 onmousewheel oninput="javascript:rootVar('--bold-weight',this.value);">
 			</form>
-			<label><input type="checkbox" id="ligatures" onchange="javascript:document.documentElement.style.setProperty('--ligatures',this.checked?'normal':'none')" checked>Ligatures</label>
-			<label><input type="checkbox" id="dates-font-style" onchange="javascript:document.documentElement.style.setProperty('--dates-font-style',this.checked?'italic':'normal')" checked><i>Italic Dates</i></label>
+			<label><input type="checkbox" id="ligatures" onchange="javascript:rootVar('--ligatures',this.checked?'normal':'none')" checked>Ligatures</label>
+			<label><input type="checkbox" id="dates-font-style" onchange="javascript:rootVar('--dates-font-style',this.checked?'italic':'normal')" checked><i>Italic Dates</i></label>
 			<form>
 				<label for="line-height">Line Height</label>
-				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--base-line-height',this.value);">
+				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:rootVar('--base-line-height',this.value);">
 			</form>
 			<label><input type="checkbox" id="custom-bullets" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'">Custom bullets</label>
 			<form>
 				<label for="li-margin">● ↕ (em)</label>
-				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--bullet-margin',this.value+'em');">
+				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:rootVar('--bullet-margin',this.value+'em');">
 			</form>
 			<form>
 				<label for="p-margin">¶ ↕ (em)</label>
-				<input type="number" id="p-margin" min="0" max="1" value="0.3" step=0.01 onmousewheel oninput="javascript:document.documentElement.style.setProperty('--p-margin',this.value+'em');">
+				<input type="number" id="p-margin" min="0" max="1" value="0.3" step=0.01 onmousewheel oninput="javascript:rootVar('--p-margin',this.value+'em');">
 			</form>
 		</div>
 		<div class="optiongroup">
 			<form>
 				<label for="title_fonts"><u>H1s</u></label>
-				<select id="title_fonts" onchange="javascript:document.documentElement.style.setProperty('--h1-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
+				<select id="title_fonts" onchange="javascript:rootVar('--h1-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
 					<option value="Spectral SC">Spectral SC</option>
 					<option value="inherit">inherit</option>
 					<option value="Spectral">Spectral</option>
@@ -934,25 +995,25 @@
 					<option value="Atkinson Hyperlegible Next">Atkinson H.N.</option>
 				</select>
 			</form>
-			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:document.documentElement.style.setProperty('--h1-transform',this.checked?'uppercase':'none');">ALL CAPS</label>
+			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:rootVar('--h1-transform',this.checked?'uppercase':'none');">ALL CAPS</label>
 			<form>
 				<label for="h1-size">Size (em)</label>
-				<input type="number" id="h1-size" min="1" max="2" value="1.25" step="0.01" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-size',this.value+'em');">
+				<input type="number" id="h1-size" min="1" max="2" value="1.25" step="0.01" onmousewheel oninput="javascript:rootVar('--h1-size',this.value+'em');">
 			</form>
 			<form>
 				<label for="h1-weight">Weight</label>
-				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="5" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-weight',this.value)">
+				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="5" onmousewheel oninput="javascript:rootVar('--h1-weight',this.value)">
 			</form>
 			<form>
 				<label for="h1-space">A↔a (em)</label>
-				<input type="number" id="h1-space" min="-1.0" max="2.0" value="0.04" step="0.01" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--h1-spacing',this.value+'em')">
+				<input type="number" id="h1-space" min="-1.0" max="2.0" value="0.04" step="0.01" onmousewheel oninput="javascript:rootVar('--h1-spacing',this.value+'em')">
 			</form>
 		</div>
 		<div class="optiongroup">
 			<label><input type="checkbox" id="simple-header" onchange="javascript:document.querySelector('header').classList[this.checked?'add':'remove']('simple');">Simple Header</label>
 			<form>
 				<label for="name_fonts">Name</label>
-				<select id="name_fonts" onchange="javascript:document.documentElement.style.setProperty('--name-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);" selected="inherit">
+				<select id="name_fonts" onchange="javascript:rootVar('--name-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);" selected="inherit">
 					<option value="inherit">inherit</option>
 					<option value="Spectral">Spectral</option>
 					<option value="serif">serif</option>
@@ -982,17 +1043,23 @@
 			</form>
 			<form>
 				<label for="name-pad-top">Space ↥ (px)</label>
-				<input type="number" id="name-pad-top" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-pad-top',this.value+'px')">
+				<input type="number" id="name-pad-top" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:rootVar('--name-pad-top',this.value+'px')">
 			</form>
 			<form>
 				<label for="name-gap">Space ↕ (px)</label>
-				<input type="number" id="name-gap" min="0" max="20" value="0" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-gap',this.value+'px')">
+				<input type="number" id="name-gap" min="0" max="20" value="0" step="1" onmousewheel oninput="javascript:rootVar('--name-gap',this.value+'px')">
 			</form>
 			<form>
 				<label for="name-pad-bottom">Space ↧ (px)</label>
-				<input type="number" id="name-pad-bottom" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:document.documentElement.style.setProperty('--name-pad-bottom',this.value+'px')">
+				<input type="number" id="name-pad-bottom" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:rootVar('--name-pad-bottom',this.value+'px')">
 			</form>
 		</div>
+	</div>
+	<div id="editor-toolbar">
+		<button id="editor-b">B</button>
+		<button id="editor-i">I</button>
+		<button id="editor-insert">+</button>
+		<label>⇥<input type="checkbox" id="editor-indent"></input></label>
 	</div>
 	<script>
 		( function() { // on load
@@ -1001,7 +1068,7 @@
 			rheight = document.getElementById('resume').offsetHeight;
 			wheight = window.innerHeight;
 			if (wheight - rheight > 100) {
-				document.documentElement.style.setProperty('--zoom', (wheight-100) / rheight);
+				rootVar('--zoom', (wheight-100) / rheight);
 			}
 
 			// update dark mode selector
@@ -1023,6 +1090,10 @@
 			for (key in fieldSet) {
 				setField(key, fieldSet[key]);
 			}
+		}
+		function rootVar(name, value=""){
+			if (value != "") document.documentElement.style.setProperty(name, value);
+			return getComputedStyle(document.documentElement).getPropertyValue(name);
 		}
 		
 		function markify(parent = "") {
@@ -1128,42 +1199,47 @@
 			});
 			switch(theme){
 				case 'modern':
-					setField('text_fonts', 'Red Hat Text');
-					setField('dates-font-style', true);
-					setField('h1-uppercase', true);
-					setField('title_fonts', 'inherit');
-					setField('h1-size', 1.15);
-					setField('h1-space', 0.07);
-					setField('name_fonts', 'inherit');
-					setField('name-pad-top', 8);
-					setField('name-gap', 2);
-					setField('name-pad-bottom', 10);
+					setFields({
+						'text_fonts': 'Red Hat Text',
+						'dates-font-style': true,
+						'h1-uppercase': true,
+						'title_fonts': 'inherit',
+						'h1-size': 1.15,
+						'h1-space': 0.07,
+						'name_fonts': 'inherit',
+						'name-pad-top': 8,
+						'name-gap': 2,
+						'name-pad-bottom': 10,
+					});
 					break;
 				case 'traditional':
-					setField('text_fonts', 'STIX Two Text');
-					setField('bold-weight', 600);
-					setField('title_fonts', 'inherit');
-					setField('name_fonts', 'inherit');
-					setField('line-height', 1.33);
-					setField('h1-uppercase', true);
-					setField('simple-header', true);
-					setField('name-pad-top', 5);
-					setField('name-pad-bottom', 0);
+					setFields({
+						'text_fonts': 'STIX Two Text',
+						'bold_weight': 600,
+						'title_fonts': 'inherit',
+						'name_fonts': 'inherit',
+						'line-height': 1.33,
+						'h1-uppercase': true,
+						'simple-header': true,
+						'name-pad-top': 5,
+						'name-pad-bottom': 0,
+					});
 					break;
 				case 'tight':
-					setField('text_fonts', 'Libre Baskerville');
-					setField('base-size', 9.5);
-					setField('bold-weight', 700);
-					setField('line-height', 1.5);
-					setField('li-margin', 0.15);
-					setField('p-margin', 0.4);
-					setField('title_fonts', 'inherit');
-					setField('h1-uppercase', true);
-					setField('h1-size', 1.15);
-					setField('h1-space', 0.12);
-					setField('simple-header', true);
-					setField('name-pad-top', 5);
-					setField('name-pad-bottom', 0);
+					setFields({
+						'text_fonts': 'Libre Baskerville',
+						'base-size': 9.5,
+						'line-height': 1.5,
+						'li-margin': 0.15,
+						'p-margin': 0.4,
+						'title_fonts': 'inherit',
+						'h1-uppercase': true,
+						'h1-size': 1.15,
+						'h1-space': 0.12,
+						'simple-header': true,
+						'name-pad-top': 5,
+						'name-pad-bottom': 0,
+					});
 					break;
 				case 'compact-sans':
 					setFields({
@@ -1191,5 +1267,68 @@
 				el.oninput?.();
 			}
 		}
+
+		let editorSel = null;
+		let editorParent = null;
+		let editorToolbarTop = 0;
+		let editorToolbarLeft = 0;
+		const selParentTypes = ['P', 'LI', 'SUMMARY', 'H1', 'H2', 'DIV'];
+		document.addEventListener('selectionchange', () => {
+			const sel = window.getSelection();
+			const resume = document.getElementById('resume');
+			if (document.getElementById('editable').checked != true) return;
+			if (!sel.rangeCount) return;
+			if (!(resume.contains(sel.anchorNode) && resume.contains(sel.focusNode))) return;
+			editorSel = sel;
+			if (sel.anchorNode.isSameNode(sel.focusNode)) {
+				let parent = sel.anchorNode;
+				while (!(selParentTypes.includes(parent.nodeName))){
+					parent = parent.parentNode;
+					if(!(resume.contains(parent))) {
+						console.log("Failed to find valid parent. Found:", parent);
+						return
+					}
+				}
+
+				if (editorParent != null) {
+					if (!parent.isSameNode(editorParent)){
+						editorParent.classList.remove('hasEditorFocus');
+						editorParent = parent;
+						parent.classList.add('hasEditorFocus');
+					}
+				} else {
+					editorParent = parent;
+					parent.classList.add('hasEditorFocus');
+				}
+
+				if (parent.nodeName != "P") {
+					fromID('editor-indent').disabled = true;
+				} else {
+					fromID('editor-indent').checked = parent.classList.contains("withabove");
+				}
+
+				editorToolbarTop = parent.offsetTop - document.getElementById('editor-toolbar').offsetHeight - 10;
+				editorToolbarLeft = parent.offsetLeft - 10;
+				document.getElementById('editor-toolbar').style.top = editorToolbarTop + "px";
+				document.getElementById('editor-toolbar').style.left = editorToolbarLeft + "px";
+			}
+		});
+		fromID('editor-b').addEventListener('click', () => {
+			document.execCommand('bold');
+		});
+		fromID('editor-i').addEventListener('click', () => {
+			document.execCommand('italic');
+		});
+		fromID('editor-indent').addEventListener('change', () => {
+			if (fromID('editor-indent').checked) {
+				editorParent.classList.add("withabove");
+			} else {
+				editorParent.classList.remove("withabove");
+			}
+		});
+		fromID('editor-insert').addEventListener('click', () => {
+			editorParent.insertAdjacentHTML('beforebegin', '<p>s')
+		});
+
 	</script>
 </html>
