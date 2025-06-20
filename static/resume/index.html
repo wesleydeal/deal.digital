@@ -492,14 +492,15 @@
 				& input{
 					display: none;
 				}
-				&:hover {
+				&:hover:not(:has(input[disabled])) {
 					filter: brightness(120%);
 				}
 				&:active {
 					filter: saturate(5);
 				}
-				&:disabled {
+				&:has(input[disabled]) {
 					background: #333;
+					color: #ccc;
 				}
 			}
 		}
@@ -1058,7 +1059,10 @@
 	<div id="editor-toolbar">
 		<button id="editor-b">B</button>
 		<button id="editor-i">I</button>
-		<button id="editor-insert">+</button>
+		<button id="editor-insert">⤉</button>
+		<button id="editor-append">⤈</button>
+		<button id="editor-moveup">▲</button>
+		<button id="editor-movedown">▼</button>
 		<label>⇥<input type="checkbox" id="editor-indent"></input></label>
 	</div>
 	<script>
@@ -1075,6 +1079,8 @@
 			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
 				setField('darklight', true);
 			}
+
+			setField('editable', false);
 		})();
 
 		function fromID(id) { return document.getElementById(id); }
@@ -1304,6 +1310,7 @@
 				if (parent.nodeName != "P") {
 					fromID('editor-indent').disabled = true;
 				} else {
+					fromID('editor-indent').disabled = false;
 					fromID('editor-indent').checked = parent.classList.contains("withabove");
 				}
 
@@ -1327,8 +1334,33 @@
 			}
 		});
 		fromID('editor-insert').addEventListener('click', () => {
-			editorParent.insertAdjacentHTML('beforebegin', '<p>s')
+			switch(editorParent.nodeName) {
+				case 'LI':
+					editorParent.insertAdjacentHTML('beforebegin', '<li>&NoBreak;');
+					break;
+				default:
+					editorParent.insertAdjacentHTML('beforebegin', '<p>&NoBreak;')
+			}
 		});
+		fromID('editor-append').addEventListener('click', () => {
+			switch(editorParent.nodeName) {
+				case 'LI':
+					editorParent.insertAdjacentHTML('afterend', '<li>&NoBreak;');
+					break;
+				default:
+					editorParent.insertAdjacentHTML('afterend', '<p>&NoBreak;')
+			}
+		});
+		fromID('editor-moveup').addEventListener('click', () => {
+			if(editorParent.previousElementSibling.nodeName == editorParent.nodeName){
+				editorParent.parentNode.insertBefore(editorParent, editorParent.previousElementSibling);
+			}
+		});
+		fromID('editor-movedown').addEventListener('click', () => {
+			if(editorParent.nextElementSibling.nodeName == editorParent.nodeName){
+				editorParent.parentNode.insertBefore(editorParent.nextElementSibling, editorParent);
+			}
+		})
 
 	</script>
 </html>
