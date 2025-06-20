@@ -22,6 +22,12 @@ jobs:
     steps:
       - name: Checkout Master
         uses: actions/checkout@v4
+      - name: Render Resume PDF
+        uses: fifsky/html-to-pdf-action@master
+        with:
+          htmlFile: ./static/resume/index.html
+          outputFile: ./static/resume.pdf
+          pdfOptions: '{"format": "letter", "page-ranges": "1"}'
       - name: Build
         uses: shalzz/zola-deploy-action@v0.20.0
         env:
@@ -29,9 +35,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BUILD_FLAGS: --output-dir out
           OUT_DIR: out
-      - name: Render Resume PDF
-        uses: fifsky/html-to-pdf-action@master
-        with:
-          htmlFile: ./out/resume/index.html
-          outputFile: ./out/resume.pdf
-          pdfOptions: '{"format": "letter", "page-ranges": "1"}'
