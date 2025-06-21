@@ -1076,6 +1076,11 @@
 				setField('darklight', true);
 			}
 
+			if (window.matchMedia && window.matchMedia('screen and (max-width: 500px)').matches) {
+				setField('preset', 'compact-sans');
+				setTheme('compact-sans');
+			}
+
 			setField('editable', false);
 		})();
 
@@ -1217,7 +1222,7 @@
 				case 'traditional':
 					setFields({
 						'text_fonts': 'STIX Two Text',
-						'bold_weight': 600,
+						'bold-weight': 600,
 						'title_fonts': 'inherit',
 						'name_fonts': 'inherit',
 						'line-height': 1.33,
@@ -1313,7 +1318,7 @@
 				//editorToolbarTop = Math.max(parentRect.top - (0.5 * document.getElementById('editor-toolbar').offsetHeight) - 10,0);
 				//editorToolbarLeft = parentRect.left - document.getElementById('editor-toolbar').offsetWidth;
 				if (parentRect.right + window.scrollX > window.innerWidth - editorToolbar.offsetWidth) {
-					editorToolbarTop = parentRect.bottom + window.scrollY;
+					editorToolbarTop = Math.max(parentRect.top + window.scrollY, 0);
 					editorToolbarLeft = window.innerWidth - editorToolbar.offsetWidth;
 				} else {
 					editorToolbarTop = parentRect.top + window.scrollY;
