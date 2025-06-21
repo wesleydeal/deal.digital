@@ -1323,7 +1323,7 @@
 				//editorToolbarTop = Math.max(parentRect.top - (0.5 * document.getElementById('editor-toolbar').offsetHeight) - 10,0);
 				//editorToolbarLeft = parentRect.left - document.getElementById('editor-toolbar').offsetWidth;
 				if (parentRect.right + window.scrollX > window.innerWidth - editorToolbar.offsetWidth) {
-					editorToolbarTop = Math.max(parentRect.top + window.scrollY, 0);
+					editorToolbarTop = Math.max(parentRect.top + window.scrollY - editorToolbar.offsetHeight, 0);
 					editorToolbarLeft = window.innerWidth - editorToolbar.offsetWidth;
 				} else {
 					editorToolbarTop = parentRect.top + window.scrollY;
