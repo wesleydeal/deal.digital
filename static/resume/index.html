@@ -56,6 +56,7 @@
 			font-variant-ligatures: var(--ligatures);
 			overflow-y: scroll;
 			min-height: 100vh;
+			margin: 0;
 		}
 		
 		main#resume{
@@ -263,13 +264,13 @@
 		}
 
 		article#about {
-			//max-width: 8.5in;
 			margin: 1in auto;
 			padding: .25in .5in;
 			border-top: 1px solid;
 			font: 350 1rem/1.6 var(--ui-typeface);
 			zoom: var(--zoom);
 			position: relative;
+			background: linear-gradient(178deg in oklch, var(--color-soft) -150%, transparent 50%) 0 0 / 100% 150px no-repeat;
 			
 			& h1 {
 				font: 600 1.8em/1 var(--ui-typeface);
@@ -715,8 +716,12 @@
 				border-top: none;
 				padding: 0;
 				font-size: 11pt;
+				background: none;
 				& label:has(#print-toggle) {
 					display: none;
+				}
+				& code.codeblock {
+					box-shadow: none;
 				}
 			}
 		}
