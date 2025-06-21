@@ -1283,6 +1283,11 @@
 		document.addEventListener('selectionchange', () => {
 			const sel = window.getSelection();
 			const resume = document.getElementById('resume');
+
+			if (window.innerWidth < 500 && getComputedStyle(document.getElementById('tools')).display != 'none') {
+				document.getElementById("toolsbtn").onclick();
+			}
+
 			if (document.getElementById('editable').checked != true) return;
 			if (!sel.rangeCount) return;
 			if (!(resume.contains(sel.anchorNode) && resume.contains(sel.focusNode))) return;
