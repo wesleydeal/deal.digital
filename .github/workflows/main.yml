@@ -23,7 +23,7 @@ jobs:
       - name: Checkout Master
         uses: actions/checkout@v4
       - name: Render Resume PDF
-        uses: frnode/html-to-pdf-action@master
+        uses: arthur-jaouen/html2pdf-action@v1
         with:
           htmlFile: './static/resume/index.html'
           outputFile: './static/resume.pdf'
