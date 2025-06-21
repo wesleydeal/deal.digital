@@ -68,7 +68,7 @@
 			zoom: var(--zoom);
 			body:has(#editable:checked) & {
 				background: var(--color-bg);
-				box-shadow: background: 0 0 0 1px #fff inset, 2px 2px 5px 0 #000
+				box-shadow: 0 0 0 1px #fff inset, 2px 2px 5px 0 #000;
 			}
 		}
 
@@ -192,13 +192,11 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-end;
-			text-align: center;
+			text-align: right;
+			font: italic 0.8em/1 var(--base-font);
 			
 			& p {
-				font-style: italic;
 				margin: 10px 0 0;
-				font-size: .8em;
-				line-height: 1;
 			}
 		}
 
@@ -214,25 +212,31 @@
 		}
 
 		h2{
-			display: flex;
 			width: 100%;
 			font-size: 1.1em;
 			margin: var(--p-margin) 0 0;
-			justify-content: flex-start;
-			gap: 0 0.5ch;
 			font-weight: inherit;
-			flex-wrap: wrap;
+
+			&:has(span.dates) {
+				display: flex;
+				gap: 0 0.5ch;
+				flex-wrap: wrap-reverse;
+				justify-content: space-between;
+			}
 		}
 
 		#education-certs p:has(.dates){
 			display: flex;
 			justify-content: space-between;
+			gap: 0 0.5ch;
+
 		}
 
 		span.dates {
 			text-align: right;
 			font-style: var(--dates-font-style);
-			flex: 1 1 fit-content;
+			flex: 0 0 fit-content;
+			color: var(--color-soft);
 		}
 
 		ul{
@@ -456,12 +460,12 @@
 				display: flex;
 			}
 			user-select: none;
-			flex-direction: row;
+			flex-direction: column;
 			padding: 3px;
 			gap: 2px;
 			position: absolute;
-			top: 20px;
-			left: 30px;
+			top: 50px;
+			left: 0;
 			background: #000a;
 			font: 600 20px/1 var(--ui-typeface);
 			opacity: 80%;
@@ -479,11 +483,7 @@
 				padding: 0;
 				border-radius: 2px;
 				font: inherit;
-				&#editor-insert {
-					//padding-bottom: 2px;
-					padding-top: 0;
-					//font-size: 1.2em;
-				}
+
 				&:has(input) {
 					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), #900;
 				}
@@ -699,7 +699,7 @@
 				display: none !important;
 			}
 			.hasEditorFocus {
-				backdrop-filter: none;
+				outline: none !important;
 			}
 			#about:has(:checked) {
 				display: inherit !important;
@@ -728,7 +728,7 @@
 		</header>
 		<section id="experience">
 			<h1>Work Experience</h1>
-			<h2><b>IT Systems Engineer</b> at Fellowship Christian School <span class="dates">May 2017 &ndash; Present</span></h2>
+			<h2><span><b>IT Systems Engineer</b> at Fellowship Christian School</span> <span class="dates">May 2017 &ndash; Present</span></h2>
 			<ul>
 				<li>Codified institutional knowledge into standardized procedures and extensive documentation</li>
 				<li>Cut server footprint by 45% while expanding capabilities, improving reliability and performance</li>
@@ -744,7 +744,7 @@
 				<li>Designed technology lifecycle reports facilitating efficient budgeting and maintaining vendor support</li>
 				<li>Developed a Django web app frontend to access control system for door control &amp; attendance tracking</li>
 			</ul>
-			<h2><b>IT Solutions Architect</b> at Gtex Computers <span class="dates">Dec 2015 &ndash; July 2017</span></h2>
+			<h2><span><b>IT Solutions Architect</b> at Gtex Computers</span> <span class="dates">Dec 2015 &ndash; July 2017</span></h2>
 			<ul>
 				<li>Planned, priced, proposed, &amp; implemented hardware, software, &amp; business process overhauls for clientele</li>
 				<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for coverage &amp; high performance</li>
@@ -1063,10 +1063,12 @@
 		( function() { // on load
 
 			// zoom to fit window on large displays
-			rheight = document.getElementById('resume').offsetHeight;
+			resumeBox = document.getElementById('resume').getBoundingClientRect();
 			wheight = window.innerHeight;
-			if (wheight - rheight > 100) {
-				rootVar('--zoom', (wheight-100) / rheight);
+			if (window.innerHeight - resumeBox.height > 100) {
+				zoomFitVert = (window.innerHeight-100) / resumeBox.height;
+				zoomFitHor = (window.innerWidth-100) / resumeBox.width;
+				rootVar('--zoom', Math.max(Math.min(zoomFitVert, zoomFitHor),1));
 			}
 
 			// update dark mode selector
@@ -1307,10 +1309,18 @@
 				}
 
 				let parentRect = parent.getBoundingClientRect();
-				editorToolbarTop = parentRect.top - document.getElementById('editor-toolbar').offsetHeight - 10;
-				editorToolbarLeft = parentRect.left - 10;
-				document.getElementById('editor-toolbar').style.top = editorToolbarTop + "px";
-				document.getElementById('editor-toolbar').style.left = editorToolbarLeft + "px";
+				let editorToolbar = document.getElementById('editor-toolbar')
+				//editorToolbarTop = Math.max(parentRect.top - (0.5 * document.getElementById('editor-toolbar').offsetHeight) - 10,0);
+				//editorToolbarLeft = parentRect.left - document.getElementById('editor-toolbar').offsetWidth;
+				if (parentRect.right + window.scrollX > window.innerWidth - editorToolbar.offsetWidth) {
+					editorToolbarTop = parentRect.bottom + window.scrollY;
+					editorToolbarLeft = window.innerWidth - editorToolbar.offsetWidth;
+				} else {
+					editorToolbarTop = parentRect.top + window.scrollY;
+					editorToolbarLeft = parentRect.right + window.scrollX + 2;
+				}
+				editorToolbar.style.top = Math.floor(editorToolbarTop) + "px";
+				editorToolbar.style.left = Math.ceil(editorToolbarLeft) + "px";
 			}
 		});
 		fromID('editor-b').addEventListener('click', () => {
