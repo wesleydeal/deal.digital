@@ -1297,7 +1297,7 @@
 			const sel = window.getSelection();
 			const resume = document.getElementById('resume');
 
-			if (window.innerWidth < 500 && getComputedStyle(document.getElementById('tools')).display != 'none') {
+			if (window.innerWidth < 500 && getComputedStyle(document.getElementById('tools')).display != 'none' && !document.getElementById("tools").contains(sel.focusNode)) {
 				document.getElementById("toolsbtn").onclick();
 			}
 
