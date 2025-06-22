@@ -326,7 +326,8 @@
 				&.codeblock{
 					font-size: 0.85em;
 					width: 100%;
-					box-shadow: 0 0 1px inset;
+					//box-shadow: 0 0 1px inset;
+					overflow-x: auto;
 				}
 			}
 
@@ -1294,7 +1295,8 @@
 			const sel = window.getSelection();
 			const resume = document.getElementById('resume');
 
-			if (window.innerWidth < 500 && getComputedStyle(document.getElementById('tools')).display != 'none' && !document.getElementById("tools").contains(sel.focusNode)) {
+			if (window.innerWidth < 500 && getComputedStyle(document.getElementById('tools')).display != 'none' && !document.getElementById("tools").contains(sel.focusNode) && sel.focusNode != null) {
+				console.log(sel.focusNode);
 				document.getElementById("toolsbtn").onclick();
 			}
 
