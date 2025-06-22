@@ -297,6 +297,9 @@
 			& p, & ul, & ol {
 				max-width: 8.5in;
 				margin: 1em auto;
+				ul &, ol & {
+					margin: 0 auto;
+				}
 			}
 			
 			& li {
@@ -359,6 +362,18 @@
 				width: fit-content;
 				gap: 1em;
 				margin-left: max(0px, calc(50% - 4.25in));
+				border-radius: 0.5em;
+				&:has(:checked){
+					color: var(--color-bg);
+					background: radial-gradient(120% 70% at center, #fff4, transparent), var(--color-soft);
+					border-color: var(--color-soft);
+					box-shadow: 0 0 0.5em var(--color-soft);
+				}
+				@media screen and (width >= 800px) {
+					position: absolute;
+					right: calc(max(0.5in, calc(50% - 4.25in)));
+					top: 0.25in;
+				}
 			}
 		}
 
@@ -605,7 +620,7 @@
 		}
 
 		body:has(#editable:checked) .hasEditorFocus {
-			//backdrop-filter: sepia(100%) invert(10%) hue-rotate(75deg);
+			background: linear-gradient(120deg, var(--color-soft) -1200%, transparent 200%);
 			outline: 2px dotted var(--color-soft);
 		}
 
@@ -791,11 +806,11 @@
 	<article id="about">
 		<h1>About this page</h1>
 		<label>Include in printouts? <input type="checkbox" id="print-toggle"></input></label>
-		<p>This is the result of a single, hand-written, &lt;100kB HTML page (plus a font @import). No images
-		are used, there is no server-side pre-processing, and it looks just fine with JavaScript disabled. If you do have JS,
-		you've got controls in the bottom-right corner to zoom, change the fonts and
-		spacing, select prepared themes, enable inline content editing, print it, and export the live content as a markdown
-		file.
+		<p>This is a hand-written &lt;100kB vanilla HTML page that depends on no external resources beyond fonts. It's
+		designed <b>primarily</b> to look good in print, but also scales to desktop browsers, mobile, and TUI browsers
+		such as <code>lynx</code>.
+		<p>A content and styling editor as well as a selection of preset themes are available from the <b>Tools</b> menu
+		if you happen to have JavaScript enabled. These have been tested to work even in mobile browsers.
 
 		<h2>How we got here</h2>
 		<p>There are lots of commonly-cited guidelines for building a resume. For example:
@@ -885,11 +900,52 @@
 		</ul>
 		<p>There is some additional special handling for tabs and line breaks that you can easily see by <a href="https://github.com/wesleydeal/deal.digital/blob/master/static/resume/index.html">viewing the source for this page</a> and searching for <code>markify</code>.
 
-		<h2>Other sick tricks involved</h2>
+		<h2>Other hacks involved</h2>
 		<p>If you're viewing in light mode, that texture in the background is an inline SVG using the noise filter combined with a gradient.
 		This idea grew out of an unsuccessful attempt to fix Firefox's failure to dither gradient backgrounds (though I hope you don't
 		see any banding on your end). Turns out random noise makes for a rather nice papery feel without having to find a tiling image
 		for it.
+		<p>My actual solution to the dark mode banding issue was to overlay a thin repeating radial gradient at a shallow angle. This
+		doesn't actually hide the banding but rather adds some texture and interest, which I find appealing in its own right. It's
+		hardly discernable in Chromium-based browsers.
+		<p>The zoom buttons use the deprecated CSS <code>zoom</code> attribute. This messes up all sorts of things, such as measuring
+		using viewport units. I also use it to resize the resume on large screens so that on load it takes up most of the screen. This
+		mimics the behavior of a PDF viewer but is certainly not something I'd like most websites to do.
+		<p><code class="codeblock">background: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), repeating-linear-gradient(-15deg in oklch, #0f0605, #1e151b 100vh, #0f0605 200vh)</code>
+
+		<h2>What's next?</h2>
+		<p>Here's the TODO list:
+		<ul>
+			<li>Theme selection based on URL parameter
+			<li>Create tailoring profiles, e.g. endpoint administrator, security analyst, network engineer
+				<ul>
+					<li>Group bullet points and paragraphs
+					<li>Share via URL parameter
+				</ul>
+			<li>Add editor features
+				<ul>
+					<li>Move entire H2s and their contents up/down and between sections
+					<li>Move sections up and down
+					<li>Automatically assign new sections an ID based on their H1 text
+					<li>Insert/remove dates
+					<li>Support indented bulleted lists
+				</ul>
+			<li>Support printing with an accent color
+				<ul>
+					<li>Toggle color on/off
+					<li>Toggle accent color for: name(box), date, section separators, bold text
+				</ul>
+			<li>Determine a balance between use of modern CSS and old browser support
+			<li>Swap use of deprecated CSS zoom attribute for <code>transform: scale(var(--zoom))</code>
+			<li>Standardize button UX
+			<li>Standardize and reduce color palatte
+			<li>Release as an open-source solution
+				<ul>
+					<li>Select or create a license (ideally requires attribution in the visible text of the webpage but not the printed resume)
+					<li>Come up with a solution to replace the content with dummy content
+					<li>Provide instructions for the less technically skilled to use it
+					<li>(longshot) offer managed hosting including domain for a small fee
+		</ul>
 	</article>
 
 
@@ -906,8 +962,8 @@
 			<label><input type="checkbox" id="darklight" onchange="javascript:document.body.classList=this.checked?'dark':'light'">Dark mode</label>
 			<label><input type="checkbox" id="editable" onchange="javascript:fromID('resume').contentEditable=this.checked">Editor</label>
 			<form>
-				<label for="preset">Theme</label>
-				<select id="preset" onchange="javascript:setTheme(this.value)" onclick="javascript:setTheme(this.value)">
+				<label for="theme">Theme</label>
+				<select id="theme" onchange="javascript:setTheme(this.value)" onclick="javascript:setTheme(this.value)">
 					<option value="default" selected>Default</option>
 					<option value="modern">Modern</option>
 					<option value="traditional">Traditional</option>
@@ -1094,7 +1150,7 @@
 			}
 
 			if (window.matchMedia && window.matchMedia('screen and (max-width: 500px)').matches) {
-				setField('preset', 'compact-sans');
+				setField('theme', 'compact-sans');
 				setTheme('compact-sans');
 			}
 
@@ -1283,7 +1339,7 @@
 					break;
 			}
 			for (let el of document.querySelectorAll("#tools input, #tools select")){
-				if (el.id == 'preset') continue;
+				if (el.id == 'theme') continue;
 				el.onchange?.();
 				el.oninput?.();
 			}
