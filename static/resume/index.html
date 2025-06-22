@@ -10,13 +10,10 @@
 			--lightmode-color-fg: #000;
 			--lightmode-color-bg: #fff4f3;
 			--lightmode-color-soft: #794a4a;
-			--lightmode-image-bg: radial-gradient(at top right, #fff6, transparent) 0/cover fixed, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.35' filter='url(%23a)'/%3E%3C/svg%3E") 0 / 250px #fff4f3;
+			--lightmode-image-bg: radial-gradient(at 50% 40%, #fff4, transparent) 0/cover fixed, repeating-linear-gradient(32deg, #33113308, #0000 5px) fixed, repeating-linear-gradient(-32deg, #33333308, #0000 4px) fixed, #fff4f3;
 			--darkmode-color-fg: #fffafa;
 			--darkmode-color-bg: #131111;
 			--darkmode-color-soft: #dfa6a6;
-			--darkmode-image-bg: radial-gradient(ellipse at 0 0 in oklch, #2105, transparent 60%) 0/cover fixed, #1e151b;
-			--darkmode-image-bg: repeating-linear-gradient(-15deg, #131111, #1e151b 100vh, #131111 200vh);
-			--darkmode-image-bg: repeating-linear-gradient(15deg, #1111 3px, #0000 6px), repeating-linear-gradient(-15deg, #0f0605, #1e151b 100vh, #0f0605 200vh);
 			--darkmode-image-bg: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), repeating-linear-gradient(-15deg in oklch, #0f0605, #1e151b 100vh, #0f0605 200vh);
 			
 			--color-fg: var(--lightmode-color-fg);
@@ -901,6 +898,11 @@
 		<p>There is some additional special handling for tabs and line breaks that you can easily see by <a href="https://github.com/wesleydeal/deal.digital/blob/master/static/resume/index.html">viewing the source for this page</a> and searching for <code>markify</code>.
 
 		<h2>Other hacks involved</h2>
+		<p>Firefox doesn't dither gradient backgrounds, so using it to view this resume on a large monitor used to result in distracting
+		banding in the background. I initially attempted to use a <a href="https://css-tricks.com/grainy-gradients/">noisy SVG texture</a> to alleviate this issue, and while it produced some
+		visually interesting results at different scales, it resulted in poor performance on some devices. Instead, I opted for a set of
+		repeating radial gradients to add a paper-like texture to the background. In dark mode, you can still see banding in Firefox,
+		but it looks better as part of a more complex background pattern.
 		<p>If you're viewing in light mode, that texture in the background is an inline SVG using the noise filter combined with a gradient.
 		This idea grew out of an unsuccessful attempt to fix Firefox's failure to dither gradient backgrounds (though I hope you don't
 		see any banding on your end). Turns out random noise makes for a rather nice papery feel without having to find a tiling image
