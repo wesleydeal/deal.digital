@@ -56,7 +56,7 @@
 			font-variant-ligatures: var(--ligatures);
 			overflow-y: scroll;
 			min-height: 100vh;
-			margin: 0;
+			margin: 25px 0;
 		}
 		
 		main#resume{
@@ -174,7 +174,7 @@
 				color: var(--color-bg);
 			}
 			
-			&:link[href^="mailto:"],:link[href^="tel:"] {
+			&:link[href^="mailto:"], &:link[href^="tel:"] {
 				text-decoration: none;
 			}
 		}
@@ -270,12 +270,16 @@
 			font: 350 1rem/1.6 var(--ui-typeface);
 			zoom: var(--zoom);
 			position: relative;
-			background: linear-gradient(176deg, #ea4d00 -600%, transparent 50%) 0 0 / 100% 500px no-repeat;
+			background: linear-gradient(176deg, #ea4d00 -600%, transparent 50%) 0 0 / 100% 1500px no-repeat;
 			
 			& h1 {
-				font: 600 1.8em/1 var(--ui-typeface);
+				font: 600 2em/1 var(--ui-typeface);
+				text-transform: uppercase;
+				position: relative;
+				width: fit-content;
 				max-width: 8.5in;
-				margin: .5em auto;
+				margin: 0.25em auto 0.75em;
+				margin-left: max(0px, calc(50% - 4.25in));
 				border: 0;
 			}
 			
@@ -354,7 +358,7 @@
 				padding: 0.5em 1em;
 				color: var(--color-soft);
 				accent-color: var(--color-soft);
-				font-size: 0.8em;
+				font-size: 1em;
 				display: inline flex;
 				width: fit-content;
 				gap: 1em;
@@ -370,6 +374,11 @@
 					position: absolute;
 					right: calc(max(0.5in, calc(50% - 4.25in)));
 					top: 0.25in;
+				}
+				transition: 150ms box-shadow, 100ms filter;
+				user-select: none;
+				&:hover, &:active {
+					filter: saturate(2);
 				}
 			}
 		}
@@ -392,9 +401,11 @@
 			flex-wrap: wrap;
 			box-shadow: 0 0 6px 0 #444a;
 			
-			& label{
+			& label, & button{
+				display: flex;
 				padding: 3px 6px 3px 3px;
 				flex: 1 0 auto;
+				color: #fff;
 				
 				&:has(> input){
 					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(230deg, #a00, #500 60px);
@@ -416,6 +427,18 @@
 					filter: brightness(120%);
 				}
 			}
+
+			& button {
+				background: linear-gradient(to bottom, #fff1, #fff2 50%, transparent 50%), linear-gradient(270deg in oklch, #20397c, #1b1b60);
+				border: 0;
+				border-bottom: 1px solid #6161ea;
+				text-shadow: 1px 1px black;
+				padding: 2px 4px 1px;
+
+				&:hover{
+					filter: brightness(120%);
+				}
+			}
 			
 			& form {
 				display: flex;
@@ -432,6 +455,8 @@
 			& .optiongroup {
 				border: 1px solid #fc3;
 				background: #0009;
+				display: flex;
+				flex-direction: column;
 			}
 			
 			& input {
@@ -725,6 +750,7 @@
 			}
 			.hasEditorFocus {
 				outline: none !important;
+				background: none !important;
 			}
 			#about:has(:checked) {
 				display: inherit !important;
@@ -759,27 +785,30 @@
 			<h1>Work Experience</h1>
 			<h2><span><b>IT Systems Engineer</b> at Fellowship Christian School</span> <span class="dates">May 2017 &ndash; Present</span></h2>
 			<ul>
-				<li>Codified institutional knowledge into standardized procedures and extensive documentation</li>
-				<li>Cut server footprint by 45% while expanding capabilities, improving reliability and performance</li>
 				<li>Spearheaded campus network modernization, strategically deploying refurbished hardware and implementing VLAN segmentation, spanning tree, link redundancy, Wi-Fi 6, 802.1x RADIUS auth</li>
+				<li>Codified institutional knowledge into standardized procedures and extensive documentation</li>
+				<li>Cut server hardware footprint by 45% while expanding capabilities, improving reliability and performance</li>
 				<li>Monitored, managed, serviced campus network/server infrastructure proactively and in response to tickets</li>
-				<li>Planned, deployed, and supported solutions for server &amp; appliance backups, network monitoring, MDM, endpoint &amp; mail security, MFA single sign-on, software deployment, asset tracking, video conferencing, team chat, employee portal, surveillance VMS, livestreaming, and ID badge management</li>
-				<li>Utilized open-source software to provide internal multi model LLM chat with tool access at low cost
-				<li>Strengthened cybersecurity posture implementing best practices, MFA; reducing exposed ports by 80%
+				<li>Planned, deployed, and supported solutions for server &amp; appliance backups, network monitoring, <!--MDM, endpoint &amp; mail security, MFA single sign-on,--> software deployment, asset tracking, video conferencing, team chat, intranet portal, <!--ID badge management, livestreaming,--> surveillance VMS, etc.</li>
+				<li>Implemented a low-cost, open-source multi-model LLM chat solution, empowering internal teams with AI<!-- tools including image generation, thinking, and document-based assistants-->
+				<li>Led cybersecurity posture improvement taskforce, evaluating and reducing risk exposure through means such as patch management, endpoint security, log monitoring, MFA, zero-trust/microsegmentation
 				<li>Administered ~<b>1400</b> end-user devices including Chromebooks, iPads, Macs, Windows workstations</li>
-				<li>Led hybrid migration from on-premises Exchange 2010 to Exchange Online, overseeing planning, implementation, and successful cutover for over 160 users.</li>
+				<li>Directed hybrid migration from on-premises Exchange 2010 to Exchange Online for over 160 mailboxes, from initial planning to successful cut-over and follow-through</li>
 				<li>Automated account creation/management with PowerShell for over <b>1300</b> users across multiple systems</li>
-				<li>Hardened workstations against vulnerabilities, removed distractions, deployed software, printers, network shares, certificates, and menu layouts, configured third-party software with Group Policy and Intune</li>
 				<li>Designed technology lifecycle reports facilitating efficient budgeting and maintaining vendor support</li>
-				<li>Developed a Django web app frontend to access control system for door control &amp; attendance tracking</li>
+				<li>Developed a Django-powered web app for door control &amp; student attendance tracking, interfacing with building automation systems</li>
+				<!--<li>Hardened workstations against vulnerabilities, removed distractions, deployed software, printers, network shares, certificates, and menu layouts, configured third-party software with Group Policy and Intune</li>
+				-->
+				<!-- Overhauled Windows server infrastructure by upgrading, replacing, and virtualizing legacy machines -->
 			</ul>
 			<h2><span><b>IT Solutions Architect</b> at Gtex Computers</span> <span class="dates">Dec 2015 &ndash; July 2017</span></h2>
 			<ul>
-				<li>Planned, priced, proposed, &amp; implemented hardware, software, &amp; business process overhauls for clientele</li>
+				<li>Planned, priced, pitched, &amp; implemented hardware, software, &amp; business process overhauls for clientele</li>
 				<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for coverage &amp; high performance</li>
-				<li>Automated monthly PC maintenance with PowerShell, reducing technician hands-on time by <b>80%</b></li>
+				<li>Automated monthly PC maintenance with PowerShell, reducing tech hands-on time by an estimated <b>80%</b></li>
 				<li>Developed a client ROI reporting portal with Google Apps Script &amp; WordPress</li>
 				<li>Built modern responsive websites employing HTML5 + CSS3 on WordPress &amp; Bootstrap frameworks</li>
+				<!-- Diagnostics and repairs including data recovery, tune-ups, network setup, malware removal, hardware -->
 			</ul>
 		</section>
 		<section id="education-certs">
@@ -791,18 +820,18 @@
 		</section>
 		<section id="skills">
 			<h1>Skills</h1>
-			<p><b>Software</b>: Microsoft 365, Azure/Entra, Active Directory, Intune, Defender, Hyper-V, SCCM/MDT; DNS, DHCP, Google Workspace, VoIP, PaperCut, VEEAM, Duo SSO, Docker, Proxmox/KVM, Debian, Ubuntu, CentOS/RHEL, Oracle Linux, MariaDB/MySQL, PostgreSQL, MS SQL.
+			<p><b>Software</b>: Microsoft 365, Azure/Entra, Active Directory, Group Policy, Intune, Defender, Hyper-V, SCCM/MDT; DNS, DHCP, Google Workspace, VoIP, PaperCut, VEEAM, Duo SSO, Docker, Proxmox/KVM, Debian, Ubuntu, CentOS/RHEL, Oracle Linux, MariaDB/MySQL, PostgreSQL, MS SQL.
 			<p><b>Networks</b>: access points, point-to-point wireless links, switches, routers, firewalls from Cisco, Fortinet, HPE/Aruba, Brocade, Ruckus, Ubiquiti, Avaya, SonicWall, Zyxel; LibreNMS, Graylog, inter-VLAN routing with ACLs, tuning high density Wi-Fi installations, preparing &amp; securing site-to-site and remote access VPNs
 			<p><b>Scripting</b>: Experienced with Python and PowerShell. Some work with C, C#, C++, Go, Java, JS, Google Apps Script, Bash.
 		</section>
 		<footer>
-			<p>Updated <time datetime="2025-06-21">2025-06-21</time>. Latest revision available at <a href="https://deal.digital/resume">deal.digital/resume</a>
+			<p>Updated <time datetime="2025-06-22">2025-06-22</time>. Latest revision available at <a href="https://deal.digital/resume">deal.digital/resume</a>
 		</footer>
 	</main>
 
 	<article id="about">
 		<h1>About this page</h1>
-		<label>Include in printouts? <input type="checkbox" id="print-toggle"></input></label>
+		<label>🖶 Include in printouts? <input type="checkbox" id="print-toggle"></input></label>
 		<p>This is a hand-written &lt;100kB vanilla HTML page that depends on no external resources beyond fonts. It's
 		designed <b>primarily</b> to look good in print, but also scales to desktop browsers, mobile, and TUI browsers
 		such as <code>lynx</code>.
@@ -956,6 +985,7 @@
 		<div class="optiongroup">
 			<label><input type="checkbox" id="darklight" onchange="javascript:document.body.classList=this.checked?'dark':'light'">Dark mode</label>
 			<label><input type="checkbox" id="editable" onchange="javascript:fromID('resume').contentEditable=this.checked">Editor</label>
+			<button id="unhide" onclick="javascript:unhide()">Unhide Extras</button>
 			<form>
 				<label for="theme">Theme</label>
 				<select id="theme" onchange="javascript:setTheme(this.value)" onclick="javascript:setTheme(this.value)">
@@ -1457,5 +1487,9 @@
 			editorSel = null;
 		});
 
+		function unhide() {
+			resume = document.getElementById('resume');
+			resume.innerHTML = resume.innerHTML.replaceAll('<!--', '').replaceAll('-->', '');
+		}
 	</script>
 </html>
