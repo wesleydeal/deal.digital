@@ -11,14 +11,17 @@
 			--lightmode-color-bg: #fff4f3;
 			--lightmode-color-soft: #794a4a;
 			--lightmode-image-bg: radial-gradient(at 50% 40%, #fff4, transparent) 0/cover fixed, repeating-linear-gradient(32deg, #33113308, #0000 5px) fixed, repeating-linear-gradient(-32deg, #33333308, #0000 4px) fixed, #fff4f3;
+			--lightmode-code-bg: #f8d2abaa;
 			--darkmode-color-fg: #fffafa;
 			--darkmode-color-bg: #131111;
 			--darkmode-color-soft: #dfa6a6;
 			--darkmode-image-bg: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), repeating-linear-gradient(-15deg in oklch, #0f0605, #1e151b 100vh, #0f0605 200vh);
+			--darkmode-code-bg: #582626aa;
 			
 			--color-fg: var(--lightmode-color-fg);
 			--color-bg: var(--lightmode-color-bg);
 			--color-soft: var(--lightmode-color-soft);
+			--color-code-bg: var(--lightmode-code-bg);
 			--bg: var(--lightmode-image-bg);
 			--base-size: 11pt;
 			--base-line-height: 1.4;
@@ -324,7 +327,7 @@
 			}
 
 			& code {
-				backdrop-filter: sepia(100%) hue-rotate(305deg) brightness(93%) saturate(3);
+				background: var(--color-code-bg);
 				font-family: "Atkinson Hyperlegible Mono", monospace;
 				font-size: 0.9em;
 				padding: 0 0.3em;
@@ -689,6 +692,7 @@
 				--color-fg: var(--darkmode-color-fg);
 				--bg: var(--darkmode-image-bg);
 				--color-soft: var(--darkmode-color-soft);
+				--color-code-bg: var(--darkmode-code-bg);
 
 				& header:not(.simple) #namebox{
 					box-shadow: 0 0 0 1px var(--color-soft);
@@ -701,6 +705,7 @@
 				--color-fg: var(--darkmode-color-fg);
 				--bg: var(--darkmode-image-bg);
 				--color-soft: var(--darkmode-color-soft);
+				--color-code-bg: var(--darkmode-code-bg);
 
 				& header:not(.simple) #namebox{
 					box-shadow: 0 0 0 1px var(--color-soft);
@@ -831,12 +836,13 @@
 
 	<article id="about">
 		<h1>About this page</h1>
-		<label>🖶 Include in printouts? <input type="checkbox" id="print-toggle"></input></label>
+		<label>Include in printouts? <input type="checkbox" id="print-toggle"></input></label>
 		<p>This is a hand-written &lt;100kB vanilla HTML page that depends on no external resources beyond fonts. It's
 		designed <b>primarily</b> to look good in print, but also scales to desktop browsers, mobile, and TUI browsers
 		such as <code>lynx</code>.
 		<p>A content and styling editor as well as a selection of preset themes are available from the <b>Tools</b> menu
 		if you happen to have JavaScript enabled. These have been tested to work even in mobile browsers.
+		<p>Hosted as part of my website on GitHub pages, with <a href="https://github.com/wesleydeal/deal.digital/blob/master/static/resume/index.html">source available here</a>.
 
 		<h2>How we got here</h2>
 		<p>There are lots of commonly-cited guidelines for building a resume. For example:
@@ -965,10 +971,10 @@
 			<li>Standardize and reduce color palatte
 			<li>Release as an open-source solution
 				<ul>
-					<li>Select or create a license (ideally requires attribution in the visible text of the webpage but not the printed resume)
 					<li>Come up with a solution to replace the content with dummy content
 					<li>Provide instructions for the less technically skilled to use it
 					<li>(longshot) offer managed hosting including domain for a small fee
+				</ul>
 		</ul>
 	</article>
 
