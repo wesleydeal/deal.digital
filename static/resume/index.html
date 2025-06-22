@@ -1131,11 +1131,8 @@
 						md += "\n\n# " + el.textContent + "\n";
 						break;
 					case "H2":
-						md += "\n\n## " + el.childNodes[0].textContent;
-						md += "\n   " + el.childNodes[1].textContent.replace(' at ','');
-						break;
-					case "SUMMARY":
-						md += markify(el) + "\n";
+						md += "\n\n## " + markify(el);
+						//md += "\n   " + el.childNodes[1].textContent/*.replace(' at ','')*/;
 						break;
 					case "LI":
 						md += "\n   * " + markify(el);
@@ -1145,7 +1142,7 @@
 						if (p.nextElementSibling && p.nextElementSibling.classList.contains("withabove")) {
 							md += "\n" + markify(p) + "  ";
 						} else if (p.classList.contains("withabove")) {
-							md += "\n* " + markify(p) + "\n";
+							md += "\n - " + markify(p) + "\n";
 						} else if (p.classList.contains("name")) {
 							md += "# " + markify(p) + "\n";
 						} else if (p.classList.contains("jobtitle")) {
@@ -1166,10 +1163,10 @@
 						md += "**" + markify(el) + "**";
 						break;
 					case "HEADER":
-						md += markify(el) + "\n" + "* ".repeat(65);
+						md += markify(el) + "\n" + " * * * * * * * * * * ";
 						break;
 					case "FOOTER":
-						md += "\n" + "* ".repeat(65) + "\n" + markify(el);
+						md += "\n" + " * * * * * * * * * * " + "\n" + markify(el);
 						break;
 					case "A":
 						let href = el.href;
@@ -1179,7 +1176,7 @@
 						break;
 					case "SPAN":
 						if (el.classList.contains("dates")) {
-							md += ", " + markify(el);
+							md += ", *" + markify(el) + "*";
 						} else {
 							md += markify(el);
 						}
