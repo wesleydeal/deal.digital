@@ -901,15 +901,8 @@
 		<p>Firefox doesn't dither gradient backgrounds, so using it to view this resume on a large monitor used to result in distracting
 		banding in the background. I initially attempted to use a <a href="https://css-tricks.com/grainy-gradients/">noisy SVG texture</a> to alleviate this issue, and while it produced some
 		visually interesting results at different scales, it resulted in poor performance on some devices. Instead, I opted for a set of
-		repeating radial gradients to add a paper-like texture to the background. In dark mode, you can still see banding in Firefox,
-		but it looks better as part of a more complex background pattern.
-		<p>If you're viewing in light mode, that texture in the background is an inline SVG using the noise filter combined with a gradient.
-		This idea grew out of an unsuccessful attempt to fix Firefox's failure to dither gradient backgrounds (though I hope you don't
-		see any banding on your end). Turns out random noise makes for a rather nice papery feel without having to find a tiling image
-		for it.
-		<p>My actual solution to the dark mode banding issue was to overlay a thin repeating radial gradient at a shallow angle. This
-		doesn't actually hide the banding but rather adds some texture and interest, which I find appealing in its own right. It's
-		hardly discernable in Chromium-based browsers.
+		repeating radial gradients at opposing shallow angles to add a paper-like texture to the background. In dark mode, you can still
+		see banding in Firefox, but it looks better as part of a more complex background pattern.
 		<p>The zoom buttons use the deprecated CSS <code>zoom</code> attribute. This messes up all sorts of things, such as measuring
 		using viewport units. I also use it to resize the resume on large screens so that on load it takes up most of the screen. This
 		mimics the behavior of a PDF viewer but is certainly not something I'd like most websites to do.
