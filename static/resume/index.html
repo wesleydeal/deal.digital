@@ -15,6 +15,9 @@
 			--darkmode-color-bg: #131111;
 			--darkmode-color-soft: #dfa6a6;
 			--darkmode-image-bg: radial-gradient(ellipse at 0 0 in oklch, #2105, transparent 60%) 0/cover fixed, #1e151b;
+			--darkmode-image-bg: repeating-linear-gradient(-15deg, #131111, #1e151b 100vh, #131111 200vh);
+			--darkmode-image-bg: repeating-linear-gradient(15deg, #1111 3px, #0000 6px), repeating-linear-gradient(-15deg, #0f0605, #1e151b 100vh, #0f0605 200vh);
+			--darkmode-image-bg: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), repeating-linear-gradient(-15deg in oklch, #0f0605, #1e151b 100vh, #0f0605 200vh);
 			
 			--color-fg: var(--lightmode-color-fg);
 			--color-bg: var(--lightmode-color-bg);
@@ -270,7 +273,7 @@
 			font: 350 1rem/1.6 var(--ui-typeface);
 			zoom: var(--zoom);
 			position: relative;
-			background: linear-gradient(176deg in oklch, var(--color-fg) -600%, transparent 50%) 0 0 / 100% 500px no-repeat;
+			background: linear-gradient(176deg in oklch, #ea4d00 -600%, transparent 50%) 0 0 / 100% 500px no-repeat;
 			
 			& h1 {
 				font: 600 1.8em/1 var(--ui-typeface);
