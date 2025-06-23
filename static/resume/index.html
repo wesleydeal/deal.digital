@@ -17,7 +17,7 @@
 			--darkmode-color-soft: #dfa6a6;
 			--darkmode-image-bg: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), repeating-linear-gradient(-15deg in oklch, #0f0605, #1e151b 100vh, #0f0605 200vh);
 			--darkmode-code-bg: #582626aa;
-			
+
 			--color-fg: var(--lightmode-color-fg);
 			--color-bg: var(--lightmode-color-bg);
 			--color-soft: var(--lightmode-color-soft);
@@ -70,7 +70,7 @@
 			display: flex;
 			flex-direction: column;
 			zoom: var(--zoom);
-			body:has(#editable:checked) & {
+			:has(#editable:checked) & {
 				background: var(--color-bg);
 				box-shadow: 0 0 0 1px #fff inset, 2px 2px 5px 0 #000;
 			}
@@ -1035,30 +1035,30 @@
 			</form>
 			<form>
 				<label for="base-size">Size (pt)</label>
-				<input type="number" id="base-size" min="8" max="16" value="11" step=0.01 onmousewheel oninput="javascript:rootVar('--base-size',this.value+'pt')">
+				<input type="number" id="base-size" min="8" max="16" value="11" step=0.05 oninput="javascript:rootVar('--base-size',this.value+'pt')">
 			</form>
 			<form>
 				<label for="base-weight">Weight</label>
-				<input type="number" id="base-weight" min="100" max="1000" value="400" step=5 onmousewheel oninput="javascript:rootVar('--base-weight',this.value);">
+				<input type="number" id="base-weight" min="100" max="1000" value="400" step=25 oninput="javascript:rootVar('--base-weight',this.value);">
 			</form>
 			<form>
 				<label for="bold-weight">Bold Weight</label>
-				<input type="number" id="bold-weight" min="100" max="1000" value="700" step=5 onmousewheel oninput="javascript:rootVar('--bold-weight',this.value);">
+				<input type="number" id="bold-weight" min="100" max="1000" value="700" step=25 oninput="javascript:rootVar('--bold-weight',this.value);">
 			</form>
 			<label><input type="checkbox" id="ligatures" onchange="javascript:rootVar('--ligatures',this.checked?'normal':'none')" checked>Ligatures</label>
 			<label><input type="checkbox" id="dates-font-style" onchange="javascript:rootVar('--dates-font-style',this.checked?'italic':'normal')" checked><i>Italic Dates</i></label>
 			<form>
 				<label for="line-height">Line Height</label>
-				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 onmousewheel oninput="javascript:rootVar('--base-line-height',this.value);">
+				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 oninput="javascript:rootVar('--base-line-height',this.value);">
 			</form>
 			<label><input type="checkbox" id="custom-bullets" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'">Custom bullets</label>
 			<form>
 				<label for="li-margin">● ↕ (em)</label>
-				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 onmousewheel oninput="javascript:rootVar('--bullet-margin',this.value+'em');">
+				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 oninput="javascript:rootVar('--bullet-margin',this.value+'em');">
 			</form>
 			<form>
 				<label for="p-margin">¶ ↕ (em)</label>
-				<input type="number" id="p-margin" min="0" max="1" value="0.3" step=0.01 onmousewheel oninput="javascript:rootVar('--p-margin',this.value+'em');">
+				<input type="number" id="p-margin" min="0" max="1" value="0.3" step=0.01 oninput="javascript:rootVar('--p-margin',this.value+'em');">
 			</form>
 		</div>
 		<div class="optiongroup">
@@ -1096,23 +1096,23 @@
 			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:rootVar('--h1-transform',this.checked?'uppercase':'none');">ALL CAPS</label>
 			<form>
 				<label for="h1-size">Size (em)</label>
-				<input type="number" id="h1-size" min="1" max="2" value="1.25" step="0.01" onmousewheel oninput="javascript:rootVar('--h1-size',this.value+'em');">
+				<input type="number" id="h1-size" min="1" max="2" value="1.25" step="0.01" oninput="javascript:rootVar('--h1-size',this.value+'em');">
 			</form>
 			<form>
 				<label for="h1-weight">Weight</label>
-				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="5" onmousewheel oninput="javascript:rootVar('--h1-weight',this.value)">
+				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="25" oninput="javascript:rootVar('--h1-weight',this.value)">
 			</form>
 			<form>
 				<label for="h1-space">A↔a (em)</label>
-				<input type="number" id="h1-space" min="-1.0" max="2.0" value="0.04" step="0.01" onmousewheel oninput="javascript:rootVar('--h1-spacing',this.value+'em')">
+				<input type="number" id="h1-space" min="-1.0" max="2.0" value="0.04" step="0.01" oninput="javascript:rootVar('--h1-spacing',this.value+'em')">
 			</form>
 		</div>
 		<div class="optiongroup">
 			<label><input type="checkbox" id="simple-header" onchange="javascript:document.querySelector('header').classList[this.checked?'add':'remove']('simple');">Simple Header</label>
 			<form>
 				<label for="name_fonts">Name</label>
-				<select id="name_fonts" onchange="javascript:rootVar('--name-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);" selected="inherit">
-					<option value="inherit">inherit</option>
+				<select id="name_fonts" onchange="javascript:rootVar('--name-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
+					<option value="inherit" selected>inherit</option>
 					<option value="Spectral">Spectral</option>
 					<option value="serif">serif</option>
 					<option value="sans-serif">sans-serif</option>
@@ -1141,22 +1141,22 @@
 			</form>
 			<form>
 				<label for="name-pad-top">Space ↥ (px)</label>
-				<input type="number" id="name-pad-top" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:rootVar('--name-pad-top',this.value+'px')">
+				<input type="number" id="name-pad-top" min="0" max="20" value="10" step="1" oninput="javascript:rootVar('--name-pad-top',this.value+'px')">
 			</form>
 			<form>
 				<label for="name-gap">Space ↕ (px)</label>
-				<input type="number" id="name-gap" min="0" max="20" value="0" step="1" onmousewheel oninput="javascript:rootVar('--name-gap',this.value+'px')">
+				<input type="number" id="name-gap" min="0" max="20" value="0" step="1" oninput="javascript:rootVar('--name-gap',this.value+'px')">
 			</form>
 			<form>
 				<label for="name-pad-bottom">Space ↧ (px)</label>
-				<input type="number" id="name-pad-bottom" min="0" max="20" value="10" step="1" onmousewheel oninput="javascript:rootVar('--name-pad-bottom',this.value+'px')">
+				<input type="number" id="name-pad-bottom" min="0" max="20" value="10" step="1" oninput="javascript:rootVar('--name-pad-bottom',this.value+'px')">
 			</form>
 		</div>
 	</div>
 	<div id="editor-toolbar">
 		<button id="editor-b">B</button>
 		<button id="editor-i">I</button>
-		<label>⇥<input type="checkbox" id="editor-indent"></input></label>
+		<label>⇥<input type="checkbox" id="editor-indent"></label>
 		<button id="editor-insert">⤉</button>
 		<button id="editor-append">⤈</button>
 		<button id="editor-moveup">▲</button>
@@ -1164,6 +1164,8 @@
 		<button id="editor-delete">X</button>
 	</div>
 	<script>
+		let inputScrollDebounce = false;
+
 		( function() { // on load
 
 			// zoom to fit window on large displays
@@ -1183,6 +1185,35 @@
 			if (window.matchMedia && window.matchMedia('screen and (max-width: 500px)').matches) {
 				setField('theme', 'compact-sans');
 				setTheme('compact-sans');
+			}
+
+			// scroll to change values
+			for (let input of document.querySelectorAll("#tools input[type='number']")) {
+				input.addEventListener("wheel", (event) => {
+					event.preventDefault();
+					if (inputScrollDebounce) return;
+					let i = event.target;
+					let step = 1;
+					step = i?.step;
+					decimals = step.toString().split(".")[1]?.length;
+					i.value = ((i.value * 1) + (step * Math.sign(-event.deltaY))).toFixed(decimals);
+					i.oninput?.();
+					inputScrollDebounce = true;
+					window.setTimeout(() => {inputScrollDebounce = false}, 15);
+				});
+			}
+
+			for (let select of document.querySelectorAll("#tools select")) {
+				select.addEventListener("wheel", (event) => {
+					event.preventDefault();
+					if (inputScrollDebounce) return;
+					newIndex = event.target.selectedIndex + Math.sign(event.deltaY);
+					if (newIndex < 0 || newIndex >= event.target.length) return;
+					event.target.selectedIndex = newIndex;
+					event.target.onchange?.();
+					inputScrollDebounce = true;
+					window.setTimeout(() => {inputScrollDebounce = false}, 60);
+				})
 			}
 
 			setField('editable', false);
