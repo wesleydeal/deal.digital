@@ -437,6 +437,7 @@
 				border-bottom: 1px solid #6161ea;
 				text-shadow: 1px 1px black;
 				padding: 2px 4px 1px;
+				font: inherit;
 
 				&:hover{
 					filter: brightness(120%);
@@ -791,30 +792,30 @@
 			<h1>Work Experience</h1>
 			<h2><span><b>IT Systems Engineer</b> at Fellowship Christian School</span> <span class="dates">May 2017 &ndash; Present</span></h2>
 			<ul>
-				<li>Spearheaded campus network modernization, strategically deploying refurbished hardware and implementing VLAN segmentation, spanning tree, link redundancy, Wi-Fi 6, 802.1x RADIUS auth</li>
-				<li>Codified institutional knowledge into standardized procedures and extensive documentation</li>
-				<li>Cut server hardware footprint by 45% while expanding capabilities, improving reliability and performance</li>
-				<li>Monitored, managed, serviced campus network/server infrastructure proactively and in response to tickets</li>
-				<li>Planned, deployed, and supported solutions for server &amp; appliance backups, network monitoring, <!--MDM, endpoint &amp; mail security, MFA single sign-on,--> software deployment, asset tracking, video conferencing, team chat, intranet portal, <!--ID badge management, livestreaming,--> surveillance VMS, etc.</li>
+				<li>Spearheaded campus network modernization, strategically deploying refurbished hardware and implementing VLAN segmentation, spanning tree, link redundancy, Wi-Fi 6, 802.1x RADIUS auth
+				<li>Codified institutional knowledge into standardized procedures and extensive documentation
+				<li>Cut server hardware footprint by 45% while expanding capabilities, improving reliability and performance
+				<li>Monitored, managed, serviced campus network/server infrastructure proactively and in response to tickets
+				<li>Planned, deployed, and supported solutions for server &amp; appliance backups, network monitoring, <!--MDM, endpoint &amp; mail security, MFA single sign-on,--> software deployment, asset tracking, video conferencing, team chat, intranet portal, <!--ID badge management, livestreaming,--> surveillance VMS, etc.
 				<li>Implemented a low-cost, open-source multi-model LLM chat solution, empowering internal teams with AI<!-- tools including image generation, thinking, and document-based assistants-->
 				<li>Led cybersecurity posture improvement taskforce, evaluating and reducing risk exposure through means such as patch management, endpoint security, log monitoring, MFA, zero-trust/microsegmentation
-				<li>Administered ~<b>1400</b> end-user devices including Chromebooks, iPads, Macs, Windows workstations</li>
-				<li>Directed hybrid migration from on-premises Exchange 2010 to Exchange Online for over 160 mailboxes, from initial planning to successful cut-over and follow-through</li>
-				<li>Automated account creation/management with PowerShell for over <b>1300</b> users across multiple systems</li>
-				<li>Designed technology lifecycle reports facilitating efficient budgeting and maintaining vendor support</li>
-				<li>Developed a Django-powered web app for door control &amp; student attendance tracking, interfacing with building automation systems</li>
-				<!--<li>Hardened workstations against vulnerabilities, removed distractions, deployed software, printers, network shares, certificates, and menu layouts, configured third-party software with Group Policy and Intune</li>
+				<li>Administered ~<b>1400</b> end-user devices including Chromebooks, iPads, Macs, Windows workstations
+				<li>Directed hybrid migration from on-premises Exchange 2010 to Exchange Online for over 160 mailboxes, from initial planning to successful cut-over and follow-through
+				<li>Automated account creation/management with PowerShell for over <b>1300</b> users across multiple systems
+				<li>Designed technology lifecycle reports facilitating efficient budgeting and maintaining vendor support
+				<li>Developed a Django-powered web app for door control &amp; student attendance tracking, interfacing with building automation systems
+				<!--<li>Hardened workstations against vulnerabilities, removed distractions, deployed software, printers, network shares, certificates, and menu layouts, configured third-party software with Group Policy and Intune
 				-->
-				<!-- Overhauled Windows server infrastructure by upgrading, replacing, and virtualizing legacy machines -->
+				<!-- <li>Overhauled Windows server infrastructure by upgrading, replacing, and virtualizing legacy machines -->
 			</ul>
 			<h2><span><b>IT Solutions Architect</b> at Gtex Computers</span> <span class="dates">Dec 2015 &ndash; July 2017</span></h2>
 			<ul>
-				<li>Planned, priced, pitched, &amp; implemented hardware, software, &amp; business process overhauls for clientele</li>
-				<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for coverage &amp; high performance</li>
-				<li>Automated monthly PC maintenance with PowerShell, reducing tech hands-on time by an estimated <b>80%</b></li>
-				<li>Developed a client ROI reporting portal with Google Apps Script &amp; WordPress</li>
-				<li>Built modern responsive websites employing HTML5 + CSS3 on WordPress &amp; Bootstrap frameworks</li>
-				<!-- Diagnostics and repairs including data recovery, tune-ups, network setup, malware removal, hardware -->
+				<li>Planned, priced, pitched, &amp; implemented hardware, software, &amp; business process overhauls for clientele
+				<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for coverage &amp; high performance
+				<li>Automated monthly PC maintenance with PowerShell, reducing tech hands-on time by an estimated <b>80%</b>
+				<li>Developed a client ROI reporting portal with Google Apps Script &amp; WordPress
+				<li>Built modern responsive websites employing HTML5 + CSS3 on WordPress &amp; Bootstrap frameworks
+				<!--<li> Diagnostics and repairs including data recovery, tune-ups, network setup, malware removal, hardware -->
 			</ul>
 		</section>
 		<section id="education-certs">
@@ -926,10 +927,10 @@
 		<p>Rather than solving the general case, my solution uses assumptions about the types of tags my website uses. Starting
 		at the main resume element, it evaluates each of its child nodes. From there:
 		<ul>
-			<li>If the node is text, add the text.</li>
-			<li>If the node is an HTML tag, call the markdown generator recursively to evaluate its children and add the result as text.</li>
-			<li>If the node is a recognized formatting-relevant HTML tag such as a #heading or **bold**, add markdown tags and call the markdown generator recursively, adding its result as text.</li>
-			<li>If the node is neither text nor an HTML tag, or if it contains nothing but whitespace, do nothing.</li>
+			<li>If the node is text, add the text.
+			<li>If the node is an HTML tag, call the markdown generator recursively to evaluate its children and add the result as text.
+			<li>If the node is a recognized formatting-relevant HTML tag such as a #heading or **bold**, add markdown tags and call the markdown generator recursively, adding its result as text.
+			<li>If the node is neither text nor an HTML tag, or if it contains nothing but whitespace, do nothing.
 		</ul>
 		<p>There is some additional special handling for tabs and line breaks that you can easily see by <a href="https://github.com/wesleydeal/deal.digital/blob/master/static/resume/index.html">viewing the source for this page</a> and searching for <code>markify</code>.
 
@@ -992,7 +993,7 @@
 		<div class="optiongroup">
 			<label><input type="checkbox" id="darklight" onchange="javascript:document.body.classList=this.checked?'dark':'light'">Dark mode</label>
 			<label><input type="checkbox" id="editable" onchange="javascript:fromID('resume').contentEditable=this.checked">Editor</label>
-			<button id="unhide" onclick="javascript:unhide()">Unhide Extras</button>
+			<button id="unhide" onclick="javascript:unhide()">Reveal Hidden Text</button>
 			<form>
 				<label for="theme">Theme</label>
 				<select id="theme" onchange="javascript:setTheme(this.value)" onclick="javascript:setTheme(this.value)">
