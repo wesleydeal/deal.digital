@@ -12,10 +12,10 @@
 			--lightmode-color-soft: #794a4a;
 			--lightmode-image-bg: radial-gradient(at 50% 40%, #fff4, transparent) 0/cover fixed, repeating-linear-gradient(32deg, #33113308, #0000 5px) fixed, repeating-linear-gradient(-32deg, #33333308, #0000 4px) fixed, #fff4f3;
 			--lightmode-code-bg: #f8d2abaa;
-			--darkmode-color-fg: #fffafa;
+			--darkmode-color-fg: #fff;
 			--darkmode-color-bg: #131111;
 			--darkmode-color-soft: #dfa6a6;
-			--darkmode-image-bg: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), repeating-linear-gradient(-15deg in oklch, #0f0605, #1e151b 100vh, #0f0605 200vh);
+			--darkmode-image-bg: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), radial-gradient(250vw 170vh at top left in oklch, #0f0605, #1e151b, #0f0605) #0f0605;
 			--darkmode-code-bg: #582626aa;
 
 			--color-fg: var(--lightmode-color-fg);
@@ -331,12 +331,12 @@
 				font-family: "Atkinson Hyperlegible Mono", monospace;
 				font-size: 0.9em;
 				padding: 0 0.3em;
+				margin: 0 0.1ch;
 				display: inline-block;
 
 				&.codeblock{
 					font-size: 0.85em;
 					width: 100%;
-					//box-shadow: 0 0 1px inset;
 					overflow-x: auto;
 				}
 			}
@@ -762,13 +762,14 @@
 				zoom: inherit !important;
 				border-top: none;
 				padding: 0;
-				font-size: 11pt;
+				font-size: 10.5pt;
 				background: none;
 				& label:has(#print-toggle) {
 					display: none;
 				}
-				& code.codeblock {
-					box-shadow: none;
+				& code {
+					background: none;
+					box-shadow: 1px 1px 0 inset, -1px -1px 0 inset;
 				}
 			}
 		}
