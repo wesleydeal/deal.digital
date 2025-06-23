@@ -853,11 +853,11 @@
 			<li><b>Expect it to be skimmed</b>: Make sure each line says something significant about you as a prospect. Use action verbs and numbers to draw in the eye and highlight your accomplishments.
 			<li><b>Don't exceed a page</b>, barring &gt;10yr industy expertise or low-volume detail-oriented sectors.
 		</ul>
-		<p>My well-tended resume document met the standards. Friends asked to borrow my template and some of
-		my phrasing. But I found that
-		for different postings, I was using different styles and altering content frequently enough that I had
-		issues keeping multiple copies of the document in sync. Additionally, I wanted a short URL I could
-		give people to link to my latest resume. This started looking like a software problem, and
+		<p>My Google Docs resume met the standards. Friends even asked to borrow my template and some of
+		my phrasing. But I found that to adapt it to different postings, I was using different styles
+		and altering content frequently enough that I had issues keeping multiple copies of the document
+		in sync. (In hindsight, this seems to be somewhat of an invented problem.) Additionally, I wanted a short URL I could
+		hand out linking to my latest resume. This began to look like a problem to be solved with software, and
 		soon enough I fell into the <a href="https://xkcd.com/1319/">power user trap</a>.
 		<p>So we arrive at requirements elicitation:
 		<ol>
@@ -874,7 +874,7 @@
 		<p>The most obviously solution would involve <a href="https://pandoc.org/">Pandoc</a>. I could write a basic
 		markdown file, then create a LaTeX template for typesetting to PDF and an HTML template for outputting to a file I
 		could upload to my website. I'd have divergent styles, which could be desirable, but I can already see this adding
-		to my headache when one looks good and the other doesn't. And how long will it take to set up that process to where
+		to my headache when one looks good and the other doesn't. And how long would it take to set up that process to where
 		I like it, considering my lack of experience with TeX? Maybe there is a simpler way.
 		<h2>HTML/CSS for print</h2>
 		<p>Modern web browsers are remarkably capable typesetting engines. Gone are the days of table layouts, web-safe colors,
@@ -883,10 +883,10 @@
 		is changing</a> thanks to the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_paged_media">CSS paged media spec</a>.
 		But we only have one page to typeset. I had found my solution, and I set to work laying it out.
 		<p>I added it to my GitHub-hosted site and used <code>@media screen</code> &amp; <code>print</code> queries to adapt it by device:
-		on desktop emulating
+		on desktop emulating the look of
 		a PDF viewer; on smaller screens collapsing responsively; in print removing extraneous elements and margins. This is
 		easier than you might expect. CSS is happy to give you a <code>width: 8.5in; height: 11in</code> box with
-		0.25in x 0.5in margins and 11pt type. With variables, you can easily alter aspects
+		0.25in x 0.5in padding and 11pt type. With variables, you can easily alter aspects
 		like color and text weight across multiple elements and place those common values at the top of your stylesheet.
 		<p>Initially, I figured I would use the browser developer tools to alter styles and content to tailor my resume
 		to specific positions. Perhaps I could swap the stylesheet. One line of CSS could change the spacing across
@@ -936,12 +936,12 @@
 		<p>Firefox doesn't dither gradient backgrounds, so using it to view this resume on a large monitor used to result in distracting
 		banding in the background. I initially attempted to use a <a href="https://css-tricks.com/grainy-gradients/">noisy SVG texture</a> to alleviate this issue, and while it produced some
 		visually interesting results at different scales, it resulted in poor performance on some devices. Instead, I opted for a set of
-		repeating radial gradients at opposing shallow angles to add a paper-like texture to the background. In dark mode, you can still
+		repeating linear gradients at opposing shallow angles to add a paper-like texture to the background. In dark mode, you can still
 		see banding in Firefox, but it looks better as part of a more complex background pattern.
+		<p><code class="codeblock">background: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), repeating-linear-gradient(-15deg in oklch, #0f0605, #1e151b 100vh, #0f0605 200vh)</code>
 		<p>The zoom buttons use the deprecated CSS <code>zoom</code> attribute. This messes up all sorts of things, such as measuring
 		using viewport units. I also use it to resize the resume on large screens so that on load it takes up most of the screen. This
 		mimics the behavior of a PDF viewer but is certainly not something I'd like most websites to do.
-		<p><code class="codeblock">background: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), repeating-linear-gradient(-15deg in oklch, #0f0605, #1e151b 100vh, #0f0605 200vh)</code>
 
 		<h2>What's next?</h2>
 		<p>Here's the TODO list:
