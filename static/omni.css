@@ -4,13 +4,17 @@
 
 :root {
     --lm-color-bg: #ffefef;
-    --lm-color-bg: oklch(from var(--color-primary) .975 calc(c * .1) h);
+    --lm-color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
     --lm-color-fg: #000;
 	--dm-color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
 	--dm-color-fg: #fff;
+	--lm-bg: linear-gradient(to right, oklch(from var(--color-primary) .97 calc(c * .2) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px);
+	--dm-bg: linear-gradient(to right, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) 300px);
 
     --color-bg: var(--lm-color-bg);
     --color-fg: var(--lm-color-fg);
+	--bg: var(--lm-color-bg);
+	--bg: var(--lm-bg);
     --color-primary: #f30; /*#fa7;*/
     --color-pop: oklch(from var(--color-primary) calc(l + .1) calc(c + .1) calc(h - 180));
     --color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
@@ -24,6 +28,7 @@
 	@media (prefers-color-scheme: dark) {
 		--color-bg: var(--dm-color-bg);
 		--color-fg: var(--dm-color-fg);
+		--bg: var(--dm-bg);
 	}
 }
 
@@ -35,6 +40,7 @@
 
 body {
     background: var(--color-bg);
+	background: var(--bg);
     color: var(--color-fg);
 
     padding: 0;
