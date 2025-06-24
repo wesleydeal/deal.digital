@@ -30,7 +30,7 @@ body {
 
     padding: 0;
     margin: 0;
-    font: 400 1em/1.5 var(--typeface-body);
+    font: 350 1em/1.5 var(--typeface-body);
 
     display: flex;
     flex-direction: column;
@@ -50,6 +50,7 @@ header {
     margin: 0;
     padding: 0.5em 1ch;
     color: #fff;
+    font-weight: 450;
     //background: linear-gradient(to right in oklch, #20140e, #3c3638);
     background: linear-gradient(184deg in oklch, var(--color-primary) -100%, #000 200%);
     display: flex;
@@ -68,7 +69,7 @@ nav#topnav {
         display: flex;
         place-items: center;
         place-content: center;
-        //padding: 0.25em 1ch;
+        padding: 0.25em 1ch;
         font: 400 2.5em/1 var(--typeface-body);
         text-decoration: 1.5px underline var(--color-pop);
         text-underline-offset: 3px;
@@ -209,17 +210,24 @@ footer {
 
 h1 {
     font: 400 4em/1.2 var(--typeface-display);
-    max-width: min(80%, 30ch);
-    margin: 0.5em 0;
+    font: 100 4em/1.2 var(--typeface-body);
+    text-decoration: 2px underline var(--color-primary);
+    max-width: min(80%, 25ch);
+    margin: 0.5em 0 0.25em;
     //text-decoration: 2px underline color-mix(in oklch, var(--color-fg) 50%, var(--color-primary));
 }
 
 h2 {
     font: 400 2em/1.2 var(--typeface-display);
+    font: 500 1.8em/1.2 var(--typeface-body);
+    margin: 1em 0 0.25em;
 }
 
 h3 {
-    font: 600 1.2em/1.2 var(--typeface-body);
+    font: 500 1.1em/1.2 var(--typeface-body);
+    text-transform: uppercase;
+    letter-spacing: 0.1ch;
+    margin: 1em 0 0.25em;
 }
 
 code, pre {
