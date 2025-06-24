@@ -1,6 +1,6 @@
 +++
 title = "Things I use"
-updated = 2025-06-13
+updated = 2025-06-24
 [extra]
 color = "#ea7299"
 +++
@@ -10,7 +10,7 @@ This is a [/uses](https://uses.tech/) page
 ## Hardware
 
 * 💻 ThinkPad Z13 (AMD 6850U, 16GB RAM, Windows 11 x [Fedora 42 KDE](https://fedoraproject.org/spins/kde/))  
-  *Note: I've been unable to get the soldered-in Qualcomm wireless chip to maintain a consistent connection in Linux. Buyer beware.*
+  *Note: The soldered-in Qualcomm wireless chip has been a bit problematic in Linux. Buyer beware.*
 * 💽 A [51nb X210](https://blog.mattgauger.com/2022/08/01/the-51nb-x210/) running [Proxmox](https://www.proxmox.com/en/) as a small homelab server with a built-in UPS :^)
 * ⌨️ WOBKEY Rainy75 (Kailh Cocoa linears), Feker Galaxy80 (Keygeek X Neo Oat linears)
 * 📱 a Motorola edge 2024
