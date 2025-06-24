@@ -64,6 +64,7 @@ body {
 
 header {
     grid-area: header;
+	border-bottom: 2px solid var(--color-primary);
     width: 100%;
     margin: 0;
     padding: 0.5em 1ch;
@@ -230,7 +231,10 @@ footer {
         }
     }
 	footer {
-		font-size: 1em !important;
+		font-size: 14px !important;
+		& pre {
+			font-size: 14px;
+		}
 	}
 }
 
@@ -241,24 +245,26 @@ footer {
 }
 
 h1 {
-    font: 100 4em/1 var(--typeface-display);
+    font: 300 4em/1 var(--typeface-display);
 	font-size: clamp(3em, 5vw, 6em);
-    text-decoration: 2px underline var(--color-primary);
+    //text-decoration: 2px underline color-mix(in oklch, var(--color-pop) 20%, transparent);
+	color: color-mix(in oklch, var(--color-primary) 60%, var(--color-fg));
     max-width: 22ch;
     margin: 0.5em 0 0.25em;
     //text-decoration: 2px underline color-mix(in oklch, var(--color-fg) 50%, var(--color-primary));
 }
 
 h2 {
-    font: 500 1.8em/1.2 var(--typeface-display);
+    font: 500 clamp(1.4em, 2.5vw, 1.8em)/1.2 var(--typeface-display);
     margin: 1em 0 0.25em;
 }
 
 h3 {
     font: 500 1.1em/1.2 var(--typeface-body);
     text-transform: uppercase;
-    letter-spacing: 0.1ch;
     margin: 1em 0 0.25em;
+	text-decoration: 1px underline color-mix(in oklch, var(--color-pop) 50%, var(--color-fg));
+	text-underline-offset: 4px;
 }
 
 code, pre {
@@ -326,17 +332,24 @@ ul {
 	&.blog-listing li {
 		display: flex;
 		flex-direction: row;
+		flex-wrap: wrap-reverse;
 		justify-content: space-between;
-		border-bottom: 1px solid color-mix(in oklch, var(--color-fg) 30%, transparent);
+		border-bottom: 1px solid var(--color-primary);
 		margin: 0.5em 0;
+		align-items: end;
+		//align-items: center;
 		& :link, & :visited {
-			
+			flex: 1 0 80%;
+			text-decoration: none;
 		}
 		& .article-separator {
 			display: none
 		}
 		& time {
 			font-family: var(--typeface-mono);
+			min-width: max-content;
+			font-size: 0.8em;
+			line-height: 1;
 		}
 	}
 }

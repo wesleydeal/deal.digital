@@ -1,6 +1,8 @@
 +++
 title = "Things I use"
 updated = 2025-06-13
+[extra]
+color = "#ea7299"
 +++
 
 This is a [/uses](https://uses.tech/) page
