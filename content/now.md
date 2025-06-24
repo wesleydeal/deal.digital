@@ -9,6 +9,8 @@ draft = false
 a website with a link that says "now" goes to a page that tells you what this person is focused on at this point in their life. For short, we call it a "now page".
 {% end %}
 
+This page is pending an update as of June 2025.
+
 ## Learning cloud architectures
 I recently got a CompTIA Security+ certification. I found the material easy to grasp, and have been
 evaluating what I should learn next for my career. Here's what I'm thinking:
@@ -24,7 +26,7 @@ but here's what the shortlist looks like now:
 
  * The [Cloud Resume Challenge (Azure)](https://cloudresumechallenge.dev/docs/the-challenge/azure/)
  * Microsoft Certified: Azure Administrator Associate ([AZ-104](https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/?practice-assessment-type=certification))
- * Microsoft Certified: Azure Security Engineer Associate ([AZ-500][https://learn.microsoft.com/en-us/credentials/certifications/azure-security-engineer/?practice-assessment-type=certification])
+ * Microsoft Certified: Azure Security Engineer Associate ([AZ-500](https://learn.microsoft.com/en-us/credentials/certifications/azure-security-engineer/?practice-assessment-type=certification))
  * The [contoso-real-estate](https://github.com/Azure-Samples/contoso-real-estate) Enterprise-grade Reference Architecture for JavaScript
  * [An over-engineered Home Lab with Docker and Kubernetes](https://fernandocejas.com/blog/engineering/2023-01-06-over-engineered-home-lab-docker-kubernetes/) by Fernando Cejas
 

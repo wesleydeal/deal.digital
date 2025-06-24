@@ -229,6 +229,9 @@ footer {
             content: 'Click to hide';
         }
     }
+	footer {
+		font-size: 1em !important;
+	}
 }
 
 :link, :visited {
@@ -279,7 +282,7 @@ code, pre {
 
 blockquote {
     background: linear-gradient(to bottom right, color-mix(in oklch,var(--color-primary) 10%, transparent), transparent 300%);
-    padding: 1em 4ch;
+    padding: .5em 2ch;
     margin: 1em 0;
     border-left: 2px solid var(--color-primary);
     max-width: var(--text-width);
