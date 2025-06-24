@@ -87,6 +87,8 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 * [Vollkorn](https://fonts.google.com/specimen/Vollkorn) is beefy & homegrown, like a stew
 * [XCharter](https://fontesk.com/xcharter-typeface/) nicely extend's Matthew Carter's simple screen font, [Charter](https://practicaltypography.com/charter.html)
 * [Source Serif](https://fonts.google.com/specimen/Source+Serif+4) is in a very similar vein to Charter, but with more characters and weights. I love its distinctive '?' glyph
+* [Libre Caslon Condensed](https://github.com/ertekinno/libre-caslon-condensed) invokes memories of old Apple print ads
+* [Instrument Serif](https://fonts.google.com/specimen/Instrument+Serif) is likewise a vintage-feeling condensed display type
 
 ### Monospace Typefaces
 * [Cascadia Code](https://github.com/microsoft/cascadia-code). Yeah, I know it's M$ and it's now a default font, but it's pretty and readable.

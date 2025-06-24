@@ -12,10 +12,12 @@ color = "green"
 +++
 
 <style type="text/css">
+/*
 .content > *:not(div#result) {
 	width: calc(min(780px,100%));
 	padding: 0 10px;
 }
+*/
 #passwords-exposition p{
 	margin-top: 0;
 }
@@ -32,13 +34,17 @@ color = "green"
 	justify-content: space-between;
 	flex-wrap: wrap;
 	gap: 10px;
+	max-width: 80ch;
 }
 select{
-	border: 1px solid var(--color-fg);
+	border: 1px solid var(--color-primary);
 	border-radius: 3px;
 	font: inherit;
 	background: none;
 	padding: 2px;
+}
+input {
+	accent-color: var(--color-pop);
 }
 #settings-wrapper div.length-container{
 	display: flex;
@@ -86,14 +92,13 @@ button#generate:hover {
 #copied-caption{
 	opacity: 0;
 	font-size: 1.5em;
-	color: var(--color-fg);
-	background: var(--color-pop);
-	text-shadow: 1px 1px var(--color-bg);
+	color: var(--color-pop);
 	font-weight: bold;
 	transition: opacity 250ms ease-in-out;
 	border-radius: 5px;
-	border: 2px solid var(--color-fg);
+	border: 2px solid;
 	pointer-events: none;
+	user-select: none;
 	margin-top: 10px;
 	text-align: center;
 }
