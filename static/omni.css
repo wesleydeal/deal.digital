@@ -342,9 +342,25 @@ ul {
 	:root {
 		--color-bg: #fff;
 		--color-fg: #000;
+		--bg: #fff;
+	}
+	body:has(nav#toc) {
+		display: flex;
+	}
+	nav#toc {
+		display: none;
 	}
 	header {
-		display: none;
+		visibility: hidden;
+	}
+	header ul {
+		display: none !important;
+	}
+	nav#topnav>a:first-child {
+		visibility: visible;
+		background: none;
+		color: #000;
+		text-shadow: none;
 	}
 	footer {
 		font-size: 10pt !important;
