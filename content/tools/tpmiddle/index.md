@@ -7,9 +7,10 @@ updated = 2024-04-25
 tags = ["software", "thinkpad"]
 [extra]
 shorttitle = "Scroll & middle-click with a TrackPoint"
+color = "#E10020"
 +++
 
-<style>
+<!--<style>
 :root{
 	--color-accent: #E10020;
 	--blockquote-bg: linear-gradient(135deg, #E1002020, #E1002000);
@@ -17,7 +18,7 @@ shorttitle = "Scroll & middle-click with a TrackPoint"
 	--color-logo-bg: #E10020;
 	--color-logo-fg: #fff;
 }
-</style>
+</style>-->
 
 On ThinkPads running Windows, the middle mouse button below the TrackPoint can be used as a scroll modifier for the trackpoint or a middle-click/MOUSE3 button, but not both at the same time. This page covers ways to resolve this.
 
