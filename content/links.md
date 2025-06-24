@@ -75,7 +75,7 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 * [Wolf Sans](https://fonts2u.com/wolf-sans-regular.font) bears a striking resemblance to the legends on the IBM Model M keyboard
 * [Nunito](https://fonts.google.com/specimen/Nunito) is a nicely balanced rounded sans-serif as is its derivative [SN Pro](https://supernotes.app/open-source/sn-pro/)
 * [Nunito Sans](https://fonts.google.com/specimen/Nunito+Sans) lacks the aforementioned rounding
-* [Red Hat Display](https://fonts.google.com/specimen/Red+Hat+Display) and [Text](https://fonts.google.com/specimen/Red+Hat+Text) are lovely readable sans-serifs used on this very site
+* [Red Hat Display](https://fonts.google.com/specimen/Red+Hat+Display) and [Text](https://fonts.google.com/specimen/Red+Hat+Text) are lovely readable sans-serifs formerly used on this very site
 * [Inter](https://rsms.me/inter/) is variable and pleasant, if a bit vanilla. Helvetica-esque
 * [Open Sauce](https://github.com/marcologous/Open-Sauce-Fonts) ([demo](https://www.behance.net/gallery/94876543/Open-Sauce-Sans-Typeface)) is another Helvetica-esque with distinctive inktraps
 * [Metropolis](https://fontesk.com/metropolis-typeface/) (used for Mozilla Firefox titling) and VMware's version [Clarity City](https://fontesk.com/clarity-city-typeface/) are nice. The author seems to have gotten in some sort of spat with Jonathan Hoefler about its resemblance to Gotham

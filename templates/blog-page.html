@@ -5,5 +5,10 @@
 	{{ page.title }}
 </h1>
 {{page.content | safe}}
-{{ macros::signoff(date=page.date, updated=page.updated) }}
+{% if page.authors %}
+{% set author=page.author[0] %}
+{% else %}
+{% set author="" %}
+{% endif %}
+{{ macros::signoff(date=page.date, updated=page.updated, author=author) }}
 {%endblock content%}

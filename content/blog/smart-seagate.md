@@ -7,6 +7,7 @@ updated = 2024-05-02
 tags = ["hardware", "software"]
 [extra]
 shorttitle = "Interpret Seagate read/seek error rates"
+color = "#6ebe49"
 +++
 
 Seagate hard drives often report extremely high read and seek error rates in SMART data. After pronouncing a string of drives defective based on these fields, I did some digging and found that Seagate drives use non-standard formatting for these values. Every piece of disk-monitoring software I had used reports these values incorrectly. Incidentally, this was good for our bottom line at the computer shop where we sold quite a few customers SSD upgrades partly on the basis of these mistaken readings. While the easiest advice on this subject is to ignore these values in the absence of other drive issues, there is a way to read them.

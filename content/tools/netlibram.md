@@ -1,11 +1,11 @@
 +++
 title = "Dice Roller for Orrex's Net Libram of Random Magical Effects"
-author = "Orrex"
-draft = true
+authors = ["Orrex"]
 date = 2018-05-29
 updated = 2024-05-02
 [extra]
 shorttitle = "Roll for Net Libram Effects"
+color = "#002"
 +++
 <script>
 function rollnetlibram(){
@@ -24,7 +24,7 @@ document.getElementById('effect'  ).innerHTML=nl[1];
 <a href="javascript:setelements()">
 <div style="border: 2px solid #c33000; margin: 20px 0; text-align: center; padding: 40px 40px 60px">
 <p style="margin-top: 0; margin-bottom: 10px; color: #ff4a00; font-size: 1.8em; font-weight: 700" id="effectID"></p>
-<p style="margin: 0; color: #0094ff; font-size: 2em; line-height: 1.2" id="effect">Click to roll</p>
+<p style="margin: 0; font-size: 2em; line-height: 1.2" id="effect">Click to roll</p>
 </div></a>
 
 <h2>You might prefer...</h2>

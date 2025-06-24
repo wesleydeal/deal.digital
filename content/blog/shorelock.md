@@ -7,6 +7,7 @@ author = "Wesley Deal"
 tags = ["software", "IT"]
 [extra]
 shorttitle = "Unlock a [Shore/Mi]Tel Director"
+color = "#00A1F4"
 +++
 
 Let's say, for the sake of argument, that you're a very busy systems administrator. A while ago, something popped up on the top of your Shoretel management page. You noticed it when you were hastily onboarding a new employee:

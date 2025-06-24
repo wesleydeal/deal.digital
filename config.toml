@@ -14,6 +14,7 @@ author = "Wesley Deal"
 generate_feeds = true
 
 taxonomies = [
+	{name = "author", feed = false},
 	{name = "tags", feed = true, render = false},
 ]
 

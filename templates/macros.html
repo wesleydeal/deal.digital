@@ -3,6 +3,12 @@
 	{% if author %}
 	<p class="author">—{{ author }}</p>
 	{% endif %}
+	{% if authors %}
+	{% for a in authors %}
+	<p class="author">—{{ a }}{% if not loop.last %},{% endif %}
+	{% endfor %}
+	</p>
+	{% endif %}
 	{% if date %}
 	<p class="created-at">written <time datetime="{{ date }}">{{ date }}</time></p>
 	{% endif %}
