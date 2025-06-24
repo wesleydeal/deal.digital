@@ -5,7 +5,7 @@ date = 2024-05-14
 tags = ["software", "powershell"]
 [extra]
 shorttitle = "Prune-Backups.ps1"
-color = "#021a44"
+color = "#02235b"
 +++
 
 Do you have a program that dumps daily backups into a folder which would eat up your disk? Do you want to automatically delete some of those files but keep backups of certain ages? This is just the case for which I wrote `Prune-Backups.ps1`
