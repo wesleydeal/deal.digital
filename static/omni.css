@@ -322,3 +322,27 @@ ul {
 		}
 	}
 }
+
+@media print {
+	:root {
+		--color-bg: #fff;
+		--color-fg: #000;
+	}
+	header {
+		display: none;
+	}
+	footer {
+		font-size: 10pt !important;
+		box-shadow: none;
+		border-top: 1px solid #000;
+		color: #000;
+		background: none;
+		text-shadow: none;
+		& :link, & :visited {
+			background: none;
+			text-shadow: none;
+			color: #000;
+			text-decoration: underline;
+		}
+	}
+}
