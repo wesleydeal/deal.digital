@@ -121,6 +121,7 @@ nav#toc {
         padding: 0 0 10px;
         margin: 20px 0 10px;
         border-bottom: 2px solid color-mix(in oklch, var(--color-fg) 60%, transparent);
+        flex: 1 0;
     }
     & ol {
         padding: 0 0 0 3ch;
@@ -129,6 +130,11 @@ nav#toc {
             list-style-type: lower-alpha;
             padding: 0 0 0 1.5ch;
         }
+    }
+    & details summary {
+        display: flex;
+        flex-direction: column;
+        position: relative;
     }
 }
 
@@ -171,10 +177,6 @@ footer {
         max-width: var(--text-width);
         filter: drop-shadow(0 0 0.5em var(--c70));
     }
-    & hr {
-        color: var(--c);
-        box-shadow: 0 0 0.5em var(--c70);
-    }
     & pre{
         border: 0;
         padding: 0;
@@ -200,6 +202,17 @@ footer {
     }
     h1 {
         font-size: 3em !important;
+    }
+    nav#toc details summary {
+        &:after {
+            content: 'Click to show';
+            position: absolute;
+            right: 0;
+            bottom: 1em;
+        }
+        [open] &:after {
+            content: 'Click to hide';
+        }
     }
 }
 
@@ -261,4 +274,21 @@ pre {
     padding: 1ch;
     overflow-x: auto;
     max-width: fit-content;
+}
+
+ol {
+    padding-left: 3ch;
+    & li {
+        padding-left: 0.5ch;
+        &::marker {
+            font-weight: 400;
+        }
+    }
+}
+
+ul {
+    padding-left: 3.25ch;
+    & li {
+        padding-left: 0.25ch;
+    }
 }

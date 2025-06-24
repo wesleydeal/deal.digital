@@ -47,7 +47,8 @@
 </header>
 {% if page.extra.toc and page.toc%}
 <nav id="toc">
-	<h2>On this page</h2>
+	<details open>
+	<summary><h2>On this page</h2></summary>
 	<ol>
 		{% for h1 in page.toc %}
 		<li>
@@ -67,6 +68,7 @@
 			<a href="#" class="toplink">↑ Top of page</a>
 		</li>
 	</ol>
+	</details>
 </nav>
 {% endif %}
 <section class="content">
@@ -76,7 +78,7 @@
 	<p>No rights reserved. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>. Provided as-is, no warranty, etc.
 	<p>Built {{ now(utc=true) | date(format="%Y-%m-%d %H:%M:%S UTC") }} with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages.
 	<p>This page is typed in <a href="https://www.brailleinstitute.org/about-us/news/braille-institute-launches-enhanced-atkinson-hyperlegible-font-to-make-reading-easier/">Atkinson Hyperlegible Next &amp; Monospace</a>, and <a href="https://github.com/Fonthausen/CrimsonPro">Crimson Pro</a> for large headings.
-	<hr>
+	<br><br>
 <pre>
                       __,,,,_
        _ __..-;''`--/'/ /.',-`-.
