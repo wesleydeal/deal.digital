@@ -227,14 +227,15 @@ footer {
 
 :link, :visited {
     color: inherit;
-    text-decoration-color: var(--color-primary);
+    text-decoration: 1px underline var(--color-primary);
+	font-weight: 400;
 }
 
 h1 {
     font: 100 4em/1 var(--typeface-display);
 	font-size: clamp(3em, 5vw, 6em);
     text-decoration: 2px underline var(--color-primary);
-    max-width: 25ch;
+    max-width: 22ch;
     margin: 0.5em 0 0.25em;
     //text-decoration: 2px underline color-mix(in oklch, var(--color-fg) 50%, var(--color-primary));
 }
@@ -276,6 +277,14 @@ blockquote {
     margin: 1em 0;
     border-left: 2px solid var(--color-primary);
     max-width: var(--text-width);
+}
+
+p.author {
+	text-align: right;
+}
+
+.article-signoff {
+	text-align: right;
 }
 
 pre {
