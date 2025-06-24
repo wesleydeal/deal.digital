@@ -1,6 +1,6 @@
 @import url("/syntax-dark.css") screen and (prefers-color-scheme: dark);
 @import url("/syntax-light.css") print, (prefers-color-scheme: light);
-@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800');
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700');
 
 :root {
 	--lm-color-bg: #ffefef;
@@ -21,7 +21,7 @@
 
 	--text-width: 80ch;
 	--typeface-body: "Atkinson Hyperlegible Next", sans-serif;
-	--typeface-display: "Atkinson Hyperlegible Next", sans-serif;
+	--typeface-display: "Cormorant Garamond", sans-serif;
 	--typeface-mono: "Atkinson Hyperlegible Mono", monospace;
 	box-sizing: border-box;
 	
@@ -271,7 +271,10 @@ footer {
 }
 
 h1 {
-	font: 300 4em/1 var(--typeface-display);
+	//font: 300 4em/1 var(--typeface-display);
+	font: 500 4em/1.1 var(--typeface-display);
+	transform: scaleX(0.9);
+	transform-origin: left;
 	font-size: clamp(3em, 5vw, 6em);
 	//text-decoration: 2px underline color-mix(in oklch, var(--color-pop) 20%, transparent);
 	color: color-mix(in oklch, var(--color-primary) 60%, var(--color-fg));
@@ -281,7 +284,7 @@ h1 {
 }
 
 h2 {
-	font: 500 clamp(1.4em, 2.5vw, 1.8em)/1.2 var(--typeface-display);
+	font: 500 clamp(1.4em, 2.5vw, 1.8em)/1.2 var(--typeface-body);
 	margin: 1em 0 0.25em;
 }
 

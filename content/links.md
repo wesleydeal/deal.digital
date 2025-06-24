@@ -1,6 +1,6 @@
 +++
 title = "Links of interest"
-updated = 2024-05-01
+updated = 2025-06-24
 [extra]
 shorttitle = "Links"
 toc = true
@@ -16,6 +16,7 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 * [/now pages](https://nownownow.com/), [/uses pages](https://uses.tech/)
 * [/about, /ideas, OR /now pages](https://aboutideasnow.com/)
 * [PersonalSit.es](https://personalsit.es/)
+* [Web Desktops](https://simone.computer/#/webdesktops) known to the software engineer *Simone*
 
 ### Web (technologies, design & development)
 * [taylor.town](https://taylor.town/)
@@ -39,9 +40,10 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 
 (websites whose primary characteristic is that they are visually, audibly, or mechanically interesting)
 
+* [Poolsuite / Poolside FM](https://poolsuite.net/)
 * [Windows 93](https://www.windows93.net/)
 * [CoolModFiles](https://coolmodfiles.com/) and [chiptune3.js demo](https://drsnuggles.github.io/chiptune/demo.html)
-* [Aiza Labs](https://lab.aizastudio.com/) compare your salary with athletes or play with teams notifications
+* [Cameron's World](https://www.cameronsworld.net/), a love letter to GeoCities
 
 ## Sharing 🏴‍☠️🦜
 * [📚 Anna's Archive](https://annas-archive.org) seems to have most every ebook and PDF
@@ -95,7 +97,8 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 ## Themes
 
 ### Syntax highlighting
-*
+* [Selenized](https://github.com/jan-warchol/selenized)
+* [Tempus](https://github.com/protesilaos/tempus-themes)
 
 ## AI Dreck 🤖
 
