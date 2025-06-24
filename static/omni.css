@@ -1,11 +1,13 @@
 @import url("/syntax-dark.css") screen and (prefers-color-scheme: dark);
 @import url("/syntax-light.css") print, (prefers-color-scheme: light);
-@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800');
 
 :root {
     --lm-color-bg: #ffefef;
-    --lm-color-bg: oklch(from var(--color-primary) .97 calc(c * .1) h);
+    --lm-color-bg: oklch(from var(--color-primary) .975 calc(c * .1) h);
     --lm-color-fg: #000;
+	--dm-color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
+	--dm-color-fg: #fff;
 
     --color-bg: var(--lm-color-bg);
     --color-fg: var(--lm-color-fg);
@@ -15,10 +17,17 @@
 
     --text-width: 80ch;
     --typeface-body: "Atkinson Hyperlegible Next", sans-serif;
-    --typeface-display: "Crimson Pro", serif;
+    --typeface-display: "Atkinson Hyperlegible Next", sans-serif;
     --typeface-mono: "Atkinson Hyperlegible Mono", monospace;
     box-sizing: border-box;
+	
+	@media (prefers-color-scheme: dark) {
+		--color-bg: var(--dm-color-bg);
+		--color-fg: var(--dm-color-fg);
+	}
 }
+
+
 
 *, *:before, *:after{
     box-sizing: inherit;
@@ -40,6 +49,9 @@ body {
         grid-template-columns: minmax(250px,1fr) minmax(150px,5fr);
         grid-template-rows: auto minmax(100vh,auto) auto;
         grid-template-areas: "header header" "sidebar main" "footer footer";
+		& section.content {
+			padding: 0 3ch;
+		}
     }
 
 }
@@ -51,6 +63,7 @@ header {
     padding: 0.5em 1ch;
     color: #fff;
     font-weight: 450;
+	font-size: clamp(1em, 1.2vw, 1.3em);
     //background: linear-gradient(to right in oklch, #20140e, #3c3638);
     background: linear-gradient(184deg in oklch, var(--color-primary) -100%, #000 200%);
     display: flex;
@@ -62,48 +75,43 @@ nav#topnav {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 5px;
-    align-items: center;
     &>a:first-child {
-        height: 75px;
-        flex: 0 1 300px;
-        display: flex;
-        place-items: center;
-        place-content: center;
-        padding: 0.25em 1ch;
-        font: 400 2.5em/1 var(--typeface-body);
-        text-decoration: 1.5px underline var(--color-pop);
-        text-underline-offset: 3px;
+		flex: 0 0;
+        padding: 0.2em 0.6ch;
+        font: 400 2em/1 var(--typeface-body);
+		background: linear-gradient(to right, var(--color-pop), var(--color-pop) 0.1em, transparent 0.1em) 0 / 105% 105%, linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
     }
     & ul {
-        flex: 0 1 350px;
-        min-width: max-content;
         overflow: hidden;
-        height: 75px;
         display: flex;
-        flex-direction: column;
-        max-height: 100%;
+        flex-direction: row;
         flex-wrap: wrap;
         padding: 0;
         margin: 0;
         gap: 5px;
         list-style-type: none;
+		flex: 1 1;
+		padding-right: max(0px, calc(100vw - 1400px));
     }
     & li {
         display: flex;
         flex: 1 1;
+		margin: 0;
+		padding: 0;
     }
     & a {
         display: flex;
+		place-items: center;
+        place-content: center;
         flex: 1 0;
         min-width: max-content;
         border: 1px solid #fff8;
         outline: 1px solid #0008;
-        backdrop-filter: saturate(1.5) brightness(1.2);
-        background: linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent);
-        //border-radius: 5px;
+        //backdrop-filter: saturate(1.5) brightness(1.2);
+        background: linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
         padding: 0.25em 1.2ch 0.25em 1ch;
         text-decoration: none;
-        //background: linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent), #461720;
+		text-shadow: 1px 1px 0 #000;
     }
 }
 
@@ -112,7 +120,7 @@ nav#breadcrumbs{
 }
 
 nav#toc {
-    //grid-area: sidebar;
+    grid-area: sidebar;
     padding: 0 2ch;
     position: sticky;
     top: 0;
@@ -140,7 +148,7 @@ nav#toc {
 
 section.content {
     grid-area: main;
-    padding: 0 3ch;
+    padding: 0 5vw;
     min-height: 100vh;
     & p, & li, & blockquote {
         max-width: var(--text-width);
@@ -160,7 +168,8 @@ footer {
     color: var(--c);
     padding-bottom: 100px;
     position: relative;
-    box-shadow: 2px 2px 30px #000 inset, 2px 2px 30px #000 inset, -2px -2px 5px 3px #fff;
+    box-shadow: 2px 2px 30px #000 inset, 2px 2px 30px #000 inset;
+	border-top: 2px solid var(--color-pop);
     & :link, & :visited {
         background: var(--c);
         color: #000b;
@@ -222,17 +231,16 @@ footer {
 }
 
 h1 {
-    font: 400 4em/1.2 var(--typeface-display);
-    font: 100 4em/1.2 var(--typeface-body);
+    font: 100 4em/1 var(--typeface-display);
+	font-size: clamp(3em, 5vw, 6em);
     text-decoration: 2px underline var(--color-primary);
-    max-width: min(80%, 25ch);
+    max-width: 25ch;
     margin: 0.5em 0 0.25em;
     //text-decoration: 2px underline color-mix(in oklch, var(--color-fg) 50%, var(--color-primary));
 }
 
 h2 {
-    font: 400 2em/1.2 var(--typeface-display);
-    font: 500 1.8em/1.2 var(--typeface-body);
+    font: 500 1.8em/1.2 var(--typeface-display);
     margin: 1em 0 0.25em;
 }
 
@@ -249,7 +257,7 @@ code, pre {
 
 .zola-anchor {
     position: absolute;
-    left: -18px;
+    left: -1.2ch;
     opacity: 0;
     color: var(--color-primary);
     text-decoration: none;
@@ -265,7 +273,7 @@ code, pre {
 blockquote {
     background: linear-gradient(to bottom right, color-mix(in oklch,var(--color-primary) 10%, transparent), transparent 300%);
     padding: 1em 4ch;
-    margin-left: 0;
+    margin: 1em 0;
     border-left: 2px solid var(--color-primary);
     max-width: var(--text-width);
 }
@@ -282,6 +290,7 @@ ol {
         padding-left: 0.5ch;
         &::marker {
             font-weight: 400;
+			margin: .2em 0;
         }
     }
 }
@@ -290,5 +299,26 @@ ul {
     padding-left: 3.25ch;
     & li {
         padding-left: 0.25ch;
+		margin: .2em 0;
     }
+	&.blog-listing {
+		padding: 0;
+		margin: 1em 0;
+	}
+	&.blog-listing li {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		border-bottom: 1px solid color-mix(in oklch, var(--color-fg) 30%, transparent);
+		margin: 0.5em 0;
+		& :link, & :visited {
+			
+		}
+		& .article-separator {
+			display: none
+		}
+		& time {
+			font-family: var(--typeface-mono);
+		}
+	}
 }

@@ -8,16 +8,10 @@ raw = true
 tags = ["software", "security"]
 [extra]
 shorttitle = "Password Generator"
+color = "green"
 +++
 
 <style type="text/css">
-.content{
-	display: flex;
-	max-width: 100%;
-	align-items: center;
-	flex-direction: column;
-	min-height: 100vh;
-}
 .content > *:not(div#result) {
 	width: calc(min(780px,100%));
 	padding: 0 10px;
@@ -74,8 +68,8 @@ input[type=number]::-webkit-inner-spin-button {
 }
 button#generate {
 	font-size: 1.5em;
-	color: var(--color-link);
-	border: 2px solid var(--color-link);
+	color: var(--color-primary);
+	border: 2px solid var(--color-primary);
 	border-radius: 3px;
 	background: var(--color-bg);
 	padding: 5px 15px 10px;
@@ -85,15 +79,15 @@ button#generate {
 	box-shadow: 0 2px 5px color-mix(in srgb, var(--color-fg) 20%, transparent);
 }
 button#generate:hover {
-	background: var(--color-hover);
+	background: var(--color-pop);
 	color: var(--color-bg);
-	border: 2px solid var(--color-hover);
+	border: 2px solid var(--color-pop);
 }
 #copied-caption{
 	opacity: 0;
 	font-size: 1.5em;
 	color: var(--color-fg);
-	background: var(--color-hover);
+	background: var(--color-pop);
 	text-shadow: 1px 1px var(--color-bg);
 	font-weight: bold;
 	transition: opacity 250ms ease-in-out;
@@ -107,7 +101,7 @@ button#generate:hover {
 	opacity: 1;
 }
 #result{
-	font-family: "Red Hat Mono",Consolas,monospace;
+	font-family: var(--typeface-mono),"Red Hat Mono",Consolas,monospace;
 	font-size: 1.5em;
 	border: 1px solid var(--color-fg);
 	background: color-mix(in srgb, var(--color-bg) 80%, transparent);
@@ -122,8 +116,8 @@ button#generate:hover {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 24px 20px;
-	justify-content: space-evenly;
-	padding: 0 10px;
+	justify-content: start;
+	padding: 0 20px;
 }
 #result li{
 	display: flex;

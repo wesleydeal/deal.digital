@@ -45,11 +45,24 @@
 <script>
 	window.addEventListener('DOMContentLoaded', (event) => {
 		var hoursNow = (new Date()).getHours();
-		if (hoursNow > 22 || hoursNow < 6) message = "Good night!";
-		else if (hoursNow < 12) message = "Good morning!";
-		else if (hoursNow < 18) message = "Good afternoon!";
-		else message = "Good evening!";
+		if (hoursNow > 22 || hoursNow < 6) {
+			message = "Good night!";
+			color = '#440e8b';
+		}
+		else if (hoursNow < 12) {
+			message = "Good morning!";
+			color = '#52b5c5';
+		}
+		else if (hoursNow < 18) {
+			message = "Good afternoon!";
+			color = '#e5980c'
+		}
+		else {
+			message = "Good evening!";
+			color = '#730505'
+		}
 		document.querySelector('h1.title').innerHTML = message;
+		document.documentElement.style.setProperty('--color-primary', color);
 	}, false);
 </script>
 {% endblock content %}
