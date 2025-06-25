@@ -80,7 +80,7 @@ nav#topnav {
 	flex-direction: row;
 	flex-wrap: wrap;
 	gap: 5px;
-	&>a:first-child {
+	&>a:any-link:first-child {
 		flex: 0 0;
 		padding: 0.2em 0.6ch;
 		font: 400 2em/1 var(--typeface-body);
@@ -105,7 +105,7 @@ nav#topnav {
 		margin: 0;
 		padding: 0;
 	}
-	& a {
+	& a:any-link {
 		display: flex;
 		place-items: center;
 		place-content: center;
@@ -117,6 +117,10 @@ nav#topnav {
 		padding: 0.25em 1ch 0.25em 0.8ch;
 		text-decoration: none;
 		text-shadow: 1px 1px 0 #000;
+		&:hover, &:active {
+			background: linear-gradient(to bottom in oklch, #fff2, #fff3 50%, #0001 50%, transparent) var(--color-pop-bgcontrast);
+			box-shadow: none;
+		}
 	}
 }
 
@@ -149,7 +153,7 @@ nav#toc {
 		list-style: none;
 	}
 	& details summary {
-		list-style: none
+		list-style: none;
 		display: flex;
 		flex-direction: column;
 		position: relative;
@@ -188,7 +192,7 @@ footer {
 	position: relative;
 	box-shadow: 2px 2px 30px #000 inset, 2px 2px 30px #000 inset;
 	border-top: 2px solid var(--color-pop);
-	& :any-link {
+	& a:any-link {
 		background: var(--c);
 		color: #000b;
 		text-decoration: none;
@@ -267,15 +271,18 @@ footer {
 	}
 }
 
-:any-link {
+a:any-link {
 	color: inherit;
 	text-decoration: 1px underline var(--color-primary);
 	font-weight: 400;
-	transition: background 50ms ease-out, color 50ms ease-out, box-shadow 50ms ease-out;
+	transition: background 50ms ease-out, color 50ms ease-out, box-shadow 50ms ease-out, text-shadow 50ms ease-out;
 	&:hover, &:active, &:target {
-		background-color: oklch(from var(--color-h1);
+		--c: var(--color-h1);
+		--c: color-mix(in oklch, transparent 20%, color-mix(in oklch, var(--color-fg), var(--color-h1) 80%));
+		--c: color-mix(in oklch, transparent 20%, color-mix(in oklch, var(--color-fg), var(--color-primary-sat) 80%));
+		background: var(--c);
 		color: var(--color-bg);
-		box-shadow: 0 0 0 2px var(--color-h1);
+		box-shadow: 0 0 0 2px var(--c);
 	}
 }
 
@@ -309,7 +316,6 @@ h3 {
 	font: 500 1.2em/1.2 var(--typeface-body);
 	text-transform: uppercase;
 	margin: 1em 0 0.4em;
-	//text-decoration: 1px underline color-mix(in oklch, var(--color-pop) 50%, var(--color-fg));
 	text-underline-offset: 4px;
 }
 
@@ -405,20 +411,26 @@ ul {
 			left: 0;
 			background: linear-gradient(to right, var(--color-primary), #0000);
 		}
-		//border-bottom: 1px solid var(--color-primary);
 		padding: 0.1em 0 0.15em;
-		opacity: 0.8;
 		align-items: end;
-		& :any-link {
+		& a:any-link {
+			color: oklch(from var(--color-fg) l c h / 90%);
 			flex: 1 0 80%;
 			text-decoration: none;
 			&:hover, &:active {
+				color: var(--color-bg);
 				opacity: 1;
-				color: var(--color-primary);
+				text-shadow: 2px 2px 0 var(--color-h1);
+				box-shadow: 0 -6px 0 12px var(--c);
+				& ~ time {
+					//color: var(--color-bg);
+					text-shadow: 1px 1px 0 var(--color-bg);
+					z-index: 1;
+				}
 			}
 		}
 		& .article-separator {
-			display: none
+			display: none;
 		}
 		& time {
 			font-family: var(--typeface-mono);
@@ -466,7 +478,7 @@ h2 + p, h3 + p {
 	section.content {
 		padding: 0;
 		margin: 0;
-		& :any-link {
+		& a:any-link {
 			text-decoration: none;
 			font-weight: 600;
 			&:after{
@@ -513,7 +525,7 @@ h2 + p, h3 + p {
 		color: #000;
 		background: none;
 		text-shadow: none;
-		& :any-link {
+		& a:any-link {
 			background: none;
 			text-shadow: none;
 			color: #000;
