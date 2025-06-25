@@ -403,13 +403,13 @@ ul {
 		padding: 0.1em 0 0.15em;
 		opacity: 0.8;
 		align-items: end;
-		& :hover, & :active {
-			opacity: 1;
-			color: var(--color-primary);
-		}
 		& :link, & :visited {
 			flex: 1 0 80%;
 			text-decoration: none;
+			&:hover, &:active {
+				opacity: 1;
+				color: var(--color-primary);
+			}
 		}
 		& .article-separator {
 			display: none
