@@ -218,7 +218,7 @@ footer {
 	}
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (width <= 700px) {
 	body:has(nav#toc) {
 		display: flex;
 	}
@@ -232,7 +232,7 @@ footer {
 		position: static;
 		padding: 0 3ch;
 		& details summary {
-			&:after {
+			&::after {
 				content: 'Show ▶';
 				position: absolute;
 				right: 0.5ch;
@@ -246,7 +246,7 @@ footer {
 					font-size: 0.8em;
 				}
 			}
-			[open] &:after {
+			[open] &::after {
 				content: 'Hide ▲';
 			}
 		}
@@ -256,7 +256,7 @@ footer {
 		& li:has(.toplink) {
 			display: none;
 		}
-		& h2:after{
+		& h2::after{
 			background: linear-gradient(to right, var(--color-fg), transparent);
 		}
 	}
@@ -273,16 +273,17 @@ footer {
 
 a:any-link {
 	color: inherit;
-	text-decoration: 1px underline var(--color-primary);
+	text-decoration: underline;
+	text-decoration-color: var(--color-primary);
 	font-weight: 400;
-	transition: background 50ms ease-out, color 50ms ease-out, box-shadow 50ms ease-out, text-shadow 50ms ease-out;
+	transition: background 50ms ease-out, color 50ms ease-out, box-shadow 50ms ease-out, text-shadow 50ms ease-out, opacity 50ms ease-out, text-decoration 50ms ease-out;
 	&:hover, &:active, &:target {
 		--c: var(--color-h1);
-		--c: color-mix(in oklch, transparent 20%, color-mix(in oklch, var(--color-fg), var(--color-h1) 80%));
 		--c: color-mix(in oklch, transparent 20%, color-mix(in oklch, var(--color-fg), var(--color-primary-sat) 80%));
 		background: var(--c);
 		color: var(--color-bg);
 		box-shadow: 0 0 0 2px var(--c);
+		text-decoration-color: transparent;
 	}
 }
 
@@ -323,7 +324,7 @@ code, pre {
 	font: 400 0.9em/1.15 var(--typeface-mono);
 }
 
-.zola-anchor {
+.zola-anchor:any-link {
 	position: absolute;
 	left: -1.2ch;
 	opacity: 0;
@@ -332,6 +333,9 @@ code, pre {
 	padding-right: 10px;
 	:hover > &, &:hover, &:focus, &:active{
 		opacity: 1;
+		box-shadow: none;
+		background: none;
+		color: var(--color-primary);
 	}
 	:has(>&) {
 		position: relative;

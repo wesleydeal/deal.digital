@@ -1,9 +1,11 @@
 +++
 title = "Sample Page"
+[extra]
+toc = true
 +++
 
 This page is here to demonstrate all of the common elements used on this website. This is primarily intended for
-my personal use during stylesheet development.
+my personal use during stylesheet development. Oh, and by the way, [here is a link](#) that goes nowhere.
 
 ## Colors
 Set the **primary color** for this page using this form: <input id="primary-color-picker" type="color">
