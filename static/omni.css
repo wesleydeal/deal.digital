@@ -188,7 +188,7 @@ footer {
 	position: relative;
 	box-shadow: 2px 2px 30px #000 inset, 2px 2px 30px #000 inset;
 	border-top: 2px solid var(--color-pop);
-	& :link, & :visited {
+	& :any-link {
 		background: var(--c);
 		color: #000b;
 		text-decoration: none;
@@ -267,10 +267,16 @@ footer {
 	}
 }
 
-:link, :visited {
+:any-link {
 	color: inherit;
 	text-decoration: 1px underline var(--color-primary);
 	font-weight: 400;
+	transition: background 50ms ease-out, color 50ms ease-out, box-shadow 50ms ease-out;
+	&:hover, &:active, &:target {
+		background-color: oklch(from var(--color-h1);
+		color: var(--color-bg);
+		box-shadow: 0 0 0 2px var(--color-h1);
+	}
 }
 
 h1 {
@@ -403,7 +409,7 @@ ul {
 		padding: 0.1em 0 0.15em;
 		opacity: 0.8;
 		align-items: end;
-		& :link, & :visited {
+		& :any-link {
 			flex: 1 0 80%;
 			text-decoration: none;
 			&:hover, &:active {
@@ -460,7 +466,7 @@ h2 + p, h3 + p {
 	section.content {
 		padding: 0;
 		margin: 0;
-		& :link, & :visited {
+		& :any-link {
 			text-decoration: none;
 			font-weight: 600;
 			&:after{
@@ -507,7 +513,7 @@ h2 + p, h3 + p {
 		color: #000;
 		background: none;
 		text-shadow: none;
-		& :link, & :visited {
+		& :any-link {
 			background: none;
 			text-shadow: none;
 			color: #000;
