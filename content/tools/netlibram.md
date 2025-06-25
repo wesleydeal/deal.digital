@@ -2,10 +2,10 @@
 title = "Dice Roller for Orrex's Net Libram of Random Magical Effects"
 authors = ["Orrex"]
 date = 2018-05-29
-updated = 2024-05-02
+updated = 2025-06-24
 [extra]
 shorttitle = "Roll for Net Libram Effects"
-color = "#002"
+color = "#010f11"
 +++
 <script>
 function rollnetlibram(){
@@ -20,15 +20,16 @@ document.getElementById('effectID').innerHTML=nl[0];
 document.getElementById('effect'  ).innerHTML=nl[1];
 }
 </script>
-<p class="meta">Script originally published at sdx1.net on 2018-05-29. Contents from Orrex. Copyright status unknown.</p>
-<a href="javascript:setelements()">
-<div style="border: 2px solid #c33000; margin: 20px 0; text-align: center; padding: 40px 40px 60px">
-<p style="margin-top: 0; margin-bottom: 10px; color: #ff4a00; font-size: 1.8em; font-weight: 700" id="effectID"></p>
-<p style="margin: 0; font-size: 2em; line-height: 1.2" id="effect">Click to roll</p>
-</div></a>
+<p class="meta">Script originally published at sdx1.net on 2018-05-29. Contents from Orrex. Copyright status unknown.
+<a href="javascript:setelements()" style="text-decoration: none">
+    <div style="max-width: fit-content; border: 2px solid #c33000; border-color: var(--color-pop); margin: 20px 0; padding: 40px 40px 60px">
+        <p style="margin-top: 0; margin-bottom: 10px; color: #ff4a00; color: var(--color-pop); font-size: 1.8em; font-weight: 700" id="effectID">
+        <p style="margin: 0; font-size: 2em; line-height: 1.2" id="effect">Click to roll
+    </div>
+</a>
 
-<h2>You might prefer...</h2>
-<p>/u/theonetrueduddy <a href="https://gist.github.com/slugnet/6985fff9c4e09a9176c456f63a13999f">has published JSON and TXT versions</a> of the Libram for use with various other scripts. A version for Roll20 Pro API users was <a href="https://gist.github.com/slugnet/6985fff9c4e09a9176c456f63a13999f">made by slugnet</a>
+## You might prefer...
+/u/theonetrueduddy [has published JSON and TXT versions](https://gist.github.com/slugnet/6985fff9c4e09a9176c456f63a13999f) of the Libram for use with various other scripts. A version for Roll20 Pro API users was <a href="https://gist.github.com/slugnet/6985fff9c4e09a9176c456f63a13999f">made by slugnet</a>
 <ul>
 <li><a href="https://mojobob.com/roleplay/campaign/10kFX/index.html">Mojobob</a></li>
 <li><a href="https://chartopia.d12dev.com/chart/561/">Dave Anhorn</a></li>
@@ -94,7 +95,4 @@ document.getElementById('effect'  ).innerHTML=nl[1];
 
 <h3>This list sucks even worse than the last one! Who do I bitch to!</h3><p>I received quite a bit of email feedback about the list v1.20, and I’m grateful to everyone who took the time to contact me. One of the most common criticisms dealt with the inclusion of technologies that, to some people, simply seemed out of place. In this list, I’ve reduced the incidence of anachronistic objects and Bursts in the hope of diminishing that error.</p.
 <p>Comments and critiques are still welcome, of course. Send them to orrex@excite.com. I can’t guarantee that I’ll reply, but if there’s something you really need to get off your chest, feel free to drop me a line.</p>
-</p>
-</div>
-</body>
-</html>
+

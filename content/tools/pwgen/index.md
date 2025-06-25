@@ -40,11 +40,13 @@ select{
 	border: 1px solid var(--color-primary);
 	border-radius: 3px;
 	font: inherit;
+	color: inherit;
 	background: none;
 	padding: 2px;
 }
 input {
 	accent-color: var(--color-pop);
+	color: inherit;
 }
 #settings-wrapper div.length-container{
 	display: flex;
@@ -74,12 +76,12 @@ input[type=number]::-webkit-inner-spin-button {
 }
 button#generate {
 	font-size: 1.5em;
-	color: var(--color-primary);
+	color: inherit;
 	border: 2px solid var(--color-primary);
 	border-radius: 3px;
 	background: var(--color-bg);
 	padding: 5px 15px 10px;
-	transition: border 250ms ease-in-out, color 250ms ease-in-out, background 250ms ease-in-out;
+	transition: border 150ms ease-out, color 150ms ease-out, background 150ms ease-out;
 	width: 100%;
 	user-select: none;
 	box-shadow: 0 2px 5px color-mix(in srgb, var(--color-fg) 20%, transparent);

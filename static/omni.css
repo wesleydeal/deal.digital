@@ -59,7 +59,6 @@ body {
 			padding: 0 3ch;
 		}
 	}
-
 }
 
 header {
@@ -346,6 +345,7 @@ pre {
 	padding: 1ch;
 	overflow-x: auto;
 	max-width: fit-content;
+	border: 1px solid var(--color-primary);
 }
 
 ol {
@@ -434,24 +434,53 @@ h2 + p, h3 + p {
 		--color-bg: #fff;
 		--color-fg: #000;
 		--bg: #fff;
+		--text-width: 100%;
 	}
 	body:has(nav#toc) {
 		display: flex;
+	}
+	section.content {
+		padding: 0;
+		margin: 0;
+		& :link, & :visited {
+			text-decoration: none;
+			font-weight: 600;
+			&:after{
+				font-weight: 350;
+				font-style: italic;
+				font-size: 1rem;
+				content: " (" attr(href) ") ";
+			}
+		}
 	}
 	nav#toc {
 		display: none;
 	}
 	header {
+		padding: 0;
 		visibility: hidden;
 	}
 	header ul {
 		display: none !important;
 	}
 	nav#topnav>a:first-child {
+		color: #000;
 		visibility: visible;
 		background: none;
-		color: #000;
+		border: 0;
+		outline: 1px solid var(--color-primary);
 		text-shadow: none;
+		position: absolute;
+		top: 1px;
+		right: 1px;
+		display: flex;
+		flex-direction: column;
+		align-items: end;
+		&:after{
+			content: 'deal.digital';
+			font-size: 1rem;
+			letter-spacing: normal;
+		}
 	}
 	footer {
 		font-size: 10pt !important;
@@ -466,5 +495,14 @@ h2 + p, h3 + p {
 			color: #000;
 			text-decoration: underline;
 		}
+		& p, & li {
+			filter: none;
+		}
+		& pre {
+			display: none;
+		}
+	}
+	h1:first-child {
+		margin-top: 0;
 	}
 }

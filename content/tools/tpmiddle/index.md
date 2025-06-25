@@ -2,7 +2,7 @@
 author = "Wesley Deal"
 title = "Scroll & middle-click with the TrackPoint"
 date = 2017-08-06
-updated = 2024-04-25
+updated = 2025-06-24
 [taxonomies]
 tags = ["software", "thinkpad"]
 [extra]
@@ -10,29 +10,25 @@ shorttitle = "Scroll & middle-click with a TrackPoint"
 color = "#E10020"
 +++
 
-<!--<style>
-:root{
-	--color-accent: #E10020;
-	--blockquote-bg: linear-gradient(135deg, #E1002020, #E1002000);
-	--color-hover: #E10020;
-	--color-logo-bg: #E10020;
-	--color-logo-fg: #fff;
-}
-</style>-->
+On ThinkPads running Windows (and a steadily decreasing number of competitors), the middle mouse button below the TrackPoint can be used as a scroll modifier
+for the trackpoint or a middle-click/MOUSE3 button, but not both at the same time. Here's some ways to make it work with both.
 
-On ThinkPads running Windows, the middle mouse button below the TrackPoint can be used as a scroll modifier for the trackpoint or a middle-click/MOUSE3 button, but not both at the same time. This page covers ways to resolve this.
+## Recommended Solution: LibreScroll
+[LibreScroll](https://github.com/EsportToys/LibreScroll) is a general solution to this problem written by EsportToys. It converts motion into scroll momentum with any mouse while the middle button is held.
+
+As with TPMiddle, it's recommend to drop it into your startup folder `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup`.
 
 ## TPMiddle
-TPMiddle.exe is a brilliant program by Gerhard Wiesinger that allows both functions at once by detecting whether or not the mouse is moved between press and release.
+TPMiddle.exe was a brilliant program by Gerhard Wiesinger that allows both functions at once by detecting whether or not the mouse is moved between press and release.
 
-This tool has some issues on newer devices. Suggested replacements include [W10Wheel.NET](https://github.com/ykon/w10wheel.net).
+This tool has some issues on newer devices. Please consider the other options on this page.
 
 ### Downloads
 
-* [tpmiddle-0.6.exe](tpmiddle-0.6.exe) - **Recommended**, especially for Windows 10 users, 10.5kb
+* [tpmiddle-0.6.exe](https://github.com/Jyny/TPmiddle/releases/download/v0.7/tpmiddle.exe) - **Recommended**, especially for Windows 10 users, 10.5kb
 
-* [tpmiddle-0.7.exe](tpmiddle-0.7.exe) - Incompatible with some newer systems, 11kb  
-also available from the [author's site](https://www.wiesinger.com/opensource/TPMiddle/V0.7/Release/tpmiddle.exe)
+* [tpmiddle-0.7.exe](https://github.com/Jyny/TPmiddle/releases/download/v0.6/tpmiddle.exe) - Incompatible with some newer systems, 11kb  
+(also available from the [author's site](https://www.wiesinger.com/opensource/TPMiddle/V0.7/Release/tpmiddle.exe))
 
 ### Installation
 
@@ -42,7 +38,7 @@ also available from the [author's site](https://www.wiesinger.com/opensource/TPM
 4. Drop it into `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup`
 5. Log out and back in to start it
 
-## Alternatives
+## Other Alternatives
 
 An [AutoHotKey-based substitute](http://web.archive.org/web/20220125153630/http://forum.notebookreview.com/threads/ultranav-middle-click-button-scroll.423415/) was listed in the Notebook Review forums a few years ago.
 

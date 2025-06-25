@@ -14,4 +14,6 @@ and color depth created tight constraints for designers, and with them beautiful
 bitmap fonts, and almost-but-not-quite analogues of real world objects. Because the field was new, they were free to
 experiment with different UX patterns.
 
-Not all were successful, of course, and I'm under no illusion
+Even into the early 2000s as UI/UX design fields began to mature, amateur and professional profesionl skllsdf
+
+I'm under no illusion that we should return to ancient ways
