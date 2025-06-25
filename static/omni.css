@@ -117,9 +117,13 @@ nav#topnav {
 		padding: 0.25em 1ch 0.25em 0.8ch;
 		text-decoration: none;
 		text-shadow: 1px 1px 0 #000;
-		&:hover, &:active {
-			background: linear-gradient(to bottom in oklch, #fff2, #fff3 50%, #0001 50%, transparent) var(--color-pop-bgcontrast);
+		&:hover, &:focus {
+			background: linear-gradient(to right in oklch, #0000 -100%, #fff3, #0000 200%), linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
+			backdrop-filter: saturate(1.2);
 			box-shadow: none;
+		}
+		&:active {
+			background: linear-gradient(to bottom in oklch, #fff2, #fff3 50%, #0001 50%, transparent) var(--color-pop-bgcontrast);
 		}
 	}
 }
@@ -276,14 +280,17 @@ a:any-link {
 	text-decoration: underline;
 	text-decoration-color: var(--color-primary);
 	font-weight: 400;
-	transition: background 50ms ease-out, color 50ms ease-out, box-shadow 50ms ease-out, text-shadow 50ms ease-out, opacity 50ms ease-out, text-decoration 50ms ease-out;
-	&:hover, &:active, &:target {
+	transition: background 50ms ease-out, color 50ms ease-out, box-shadow 50ms ease-out, text-shadow 50ms ease-out, opacity 50ms ease-out, text-decoration 50ms ease-out, transform 50ms ease-out;
+	&:hover, &:active, &:focus {
 		--c: var(--color-h1);
 		--c: color-mix(in oklch, transparent 20%, color-mix(in oklch, var(--color-fg), var(--color-primary-sat) 80%));
 		background: var(--c);
 		color: var(--color-bg);
 		box-shadow: 0 0 0 2px var(--c);
 		text-decoration-color: transparent;
+	}
+	&:active {
+		--c: var(--color-pop-bgcontrast);
 	}
 }
 
