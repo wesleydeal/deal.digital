@@ -68,8 +68,7 @@ header {
 	color: #fff;
 	font-weight: 450;
 	font-size: clamp(1em, 1.2vw, 1.3em);
-	background: linear-gradient(to right in oklch, #20140e, #3c3638);
-	background: linear-gradient(184deg in oklch, var(--color-primary) -100%, #000 200%);
+	background: #000;
 	background: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%);
 	display: flex;
 	flex-direction: column;
