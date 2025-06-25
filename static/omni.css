@@ -101,7 +101,7 @@ nav#topnav {
 	}
 	& li {
 		display: flex;
-		flex: 1 1;
+		flex: 1 1 max-content;
 		margin: 0;
 		padding: 0;
 	}
@@ -109,7 +109,7 @@ nav#topnav {
 		display: flex;
 		place-items: center;
 		place-content: center;
-		flex: 1 0;
+		flex: 1 0 max-content;
 		min-width: max-content;
 		border: 1px solid #fff8;
 		outline: 1px solid #0008;
