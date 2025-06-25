@@ -146,12 +146,16 @@ nav#toc {
 	& li:has(.toplink) {
 		text-align: right;
 		margin-top: 1em;
-		list-style-type: none;
+		list-style: none;
 	}
 	& details summary {
+		list-style: none
 		display: flex;
 		flex-direction: column;
 		position: relative;
+		&::-webkit-details-marker {
+			display: none;
+		}
 	}
 }
 
@@ -159,6 +163,7 @@ section.content {
 	grid-area: main;
 	padding: 0 5vw;
 	min-height: 100vh;
+	overflow-wrap: anywhere;
 	& p, & li, & blockquote {
 		max-width: var(--text-width);
 	}
