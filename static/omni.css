@@ -3,21 +3,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Instrument+Serif:ital@0;1&display=swap');
 
 :root {
-	--lm-color-bg: #ffefef;
-	--lm-color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
-	--lm-color-fg: #000;
-	--dm-color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
-	--dm-color-fg: #fff;
-	--lm-bg: linear-gradient(to right, oklch(from var(--color-primary) .97 calc(c * .2) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px);
-	--dm-bg: linear-gradient(to right, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) 300px);
-
-	--color-bg: var(--lm-color-bg);
-	--color-fg: var(--lm-color-fg);
-	--bg: var(--lm-color-bg);
-	--bg: var(--lm-bg);
+	--color-fg: #000;
+	--color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
+	--bg: linear-gradient(to right, oklch(from var(--color-primary) .97 calc(c * .2) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px);
 	--color-primary: #f30; /*#fa7;*/
-	--color-pop: oklch(from var(--color-primary) calc(l + ((1 - l) * .5)) calc(c + .1) calc(h - 180));
 	--color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
+	--color-h1: color-mix(in oklch, var(--color-primary) 60%, var(--color-fg));
+	--color-h1: oklch(from var(--color-primary) min(.45, l) min(.13, c) h);
+	--color-pop: oklch(from var(--color-primary) max(.8, l) max(0.09, calc(c + .05)) calc(h - 180));
+	--color-pop-bgcontrast: oklch(from var(--color-pop) 0.4 c h);
 
 	--text-width: 80ch;
 	--typeface-body: "Atkinson Hyperlegible Next", sans-serif;
@@ -26,9 +20,12 @@
 	box-sizing: border-box;
 	
 	@media (prefers-color-scheme: dark) {
-		--color-bg: var(--dm-color-bg);
-		--color-fg: var(--dm-color-fg);
-		--bg: var(--dm-bg);
+		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
+		--color-fg: #fff;
+		--bg: linear-gradient(to right, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) 300px);
+		--color-h1: color-mix(in oklch, var(--color-primary) 40%, var(--color-fg));
+		--color-h1: oklch(from var(--color-primary) max(.71, l) max(.13, c) h);
+		--color-pop-bgcontrast: var(--color-pop);
 	}
 }
 
@@ -116,7 +113,6 @@ nav#topnav {
 		min-width: max-content;
 		border: 1px solid #fff8;
 		outline: 1px solid #0008;
-		//backdrop-filter: saturate(1.5) brightness(1.2);
 		background: linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
 		padding: 0.25em 1ch 0.25em 0.8ch;
 		text-decoration: none;
@@ -276,10 +272,10 @@ h1 {
 	font: 400 4em/1.05 var(--typeface-display);
 	transform-origin: left;
 	font-size: clamp(3em, 5vw, 6em);
-	color: color-mix(in oklch, var(--color-primary) 60%, var(--color-fg));
+	color: var(--color-h1);
 	max-width: 22ch;
 	margin: 0.5em 0 0.25em;
-	text-shadow: 2px 2px 0 #7772;
+	text-shadow: 2px 2px 0 #7773;
 }
 
 h2 {
@@ -307,7 +303,7 @@ h3 {
 }
 
 code, pre {
-	font: 400 0.9em/1.2 var(--typeface-mono);
+	font: 400 0.9em/1.15 var(--typeface-mono);
 }
 
 .zola-anchor {
@@ -427,6 +423,23 @@ ul {
 
 h2 + p, h3 + p {
 	margin-top: 0;
+}
+
+.z-code {
+	counter-reset: line;
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-left: 0.5ch;
+	text-wrap: wrap;
+	&>code>.z-text:not(:only-child):before, &>code>.z-source:not(:only-child):before{
+		counter-increment: line;
+		content: counter(line, decimal-leading-zero) "";
+		user-select: none;
+		opacity: 0.2;
+		border-right: 1px solid;
+		padding-right: calc(0.5ch - 1px);
+		margin-right: 0.5ch;
+	}
 }
 
 @media print {
