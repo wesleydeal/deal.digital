@@ -8,52 +8,68 @@ This page is here to demonstrate all of the common elements used on this website
 my personal use during stylesheet development. Oh, and by the way, [here is a link](#) that goes nowhere.
 
 ## Colors
-Set the **primary color** for this page using this form: <input id="primary-color-picker" type="color">
+Set the **primary color** for this page using this or the field in the table below: <input id="primary-color-picker" type="color">
 
-| Color Name | Color Value |
-|:-|:-|
-| \--color-primary | |
-| \--color-primary-sat | |
-| \--color-pop | |
-| \--color-pop-bgcontrast | |
-| \--color-h1 | |
-| \--color-fg | |
-| \--color-bg | |
+| Color Name | ... Color Preview ... | Color String |
+|:-|:-:|:-|
+| \--color-primary | Sample | <input id="primary-color-picker-text">
+| \--color-primary-sat | Sample |
+| \--color-pop | Sample |
+| \--color-pop-bgcontrast | Sample |
+| \--color-h1 | Sample |
+| \--color-fg | Sample |
+| \--color-bg | Sample |
 
 <script>
-document.getElementById('primary-color-picker').addEventListener('input', setColors);
+document.getElementById('primary-color-picker').addEventListener('input', clickColor);
+document.getElementById('primary-color-picker-text').addEventListener('input', typeColor);
 
-function setColors() {
-	let picker = document.getElementById('primary-color-picker')
-	document.documentElement.style.setProperty('--color-primary',picker.value);
-	let table = picker.parentElement.nextElementSibling;
+function updateColorTable() {
+	let textInput = document.getElementById('primary-color-picker-text');
+	let table = textInput.parentElement.parentElement.parentElement;
 	let demoRows = table.querySelectorAll('tbody tr');
 	
 	for (row of demoRows){
 		let nameCell = row.querySelectorAll('td')[0]
-		let valCell = row.querySelectorAll('td')[1]
+		let previewCell = row.querySelectorAll('td')[1]
+		let valCell = row.querySelectorAll('td')[2]
 		let varName = nameCell.innerHTML;
 		let val = getComputedStyle(document.documentElement).getPropertyValue(varName);
 		nameCell.style.setProperty('color', val);
 		nameCell.style.setProperty('text-shadow', '1px 1px 0 var(--color-fg)');
-		valCell.innerHTML = val;
-		valCell.style.setProperty('background', val);
-		valCell.style.setProperty('text-shadow', '1px 1px 0 var(--color-bg)');
+		if(varName == "--color-primary") {
+			if (document.activeElement != textInput) {
+				textInput.value = val;
+			}
+		} else {
+			valCell.innerHTML = val;
+		}
+		previewCell.style.setProperty('background', val);
 	}
 }
 
-const rgbToHex = (r, g, b) => {
-  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+function clickColor() {
+	let picker = document.getElementById('primary-color-picker');
+	document.documentElement.style.setProperty('--color-primary',picker.value);
+	updateColorTable();
 }
 
-(() => {
-	let color = getComputedStyle(document.querySelector('header')).getPropertyValue('border-bottom-color');
-	let [r,g,b] = color.substring(color.indexOf('(')+1, color.indexOf(')')).split(", ");
-	let picker = document.getElementById('primary-color-picker')
-	picker.value = rgbToHex(r*1,g*1,b*1);
-	setColors();
-})();
+function typeColor() {
+	let val = document.getElementById('primary-color-picker-text').value
+	if (!CSS.supports('color',val)) {
+		return;
+	}
+	document.documentElement.style.setProperty('--color-primary', val);
+	updateColorTable();
+}
+
+updateColorTable();
 </script>
+<style>
+:has(#primary-color-picker) + table tbody tr td:nth-child(2) {
+	
+}
+</style>
 
 ## Code
 
@@ -79,6 +95,12 @@ Sometimes, you want a blockquote that doesn't quote anyone.
 > Who wrote this?
 
 But more often, you'll want to attribute the quote to an author (or even *--Anonymous*). Here's what that would look like, with a longer quote.
+
+{% blockquote(author="Warren Buffet") %}
+Freak the fuck out and panic sell everything right now.
+
+It's fucking over.
+{% end %}
 
 # Here is a long level 1 heading, just as a demonstration of how the text wraps
 Below this, I'm going to put in some lower level headings. I don't generally use levels below an &lt;h3&gt;

@@ -227,7 +227,7 @@ footer {
 	}
 	nav#topnav {
 		justify-content: center;
-		&>a:first-child, & ul {
+		&>a:any-link:first-child, & ul {
 			flex: 1 1 350px;
 		}
 	}
