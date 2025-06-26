@@ -451,7 +451,7 @@ pre {
 }
 
 @media screen and (width <= 700px) {
-	body:has(nav#toc) {
+	body:has(nav#toc details[open]) {
 		display: flex;
 	}
 	nav#topnav {
