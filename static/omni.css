@@ -20,6 +20,8 @@
 	--typeface-mono: "Atkinson Hyperlegible Mono", monospace;
 	box-sizing: border-box;
 	
+	--screen-narrow: screen and (width < 700px)
+	
 	@media (prefers-color-scheme: dark) {
 		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
 		--color-fg: #fff;
@@ -169,7 +171,7 @@ nav#toc {
 			display: none;
 		}
 		&::after {
-			content: 'Show Contents ▶';
+			content: 'Show Contents ▼';
 			margin-top: 1em;
 			padding: 0 0.5em;
 			color: #fff;
@@ -461,7 +463,7 @@ pre {
 		}
 	}
 	nav#toc {
-		position: static;
+		position: static !important;
 		padding: 0 3ch;
 		& ol {
 			margin-bottom: 0;
