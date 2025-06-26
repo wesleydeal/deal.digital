@@ -5,7 +5,7 @@
 :root {
 	--color-fg: #000;
 	--color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
-	--bg: linear-gradient(to right, oklch(from var(--color-primary) .97 calc(c * .33) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px);
+	--bg: linear-gradient(to right, oklch(from var(--color-primary) .97 calc(c * .25) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px max(60vw, 1400px), oklch(from var(--color-primary) .97 calc(c * .25) h) max(100vw, 1500px));
 	--color-primary: #f30; /*#fa7;*/
 	--color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
 	--color-h1: color-mix(in oklch, var(--color-primary) 60%, var(--color-fg));
@@ -13,13 +13,12 @@
 	--color-pop: oklch(from var(--color-primary) max(.8, l) max(0.09, calc(c + .05)) calc(h - 180));
 	--color-pop-bgcontrast: oklch(from var(--color-pop) 0.4 c h);
 	--header-bg: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%) fixed;
+	--button-shadow: inset 1px 1px 0 color-mix(in oklch, var(--color-primary) 50%, #ffff), inset -1px -1px 0 color-mix(in oklch, var(--color-h1) 40%, #ffff);
+	--button-shadow: inset 1px 1px 0 oklch(from var(--color-primary) 0.85 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.75 calc(c * .8) h);
+	--button-border: 1px solid oklch(from var(--color-pop) 0.2 0.1 h);
+	--button-overlay: linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent);
+	--button-highlight-overlay: linear-gradient(to right in oklch, #0000 -100%, #fff3, #0000 200%), linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent);
 
-	--text-width: 80ch;
-	--typeface-body: "Atkinson Hyperlegible Next", sans-serif;
-	--typeface-display: "Instrument Serif", sans-serif;
-	--typeface-mono: "Atkinson Hyperlegible Mono", monospace;
-	box-sizing: border-box;
-	
 	@media (prefers-color-scheme: dark) {
 		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
 		--color-fg: #fff;
@@ -28,6 +27,15 @@
 		--color-h1: oklch(from var(--color-primary) max(.71, l) max(.13, c) h);
 		--color-pop-bgcontrast: var(--color-pop);
 	}
+
+	--text-width: 80ch;
+	--typeface-body: "Atkinson Hyperlegible Next", sans-serif;
+	--typeface-display: "Instrument Serif", sans-serif;
+	--typeface-mono: "Atkinson Hyperlegible Mono", monospace;
+
+	box-sizing: border-box;
+	
+
 }
 
 
@@ -62,7 +70,7 @@ header {
 	box-shadow: 0 0 1px var(--color-primary);
 	width: 100%;
 	margin: 0;
-	padding: 0.5em 1ch;
+	padding: 0.45em 0.6em;
 	color: #fff;
 	font-weight: 450;
 	font-size: clamp(1em, 1.2vw, 1.3em);
@@ -76,13 +84,13 @@ nav#topnav {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	gap: 5px;
+	gap: 3px;
 	&>a:any-link:first-child {
 		flex: 0 0;
-		padding: 0.2em 0.6ch;
+		padding: 0.22em 0.35em 0.22em 0.45em;
 		font: 400 2em/1 var(--typeface-body);
 		letter-spacing: -0.04ch;
-		background: linear-gradient(to right, var(--color-pop), var(--color-pop) 0.1em, transparent 0.1em) 0 / 105% 105%, linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
+		background: var(--button-overlay), linear-gradient(to right, var(--color-pop) 0.15em, #0000 0), color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
 	}
 	& ul {
 		overflow: hidden;
@@ -91,7 +99,7 @@ nav#topnav {
 		flex-wrap: wrap;
 		padding: 0;
 		margin: 0;
-		gap: 5px;
+		gap: 3px;
 		list-style-type: none;
 		flex: 1 1;
 		padding-right: max(0px, calc(100vw - 1400px));
@@ -108,20 +116,20 @@ nav#topnav {
 		place-content: center;
 		flex: 1 0 max-content;
 		min-width: max-content;
-		border: 1px solid #fff8;
-		outline: 1px solid #0008;
-		background: linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
-		padding: 0.25em 1ch 0.25em 0.8ch;
+		box-shadow: var(--button-shadow);
+		border: var(--button-border);
+		background: var(--button-overlay), color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
+		padding: 0.3em 1ch 0.3em 0.8ch;
 		text-decoration: none;
 		text-shadow: 1px 1px 0 #000;
 		&:hover, &:focus {
-			background: linear-gradient(to right in oklch, #0000 -100%, #fff3, #0000 200%), linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
+			background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
 			backdrop-filter: saturate(1.2);
 			box-shadow: none;
 			color: #fff;
 		}
 		&:active {
-			background: linear-gradient(to bottom in oklch, #fff2, #fff3 50%, #0001 50%, transparent) var(--color-pop-bgcontrast);
+			background: var(--button-overlay), var(--color-pop-bgcontrast);
 			color: #fff;
 		}
 	}
@@ -169,23 +177,28 @@ nav#toc {
 			display: none;
 		}
 		&::after {
-			content: 'Show Contents ▼';
+			content: '▼ Show Contents';
+			margin-left: calc(5vw - 1.5em);
+			margin-bottom: -10px;
 			margin-top: 1em;
 			padding: 0 0.5em;
 			color: #fff;
-			box-shadow: inset 1px 1px 0 color-mix(in oklch, var(--color-primary) 50%, #ffff), inset -1px -1px 0 color-mix(in oklch, var(--color-h1) 50%, #ffff);
-			border: 1px solid #000a;
-			background: linear-gradient(to bottom in oklch, #fff2, #fff3 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat), #000 45%);
-			max-width: fit-content;
-			&:last-character {
-				font-size: 0.8em;
-			}
+			box-shadow: var(--button-shadow);
+			border: var(--button-border);
+			background: var(--button-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+			text-shadow: 1px 1px 0 #000;
+			width: fit-content;
+		}
+		&:hover::after {
+			background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+			box-shadow: none;
 		}
 		[open] &::after {
 			content: 'Hide ▲';
 			position: absolute;
 			right: 0.5ch;
 			bottom: 1.3em;
+			margin: 0;
 		}
 	}
 }
@@ -461,7 +474,7 @@ pre {
 	}
 	nav#toc {
 		position: static !important;
-		padding: 0 3ch;
+		padding: 0 5vw;
 		& ol {
 			margin-bottom: 0;
 		}
@@ -517,6 +530,9 @@ pre {
 			color: #fff;
 			& h2::after {
 				background: linear-gradient(to right, #fff, transparent);
+			}
+			& details summary::after {
+				margin-left: 0;
 			}
 		}
 		section.content {
