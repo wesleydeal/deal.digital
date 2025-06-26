@@ -48,7 +48,7 @@ body {
 	display: flex;
 	flex-direction: column;
 
-	&:has(nav#toc) {
+	&:has(nav#toc details[open]) {
 		display: grid;
 		grid-template-columns: minmax(250px,1fr) minmax(150px,5fr);
 		grid-template-rows: auto minmax(100vh,auto) auto;
@@ -133,10 +133,12 @@ nav#breadcrumbs{
 
 nav#toc {
 	grid-area: sidebar;
-	padding: 0 2ch;
-	position: sticky;
+	padding: 0 1.5em;
 	top: 0;
 	height: fit-content;
+	&:has(details[open]) {
+		position: sticky;
+	}
 	& h2 {
 		padding: 0 0 10px;
 		margin: 20px 0 10px;
@@ -162,6 +164,28 @@ nav#toc {
 		position: relative;
 		&::-webkit-details-marker {
 			display: none;
+		}
+		:not([open])>& h2 {
+			display: none;
+		}
+		&::after {
+			content: 'Show Contents ▶';
+			margin-top: 1em;
+			padding: 0 0.5em;
+			color: #fff;
+			box-shadow: inset 1px 1px 0 color-mix(in oklch, var(--color-primary) 50%, #ffff), inset -1px -1px 0 color-mix(in oklch, var(--color-h1) 50%, #ffff);
+			border: 1px solid #000a;
+			background: linear-gradient(to bottom in oklch, #fff2, #fff3 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat), #000 45%);
+			max-width: fit-content;
+			&:last-character {
+				font-size: 0.8em;
+			}
+		}
+		[open] &::after {
+			content: 'Hide ▲';
+			position: absolute;
+			right: 0.5ch;
+			bottom: 1.3em;
 		}
 	}
 }
@@ -439,25 +463,6 @@ pre {
 	nav#toc {
 		position: static;
 		padding: 0 3ch;
-		& details summary {
-			&::after {
-				content: 'Show ▶';
-				position: absolute;
-				right: 0.5ch;
-				bottom: 1.3em;
-				padding: 0 1ch;
-				color: #fff;
-				border: 1px solid color-mix(in oklch, var(--color-primary), #000 10%);
-				outline: 1px solid #777a;
-				background: linear-gradient(to bottom in oklch, #fff2, #fff3 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat), #000 50%);
-				&:last-character {
-					font-size: 0.8em;
-				}
-			}
-			[open] &::after {
-				content: 'Hide ▲';
-			}
-		}
 		& ol {
 			margin-bottom: 0;
 		}
@@ -485,7 +490,7 @@ pre {
 		grid-template-rows: auto;
 		grid-template-columns: minmax(260px,1fr) 6fr;
 		grid-template-areas: "header main" "footer footer";
-		&:has(nav#toc) {
+		&:has(nav#toc), &:has(nav#toc details[open]) {
 			background: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%);
 			display: grid;
 			grid-template-columns: minmax(400px,1fr) 5fr;
