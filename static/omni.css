@@ -399,7 +399,7 @@ h2 + p, h3 + p {
 }
 
 pre {
-	padding: 0 1em;
+	padding: 0.5em 1em;
 	overflow-x: auto;
 	max-width: fit-content;
 	border: 1px solid var(--color-primary);
@@ -407,7 +407,7 @@ pre {
 
 .z-code {
 	counter-reset: line;
-	box-shadow: 2px 2px 0.5em inset #0003;
+	box-shadow: 1px 1px 5px inset #0003;
 	//border: none;
 	@container & (width > 300px) & {
 		margin-left: -3ch;
@@ -420,6 +420,9 @@ pre {
 		border-right: 1px solid;
 		padding-right: calc(0.5ch - 1px);
 		margin-right: 0.5ch;
+	}
+	&:has(>code>.z-text:only-child), &:has(>code>.z-source:only-child) {
+		box-shadow: 1px 1px 3px inset #0003;
 	}
 }
 
@@ -503,7 +506,7 @@ pre {
 			min-height: 100vh;
 			color: #fff;
 			& h2::after {
-				background: linear-gradient(to right, var(--color-pop), transparent);
+				background: linear-gradient(to right, #fff, transparent);
 			}
 		}
 		section.content {
