@@ -12,6 +12,7 @@
 	--color-h1: oklch(from var(--color-primary) min(.45, l) min(.13, c) h);
 	--color-pop: oklch(from var(--color-primary) max(.8, l) max(0.09, calc(c + .05)) calc(h - 180));
 	--color-pop-bgcontrast: oklch(from var(--color-pop) 0.4 c h);
+	--header-bg: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%);
 
 	--text-width: 80ch;
 	--typeface-body: "Atkinson Hyperlegible Next", sans-serif;
@@ -52,9 +53,6 @@ body {
 		grid-template-columns: minmax(250px,1fr) minmax(150px,5fr);
 		grid-template-rows: auto minmax(100vh,auto) auto;
 		grid-template-areas: "header header" "sidebar main" "footer footer";
-		& section.content {
-			padding: 0 3ch;
-		}
 	}
 }
 
@@ -69,7 +67,7 @@ header {
 	font-weight: 450;
 	font-size: clamp(1em, 1.2vw, 1.3em);
 	background: #000;
-	background: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%);
+	background: var(--header-bg);
 	display: flex;
 	flex-direction: column;
 }
@@ -120,9 +118,11 @@ nav#topnav {
 			background: linear-gradient(to right in oklch, #0000 -100%, #fff3, #0000 200%), linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
 			backdrop-filter: saturate(1.2);
 			box-shadow: none;
+			color: #fff;
 		}
 		&:active {
 			background: linear-gradient(to bottom in oklch, #fff2, #fff3 50%, #0001 50%, transparent) var(--color-pop-bgcontrast);
+			color: #fff;
 		}
 	}
 }
@@ -221,59 +221,6 @@ footer {
 	}
 }
 
-@media screen and (width <= 700px) {
-	body:has(nav#toc) {
-		display: flex;
-	}
-	nav#topnav {
-		justify-content: center;
-		&>a:any-link:first-child, & ul {
-			flex: 1 1 350px;
-		}
-	}
-	nav#toc {
-		position: static;
-		padding: 0 3ch;
-		& details summary {
-			&::after {
-				content: 'Show ▶';
-				position: absolute;
-				right: 0.5ch;
-				bottom: 1.3em;
-				padding: 0 1ch;
-				color: #fff;
-				border: 1px solid color-mix(in oklch, var(--color-primary), #000 10%);
-				outline: 1px solid #777a;
-				background: linear-gradient(to bottom in oklch, #fff2, #fff3 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat), #000 50%);
-				&:last-character {
-					font-size: 0.8em;
-				}
-			}
-			[open] &::after {
-				content: 'Hide ▲';
-			}
-		}
-		& ol {
-			margin-bottom: 0;
-		}
-		& li:has(.toplink) {
-			display: none;
-		}
-		& h2::after{
-			background: linear-gradient(to right, var(--color-fg), transparent);
-		}
-	}
-	h1 {
-		font-size: 3em !important;
-	}
-	footer {
-		font-size: 14px !important;
-		& pre {
-			font-size: 14px;
-		}
-	}
-}
-
 a:any-link {
 	color: inherit;
 	text-decoration: underline;
@@ -364,13 +311,6 @@ blockquote {
 	text-align: right;
 }
 
-pre {
-	padding: 1ch;
-	overflow-x: auto;
-	max-width: fit-content;
-	border: 1px solid var(--color-primary);
-}
-
 ol {
 	padding-left: 3ch;
 	& li {
@@ -455,15 +395,23 @@ ul {
 }
 
 h2 + p, h3 + p {
-	margin-top: 0;
+	margin-top: 0.5em;
+}
+
+pre {
+	padding: 0 1em;
+	overflow-x: auto;
+	max-width: fit-content;
+	border: 1px solid var(--color-primary);
 }
 
 .z-code {
 	counter-reset: line;
-	padding-top: 0;
-	padding-bottom: 0;
-	padding-left: 0.5ch;
-	text-wrap: wrap;
+	box-shadow: 2px 2px 0.5em inset #0003;
+	//border: none;
+	@container & (width > 300px) & {
+		margin-left: -3ch;
+	}
 	&>code>.z-text:not(:only-child):before, &>code>.z-source:not(:only-child):before{
 		counter-increment: line;
 		content: counter(line, decimal-leading-zero) "";
@@ -472,6 +420,116 @@ h2 + p, h3 + p {
 		border-right: 1px solid;
 		padding-right: calc(0.5ch - 1px);
 		margin-right: 0.5ch;
+	}
+}
+
+@media screen and (width <= 700px) {
+	body:has(nav#toc) {
+		display: flex;
+	}
+	nav#topnav {
+		justify-content: center;
+		&>a:any-link:first-child, & ul {
+			flex: 1 1 350px;
+		}
+	}
+	nav#toc {
+		position: static;
+		padding: 0 3ch;
+		& details summary {
+			&::after {
+				content: 'Show ▶';
+				position: absolute;
+				right: 0.5ch;
+				bottom: 1.3em;
+				padding: 0 1ch;
+				color: #fff;
+				border: 1px solid color-mix(in oklch, var(--color-primary), #000 10%);
+				outline: 1px solid #777a;
+				background: linear-gradient(to bottom in oklch, #fff2, #fff3 50%, #0002 50%, transparent) color-mix(in oklch, var(--color-primary-sat), #000 50%);
+				&:last-character {
+					font-size: 0.8em;
+				}
+			}
+			[open] &::after {
+				content: 'Hide ▲';
+			}
+		}
+		& ol {
+			margin-bottom: 0;
+		}
+		& li:has(.toplink) {
+			display: none;
+		}
+		& h2::after{
+			background: linear-gradient(to right, var(--color-fg), transparent);
+		}
+	}
+	h1 {
+		font-size: 3em !important;
+	}
+	footer {
+		font-size: 14px !important;
+		& pre {
+			font-size: 14px;
+		}
+	}
+}
+
+@media screen and (width > 1800px) {
+	body {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: minmax(260px,1fr) 6fr;
+		grid-template-areas: "header main" "footer footer";
+		&:has(nav#toc) {
+			background: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%);
+			display: grid;
+			grid-template-columns: minmax(400px,1fr) 5fr;
+			grid-template-rows: auto 1fr auto;
+			grid-template-areas: "header main" "sidebar main" "footer footer";
+			header {
+				position: static;
+				background: none;
+			}
+			nav#topnav {
+				ul {
+					flex-direction: row;
+				}
+			}
+		}
+		& nav#toc {
+			border-right: 1px solid var(--color-primary);
+			min-height: 100vh;
+			color: #fff;
+			& h2::after {
+				background: linear-gradient(to right, var(--color-pop), transparent);
+			}
+		}
+		section.content {
+			background: var(--color-bg);
+			background: var(--bg);
+		}
+	}
+	header {
+		border-right: 1px solid var(--color-primary);
+		display: block;
+		max-height: 100vh;
+		position: sticky;
+		top: 0;
+		font-size: clamp(1em, 1vmax, 2em)
+	}
+	nav#topnav {
+		flex-direction: column;
+		ul {
+			flex: 1 1;
+			padding: 1px;
+			flex-direction: column;
+		}
+		&>a:any-link:first-child {
+			flex: 1 0;
+			margin: 1px;
+		}
 	}
 }
 
