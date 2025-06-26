@@ -5,7 +5,7 @@
 :root {
 	--color-fg: #000;
 	--color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
-	--bg: linear-gradient(to right, oklch(from var(--color-primary) .97 calc(c * .2) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px);
+	--bg: linear-gradient(to right, oklch(from var(--color-primary) .97 calc(c * .33) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px);
 	--color-primary: #f30; /*#fa7;*/
 	--color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
 	--color-h1: color-mix(in oklch, var(--color-primary) 60%, var(--color-fg));
@@ -19,8 +19,6 @@
 	--typeface-display: "Instrument Serif", sans-serif;
 	--typeface-mono: "Atkinson Hyperlegible Mono", monospace;
 	box-sizing: border-box;
-	
-	--screen-narrow: screen and (width < 700px)
 	
 	@media (prefers-color-scheme: dark) {
 		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
