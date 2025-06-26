@@ -356,11 +356,11 @@ blockquote {
 	max-width: var(--text-width);
 }
 
-p.author {
+.article-signoff {
 	text-align: right;
 }
 
-.article-signoff {
+.quote-signoff {
 	text-align: right;
 }
 

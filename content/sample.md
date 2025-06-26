@@ -96,7 +96,7 @@ Sometimes, you want a blockquote that doesn't quote anyone.
 
 But more often, you'll want to attribute the quote to an author (or even *--Anonymous*). Here's what that would look like, with a longer quote.
 
-{% blockquote(author="Warren Buffet") %}
+{% blockquote(author="Warren Buffet",date="2025-06-23") %}
 Freak the fuck out and panic sell everything right now.
 
 It's fucking over.
