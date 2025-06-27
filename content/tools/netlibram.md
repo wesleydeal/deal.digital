@@ -23,8 +23,8 @@ document.getElementById('effect'  ).innerHTML=nl[1];
 <p class="meta">Script originally published at sdx1.net on 2018-05-29. Contents from Orrex. Copyright status unknown.
 <a href="javascript:setelements()" style="text-decoration: none">
     <div style="max-width: fit-content; border: 2px solid #c33000; border-color: var(--color-pop); margin: 20px 0; padding: 40px 40px 60px">
-        <p style="margin-top: 0; margin-bottom: 10px; color: #ff4a00; color: var(--color-pop); font-size: 1.8em; font-weight: 700" id="effectID">
-        <p style="margin: 0; font-size: 2em; line-height: 1.2" id="effect">Click to roll
+        <p style="margin-top: 0; margin-bottom: 10px; color: #ff4a00; color: var(--color-pop) !important; font-size: 1.8em; font-weight: 700" id="effectID">
+        <p style="margin: 0; font-size: 2em; line-height: 1.2; color: initial !important" id="effect">Click to roll
     </div>
 </a>
 
@@ -95,4 +95,3 @@ document.getElementById('effect'  ).innerHTML=nl[1];
 
 <h3>This list sucks even worse than the last one! Who do I bitch to!</h3><p>I received quite a bit of email feedback about the list v1.20, and I’m grateful to everyone who took the time to contact me. One of the most common criticisms dealt with the inclusion of technologies that, to some people, simply seemed out of place. In this list, I’ve reduced the incidence of anachronistic objects and Bursts in the hope of diminishing that error.</p.
 <p>Comments and critiques are still welcome, of course. Send them to orrex@excite.com. I can’t guarantee that I’ll reply, but if there’s something you really need to get off your chest, feel free to drop me a line.</p>
-
