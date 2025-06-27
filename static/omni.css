@@ -295,12 +295,13 @@ a:any-link {
 		--c: var(--color-h1);
 		--c: color-mix(in oklch, transparent 20%, color-mix(in oklch, var(--color-fg), var(--color-primary-sat) 80%));
 		--c: var(--color-pop);
+		--c: var(--color-pop-bgcontrast);
 		background: var(--c);
 		color: var(--color-bg);
-		box-shadow: 0 0 0 2px var(--c);
-		text-decoration-color: var(--color-bg);
+		box-shadow: 0 0 0 3px var(--c);
+		text-decoration: none;
 		text-shadow: 0 0 2px var(--color-fg);
-		border-radius: 2px;
+		border-radius: 1px;
 	}
 	&:active {
 		--c: var(--color-pop-bgcontrast);
@@ -327,10 +328,11 @@ h2 {
 		position: absolute;
 		width: 100%;
 		height: 0.08em;
-		left: 0;
-		bottom: -2px;
+		right: 0;
+		bottom: -3px;
 		background: linear-gradient(to right, color-mix(in oklch, var(--color-pop) 50%, var(--color-fg)), var(--color-bg));
 		background: linear-gradient(to right in oklab, var(--color-pop-bgcontrast), oklch(from var(--color-bg) l c h / 50%));
+		background: linear-gradient(to right in oklab, var(--color-h1) -100%, oklch(from var(--color-bg) l c h / 50%));
 	}
 }
 
@@ -380,10 +382,11 @@ blockquote {
 }
 
 ol {
-	padding-left: 3ch;
+	padding-left: 1.85em;
 	& li {
-		padding-left: 0.5ch;
+		padding-left: 0.15em;
 		&::marker {
+		    color: var(--color-h1);
 			font-weight: 400;
 			margin: .2em 0;
 		}
@@ -398,9 +401,9 @@ ol {
 }
 
 ul {
-	padding-left: 3.25ch;
+	padding-left: 1.65em;
 	& li {
-		padding-left: 0.25ch;
+		padding-left: 0.3em;
 		margin: .2em 0;
 		&::marker {
 		    color: var(--color-h1);
@@ -614,11 +617,17 @@ table {
 			border-right: 1px solid var(--color-primary);
 			min-height: 100vh;
 			color: #fff;
+			& ::marker {
+			    color: #fff;
+			}
 			& h2::after {
 				background: linear-gradient(to right, #fff, transparent);
 			}
 			& details summary::after {
 				margin-left: 0;
+			}
+			& a:any-link {
+			    text-decoration-color: var(--color-pop);
 			}
 		}
 		section.content {
