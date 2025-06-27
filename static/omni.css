@@ -527,6 +527,7 @@ table {
         border: var(--button-border);
         padding: 0.3em 0.75em;
         text-decoration: none;
+        font-weight: 350;
         &:hover, &:focus {
             color: #fff;
             background: var(--button-highlight-overlay), oklch(from var(--color-primary) 0.55 c h);
