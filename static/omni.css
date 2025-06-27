@@ -517,12 +517,12 @@ table {
 	body {
 		display: grid;
 		grid-template-rows: auto;
-		grid-template-columns: minmax(250px,1fr) 6fr;
+		grid-template-columns: minmax(max-content,1fr) minmax(1000px, 9fr);
 		grid-template-areas: "header main" "footer footer";
 		&:has(nav#toc), &:has(nav#toc details[open]) {
 			background: var(--header-bg);
 			display: grid;
-			grid-template-columns: minmax(400px,1fr) minmax(1000px,5fr);
+			grid-template-columns: minmax(350px,1fr) minmax(1000px,9fr);
 			grid-template-rows: auto 1fr auto;
 			grid-template-areas: "header main" "sidebar main" "footer footer";
 			header {
@@ -563,7 +563,6 @@ table {
 		max-height: 100vh;
 		position: sticky;
 		top: 0;
-		font-size: clamp(1em, 1vmax, 2em)
 	}
 	nav#topnav {
 		flex-direction: column;
