@@ -34,9 +34,10 @@
 	--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) .97 calc(c * .25) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px max(60vw, 1400px), oklch(from var(--color-primary) .97 calc(c * .25) h) max(100vw, 1500px));
 	--color-primary: #f30; /*#fa7;*/
 	--color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
+	--color-link: oklch(from var(--color-primary) clamp(0.33, l, 0.77) max(c, 0.1) h);
 	--color-h1: oklch(from var(--color-primary) min(.45, l) min(.13, c) h);
 	--color-tinted-shadow: oklch(from var(--color-primary) 0.2 0.2 h / 50%);
-	--color-pop: oklch(from var(--color-primary) max(.8, l) max(0.09, calc(c + .05)) calc(h - 180));
+	--color-pop: oklch(from var(--color-primary) clamp(.77, l, .85) clamp(0.11, calc(c + .05), .27) calc(h - 180));
 	--color-pop-bgcontrast: oklch(from var(--color-pop) 0.4 c h);
 	--header-bg: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%) fixed;
 	--button-shadow: inset 1px 1px 0 color-mix(in oklch, var(--color-primary) 50%, #ffff), inset -1px -1px 0 color-mix(in oklch, var(--color-h1) 40%, #ffff);
@@ -284,11 +285,12 @@ footer {
 
 a:any-link {
 	color: inherit;
+	font-weight: 450;
 	text-decoration: underline;
-	text-decoration-color: var(--color-primary);
+	text-decoration-color: var(--color-link);
 	text-underline-offset: 6%;
 	transition: background 50ms ease-out, color 50ms ease-out, box-shadow 50ms ease-out, text-shadow 50ms ease-out, opacity 50ms ease-out, text-decoration 50ms ease-out, transform 50ms ease-out;
-	text-decoration-thickness: 0.08em;
+	text-decoration-thickness: 0.09em;
 	&:hover, &:active, &:focus {
 		--c: var(--color-h1);
 		--c: color-mix(in oklch, transparent 20%, color-mix(in oklch, var(--color-fg), var(--color-primary-sat) 80%));
