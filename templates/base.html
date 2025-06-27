@@ -1,28 +1,21 @@
 {% import "macros.html" as macros %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"{% if page.extra.color %} style="--color-primary: {{ page.extra.color }}"{% endif %}>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title -%}
 <title>{% if page.extra.shorttitle %}{{ page.extra.shorttitle }} - {% elif page.title %}{{ page.title }} - {% endif %}Wesley Deal</title>
-{% if config.extra.stylesheet %}
-<link rel="stylesheet" href="/{{ config.extra.stylesheet }}.css">
-{% else %}
-<link rel="stylesheet" href="/style.css">
-{% endif %}
-{% if page.extra.color %}
-<style>
-	:root {--color-primary: {{ page.extra.color }}}
-</style>
-{% endif %}
+{% endblock title -%}
+<link rel="stylesheet" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css">
 <body{% if page.slug %} id="{{ page.slug }}"{% elif not page.title %} id="index"{% endif %}>
 <header>
 	<nav id="topnav">
-		{% block homelink %}
+		{% block homelink -%}
 		<a href="/">Wesley Deal</a>
-		{% endblock homelink %}
+		{% endblock homelink -%}
 		<ul>
-			<li><a href="/tools">🛠️ Tools </a>
-			<li><a href="/blog">✍🏻 Blog </a>
+			<li><a href="/tools">🛠️ Tools</a>
+			<li><a href="/blog">✍🏻 Blog</a>
 			<li><a href="/now">⏳ Now</a>
 			<li><a href="/links">🔗 Links</a>
 			<li><a href="/uses">⌨️ Uses</a>
@@ -31,57 +24,49 @@
 			<li><a href="/resume">📄 Resume</a>
 		</ul>
 	</nav>
+	{% if (page and not page.extra.nobreadcrumbs) -%}
 	<nav id="breadcrumbs">
-		{% block breadcrumb %}
-		{% set current = section | default(value=page) %}
-		{% for ancestor in current.ancestors %}
-		{% if loop.first %}
-		{% continue %}
-		{% endif %}
+		{% block breadcrumb -%}
+		{% set current = section | default(value=page) -%}
+		{% for ancestor in current.ancestors -%}
+		{% if loop.first -%}
+		{% continue -%}
+		{% endif -%}
 		<span>/</span>
-		{% set section = get_section(path=ancestor) %}
+		{% set section = get_section(path=ancestor) -%}
 		<a href="{{ section.permalink | safe }}">{{ section.title }}</a>
-		{% endfor %}
+		{% endfor -%}
 		<span>/</span>
 		<a href="{{ current.permalink | safe }}">●</a>
-		{% endblock breadcrumb %}
+		{% endblock breadcrumb -%}
 	</nav>
+	{% endif -%}
 </header>
-{% if page.extra.toc and page.toc%}
+{% if page.extra.toc and page.toc %}
 <nav id="toc">
 	<details open>
 	<summary><h2>Contents</h2></summary>
-	<ol>
-		{% for h1 in page.toc %}
+	<ol>{% for h1 in page.toc %}
 		<li>
-		<a href="{{ h1.permalink | safe }}">{{ h1.title }}</a>
-			{% if h1.children %}
-			<ol>
-				{% for h2 in h1.children %}
-				<li>
-					<a href="{{ h2.permalink | safe }}">{{ h2.title }}</a>
-				</li>
-				{% endfor %}
-			</ol>
-			{% endif %}
-		</li>
-	    {% endfor %}
-		<li>
-			<a href="#" class="toplink">↑ Top of page</a>
-		</li>
+			<a href="{{ h1.permalink | safe }}">{{ h1.title }}</a>{% if h1.children %}
+			<ol>{% for h2 in h1.children %}<li><a href="{{ h2.permalink | safe }}">{{ h2.title }}</a>
+			{% endfor %}</ol>{% endif %}
+		</li>{% endfor %}
+		<li><a href="#" class="toplink">↑ Top of page</a>
 	</ol>
 	</details>
 </nav>
 {% endif %}
 <section class="content">
-	{% block content %} {% endblock %}
+	{% block content %}
+	{% endblock %}
 </section>
 <footer>
 	<p>No rights reserved. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>. Provided as-is, no warranty, etc.
 	<p>Built {{ now(utc=true) | date(format="%Y-%m-%d %H:%M:%S UTC") }} with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages.
 	<p>This page uses Inter Variable with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in Inconsolata.
 	<br><br>
-<pre>
+	<pre>
                       __,,,,_
        _ __..-;''`--/'/ /.',-`-.
    (`/' ` |  \ \ \\ / / / / .-'/`,_
@@ -93,8 +78,7 @@
            __/   /_..-' `  ),'  //
        fL ((__.-'((___..-'' \__.'
 
-</pre>
-
+	</pre>
 </footer>
 </body>
 </html>

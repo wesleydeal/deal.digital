@@ -1,12 +1,11 @@
-+++
-title = "404 Not Found"
-[extra]
-color = "#35063e"
-+++
-
-My, look at the time.
-
-```
+{% extends "base.html" %}
+{% block content %}
+<style>:root{--color-primary: #ff0030}</style>
+<h1 class="title">
+	404 Not Found
+</h1>
+<p>My, look at the time.
+<pre>
         ,--.-----.--.
         |--|-----|--|
         |--|     |--|
@@ -29,6 +28,6 @@ My, look at the time.
         |--|     |--|
         |--|-----|--|
         `--'-----`--'
-```
-
-I hope I didn't break a permalink. They're supposed to be, well, permanent.
+</pre>
+<p>I hope I didn't break a permalink. They're supposed to be, well, permanent.
+{% endblock content %}
