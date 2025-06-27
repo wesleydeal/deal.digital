@@ -112,5 +112,5 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 * [BOFH API](https://bombeck.io/projects/bastard-operator-from-hell-generator) and the [excuse generator](https://it-excuse.bombeck.io/) using it
 * [Free for Developers](https://free-for.dev/) - a list of tools & platforms with a free tier
 
-## Meta Lists
+## Lists of Lists
 * [awesome-* on GitHub](https://github.com/sindresorhus/awesome#readme)
