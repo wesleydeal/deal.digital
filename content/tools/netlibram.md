@@ -21,7 +21,7 @@ document.getElementById('effect'  ).innerHTML=nl[1];
 }
 </script>
 <p class="meta">Script originally published at sdx1.net on 2018-05-29. Contents from Orrex. Copyright status unknown.
-<a href="javascript:setelements()" style="text-decoration: none">
+<a href="javascript:setelements()" style="text-decoration: none; color: initial !important; box-shadow: none !important;">
     <div style="max-width: fit-content; border: 2px solid #c33000; border-color: var(--color-pop); margin: 20px 0; padding: 40px 40px 60px">
         <p style="margin-top: 0; margin-bottom: 10px; color: #ff4a00; color: var(--color-pop) !important; font-size: 1.8em; font-weight: 700" id="effectID">
         <p style="margin: 0; font-size: 2em; line-height: 1.2; color: initial !important" id="effect">Click to roll
