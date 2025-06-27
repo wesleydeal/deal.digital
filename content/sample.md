@@ -7,6 +7,8 @@ toc = true
 This page is here to demonstrate all of the common elements used on this website. This is primarily intended for
 my personal use during stylesheet development. Oh, and by the way, [here is a link](#) that goes nowhere.
 
+This paragraph contains ***bold, *bold italic (some of which is [linked](#)),*** plain italic,* and ~strikethrough~ text.
+
 ## Colors
 Set the **primary color** for this page using this or the field in the table below: <input id="primary-color-picker" type="color">
 
@@ -84,7 +86,7 @@ line after the backticks. For example, here's some HTML.
 <title>Hello, world!</title>
 <main>
 	<h1>Hello, world.</h1>
-	<p>This is a complete sample document within my sample document. A meta sample, so to speak. And it has a rather wide line of text.
+	<p>This is a complete sample HTML document within my sample document. A meta sample, so to speak. And it has a rather ~w~i~d~e~ line of text. A line of text that might compress the size of the left sidebar if you're on a wide enough screen. Actually, that may be a bit of a bug. The line of text in question, the one you're currently reading, is so wide that even on a 4k monitor set to 96 DPI, you should still have to scroll just a little bit in order to see the whole thing.
 </main>
 ```
 
