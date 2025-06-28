@@ -17,8 +17,16 @@ After finishing a series of additions to my [resume](/resume) and the embedded a
 
 ## Fitness
 
-Still trying to build a bit more muscle and drop a few pounds. Well, ideally I'd focus on the latter first followed by the former, but I keep getting distracted by my own gluttony. From my peak of 280 I'm now hovering in the low 170s, but I believe 155lb is a good target to reach before I start a slow bulk.
+At the moment, I'm around 170lb at a bit over 17% body fat. I'd like to be around 155lb, or 12% (smart scale reported) body fat, whichever I reach last.
+I lift weights 4-7 days a week and target ≥10,000 steps per day. I run regularly, typically 5k in distance once or twice a week (but have lately been
+out of commission due to heel blisters from new shoes).
 
-# Then
+## Working on confidence
 
-View the history of this page [on GitHub](https://github.com/wesleydeal/deal.digital/commits/master/content/now.md) or with git if you'd like to see what I *was* doing.
+It's become clear that a significant proportion of the problems in my life exist in my head as stress or lack of self confidence. So I've set myself a
+fairly general goal for the time being: become the best, most confident possible version of myself, and stop piling on new musts, what-ifs, and should-haves.
+I can only make decisions at the margin, and what I decide will maximize my livelihood going forward. I will be decided and imperturbable.
+
+# Before now
+
+View the history of this page [on GitHub](https://github.com/wesleydeal/deal.digital/commits/master/content/now.md) if you'd like to see what I *was* doing.
