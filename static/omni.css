@@ -52,7 +52,7 @@
 		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
 		--color-fg: #fff;
 		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
-		--color-h1: oklch(from var(--color-primary) max(.73, l) max(.08, calc(c + l)) h);
+		--color-h1: oklch(from var(--color-primary) max(.73, l) max(.08, calc(c * 2)) h);
 		--color-h2: oklch(from var(--color-primary) max(.95, l) min(c, .15) h);
 		--color-pop-bgcontrast: var(--color-pop);
 		--color-tinted-shadow: oklch(from var(--color-primary) 0.8 0.15 h / 50%);
