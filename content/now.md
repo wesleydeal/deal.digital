@@ -1,7 +1,7 @@
 +++
 date = 2024-04-26
 updated = 2025-06-24
-title = "What I'm doing now"
+title = "What I’m doing now"
 draft = false
 +++
 

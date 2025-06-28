@@ -30,12 +30,15 @@
 }
 
 :root {
+    --color-fg-hc: #000;
 	--color-fg: #000;
+	--color-bg-hc: #fff;
 	--color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
 	--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) .97 calc(c * .25) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px max(60vw, 1400px), oklch(from var(--color-primary) .97 calc(c * .25) h) max(100vw, 1500px));
 	--color-primary: #f30; /*#fa7;*/
 	--color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
-	--color-link: oklch(from var(--color-primary) clamp(0.33, l, 0.77) max(c, 0.1) h);
+	--color-link: oklch(from var(--color-primary) 0.2 max(c, 0.1) h);
+	--color-link-underline: oklch(from var(--color-primary) clamp(0.33, l, 0.77) max(c, 0.1) h);
 	--color-h1: oklch(from var(--color-primary) min(.45, l) min(.13, c) h);
 	--color-h2: oklch(from var(--color-primary) min(.4, l) min(.13, c) h);
 	--color-tinted-shadow: oklch(from var(--color-primary) 0.2 0.2 h / 50%);
@@ -47,13 +50,17 @@
 	--button-border: 1px solid oklch(from var(--color-pop) 0.2 0.1 h);
 	--button-overlay: linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent);
 	--button-highlight-overlay: linear-gradient(to right in oklch, #0000 -100%, #fff3, #0000 200%), linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent);
+	--weight-h2: 600;
 
 	@media (prefers-color-scheme: dark) {
 		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
 		--color-fg: #fff;
 		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
-		--color-h1: oklch(from var(--color-primary) max(.73, l) max(.08, calc(c * 2)) h);
-		--color-h2: oklch(from var(--color-primary) 0.8 min(c, .15) h);
+		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.15, c) h);
+		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
+		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
+		//--color-link: #fff;
+		--weight-h2: 400;
 		--color-pop-bgcontrast: var(--color-pop);
 		--color-tinted-shadow: oklch(from var(--color-primary) 0.8 0.15 h / 50%);
 	}
@@ -125,7 +132,8 @@ nav#topnav {
 			"XTRA" 530, /* counter width */
 			"YTDE" -180, /* descender depth */
 			"GRAD" 150; /* additional weight without spacing */
-		background: var(--button-overlay), linear-gradient(to right, var(--color-pop) 0.15em, #0000 0), color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
+		background: var(--button-overlay), linear-gradient(to right, var(--color-pop) 0.2em, #0000 0), color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
+		background: linear-gradient(180deg in oklch, #fff1, #fff2 50%, #0002 0, #0000), linear-gradient(90deg in oklch, #fff -15%, var(--color-pop) 0.25em, #0001 0.26em, #0000 0.36em), color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
 	}
 	& ul {
 		overflow: hidden;
@@ -146,6 +154,7 @@ nav#topnav {
 		padding: 0;
 	}
 	& a:any-link {
+	    color: #fff;
 		display: flex;
 		place-items: center;
 		place-content: center;
@@ -298,7 +307,8 @@ a:any-link {
 	color: inherit;
 	font-weight: 450;
 	text-decoration: underline;
-	text-decoration-color: var(--color-link);
+	color: var(--color-link);
+	text-decoration-color: var(--color-link-underline);
 	text-underline-offset: 6%;
 	transition: all 200ms cubic-bezier(0.23, 1, 0.320, 1);
 	text-decoration-thickness: 0.09em;
@@ -308,7 +318,7 @@ a:any-link {
 		--c: var(--color-pop);
 		--c: var(--color-pop-bgcontrast);
 		background: var(--c);
-		color: var(--color-bg);
+		color: var(--color-bg-hc);
 		box-shadow: 0 0 0 3px var(--c);
 		text-decoration: none;
 		text-shadow: 0 0 2px var(--color-fg);
@@ -336,7 +346,7 @@ h1 {
 
 h2 {
 	color: var(--color-h2);
-	font: 600 1.5em/1.2 var(--typeface-body);
+	font: var(--weight-h2) 1.5em/1.2 var(--typeface-body);
 	margin: 1em 0 0.25em;
 	position: relative;
 	max-width: var(--text-width);
@@ -436,6 +446,10 @@ blockquote {
 
 strong, b{
 	font-weight: 600;
+}
+
+i, em {
+    font-style: oblique 10deg;
 }
 
 ol {
@@ -605,7 +619,7 @@ table {
             text-shadow: 1px 1px 2px var(--color-tinted-shadow);
         }
         & span:not(.emoji) {
-            text-decoration: 0.08em underline var(--color-link) !important;
+            text-decoration: 0.08em underline var(--color-link-underline) !important;
             text-underline-offset: 0.07em;
             text-shadow: 1px 1px 2px oklch(from var(--color-tinted-shadow) l c h / 10%);
         }
