@@ -2,11 +2,12 @@
 @import url("/syntax-light.css") print, (prefers-color-scheme: light);
 
 @font-face {
-  font-family: 'Inter Variable';
-  font-style: normal;
+  font-family: 'Roboto Flex';
+  font-style: oblique 0deg 10deg;
   font-display: swap;
-  font-weight: 100 900;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2) format('woff2-variations');
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/roboto-flex:vf@latest/latin-full-normal.woff2) format('woff2-variations');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
@@ -49,15 +50,17 @@
 	@media (prefers-color-scheme: dark) {
 		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
 		--color-fg: #fff;
-		--bg: repeating-linear-gradient(to bottom right in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.5em), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
+		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
 		--color-h1: color-mix(in oklch, var(--color-primary) 40%, var(--color-fg));
 		--color-h1: oklch(from var(--color-primary) max(.71, l) max(.13, c) h);
 		--color-pop-bgcontrast: var(--color-pop);
 		--color-tinted-shadow: oklch(from var(--color-primary) 0.8 0.15 h / 50%);
 	}
 
-	--text-width: 60rem;
-	--typeface-body: "Inter Variable", sans-serif;
+	--text-width: 55rem;
+	--text-width: 800px;
+	--text-width: 50rem;
+	--typeface-body: "Roboto Flex", sans-serif;
 	--typeface-display: "Instrument Serif", serif;
 	--typeface-mono: "Inconsolata Variable", monospace;
 
@@ -77,7 +80,9 @@ body {
 
 	padding: 0;
 	margin: 0;
-	font: 350 1em/1.6 var(--typeface-body);
+	font: 325 1em/1.6 var(--typeface-body);
+	font-stretch: 110%;
+	font-optical-sizing: auto;
 
 	display: flex;
 	flex-direction: column;
@@ -114,8 +119,14 @@ nav#topnav {
 	&>a:any-link:first-child {
 		flex: 0 0;
 		padding: 0.22em 0.35em 0.22em 0.45em;
-		font: 600 2em/1 var(--typeface-body);
-		letter-spacing: -0.06ch;
+		font: 500 2em/1 var(--typeface-body);
+		font-stretch: 110%;
+		letter-spacing: -0.02em;
+		font-variation-settings:
+			"YTLC" 570, /* lowercase height */
+			"XTRA" 530, /* counter width */
+			"YTDE" -180, /* descender depth */
+			"GRAD" 150; /* additional weight without spacing */
 		background: var(--button-overlay), linear-gradient(to right, var(--color-pop) 0.15em, #0000 0), color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
 	}
 	& ul {
@@ -148,6 +159,8 @@ nav#topnav {
 		padding: 0.3em 1ch 0.3em 0.8ch;
 		text-decoration: none;
 		text-shadow: 1px 1px 0 #000;
+		font-stretch: 125%;
+		font-variation-settings: "YTLC" 560; /* lowercase height */
 		&:hover, &:focus {
 			background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
 			backdrop-filter: saturate(1.2);
@@ -319,10 +332,12 @@ h1 {
 }
 
 h2 {
-	font: 400 1.5em/1.2 var(--typeface-body);
+	font: 600 1.5em/1.2 var(--typeface-body);
 	margin: 1em 0 0.25em;
 	position: relative;
 	max-width: var(--text-width);
+	font-stretch: 135%;
+	font-variation-settings: "YTLC" 555;
 	&::after{
 	    content: '';
 		position: absolute;
@@ -337,8 +352,9 @@ h2 {
 }
 
 h3 {
-	font: 500 1.2em/1.2 var(--typeface-body);
+	font: 300 1.2em/1.2 var(--typeface-body);
 	text-transform: uppercase;
+	font-stretch: 150%;
 	margin: 1em 0 0.4em;
 }
 
@@ -348,7 +364,7 @@ code, pre {
 
 .zola-anchor:any-link {
 	position: absolute;
-	left: -0.7em;
+	left: -0.9em;
 	opacity: 0;
 	color: var(--color-primary);
 	text-decoration: none;
@@ -537,7 +553,7 @@ table {
         border: 1px solid oklch(from var(--color-primary) l c h / 35%);
         padding: clamp(0.3em, 1vw, 0.5em) 0.75em;
         text-decoration: none !important;
-        font-weight: 300;
+        font-weight: 400;
         border-radius: 5px;
         & .emoji {
             font-size: 1.2em;
@@ -711,7 +727,6 @@ table {
 		&:after{
 			content: 'deal.digital';
 			font-size: 1rem;
-			letter-spacing: normal;
 		}
 	}
 	footer {

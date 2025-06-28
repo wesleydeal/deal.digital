@@ -9,7 +9,7 @@ This is a [/uses](https://uses.tech/) page
 
 ## Hardware
 
-* 💻 ThinkPad Z13 (AMD 6850U, 16GB RAM, Windows 11 x [Fedora 42 KDE](https://fedoraproject.org/spins/kde/))
+* 💻 ThinkPad Z13 (AMD 6850U, 16GB RAM, Windows 11 x [Fedora 42 KDE](https://fedoraproject.org/spins/kde/))  
   *Note: The soldered-in Qualcomm wireless chip has been a bit problematic in Linux. Buyer beware.*
 * 💽 A [51nb X210](https://blog.mattgauger.com/2022/08/01/the-51nb-x210/) running [Proxmox](https://www.proxmox.com/en/) as a small homelab server with a built-in UPS :^)
 * 📱 a Motorola edge 2024
