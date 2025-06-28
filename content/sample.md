@@ -104,9 +104,24 @@ Freak the fuck out and panic sell everything right now.
 It's fucking over.
 {% end %}
 
-# Here is a long level 1 heading, just as a demonstration of how the text wraps
-Below this, I'm going to put in some lower level headings. I don't generally use levels below an &lt;h3&gt;
-## Heading level 2
-### Heading level 3
-#### Heading level 4
-##### Heading level 5
+# Domain *Eukaryota*
+Organisms whose cells possess a membrane-bound nucleus.
+
+## Kingdom *Animalia*
+Multicellular eukaryotes which generally consume organic material, breathe oxygen, move, and reproduce sexually.
+
+### Phylum *Chordata*
+Animals possessing a notochord at some stage in development.
+
+#### Class *Mammalia*
+Warm-blooded vertebrates with hair/fur and mammary glands.
+
+##### Order *Carnivora*
+Meat-eating mammals with specialized teeth and claws.
+
+###### Family *Felidae*
+The biological family of cats, known for retractable claws and keen predation skills.
+
+**Snow Leopard**, *Panthera uncia*  
+The snow leopard — a solitary, mountain-dwelling big cat native to Central and South Asia.
+

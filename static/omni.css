@@ -37,6 +37,7 @@
 	--color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
 	--color-link: oklch(from var(--color-primary) clamp(0.33, l, 0.77) max(c, 0.1) h);
 	--color-h1: oklch(from var(--color-primary) min(.45, l) min(.13, c) h);
+	--color-h2: oklch(from var(--color-primary) min(.4, l) min(.13, c) h);
 	--color-tinted-shadow: oklch(from var(--color-primary) 0.2 0.2 h / 50%);
 	--color-pop: oklch(from var(--color-primary) clamp(.77, l, .85) clamp(0.11, calc(c + .05), .27) calc(h - 180));
 	--color-pop-bgcontrast: oklch(from var(--color-pop) 0.4 c h);
@@ -51,22 +52,19 @@
 		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
 		--color-fg: #fff;
 		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
-		--color-h1: color-mix(in oklch, var(--color-primary) 40%, var(--color-fg));
-		--color-h1: oklch(from var(--color-primary) max(.71, l) max(.13, c) h);
+		--color-h1: oklch(from var(--color-primary) max(.73, l) max(.08, calc(c + l)) h);
+		--color-h2: oklch(from var(--color-primary) max(.95, l) min(c, .15) h);
 		--color-pop-bgcontrast: var(--color-pop);
 		--color-tinted-shadow: oklch(from var(--color-primary) 0.8 0.15 h / 50%);
 	}
 
-	--text-width: 55rem;
-	--text-width: 800px;
 	--text-width: 50rem;
 	--typeface-body: "Roboto Flex", sans-serif;
 	--typeface-display: "Instrument Serif", serif;
 	--typeface-mono: "Inconsolata Variable", monospace;
 
 	box-sizing: border-box;
-
-
+	background-color: var(--color-bg);
 }
 
 *, *:before, *:after{
@@ -326,12 +324,18 @@ h1 {
 	transform-origin: left;
 	font-size: clamp(3em, 5vw, 6em);
 	color: var(--color-h1);
-	max-width: 22ch;
+	max-width: 24ch;
 	margin: 0.5em 0 0.25em;
 	text-shadow: 2px 2px 0 #7773;
+	& em, & i{
+		font-style: normal;
+		text-decoration: 0.05em underline var(--color-pop-bgcontrast);
+		text-underline-offset: 0.05em;
+	}
 }
 
 h2 {
+	color: var(--color-h2);
 	font: 600 1.5em/1.2 var(--typeface-body);
 	margin: 1em 0 0.25em;
 	position: relative;
@@ -352,10 +356,43 @@ h2 {
 }
 
 h3 {
-	font: 300 1.2em/1.2 var(--typeface-body);
+	font: 350 1.2em/1.4 var(--typeface-body);
 	text-transform: uppercase;
 	font-stretch: 150%;
+	margin: 1em 0 0.3em;
+}
+
+h4 {
+	font: 300 1.2em/1.5 var(--typeface-body);
+	font-style: oblique 5deg;
 	margin: 1em 0 0.4em;
+	& em, & i {
+		font-style: oblique 10deg;
+		text-decoration: underline 1px;
+	}
+}
+
+h5 {
+	font: 700 1em/1.6 var(--typeface-body);
+	font-stretch: 150%;
+	text-transform: uppercase;
+	color: var(--color-h2);
+	margin: 1em 0 0.4em;
+	&::before {
+		content: '↪ ';
+		font-style: normal;
+	}
+}
+
+h6 {
+	font: 700 1em/1.6 var(--typeface-body);
+	font-stretch: 150%;
+	font-variation-settings: "YTLC" 555, "XTRA" 520;
+	margin: 1em 0 0.4em;
+	&::before {
+		content: '↪ ';
+		font-style: normal;
+	}
 }
 
 code, pre {
@@ -395,6 +432,10 @@ blockquote {
 
 .quote-signoff {
 	text-align: right;
+}
+
+strong, b{
+	font-weight: 600;
 }
 
 ol {
@@ -486,8 +527,12 @@ ul.blog-listing {
 
 }
 
-h2 + p, h3 + p {
+h2 + p, h3 + p, h4 + p {
 	margin-top: 0.5em;
+}
+
+h5 + p, h6 + p {
+	margin-top: 0;
 }
 
 pre {
@@ -636,14 +681,14 @@ table {
 			& ::marker {
 			    color: #fff;
 			}
+			& h2 {
+				color: #fff;
+			}
 			& h2::after {
 				background: linear-gradient(to right, #fff, transparent);
 			}
 			& details summary::after {
 				margin-left: 0;
-			}
-			& a:any-link {
-			    text-decoration-color: var(--color-pop);
 			}
 		}
 		section.content {
@@ -669,6 +714,9 @@ table {
 		&>ul a:any-link {
 			place-items: initial;
 			justify-content: start;
+			font-stretch: 150%;
+			font-variation-settings: "YTLC" 550;
+			font-weight: 350;
 		}
 		&>a:any-link:first-child {
 			flex: 1 0;
