@@ -55,6 +55,8 @@
 	@media (prefers-color-scheme: dark) {
 		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
 		--color-fg: #fff;
+		--color-fg-hc: #fff;
+		--color-bg-hc: #000;
 		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
 		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.15, c) h);
 		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
@@ -263,20 +265,32 @@ section.content {
 	}
 }
 
+@keyframes marquee-left {
+    0% {left: -10%;}
+    100% {left: calc(-10% - 16ch);}
+}
+
 footer {
 	--c: oklch(from var(--color-primary) max(l,0.85) c h);
 	--c70: color-mix(in oklch, var(--c) 70%, #0000);
 	--c10: color-mix(in oklch, var(--c) 10%, #0000);
 	grid-area: footer;
-	padding: 1em 3ch;
+	padding: 20px 3ch 60px;
 	background: repeating-linear-gradient(#0000, #000 3px, var(--c10) 4px, var(--c10) 5px, #0000 6px) #000;
-	font: 400 1.5em/1.3 var(--typeface-mono);
+	font: 400 1.5em/1 var(--typeface-mono);
 	text-shadow: 0 0 0.5em var(--c70);
 	color: var(--c);
-	padding-bottom: 100px;
 	position: relative;
 	box-shadow: 2px 2px 30px #000 inset, 2px 2px 30px #000 inset;
 	border-top: 2px solid var(--color-pop);
+	overflow-x: hidden;
+	& .sitetree {
+	    text-overflow: ellipsis;
+		text-wrap: nowrap;
+		overflow: hidden;
+		width: 100%;
+		display: block;
+	}
 	& a:any-link {
 		background: var(--c);
 		color: #000b;
@@ -288,18 +302,18 @@ footer {
 			color: inherit;
 			box-shadow: none;
 		}
+		.sitetree & {
+		    color: inherit;
+			background: none;
+			text-shadow: inherit;
+		}
 	}
 	& p, & li, & pre {
 		max-width: var(--text-width);
 		filter: drop-shadow(0 0 0.5em var(--c70));
 	}
-	& pre{
-		border: 0;
-		padding: 0;
-		margin: 0;
-		background: 0;
-		color: inherit;
-		font-size: 16px;
+	& .ascii-art{
+	    white-space: pre;
 	}
 }
 
@@ -319,6 +333,7 @@ a:any-link {
 		--c: var(--color-pop-bgcontrast);
 		background: var(--c);
 		color: var(--color-bg-hc);
+		//color: var(--color-bg);
 		box-shadow: 0 0 0 3px var(--c);
 		text-decoration: none;
 		text-shadow: 0 0 2px var(--color-fg);
@@ -657,6 +672,9 @@ table {
 		& h2::after{
 			background: linear-gradient(to right, var(--color-fg), transparent);
 		}
+	}
+	footer {
+	    font-size : 14px !important;
 	}
 }
 

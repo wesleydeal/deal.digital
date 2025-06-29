@@ -62,11 +62,59 @@
 	{% endblock %}
 </section>
 <footer>
-	<p>No rights reserved. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>. Provided as-is, no warranty, etc.
+	<p>% show system-information
+    <p>No rights reserved. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>. Provided as-is, no warranty, etc.
 	<p>Built {{ now(utc=true) | date(format="%Y-%m-%d %H:%M:%S UTC") }} with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages.
 	<p>This page uses Inter Variable with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in Inconsolata.
-	<br><br>
-	<pre>
+	<p>% tree /
+	{% block sitetree -%}
+	<p class="sitetree">
+	<a href="/">deal.digital</a>
+	{% set root = get_section(path="_index.md") -%}
+	{% set sections = root.subsections -%}
+	{% set pages = root.pages -%}
+	{% set t1 = "├─" -%}
+	{% set t2 = "│ ├─" -%}
+	{% set t1_end = "└─" -%}
+	{% set t2_end = "│ └─" -%}
+	{% for s in sections | sort -%}
+	    {% set section = get_section(path=s) -%}
+        {% set title = section.title | default(value=section.path) -%}
+        <br>{{ t1 }}<a href="{{ section.permalink }}">{{ title | safe }}</a>
+        {% if section.pages -%}
+        {% set subpages = section.pages -%}
+        {% for subpage in subpages | sort(attribute="title") -%}
+            {% if loop.last -%}
+            {% set t = t2_end -%}
+            {% else -%}
+            {% set t = t2 -%}
+            {% endif -%}
+            <br>{{ t }}<a href="{{ subpage.permalink }}">{{ subpage.extra.shorttitle | default(value=subpage.title) | safe }}</a>
+        {% endfor -%}
+        {% endif -%}
+	{% endfor -%}
+	{% for page in pages | sort(attribute="title") -%}
+	    {% set title = page.extra.shortittle | default(value=page.title) -%}
+        {% if loop.last -%}
+        {% set t = t1_end -%}
+        {% else -%}
+        {% set t = t1 -%}
+        {% endif -%}
+		<br>{{ t }}<a href="{{ page.permalink }}">{{ title }}</a>
+		{% if page.pages -%}
+		{% for subpage in page.pages -%}
+		{% if loop.last -%}
+            {% set t = t2_end -%}
+            {% else -%}
+            {% set t = t2 -%}
+            {% endif -%}
+            <br>{{ t }}<a href="{{ subpage.permalink }}">{{ subpage.shorttitle | default(value=subpage.title) }}</a>
+		{% endfor -%}
+		{% endif -%}
+	{% endfor -%}
+	{% endblock sitetree -%}
+	<p>% show :3
+	<p class="ascii-art">
                       __,,,,_
        _ __..-;''`--/'/ /.',-`-.
    (`/' ` |  \ \ \\ / / / / .-'/`,_
@@ -78,7 +126,7 @@
            __/   /_..-' `  ),'  //
        fL ((__.-'((___..-'' \__.'
 
-	</pre>
+	</p>
 </footer>
 </body>
 </html>
