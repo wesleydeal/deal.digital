@@ -3,6 +3,8 @@ date = 2024-04-26
 updated = 2025-06-24
 title = "What I’m doing now"
 draft = false
+[extra]
+color = "#d2efff"
 +++
 
 {% blockquote(author="Derek Silvers",url="https://nownownow.com/about") %}

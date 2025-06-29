@@ -8,7 +8,7 @@ raw = true
 tags = ["software", "security"]
 [extra]
 shorttitle = "Password Generator"
-color = "green"
+color = "#00ba89"
 +++
 
 <style type="text/css">
@@ -75,7 +75,7 @@ input[type=number]::-webkit-inner-spin-button {
 	flex: 1 0 200px;
 }
 button#generate {
-	font-size: 1.5em;
+	font: 350 1.5em/1.5 var(--typeface-body), sans-serif;
 	color: inherit;
 	border: 2px solid var(--color-primary);
 	border-radius: 3px;
@@ -236,7 +236,7 @@ const symbols = '`~!@#$%^&*()_+-=[]{}\\|;:\'",<.>/?';
 const separators = "-_+=";
 
 var copiedTimeout;
-	
+
 const genButton = document.getElementById("generate");
 var genButtonHeld = false;
 genButton.addEventListener('pointerdown', (e) => { genButtonHeld = true; });
@@ -320,7 +320,7 @@ function pwgen() {
 			}
 		}
 	}
-	
+
 	var resultInnerHTML = "<ul>";
 	var randChars = Array.from(secureRand(0, charSet.length-1, pwlen*count));
 	for (i=0; i<count; i++) {
@@ -329,7 +329,7 @@ function pwgen() {
 	}
 	resultInnerHTML += "</ul>"
 	document.getElementById("result").innerHTML = resultInnerHTML;
-	
+
 	for (el of document.querySelectorAll("#result li")){ // auto copy password on click
 		el.addEventListener('click', function(e) {
 			window.getSelection().removeAllRanges();
@@ -369,12 +369,12 @@ function pwgen() {
 	document.getElementById("hashtime").innerHTML = hashTimeText;
 	document.getElementById("alphabet").innerHTML = charSet.join("").replaceAll("&","&amp;").replaceAll(">","&gt;").replaceAll("<","&lt;").replaceAll("\\",'&bsol;');
 }
-	
+
 function monitorGenButton() { // generate passwords each frame
 	if (genButtonHeld) pwgen();
 	window.requestAnimationFrame(monitorGenButton);
 }
-	
+
 monitorGenButton();
 addUserEntropy(window.screen.availHeight); // init user based entropy with screen height
 addUserEntropy(window.screen.availWidth); // and width

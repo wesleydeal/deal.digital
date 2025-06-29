@@ -65,21 +65,21 @@
 	<p>% show system-information
     <p>No rights reserved. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>. Provided as-is, no warranty, etc.
 	<p>Built {{ now(utc=true) | date(format="%Y-%m-%d %H:%M:%S UTC") }} with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages.
-	<p>This page uses Inter Variable with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in Inconsolata.
-	<p>% tree /
+	<p><b>Fonts:</b> This page uses Roboto Flex with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in Inconsolata.
+	<p>% tree deal.digital
 	{% block sitetree -%}
 	<p class="sitetree">
-	<a href="/">deal.digital</a>
+	<a href="/">deal.digital/</a>
 	{% set root = get_section(path="_index.md") -%}
 	{% set sections = root.subsections -%}
 	{% set pages = root.pages -%}
-	{% set t1 = "├" -%}
+	{% set t1 = "├─" -%}
 	{% set t2 = "│ ├─" -%}
 	{% set t1_end = "└─" -%}
 	{% set t2_end = "│ └─" -%}
 	{% for s in sections | sort -%}
 	    {% set section = get_section(path=s) -%}
-        <br>{{ t1 }}<a href="{{ section.permalink }}">{{ section.path }}</a>
+        <br>{{ t1 }}<a href="{{ section.permalink }}">{{ section.path | trim_start_matches(pat="/") }}</a>
         {% if section.pages -%}
         {% set subpages = section.pages -%}
         {% for subpage in subpages | sort(attribute="path") -%}
@@ -88,7 +88,7 @@
             {% else -%}
             {% set t = t2 -%}
             {% endif -%}
-            <br>{{ t }}<a href="{{ subpage.permalink }}">{{ subpage.slug }}</a>
+            <br>{{ t }}<a href="{{ subpage.permalink }}">{{ subpage.slug ~ "/" }}</a>
         {% endfor -%}
         {% endif -%}
 	{% endfor -%}
@@ -98,7 +98,7 @@
         {% else -%}
         {% set t = t1 -%}
         {% endif -%}
-		<br>{{ t }}<a href="{{ page.permalink }}">{{ page.path }}</a>
+		<br>{{ t }}<a href="{{ page.permalink }}">{{ page.path | trim_start_matches(pat="/") }}</a>
 		{% if page.pages -%}
 		{% for subpage in page.pages -%}
 		{% if loop.last -%}
@@ -106,7 +106,7 @@
             {% else -%}
             {% set t = t2 -%}
             {% endif -%}
-            <br>{{ t }}<a href="{{ subpage.permalink }}">{{ subpage.slug }}</a>
+            <br>{{ t }}<a href="{{ subpage.permalink }}">{{ subpage.slug ~ "/" }}</a>
 		{% endfor -%}
 		{% endif -%}
 	{% endfor -%}
