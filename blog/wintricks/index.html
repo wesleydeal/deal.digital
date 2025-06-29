@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" style="--color-primary: #08a1f7">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sick Windows 11 Tricks - Wesley Deal</title>
+<link rel="stylesheet" href="/omni.css">
+<body id="wintricks">
+<header>
+	<nav id="topnav">
+		<a href="/">Wesley Deal</a>
+		<ul>
+			<li><a href="/tools">🛠️ Tools</a>
+			<li><a href="/blog">✍🏻 Blog</a>
+			<li><a href="/now">⏳ Now</a>
+			<li><a href="/links">🔗 Links</a>
+			<li><a href="/uses">⌨️ Uses</a>
+			<li><a href="https://github.com/wesleydeal">👨🏻‍💻 GitHub</a>
+			<li><a href="https://linkedin.com/in/wesley-deal">🏢 LinkedIn</a>
+			<li><a href="/resume">📄 Resume</a>
+		</ul>
+	</nav>
+	<nav id="breadcrumbs">
+		<span>/</span>
+		<a href="https://deal.digital/blog/">Blog</a>
+		<span>/</span>
+		<a href="https://deal.digital/blog/wintricks/">●</a>
+		</nav>
+	</header>
+
+<section class="content">
+	
+<h1 class="title">
+	Sick Tricks for making Windows 11 Usable
+</h1>
+<p>Inspired by <a href="http://toastytech.com/guis/indexwindows.html">Nathan Lineback</a>.</p>
+<h2 id="installation"><a class="zola-anchor" href="#installation" aria-label="Anchor link for: installation">#</a>Installation</h2>
+<p>Get an ISO (<a href="https://www.microsoft.com/software-download/windows11">consumer editions here</a>). Write it to your install media:</p>
+<ul>
+<li><strong>Current Windows users:</strong> Use <a href="https://rufus.ie/en/">Rufus</a> to write it to a flash drive, and ensure that you tell it to <em>remove requirement for an online Microsoft account</em> and <em>disable data collection</em> when prompted.</li>
+<li><strong>Advanced or Linux users:</strong> Install <a href="https://www.ventoy.net/en/index.html">Ventoy</a> to your flash drive. Copy your Windows ISO to it. <a href="https://schneegans.de/windows/unattend-generator/">Build an autounattend.xml with this tool</a> then use <a href="https://ventoy.net/en/plugin_plugson.html">VentoyPlugson</a> to point at the XML file on the <a href="https://ventoy.net/en/plugin_autoinstall.html">Autoinstall</a> page.</li>
+</ul>
+<p>Boot your flash drive and install to the preferred disk. Activate using your legitimate product key and not, for example, some kind of <em>Microsoft Activation Script</em> you pulled from GitHub :^)</p>
+<h2 id="essential-software-configuration"><a class="zola-anchor" href="#essential-software-configuration" aria-label="Anchor link for: essential-software-configuration">#</a>Essential software &amp; configuration</h2>
+<p>The first thing you’ll need is a copy of <a href="https://www.oo-software.com/en/shutup10">O&amp;O ShutUp10</a> (or <a href="https://github.com/ChrisTitusTech/winutil">Chris Titus’s Windows Utility</a>). Go through and disable all telemetry and ads (though you may want to leave some, like location services).</p>
+<p>Windows includes lots of animations that slow you down (start menu, smoother cursor in office applications, smooth Page Up/Down), and they can all be turned off in Settings &gt; Accessibility &gt; Visual effects &gt; Animation.</p>
+<p>You’ll need a browser that isn’t the ad-ridden spyware that is Edge–try <a href="https://librewolf.net/">LibreWolf</a> or <a href="https://brave.com/">Brave</a> with crypto wallet disabled.</p>
+<p><a href="https://github.com/rcmaehl/MSEdgeRedirect?tab=readme-ov-file">MSEdgeRedirect</a> is a must if you happen to use the built-in Start menu search or weather widgets but don’t want them to open links in Edge.</p>
+<pre data-lang="batch" class="language-batch z-code"><code class="language-batch" data-lang="batch"><span class="z-text z-plain">winget install --id=rcmaehl.MSEdgeRedirect --id=Brave.Brave --id=OO.Software.Shutup10 -e --silent --accept-source-agreements --accept-package-agreements
+</span></code></pre>
+<h2 id="package-management"><a class="zola-anchor" href="#package-management" aria-label="Anchor link for: package-management">#</a>Package Management</h2>
+<p>The quickest way I’ve found to get most software for Windows these days is using WinGet. I can’t make promises as to exactly how well-moderated the package sources are, but I’ve yet to encounter
+true malware within it. Here’s the commands you’ll wind up using:</p>
+<pre data-lang="batch" class="language-batch z-code"><code class="language-batch" data-lang="batch"><span class="z-text z-plain">winget search librewolf
+</span><span class="z-text z-plain">winget add LibreWolf.LibreWolf
+</span><span class="z-text z-plain">winget remove LibreWolf.LibreWolf
+</span><span class="z-text z-plain">winget upgrade LibreWolf.LibreWolf
+</span><span class="z-text z-plain">winget upgrade --all
+</span></code></pre>
+<h2 id="ux-tweaks"><a class="zola-anchor" href="#ux-tweaks" aria-label="Anchor link for: ux-tweaks">#</a>UX Tweaks</h2>
+<p><a href="https://windhawk.net/">Windhawk</a> will help you reclaim screen real estate by setting taskbar height and icon size to 36 and 20 respectively (pair with button width 32 for best results).</p>
+<p><a href="https://github.com/RamonUnch/AltSnap">AltSnap</a> will allow you to drag and snap windows around using the Alt (or if configured, Super) key so that you don’t have to target the edge of the window just to resize or find the titlebar to move it. If you’re used to Linux desktop environments, it’s a little itchy to live without this feature.</p>
+<p><a href="https://learn.microsoft.com/en-us/windows/powertoys/">PowerToys</a> has lots of goodies including a color picker, window snapping tools, bulk renaming, file preview, and a macOS Spotlight search clone.</p>
+
+
+
+
+
+<section class="article-signoff">
+	
+	
+	
+	<p class="created-at">written <time datetime="2025-03-04">2025-03-04</time></p>
+	
+	
+	<p class="updated-at">updated <time datetime="2025-06-27">2025-06-27</time></p>
+	
+</section>
+
+
+</section>
+<footer>
+	<p>% show system-information
+    <p>No rights reserved. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/blog&#x2F;wintricks&#x2F;index.md">View source here</a>. Provided as-is, no warranty, etc.
+	<p>Built 2025-06-29 14:37:31 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages.
+	<p>This page uses Inter Variable with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in Inconsolata.
+	<p>% tree /
+	<p class="sitetree">
+	<a href="/">deal.digital</a>
+	<br>├<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;">&#x2F;blog&#x2F;</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;librechat&#x2F;">librechat</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;shorelock&#x2F;">shorelock</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;smart-seagate&#x2F;">smart-seagate</a>
+        <br>│ └─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;wintricks&#x2F;">wintricks</a>
+        <br>├<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;">&#x2F;tools&#x2F;</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;netlibram&#x2F;">netlibram</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;prune&#x2F;">prune</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;pwgen&#x2F;">pwgen</a>
+        <br>│ └─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;tpmiddle&#x2F;">tpmiddle</a>
+        <br>├<a href="https:&#x2F;&#x2F;deal.digital&#x2F;contact&#x2F;">&#x2F;contact&#x2F;</a>
+		<br>├<a href="https:&#x2F;&#x2F;deal.digital&#x2F;home&#x2F;">&#x2F;home&#x2F;</a>
+		<br>├<a href="https:&#x2F;&#x2F;deal.digital&#x2F;links&#x2F;">&#x2F;links&#x2F;</a>
+		<br>├<a href="https:&#x2F;&#x2F;deal.digital&#x2F;now&#x2F;">&#x2F;now&#x2F;</a>
+		<br>├<a href="https:&#x2F;&#x2F;deal.digital&#x2F;sample&#x2F;">&#x2F;sample&#x2F;</a>
+		<br>├<a href="https:&#x2F;&#x2F;deal.digital&#x2F;todo&#x2F;">&#x2F;todo&#x2F;</a>
+		<br>└─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;uses&#x2F;">&#x2F;uses&#x2F;</a>
+		<p>% show :3
+	<p class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</p>
+</footer>
+</body>
+</html>
