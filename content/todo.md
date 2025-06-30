@@ -5,6 +5,26 @@ color = "#777"
 +++
 
 * Website
+	* [ ] Bring my featureset closet to [Duckquill](https://duckquill.daudix.one/ru/demo/)
+	  * [ ] footnotes
+	  * [ ] easily differentiable headings to H6
+	  * [ ] a native-looking style for form elements including checkbox lists and color picker
+	  * [ ] sortable tables
+	  * [ ] full-bleed images
+	  * [ ] click to zoom images (PhotoSwipe? Medium-Zoom? Zoom.ts? Basiclightbox? bigpicture?)
+	  * [ ] embed YouTube
+	  * [ ] embed Vimeo
+	  * [ ] embed PeerTube
+	  * [ ] dinkus
+	  * [ ] alerts
+	  * [ ] xwitter poasts
+	  * [ ] &lt;dl&gt; description list
+		* [ ] styled and animated &lt;details&gt;
+		* [ ] abbr tags
+		* [ ] aside (float: right)
+		* [ ] mark text (pop color)
+		* [ ] key combos annotated with &lt;kbd&gt;
+		* [ ] add article banner with width and height parameters
 	* [ ] Writeup regarding new stylesheet, including inspiration from [Jamush](https://www.deviantart.com/jamush/art/Novus-130953904)
 	* [ ] Publish /about /ideas /now
 	* [ ] Write at least 3 more reasonably insightful blog posts in 2024
