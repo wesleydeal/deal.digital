@@ -279,7 +279,7 @@ footer {
 	grid-area: footer;
 	padding: 20px 3ch 60px;
 	background: repeating-linear-gradient(#0000, #000 3px, var(--c10) 4px, var(--c10) 5px, #0000 6px) #000;
-	font: 400 1.5em/1 var(--typeface-mono);
+	font: 400 1.5em/1.15 var(--typeface-mono);
 	text-shadow: 0 0 0.5em var(--c70);
 	color: var(--c);
 	position: relative;
