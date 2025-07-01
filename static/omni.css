@@ -350,7 +350,6 @@ a:any-link {
 		--c: var(--color-pop-bgcontrast);
 		background: var(--c);
 		color: var(--color-bg-hc);
-		//color: var(--color-bg);
 		box-shadow: 0 0 0 3px var(--c);
 		text-decoration: none;
 		text-shadow: 0 0 2px var(--color-fg);
@@ -525,6 +524,7 @@ ul.blog-listing {
 	margin: 0.5rem 0;
 	width: max-content;
 	min-width: 50%;
+	max-width: 100%;
 	& li {
 		display: grid;
 		grid-template-areas: "date tags author" "title title title";

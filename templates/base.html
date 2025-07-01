@@ -1,6 +1,11 @@
 {% import "macros.html" as macros %}
 <!DOCTYPE html>
-<html lang="en"{% if page.extra.color %} style="--color-primary: {{ page.extra.color }}"{% endif %}>
+{% if page.extra.color -%}
+    {% set color = page.extra.color -%}
+{% elif section.extra.color -%}
+    {% set color = section.extra.color -%}
+{% endif %}
+<html lang="en"{% if color %} style="--color-primary: {{ color }}"{% endif %}>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {% block title -%}
