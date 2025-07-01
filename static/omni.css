@@ -268,7 +268,9 @@ section.content {
 	& img {
 		max-width: 100%;
 		height: auto;
-		filter: drop-shadow(2px 2px 5px var(--color-tinted-shadow));
+		filter: drop-shadow(1px 2px 2px oklch(from var(--color-tinted-shadow) l c h / 20%))
+		drop-shadow(3px 4px 4px oklch(from var(--color-tinted-shadow) l c h / 20%))
+		drop-shadow(6px 8px 8px oklch(from var(--color-tinted-shadow) l c h / 10%));
 		border-radius: 5px;
 	}
    	& .fullbleed {
@@ -762,7 +764,6 @@ table {
 			flex-direction: column;
 		}
 		&>ul a:any-link {
-			place-items: initial;
 			justify-content: start;
 			font-stretch: 150%;
 			font-variation-settings: "YTLC" 550;
