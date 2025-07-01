@@ -537,7 +537,7 @@ ul.blog-listing {
 			}
 		}
 		&:has(a:any-link:first-child:active, a:any-link:first-child:hover) {
-		    background: linear-gradient(to right, #0000, #0000) no-repeat bottom / 100% 1px, linear-gradient(to top right in oklch, var(--c), var(--color-h2));
+		    background: linear-gradient(to right, #0000, #0000) no-repeat bottom / 100% 1px, linear-gradient(350deg in oklch, var(--color-h2), #fff 700%);
 			padding-left: 0.25em;
 			padding-right: 0.25em;
 			box-shadow: var(--button-shadow-hover);
