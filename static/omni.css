@@ -287,11 +287,6 @@ section.content {
     }
 }
 
-@keyframes marquee-left {
-    0% {left: -10%;}
-    100% {left: calc(-10% - 16ch);}
-}
-
 footer {
 	--c: oklch(from var(--color-primary) max(l,0.85) c h);
 	--c70: color-mix(in oklch, var(--c) 70%, #0000);
