@@ -78,6 +78,9 @@
 	box-sizing: border-box;
 	background-color: var(--color-bg);
 	font-size: calc(15em / 16);
+
+	scrollbar-color: var(--color-bg) var(--color-h1);
+	scrollbar-width: thin;
 }
 
 *, *:before, *:after{
