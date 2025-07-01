@@ -70,6 +70,7 @@
 	}
 
 	--text-width: 50rem;
+	--content-margins: 5vw;
 	--typeface-body: "Roboto Flex", sans-serif;
 	--typeface-display: "Instrument Serif", serif;
 	--typeface-mono: "Inconsolata Variable", monospace;
@@ -84,6 +85,8 @@
 }
 
 body {
+    container: body / inline-size;
+
 	background: var(--color-bg);
 	background: var(--bg);
 	color: var(--color-fg);
@@ -228,7 +231,7 @@ nav#toc {
 		}
 		&::after {
 			content: '▼ Show Contents';
-			margin-left: calc(5vw - 1.5em);
+			margin-left: calc(var(--content-margins) - 1.5em);
 			margin-bottom: -10px;
 			margin-top: 1em;
 			padding: 0 0.5em;
@@ -256,7 +259,7 @@ nav#toc {
 
 section.content {
 	grid-area: main;
-	padding: 0 5vw 1em;
+	padding: 0 var(--content-margins) 1em;
 	min-height: 100vh;
 	overflow-wrap: anywhere;
 	& p, & li, & blockquote {
@@ -268,6 +271,21 @@ section.content {
 		filter: drop-shadow(2px 2px 5px var(--color-tinted-shadow));
 		border-radius: 5px;
 	}
+   	& .fullbleed {
+        margin-left: calc(-1 * var(--content-margins));
+        margin-right: calc(-1 * var(--content-margins));
+        width: calc(100% + 10vw);
+        max-width: calc (100% + 10vw);
+        min-width: calc (100% + 10vw);
+
+        img& {
+            //box-shadow: none;
+            //filter: none;
+            width: 100;
+            max-width: none;
+            min-width: none;
+        }
+    }
 }
 
 @keyframes marquee-left {
