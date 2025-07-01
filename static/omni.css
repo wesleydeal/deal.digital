@@ -274,14 +274,11 @@ section.content {
    	& .fullbleed {
         margin-left: calc(-1 * var(--content-margins));
         margin-right: calc(-1 * var(--content-margins));
-        width: calc(100% + 10vw);
-        max-width: calc (100% + 10vw);
-        min-width: calc (100% + 10vw);
-
-        img& {
-            //box-shadow: none;
-            //filter: none;
-            width: 100;
+        width: calc(100% + (2 * var(--content-margins)));
+        min-width: none;
+        max-width: none;
+        &>* {
+            width: 100%;
             max-width: none;
             min-width: none;
         }
