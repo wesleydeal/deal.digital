@@ -277,12 +277,12 @@ section.content {
         margin-left: calc(-1 * var(--content-margins));
         margin-right: calc(-1 * var(--content-margins));
         width: calc(100% + (2 * var(--content-margins)));
-        min-width: none;
+        min-width: calc(100% + (2 * var(--content-margins)));
         max-width: none;
         &>* {
             width: 100%;
             max-width: none;
-            min-width: none;
+            min-width: 100%;
         }
     }
 }
