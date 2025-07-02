@@ -16,16 +16,16 @@
 <header>
 	<nav id="topnav">
 		{% block homelink -%}
-		<a href="/">Wesley Deal</a>
+		<a href="/" id="homelink">Wesley Deal</a>
 		{% endblock homelink -%}
-		<ul>
+		<ul class="topnav-links">
 			<li><a href="/tools">🛠️ Tools</a>
 			<li><a href="/blog">✍🏻 Blog</a>
 			<li><a href="/now">⏳ Now</a>
 			<li><a href="/links">🔗 Links</a>
 			<li><a href="/uses">⌨️ Uses</a>
-			<li><a href="https://github.com/wesleydeal">👨🏻‍💻 GitHub</a>
-			<li><a href="https://linkedin.com/in/wesley-deal">🏢 LinkedIn</a>
+			<!--<li><a href="https://github.com/wesleydeal">👨🏻‍💻 GitHub</a>
+			<li><a href="https://linkedin.com/in/wesley-deal">🏢 LinkedIn</a>-->
 			<li><a href="/resume">📄 Resume</a>
 		</ul>
 	</nav>
@@ -131,5 +131,18 @@
 
 	</p>
 </footer>
+<menu id="ui-tools">
+	<div id="ui-tools-header">
+		<label for="btn_min_tools">Tools</label>
+		<button id="btn_min_tools">▼</button>
+	</div>
+	<button id="btn_larger">T<b>🡑</b></button>
+	<button id="btn_smaller">T<b>🡓</b></button>
+	<!--<button id="btn_toc">📑</button>-->
+	<button id="btn_theme">💡</button>
+	<!--<button id="btn_search">🧭</button>-->
+	<button id="btn_top">⤒</button>
+</menu>
+<script src="/main.js"></script>
 </body>
 </html>

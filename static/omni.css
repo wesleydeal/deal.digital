@@ -30,6 +30,9 @@
 }
 
 :root {
+	container: root / size;
+
+	--dark-mode: false;
 	--color-primary: #f30; /*#fa7;*/
 
     --color-fg-hc: #000;
@@ -56,17 +59,7 @@
 	--weight-h2: 500;
 
 	@media (prefers-color-scheme: dark) {
-		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
-		--color-fg: #fff;
-		--color-fg-hc: #fff;
-		--color-bg-hc: #000;
-		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
-		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.15, c) h);
-		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
-		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
-		--weight-h2: 400;
-		--color-pop-bgcontrast: var(--color-pop);
-		--color-tinted-shadow: oklch(from var(--color-primary) 0.8 0.15 h / 50%);
+		--dark-mode: true;
 	}
 
 	--text-width: 50rem;
@@ -81,6 +74,23 @@
 
 	scrollbar-color: var(--color-bg) var(--color-h1);
 	scrollbar-width: thin;
+}
+
+@container root style(--dark-mode: true){
+	body {
+		--color-bg: oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h);
+		--color-fg: #fff;
+		--color-fg-hc: #fff;
+		--color-bg-hc: #000;
+		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
+		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.15, c) h);
+		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
+		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
+		--weight-h2: 400;
+		--color-pop-bgcontrast: var(--color-pop);
+		--color-tinted-shadow: oklch(from var(--color-primary) 0.8 0.15 h / 50%);
+	}
+
 }
 
 *, *:before, *:after{
@@ -256,6 +266,94 @@ nav#toc {
 			right: 0.5ch;
 			bottom: 1.3em;
 			margin: 0;
+		}
+	}
+}
+
+menu#ui-tools {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+
+	margin: 0;
+	padding: 0;
+
+	display: grid;
+	grid-template-areas: "header header" "buttons buttons" "buttons buttons" "buttons buttons";
+	grid-template-columns: 1fr 1fr;
+	gap: 0;
+
+	background: oklch(from var(--color-primary) 0.9 c h);
+	background: var(--color-bg);
+	opacity: 0.8;
+
+	border-left: 1px solid var(--color-h1);
+	border-top: 1px solid var(--color-h1);
+
+	&:hover {
+		opacity: 1;
+	}
+
+	& #ui-tools-header {
+		margin: 0;
+		padding: 1px 2px 2px;
+		grid-area: header;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		background: var(--button-overlay), var(--color-primary);
+		font: 500 1rem/1.2 var(--typeface-body);
+		font-stretch: 130%;
+		text-shadow: 1px 1px 0 #000;
+		color: #fff;
+		gap: 5px;
+		& button {
+			font: inherit;
+			margin: 0;
+			border-radius: 0;
+			background: transparent;
+			display: block;
+			box-shadow: var(--button-shadow);
+			&:hover {
+				background: var(--button-highlight-overlay), oklch(0.75 0.15 80);
+				box-shadow: inset 1px 1px oklch(0.85 0.15 80), inset -1px -1px oklch(0.8 0.15 80);
+			}
+		}
+		& label {
+			padding: 0 2px;
+		}
+	}
+
+	&.min button{
+		display: none;
+	}
+
+	& button {
+		margin: 2px;
+		appearance: none;
+		color: #fff;
+		background: var(--button-overlay), oklch(from var(--color-primary) 0.3 c h);
+		border: var(--button-border);
+		box-shadow: var(--button-shadow), 1px 1px 3px var(--color-tinted-shadow);
+		text-shadow: 1px 1px 0 #000;
+		font: 600 1.2rem/1.5 var(--typeface-body);
+		font-stretch: 75%;
+		border-radius: 0;
+		&#btn_larger b {
+			color: oklch(0.7 0.2 170);
+			font-size: 1rem;
+			margin: 0 -0.15em;
+		}
+		&#btn_smaller b {
+			color: #fa9122;
+			color: oklch(0.8024 0.1549 58.1);
+			font-size: 1rem;
+			margin: 0 -0.15em;
+		}
+		&:hover {
+			background: var(--button-highlight-overlay), oklch(from var(--color-primary) 0.3 c h);
+			box-shadow: var(--button-shadow-hover);
 		}
 	}
 }
