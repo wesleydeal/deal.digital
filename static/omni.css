@@ -49,7 +49,7 @@
 	--color-tinted-shadow: oklch(from var(--color-primary) 0.2 0.2 h / 50%);
 	--color-pop: oklch(from var(--color-primary) clamp(.77, l, .85) clamp(0.11, calc(c + .05), .27) calc(h - 180));
 	--color-pop-bgcontrast: oklch(from var(--color-pop) 0.4 c h);
-	--header-bg: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%) fixed;
+	--header-bg: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%) 0 / cover fixed;
 	--button-shadow: inset 1px 1px 0 color-mix(in oklch, var(--color-primary) 50%, #ffff), inset -1px -1px 0 color-mix(in oklch, var(--color-h1) 40%, #ffff);
 	--button-shadow: inset 1px 1px 0 oklch(from var(--color-primary) 0.85 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.75 calc(c * .8) h);
 	--button-shadow-hover: inset 1px 1px 0 oklch(from var(--color-primary) 0.45 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.55 calc(c * .8) h);
@@ -272,57 +272,27 @@ nav#toc {
 
 menu#ui-tools {
 	position: fixed;
-	right: 0;
-	bottom: 0;
+	right: 3px;
+	bottom: 3px;
 
 	margin: 0;
 	padding: 0;
 
 	display: grid;
-	grid-template-areas: "header header" "buttons buttons" "buttons buttons" "buttons buttons";
-	grid-template-columns: 1fr 1fr;
 	gap: 0;
 
-	background: oklch(from var(--color-primary) 0.9 c h);
-	background: var(--color-bg);
-	opacity: 0.8;
+	background: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%);
+	opacity: 0.7;
 
-	border-left: 1px solid var(--color-h1);
-	border-top: 1px solid var(--color-h1);
+	border: 1px solid var(--color-link-underline);
+	border-radius: 5px;
+	box-shadow: 1px 1px 2px oklch(from var(--color-tinted-shadow) 0.1 c h / 40%),
+		2px 2px 4px oklch(from var(--color-tinted-shadow) 0.1 c h / 30%);
+
+	transition: opacity 100ms ease-out;
 
 	&:hover {
 		opacity: 1;
-	}
-
-	& #ui-tools-header {
-		margin: 0;
-		padding: 1px 2px 2px;
-		grid-area: header;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		background: var(--button-overlay), var(--color-primary);
-		font: 500 1rem/1.2 var(--typeface-body);
-		font-stretch: 130%;
-		text-shadow: 1px 1px 0 #000;
-		color: #fff;
-		gap: 5px;
-		& button {
-			font: inherit;
-			margin: 0;
-			border-radius: 0;
-			background: transparent;
-			display: block;
-			box-shadow: var(--button-shadow);
-			&:hover {
-				background: var(--button-highlight-overlay), oklch(0.75 0.15 80);
-				box-shadow: inset 1px 1px oklch(0.85 0.15 80), inset -1px -1px oklch(0.8 0.15 80);
-			}
-		}
-		& label {
-			padding: 0 2px;
-		}
 	}
 
 	&.min button{
@@ -330,16 +300,19 @@ menu#ui-tools {
 	}
 
 	& button {
-		margin: 2px;
+		margin: 0;
 		appearance: none;
 		color: #fff;
-		background: var(--button-overlay), oklch(from var(--color-primary) 0.3 c h);
-		border: var(--button-border);
-		box-shadow: var(--button-shadow), 1px 1px 3px var(--color-tinted-shadow);
 		text-shadow: 1px 1px 0 #000;
 		font: 600 1.2rem/1.5 var(--typeface-body);
-		font-stretch: 75%;
 		border-radius: 0;
+		box-shadow: none;
+		border: none;
+		background: transparent;
+		border-bottom: 1px solid #fff9;
+		&:last-child {
+			border-bottom: none;
+		}
 		&#btn_larger b {
 			color: oklch(0.7 0.2 170);
 			font-size: 1rem;
@@ -352,8 +325,7 @@ menu#ui-tools {
 			margin: 0 -0.15em;
 		}
 		&:hover {
-			background: var(--button-highlight-overlay), oklch(from var(--color-primary) 0.3 c h);
-			box-shadow: var(--button-shadow-hover);
+			background: var(--button-highlight-overlay);
 		}
 	}
 }
