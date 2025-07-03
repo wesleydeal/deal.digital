@@ -5,7 +5,79 @@ const root = document.documentElement;
 // UTILITY FUNCTIONS -------------------------------
 const el = (selector) => document.querySelector(selector);
 const elid = (id) => document.getElementById(id);
+const inrange = (x, start, end) => (x >= start) && (x <= end);
 
+// SEARCH ------------------------------------------
+function toggleSearch(force=false) {
+	searchCtr = elid("search-container");
+	if (!searchCtr) {
+		document.body.insertAdjacentHTML('afterbegin', `
+			<div id="search-container">
+				<input id="search-box" type="text" placeholder="Type to search">
+				<menu id="search-results">
+				</menu>
+			</div>
+		`);
+		elid("search-box").focus();
+		elid("search-box").addEventListener('keyup', updateSearch);
+	} else if (force) {
+		elid("search-box").focus();
+	} else {
+		elid("search-container").remove();
+	}
+}
+
+function updateSearch(event) {
+	const searchBox = elid("search-box");
+	const searchResults = elid("search-results");
+	let query = searchBox.value;
+
+	while(query[0] === "/") {
+		query = query.substring(1);
+	}
+
+	console.log("Query:", query);
+
+	let entries = [];
+
+	firstSpace = query.search(" ");
+
+	if (inrange(firstSpace, 0, 3) || query[0] == "!") {
+		switch(query.substring(0,firstSpace)) {
+			case "g":
+			case "!g":
+				entries.push({
+					type: "Google",
+					desc: "Google Search",
+					query: query.substring(firstSpace),
+					url: "https://google.com/search?q=" + query.replace(" ", "+"),
+				});
+				break;
+			case "yt":
+				entries.push({
+					type: "YouTube",
+					desc: "YouTube Search",
+					query: query.substring(firstSpace),
+					url: "https://google.com/search?q=" + query.replace(" ", "+"),
+				});
+				break;
+		}
+	}
+
+	for (entry of entries) {
+		let htmlresult = '<div class="search-result">';
+		htmlresult += '<img class="search-icon" src="icons/search/' + entry.type.toLowerCase() + '.png">';
+		htmlresult += '<span class="search-query">' + entry.desc + '</span>';
+		htmlresult += '</div>'
+		searchResults.insertAdjacentHTML("beforeend", htmlresult);
+	}
+
+	console.log(entries);
+}
+
+
+
+// ON LOAD -----------------------------------------
 function load() {
 	elid("btn_larger")?.addEventListener("click", () => {
 		currentSize = getComputedStyle(content).fontSize;
@@ -25,8 +97,15 @@ function load() {
 		tocdetails.open = (tocdetails.open) ? false : true;
 	});
 	elid("btn_top")?.addEventListener("click", () => {
-		window.scrollTo({top: 0, behavior: 'smooth'});
-	})
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	});
+	elid("btn_search")?.addEventListener("click", toggleSearch);
 }
+
+document.addEventListener("keyup", (e) => {
+	if (e.key === '/') {
+		toggleSearch(1);
+	}
+});
 
 load();
