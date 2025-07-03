@@ -13,6 +13,7 @@ function toggleSearch(event=null, force=false) {
 	if (!searchCtr) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
+				<p>This feature is unfinished and broken.</p>
 				<label for="search-box"><b>🧭 Navigator</b>: Press <kbd>/</kbd>, type your query, and press <kbd>ENTER</kbd> or select a provider.</label>
 				<input id="search-box" type="text" placeholder="Type to search">
 				<menu id="search-results">
@@ -58,6 +59,12 @@ function updateSearch(event) {
 	let entries = [];
 
 	firstSpace = query.search(" ");
+
+	// TODO: handle !bangs and searches beginning with provider queries
+
+	// TODO: implement search this site
+
+	// TODO: add options for all currently nonexistent providers
 
 	if (inrange(firstSpace, 0, 3) || query[0] == "!") {
 		switch(query.substring(0,firstSpace)) {
