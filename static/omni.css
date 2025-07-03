@@ -304,12 +304,13 @@ menu#ui-tools {
 		appearance: none;
 		color: #fff;
 		text-shadow: 1px 1px 0 #000;
-		font: 600 1.2rem/1.5 var(--typeface-body);
+		font: 600 1.3rem/1.5 var(--typeface-body);
 		border-radius: 0;
 		box-shadow: none;
 		border: none;
 		background: transparent;
 		border-bottom: 1px solid #fff9;
+		padding: 0 0.2em;
 		&:last-child {
 			border-bottom: none;
 		}
