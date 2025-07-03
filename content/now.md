@@ -1,6 +1,6 @@
 +++
 date = 2024-04-26
-updated = 2025-06-24
+updated = 2025-07-03
 title = "What I’m doing now"
 draft = false
 [extra]
@@ -17,13 +17,48 @@ It's a bit meta to say so here, but I'm in the process of rewriting this page.
 
 After finishing a series of additions to my [resume](/resume) and the embedded article explaining my process, I set to work on improving the content and design of the rest of the site once again. Perhaps I've already had a few too many late evenings tweaking CSS, but it's been fun. I think I'm approaching the end of my runway on visual tweaks though; soon I'll need to start writing some real content.
 
+One other idea I've had with this site is that I'd like to set it up to house my personal homepage with frequently used links and a meta-search/command engine. `dealnav` 🧭 would in theory offer:
+
+* instant(ish) results from the contents of this site
+* instant calculator results
+* shortcuts to query
+	* Google
+	* Google Images
+	* Brave Search
+	* ChatGPT (search)
+	* DuckDuckGo
+	* YouTube
+	* YouTube Music
+	* Genius
+	* Twitter
+	* Instagram
+	* Wikipedia
+	* GitHub
+
+The idea being that I could have a browser-agnostic setup of bookmarks and search providers that I could easily share with others or use on an unfamiliar computer.
+
 ## Fitness
 
 At the moment, I'm around 170lb at a bit over 17% body fat. I'd like to be around 155lb, or 12% (smart scale reported) body fat, whichever I reach last.
 I lift weights 4-7 days a week and target ≥10,000 steps per day. I run regularly, typically 5k in distance once or twice a week (but have lately been
 out of commission due to heel blisters from new shoes).
 
-## Working on confidence
+## Listening to...
+
+* Rush -- Digital Man
+* Tears for Fears -- The Seeds of Love
+* Steely Dan -- Bodhisattva
+* Kavinsky -- Zenith
+* Philip Bailey -- Easy Lover
+* Centimillimental -- twilight night
+* KNOWER -- Window Shop
+* Summer Breeze -- Angel Smile
+* Delta Music Industry Presents Touge Megamix
+* Daft Punk -- Human After All
+* Danger -- Origins
+* Protomen -- The Cover Up
+
+## Working on my mindset
 
 It's become clear that a significant proportion of the problems in my life exist in my head as stress or lack of self confidence. So I've set myself a
 fairly general goal for the time being: become the best, most confident possible version of myself, and stop piling on new musts, what-ifs, and should-haves.
