@@ -755,7 +755,9 @@ kbd {
 	height: auto;
 	transition: height 200ms cubic-bezier(0.23, 1, 0.320, 1);
 	overflow: hidden;
-	border-bottom: 3px double var(--color-h1);
+	border-bottom: 2px solid var(--color-primary);
+	background: var(--color-bg);
+	box-shadow: inset 0 -1px 5px oklch(from var(--color-tinted-shadow) l c h / 30%), inset 0 -4px 10px oklch(from var(--color-tinted-shadow) l c h / 20%);
 	@starting-style {
 		height: 0;
 	}
@@ -779,7 +781,8 @@ kbd {
 		list-style-type: none;
 		display: flex;
 		flex-direction: column;
-
+		padding: 0;
+		margin: 1em 0;
 	}
 }
 
@@ -821,7 +824,7 @@ kbd {
 			background: var(--header-bg);
 			display: grid;
 			grid-template-columns: minmax(350px,1fr) minmax(1000px,9fr);
-			grid-template-rows: auto 1fr auto;
+			grid-template-rows: auto auto 1fr auto;
 			grid-template-areas: "search search" "header main" "sidebar main" "footer footer";
 			header {
 				position: static;
