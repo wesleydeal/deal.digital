@@ -64,13 +64,17 @@ function updateSearch(event) {
 		}
 	}
 
+	let htmlresults = "";
+
 	for (entry of entries) {
 		let htmlresult = '<div class="search-result">';
 		htmlresult += '<img class="search-icon" src="icons/search/' + entry.type.toLowerCase() + '.png">';
 		htmlresult += '<span class="search-query">' + entry.desc + '</span>';
 		htmlresult += '</div>'
-		searchResults.insertAdjacentHTML("beforeend", htmlresult);
+		htmlresults += htmlresult;
 	}
+
+	searchResults.innerHTML = htmlresults;
 
 	console.log(entries);
 }
