@@ -8,11 +8,12 @@ const elid = (id) => document.getElementById(id);
 const inrange = (x, start, end) => (x >= start) && (x <= end);
 
 // SEARCH ------------------------------------------
-function toggleSearch(force=false) {
+function toggleSearch(event=null, force=false) {
 	searchCtr = elid("search-container");
 	if (!searchCtr) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
+				<label for="search-box"><b>🧭 Navigator</b>: Press <kbd>/</kbd>, type your query, and press <kbd>ENTER</kbd> or select a provider.</label>
 				<input id="search-box" type="text" placeholder="Type to search">
 				<menu id="search-results">
 				</menu>
@@ -21,6 +22,8 @@ function toggleSearch(force=false) {
 		elid("search-box").focus();
 		elid("search-box").addEventListener('keyup', updateSearch);
 	} else if (force) {
+		elid("search-box").placeholder = elid("search-box").value;
+		elid("search-box").value = "";
 		elid("search-box").focus();
 	} else {
 		elid("search-container").remove();
@@ -30,6 +33,20 @@ function toggleSearch(force=false) {
 function updateSearch(event) {
 	const searchBox = elid("search-box");
 	const searchResults = elid("search-results");
+	const providers = {
+		Google: {
+			keywords: ['g', 'google'],
+			desc: 'Google Search',
+			icon: '/icons/search/google.png',
+			getURL: (query) => "https://google.com/search?q=" + query.replace(" ", "+"),
+		},
+		eBay: {
+			keywords: ['e', 'eb', 'ebay'],
+			desc: 'eBay',
+			icon: '/icons/search/ebay.png',
+			getURL: (query) => "https://www.ebay.com/sch/i.html?_nkw=" + query.replace(" ", "+"),
+		}
+	}
 	let query = searchBox.value;
 
 	while(query[0] === "/") {
@@ -63,6 +80,13 @@ function updateSearch(event) {
 				break;
 		}
 	}
+
+	entries.push({
+		type: "Internal",
+		desc: "Search deal.digital",
+		query: query,
+		url: "#",
+	});
 
 	let htmlresults = "";
 
@@ -108,7 +132,7 @@ function load() {
 
 document.addEventListener("keyup", (e) => {
 	if (e.key === '/') {
-		toggleSearch(1);
+		toggleSearch(null, true);
 	}
 });
 

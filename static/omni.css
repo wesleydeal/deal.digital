@@ -74,6 +74,8 @@
 
 	scrollbar-color: var(--color-bg) var(--color-h1);
 	scrollbar-width: thin;
+
+	interpolate-size: allow-keywords;
 }
 
 @container root style(--dark-mode: true){
@@ -116,8 +118,8 @@ body {
 	&:has(nav#toc details[open]) {
 		display: grid;
 		grid-template-columns: minmax(250px,1fr) minmax(150px,5fr);
-		grid-template-rows: auto minmax(100vh,auto) auto;
-		grid-template-areas: "header header" "sidebar main" "footer footer";
+		grid-template-rows: auto auto minmax(100vh,auto) auto;
+		grid-template-areas: "search search" "header header" "sidebar main" "footer footer";
 	}
 }
 
@@ -688,6 +690,17 @@ table {
 	}
 }
 
+kbd {
+	display: inline-block;
+	text-align: center;
+	min-width: 1.5em;
+	font-family: var(--typeface-mono);
+	padding: 0 0.3em;
+	border: 1px solid var(--color-h1);
+	box-shadow: 0.5px 0.5px 2px var(--color-tinted-shadow);
+	border-radius: 3px;
+}
+
 .sitebuttons ul {
     display: flex;
     list-style: none;
@@ -736,6 +749,40 @@ table {
     }
 }
 
+#search-container {
+	grid-area: search;
+	padding: 32px 5vw;
+	height: auto;
+	transition: height 200ms cubic-bezier(0.23, 1, 0.320, 1);
+	overflow: hidden;
+	border-bottom: 3px double var(--color-h1);
+	@starting-style {
+		height: 0;
+	}
+	& label {
+		margin: 0 0 0.5em;
+		font-size: 0.9em;
+		display: inline-block;
+	}
+	& #search-box {
+		width: 100%;
+		appearance: none;
+		font-family: inherit;
+		border: none;
+		border-bottom: 1px solid var(--color-h1);
+		background: transparent;
+		color: inherit;
+		font-size: 1.3rem;
+		font-stretch: 150%;
+	}
+	& #search-results {
+		list-style-type: none;
+		display: flex;
+		flex-direction: column;
+
+	}
+}
+
 @media screen and (width <= 700px) {
 	body:has(nav#toc details[open]) {
 		display: flex;
@@ -769,13 +816,13 @@ table {
 		display: grid;
 		grid-template-rows: auto;
 		grid-template-columns: minmax(max-content,1fr) minmax(1000px, 9fr);
-		grid-template-areas: "header main" "footer footer";
+		grid-template-areas: "search search" "header main" "footer footer";
 		&:has(nav#toc), &:has(nav#toc details[open]) {
 			background: var(--header-bg);
 			display: grid;
 			grid-template-columns: minmax(350px,1fr) minmax(1000px,9fr);
 			grid-template-rows: auto 1fr auto;
-			grid-template-areas: "header main" "sidebar main" "footer footer";
+			grid-template-areas: "search search" "header main" "sidebar main" "footer footer";
 			header {
 				position: static;
 				background: none;
