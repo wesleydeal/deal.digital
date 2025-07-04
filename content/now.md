@@ -11,11 +11,13 @@ color = "#9bcaff"
 a website with a link that says "now" goes to a page that tells you what this person is focused on at this point in their life. For short, we call it a "now page".
 {% end %}
 
-It's a bit meta to say so here, but I'm in the process of rewriting this page.
+## Building out this website
 
-## Tweaking this website
-
-After finishing a series of additions to my [resume](/resume) and the embedded article explaining my process, I set to work on improving the content and design of the rest of the site once again. Perhaps I've already had a few too many late evenings tweaking CSS, but it's been fun. I think I'm approaching the end of my runway on visual tweaks though; soon I'll need to start writing some real content.
+After finishing a series of additions to my [resume](/resume) and the embedded article explaining my process, I set to work on improving the content and design of the rest of the site once again. Perhaps I've already had a few too many late evenings tweaking CSS, but it's been fun. I think I'm approaching the end of my runway on visual tweaks though; soon I'll need to start writing some real content. I might enjoy writing about:
+* cool user interface designs from the past and present
+* the remaining blockers before the fabled *Year of the Linux Desktop* (although [Mike may have this covered](https://yearofthelinuxdesktop.net) in a more comprehensive way than I could hope to)
+* Android apps that don't suck
+* How I lost 100lb (a question I need to explore a little myself)
 
 One other idea I've had with this site is that I'd like to set it up to house my personal homepage with frequently used links and a meta-search/command engine. `dealnav` 🧭 would in theory offer:
 
@@ -36,6 +38,8 @@ One other idea I've had with this site is that I'd like to set it up to house my
 	* GitHub
 
 The idea being that I could have a browser-agnostic setup of bookmarks and search providers that I could easily share with others or use on an unfamiliar computer.
+
+A lot of the ideas here probably belong on a future /ideas page. 
 
 ## Fitness
 
@@ -63,6 +67,7 @@ out of commission due to heel blisters from new shoes).
 * Talk Talk -- Life's What You Make It
 * Jeroen Tel -- Stranglehold II: Letting Go
 * Volkor X -- Hypersleep
+* Genesis -- Second Home by the Sea
 
 ## Working on my mindset
 
@@ -70,6 +75,6 @@ It's become clear that a significant proportion of the problems in my life exist
 fairly general goal for the time being: become the best, most confident possible version of myself, and stop piling on new musts, what-ifs, and should-haves.
 I can only make decisions at the margin, and what I decide will maximize my livelihood going forward. I will be decided and imperturbable.
 
-# Before now
+# Previously... 
 
 View the history of this page [on GitHub](https://github.com/wesleydeal/deal.digital/commits/master/content/now.md) if you'd like to see what I *was* doing.
