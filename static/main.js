@@ -32,6 +32,9 @@ function toggleSearch(event=null, force=false) {
 						<li><b>YouTube</b>: yt
 						<li><b>eBay</b>: eb
 						<li><b>Amazon</b>: am
+						<li><b>Mozilla Developer</b>: mdn
+						<li><b>Zola Docs</b>: zola
+						<li><b>Tera Docs</b>: tera
 					</ul>
 				  <h2>Examples</h2>
 					<ul>
@@ -67,9 +70,16 @@ function updateSearch(event) {
 			validate: (query) => {
 				let s = new Option().style;
 				s.color = query;
-				return s.color !== '';
+				return s.color !== '' || query.search('rand') > -1;
 			},
-			action: (event) => document.documentElement.style.setProperty('--color-primary', event.target.title),
+			action: (event) => {
+				let color = event.target.title;
+				if (color.search('rand') > -1) {
+					color = "#" + Array.from(crypto.getRandomValues(new Uint8Array(3))).map(b => b.toString(16).padStart(2, '0')).join('');
+					console.log("Randomly selected", color);
+				}
+				document.documentElement.style.setProperty('--color-primary', color);
+			}
 		},
 		Google: {
 			keywords: ['g', 'google'],
@@ -115,6 +125,7 @@ function updateSearch(event) {
 			validate: (query) => true,
 			action: null,
 		}
+
 	}
 	const keywordMap = {
 		"g": "Google",
@@ -233,7 +244,7 @@ function load() {
 }
 
 document.addEventListener("keyup", (e) => {
-	if (e.key === '/') {
+	if (e.key === '/' && document.activeElement.tagName != "INPUT") {
 		toggleSearch(null, true);
 	} else if (e.key === 'Escape') {
 		elid("search-container").remove();
