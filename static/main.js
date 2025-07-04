@@ -20,9 +20,10 @@ function toggleSearch(event=null, force=false) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
 				<button id="search-close" aria-label="Close Navigator">⨯</button>
-				<label for="search-box"><b>🧭 Navigator</b> <i>ALPHA</i>: Press <kbd>/</kbd>, type your query, and press <kbd>ENTER</kbd> or select a provider.</label>
+				<label for="search-box"><b>🧭 Navigator</b> <i>ALPHA</i></label>
 				<input id="search-box" type="text" placeholder="Type to search">
 				<menu id="search-results">
+					<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to close.
 					<h2>Keywords</h2>
 					<ul>
 						<li><b>Brave Search</b>: b
@@ -30,13 +31,14 @@ function toggleSearch(event=null, force=false) {
 						<li><b>ChatGPT Search</b>: gpt
 						<li><b>YouTube</b>: yt
 						<li><b>eBay</b>: eb
+						<li><b>Amazon</b>: am
 					</ul>
 				  <h2>Examples</h2>
 					<ul>
-						<li>color aquamarine
-						<li>eb ibm model m (bolt,screw) (mod,modded)
-						<li>yt moments with heavy french toast
-						<li>where can I get a good asada burrito nearby !gpt
+						<li><a href="#" onclick="document.documentElement.style.setProperty('--color-primary', 'aquamarine')">color aquamarine</a>
+						<li><a href="https://www.ebay.com/sch/i.html?_nkw=+ibm+model+m+(bolt%2Cscrew)+(mod%2Cmodded)">eb ibm model m (bolt,screw) (mod,modded)</a>
+						<li><a href="https://youtube.com/results?search_query=+moments+with+heavy+french+toast">yt moments with heavy french toast</a>
+						<li><a href="https://chatgpt.com/?q=where+can+I+get+a+good+asada+burrito+nearby+">where can I get a good asada burrito nearby !gpt</a>
 					</ul>
 				</menu>
 			</div>
@@ -92,16 +94,24 @@ function updateSearch(event) {
 			desc: 'YouTube',
 			icon: '/icons/search/youtube.png',
 			suggest: true,
-			getURL: (query) => '',
+			getURL: (query) => 'https://youtube.com/results?search_query=' + encodeURIComponent(query).replaceAll("%20", "+"),
 			validate: (query) => true,
 			action: null,
 		},
 		ChatGPT: {
 			keywords: ['gpt', 'chatgpt'],
 			desc: 'ChatGPT Search',
-			icon: '/icons/seach/chatgpt.png',
+			icon: '/icons/search/chatgpt.png',
 			suggest: true,
-			getURL: (query) => '',
+			getURL: (query) => 'https://chatgpt.com/?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+			validate: (query) => true,
+			action: null,
+		},
+		Amazon: {
+			desc: 'Amazon',
+			icon: '/icons/search/amazon.png',
+			suggest: true,
+			getURL: (query) => 'https://www.amazon.com/s?k=' + encodeURIComponent(query).replaceAll("%20", "+"),
 			validate: (query) => true,
 			action: null,
 		}
@@ -117,6 +127,7 @@ function updateSearch(event) {
 		"gpt": "ChatGPT",
 		"chatgpt": "ChatGPT",
 		"color": "SetColor",
+		"am": "Amazon"
 	};
 	let query = searchBox.value;
 	let htmlresults = "";
@@ -126,8 +137,6 @@ function updateSearch(event) {
 	while(query[0] === "/") {
 		query = query.substring(1);
 	}
-
-	console.log("Query:", query);
 
 	let entries = []; //todo replace
 	let providerQueries = [];
@@ -211,7 +220,6 @@ function load() {
 	});
 	elid("btn_theme")?.addEventListener("click", () => {
 		let currentDarkMode = getComputedStyle(root).getPropertyValue('--dark-mode') == 'true';
-		console.log(currentDarkMode);
 		root.style.setProperty('--dark-mode', !currentDarkMode);
 	});
 	elid("btn_toc")?.addEventListener("click", () => {
@@ -233,7 +241,6 @@ document.addEventListener("keyup", (e) => {
 
 	if (document.activeElement === elid("search-box")) {
 		let key = "Alt".repeat(e.altKey) + e.key;
-		console.log(key);
 		if (key in searchShortcutRegistry) {
 			elQueryLink = searchShortcutRegistry[key];
 			elQueryLink.click();

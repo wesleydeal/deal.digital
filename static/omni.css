@@ -90,7 +90,7 @@
 		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
 		--weight-h2: 400;
 		--color-pop-bgcontrast: var(--color-pop);
-		--color-tinted-shadow: oklch(from var(--color-primary) 0.8 0.15 h / 50%);
+		--color-tinted-shadow: oklch(from var(--color-primary) 0.85 0.15 h / 50%);
 	}
 
 }
@@ -691,13 +691,17 @@ table {
 }
 
 kbd {
+	background: var(--color-bg-hc);
 	display: inline-block;
 	text-align: center;
 	min-width: 1.5em;
 	font-family: var(--typeface-mono);
+	line-height: 1.2;
 	padding: 0 0.3em;
-	border: 1px solid var(--color-h1);
-	box-shadow: 0.5px 0.5px 2px var(--color-tinted-shadow);
+	//outline: 1px solid var(--color-h1);
+	border-bottom: 2px solid var(--color-h2);
+	border-right: 1px solid var(--color-h2);
+	box-shadow: 0 0 2px oklch(from var(--color-tinted-shadow) l c h / 20%), 2px 2px 3px oklch(from var(--color-tinted-shadow) l c h / 10%);
 	border-radius: 3px;
 }
 
@@ -799,6 +803,7 @@ kbd {
 		flex-direction: column;
 		padding: 0;
 		margin: 1em 0;
+		width: max-content;
 	}
 	& .search-result {
 		display: flex;
@@ -808,7 +813,7 @@ kbd {
 		border-bottom: 1px solid var(--color-h1);
 	}
 	& .search-shortcut {
-
+		margin-left: auto;
 	}
 }
 
