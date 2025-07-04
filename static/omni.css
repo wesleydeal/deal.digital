@@ -786,6 +786,16 @@ kbd {
 		padding: 0;
 		margin: 1em 0;
 	}
+	& .search-result {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+		padding: 0.25em 0;
+		border-bottom: 1px solid var(--color-h1);
+	}
+	& .search-shortcut {
+
+	}
 }
 
 @media screen and (width <= 700px) {

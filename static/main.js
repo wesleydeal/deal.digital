@@ -86,69 +86,53 @@ function updateSearch(event) {
 	console.log("Query:", query);
 
 	let entries = []; //todo replace
-	let selectedProviders = [];
+	let providerQueries = [];
+	searchResults.innerHTML = '';
 
 	// TODO: handle !bangs and searches beginning with provider queries
 	for (word of query.split(" ").reverse()) {
 		if (word.search("!") > -1) {
 			let possibleKeyword = word.substring(word.search("!") + 1);
 			if (Array.from(Object.keys(keywordMap)).includes(possibleKeyword)) {
-				selectedProviders.push(keywordMap[possibleKeyword]);
+				providerQueries.push({ providerName: keywordMap[possibleKeyword], query: query.replace(/!.*?( |$)/g, '') });
 			}
 		}
 	}
 
-	for (provider of selectedProviders) {
-		const p = providers[provider];
-		const q = query.replace(/!.*?( |$)/g, '');
-		console.log(q);
-		let htmlresult = '<div class="search-result" id="search-result-' + resultCount + '">' +
-			'<img class="search-icon" src="' + p.icon + '">' +
-			'<a class="search-query" href="' + p.getURL(q) + '">' +
-			'<b>' + p.desc + '</b>: ' + q + '</a>' +
-			(resultCount < 10 ?
-				'<span class="search-shortcut"' + (resultCount > 0 ? '<kbd>Alt</kbd> + <kbd>' + resultCount +'</kbd>' : '<kbd>ENTER</kbd>') + '</span>'
-				: '') +
-			'</div>';
-		htmlresults += htmlresult;
-		resultCount++;
-	}
-
-	selectedProviders = [];
-
 	if (Array.from(Object.keys(keywordMap)).includes(query.split(" ")[0])) {
-		selectedProviders.push(keywordMap[query.split(" ")[0]]);
+		providerQueries.push({ providerName: keywordMap[query.split(" ")[0]], query: query.substring(query.search(" ")) });
 	}
 
-	for (provider of selectedProviders) {
-		const p = providers[provider];
-		const q = query.substring(query.search(' '));
-		let htmlresult = '<a href="' + p.getURL(q) + '">' +
-			'<div class="search-result">';
-		htmlresult += '<img class="search-icon" src="' + p.icon + '">';
-		htmlresult += '<span class="search-query"><b>' + p.desc + '</b>: ' + q + '</span>';
-		htmlresult += '</a></div>'
-		htmlresults += htmlresult;
+	// TODO: add options for all currently nonexistent providers
+	for (providerName in providers) {
+		providerQueries.push({ providerName: providerName, query: query });
+	}
+
+	for (item of providerQueries) {
+		const p = providers[item.providerName];
+		const q = item.query;
+		console.log(p, q);
+		let elResult = document.createElement("div");
+		let elIcon = document.createElement("img");
+		let elQueryLink = document.createElement("a");
+		let elShortcut = document.createElement("div");
+		elResult.id = "search-result-" + resultCount;
+		elResult.classList.add("search-result");
+		elIcon.src = p.icon;
+		elQueryLink.href = p.getURL(q);
+		elQueryLink.innerHTML = '<b>' + p.desc + '</b>: ' + q;
+		elShortcut.classList.add("search-shortcut");
+		elShortcut.innerHTML = (resultCount < 10 ?
+				(resultCount > 0 ? '<kbd>Alt</kbd> + <kbd>' + resultCount + '</kbd>' : '<kbd>ENTER</kbd>')
+				: '');
+		//elResult.insertAdjacentElement("beforeend", elIcon);
+		elResult.insertAdjacentElement("beforeend", elQueryLink);
+		elResult.insertAdjacentElement("beforeend", elShortcut);
+		searchResults.insertAdjacentElement("beforeend", elResult);
 		resultCount++;
 	}
 
 	// TODO: implement search this site
-
-	// TODO: add options for all currently nonexistent providers
-	for (providerName in providers) {
-		const p = providers[providerName];
-		const q = query;
-		let htmlresult = '<a href="' + p.getURL(q) + '">' +
-			'<div class="search-result">';
-		htmlresult += '<img class="search-icon" src="' + p.icon + '">';
-		htmlresult += '<span class="search-query"><b>' + p.desc + '</b>: ' + q + '</span>';
-		htmlresult += '</a></div>'
-		htmlresults += htmlresult;
-		resultCount++;
-	}
-
-
-	searchResults.innerHTML = htmlresults;
 
 	console.log(entries);
 }
