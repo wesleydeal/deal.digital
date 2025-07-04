@@ -50,13 +50,19 @@ out of commission due to heel blisters from new shoes).
 * Steely Dan -- Bodhisattva
 * Kavinsky -- Zenith
 * Philip Bailey -- Easy Lover
-* Centimillimental -- twilight night
+* Centimillimental -- Super ultra I love you
 * KNOWER -- Window Shop
 * Summer Breeze -- Angel Smile
 * Delta Music Industry Presents Touge Megamix
 * Daft Punk -- Human After All
 * Danger -- Origins
 * Protomen -- The Cover Up
+* Midnight Oil -- Power And The Passion
+* The Smiths -- Ask
+* Pat Metheny Group -- Third Wind
+* Talk Talk -- Life's What You Make It
+* Jeroen Tel -- Stranglehold II: Letting Go
+* Volkor X -- Hypersleep
 
 ## Working on my mindset
 
