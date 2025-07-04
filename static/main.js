@@ -20,10 +20,24 @@ function toggleSearch(event=null, force=false) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
 				<button id="search-close" aria-label="Close Navigator">⨯</button>
-				<p>This feature is unfinished and broken.</p>
-				<label for="search-box"><b>🧭 Navigator</b>: Press <kbd>/</kbd>, type your query, and press <kbd>ENTER</kbd> or select a provider.</label>
+				<label for="search-box"><b>🧭 Navigator</b> <i>ALPHA</i>: Press <kbd>/</kbd>, type your query, and press <kbd>ENTER</kbd> or select a provider.</label>
 				<input id="search-box" type="text" placeholder="Type to search">
 				<menu id="search-results">
+					<h2>Keywords</h2>
+					<ul>
+						<li><b>Brave Search</b>: b
+						<li><b>Google Search</b>: g
+						<li><b>ChatGPT Search</b>: gpt
+						<li><b>YouTube</b>: yt
+						<li><b>eBay</b>: eb
+					</ul>
+				  <h2>Examples</h2>
+					<ul>
+						<li>color aquamarine
+						<li>eb ibm model m (bolt,screw) (mod,modded)
+						<li>yt moments with heavy french toast
+						<li>where can I get a good asada burrito nearby !gpt
+					</ul>
 				</menu>
 			</div>
 		`);
