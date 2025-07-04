@@ -102,11 +102,14 @@ function updateSearch(event) {
 		const p = providers[provider];
 		const q = query.replace(/!.*?( |$)/g, '');
 		console.log(q);
-		let htmlresult = '<a href="' + p.getURL(q) + '">' +
-			'<div class="search-result">';
-		htmlresult += '<img class="search-icon" src="' + p.icon + '">';
-		htmlresult += '<span class="search-query"><b>' + p.desc + '</b>: ' + q + '</span>';
-		htmlresult += '</a></div>'
+		let htmlresult = '<div class="search-result" id="search-result-' + resultCount + '">' +
+			'<img class="search-icon" src="' + p.icon + '">' +
+			'<a class="search-query" href="' + p.getURL(q) + '">' +
+			'<b>' + p.desc + '</b>: ' + q + '</a>' +
+			(resultCount < 10 ?
+				'<span class="search-shortcut"' + (resultCount > 0 ? '<kbd>Alt</kbd> + <kbd>' + resultCount +'</kbd>' : '<kbd>ENTER</kbd>') + '</span>'
+				: '') +
+			'</div>';
 		htmlresults += htmlresult;
 		resultCount++;
 	}
