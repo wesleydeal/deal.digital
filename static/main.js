@@ -12,11 +12,14 @@ function uniq(a) {
 }
 
 // SEARCH ------------------------------------------
+let searchShortcutRegistry = {};
+
 function toggleSearch(event=null, force=false) {
 	searchCtr = elid("search-container");
 	if (!searchCtr) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
+				<button id="search-close" aria-label="Close Navigator">⨯</button>
 				<p>This feature is unfinished and broken.</p>
 				<label for="search-box"><b>🧭 Navigator</b>: Press <kbd>/</kbd>, type your query, and press <kbd>ENTER</kbd> or select a provider.</label>
 				<input id="search-box" type="text" placeholder="Type to search">
@@ -24,6 +27,7 @@ function toggleSearch(event=null, force=false) {
 				</menu>
 			</div>
 		`);
+		elid("search-close").addEventListener("click", () => elid("search-container").remove());
 		elid("search-box").focus();
 		elid("search-box").addEventListener('keyup', updateSearch);
 	} else if (force) {
@@ -49,7 +53,7 @@ function updateSearch(event) {
 				s.color = query;
 				return s.color !== '';
 			},
-			action: () => document.documentElement.style.setProperty('--color-primary', document.getElementById("search-box").value),
+			action: (event) => document.documentElement.style.setProperty('--color-primary', event.target.title),
 		},
 		Google: {
 			keywords: ['g', 'google'],
@@ -98,10 +102,12 @@ function updateSearch(event) {
 		"yt": "YouTube",
 		"gpt": "ChatGPT",
 		"chatgpt": "ChatGPT",
+		"color": "SetColor",
 	};
 	let query = searchBox.value;
 	let htmlresults = "";
 	let resultCount = 0;
+	searchShortcutRegistry = {}
 
 	while(query[0] === "/") {
 		query = query.substring(1);
@@ -137,35 +143,44 @@ function updateSearch(event) {
 	for (item of providerQueries) {
 		const p = providers[item.providerName];
 		const q = item.query;
-		console.log(p, q);
+
 		let elResult = document.createElement("div");
-		let elIcon = document.createElement("img");
-		let elQueryLink = document.createElement("a");
-		let elShortcut = document.createElement("div");
 		elResult.id = "search-result-" + resultCount;
 		elResult.classList.add("search-result");
-		elIcon.src = p.icon;
+
+		//let elIcon = document.createElement("img");
+		//elIcon.src = p.icon;
+		//elResult.insertAdjacentElement("beforeend", elIcon);
+
+		let elQueryLink = document.createElement("a");
 		if (p.action) {
 			elQueryLink.addEventListener('click', p.action);
+			elQueryLink.title = q;
 			elQueryLink.href = "#";
 		} else {
 			elQueryLink.href = p.getURL(q);
 		}
 		elQueryLink.innerHTML = '<b>' + p.desc + '</b>: ' + q;
-		elShortcut.classList.add("search-shortcut");
-		elShortcut.innerHTML = (resultCount < 10 ?
-				(resultCount > 0 ? '<kbd>Alt</kbd> + <kbd>' + resultCount + '</kbd>' : '<kbd>ENTER</kbd>')
-				: '');
-		//elResult.insertAdjacentElement("beforeend", elIcon);
 		elResult.insertAdjacentElement("beforeend", elQueryLink);
-		elResult.insertAdjacentElement("beforeend", elShortcut);
+
+		if (resultCount < 11) {
+			let elShortcut = document.createElement("div");
+			elShortcut.classList.add("search-shortcut");
+			if (resultCount === 0) {
+				elShortcut.innerHTML = '<kbd>ENTER</kbd>';
+				searchShortcutRegistry['Enter'] = elQueryLink;
+			} else {
+				elShortcut.innerHTML = '<kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>' + resultCount + '</kbd>';
+				searchShortcutRegistry['Alt' + " !@#$%^&*()"[resultCount]] = elQueryLink;
+			}
+			elResult.insertAdjacentElement("beforeend", elShortcut);
+		}
+
 		searchResults.insertAdjacentElement("beforeend", elResult);
 		resultCount++;
 	}
 
 	// TODO: implement search this site
-
-	console.log(entries);
 }
 
 
@@ -198,6 +213,17 @@ function load() {
 document.addEventListener("keyup", (e) => {
 	if (e.key === '/') {
 		toggleSearch(null, true);
+	} else if (e.key === 'Escape') {
+		elid("search-container").remove();
+	}
+
+	if (document.activeElement === elid("search-box")) {
+		let key = "Alt".repeat(e.altKey) + e.key;
+		console.log(key);
+		if (key in searchShortcutRegistry) {
+			elQueryLink = searchShortcutRegistry[key];
+			elQueryLink.click();
+		}
 	}
 });
 

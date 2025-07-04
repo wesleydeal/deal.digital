@@ -768,6 +768,20 @@ kbd {
 		font-size: 0.9em;
 		display: inline-block;
 	}
+	& #search-close {
+		font-family: inherit;
+		font-size: 2em;
+		line-height: 1;
+		color: #fff;
+		appearance: none;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		padding: 0.07em 0.15em;
+		background: var(--button-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+		border: var(--button-border);
+		box-shadow: var(--button-shadow);
+	}
 	& #search-box {
 		width: 100%;
 		appearance: none;
