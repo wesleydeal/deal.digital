@@ -39,29 +39,53 @@ function updateSearch(event) {
 	const searchBox = elid("search-box");
 	const searchResults = elid("search-results");
 	const providers = {
+		SetColor: {
+			desc: 'Set Primary Color',
+			icon: null,
+			suggest: true,
+			getURL: (query) => '',
+			validate: (query) => {
+				let s = new Option().style;
+				s.color = query;
+				return s.color !== '';
+			},
+			action: () => document.documentElement.style.setProperty('--color-primary', document.getElementById("search-box").value),
+		},
 		Google: {
 			keywords: ['g', 'google'],
 			desc: 'Google Search',
 			icon: '/icons/search/google.png',
+			suggest: true,
 			getURL: (query) => "https://google.com/search?q=" + encodeURIComponent(query).replaceAll("%20", "+"),
+			validate: (query) => true,
+			action: null,
 		},
 		eBay: {
 			keywords: ['e', 'eb', 'ebay'],
 			desc: 'eBay',
 			icon: '/icons/search/ebay.png',
+			suggest: true,
 			getURL: (query) => "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(query).replaceAll("%20", "+"),
+			validate: (query) => true,
+			action: null,
 		},
 		YouTube: {
 			keywords: ['y', 'yt', 'youtube'],
 			desc: 'YouTube',
 			icon: '/icons/search/youtube.png',
+			suggest: true,
 			getURL: (query) => '',
+			validate: (query) => true,
+			action: null,
 		},
 		ChatGPT: {
 			keywords: ['gpt', 'chatgpt'],
 			desc: 'ChatGPT Search',
 			icon: '/icons/seach/chatgpt.png',
+			suggest: true,
 			getURL: (query) => '',
+			validate: (query) => true,
+			action: null,
 		}
 	}
 	const keywordMap = {
@@ -105,7 +129,9 @@ function updateSearch(event) {
 
 	// TODO: add options for all currently nonexistent providers
 	for (providerName in providers) {
-		providerQueries.push({ providerName: providerName, query: query });
+		if (providers[providerName].validate(query)){
+			providerQueries.push({ providerName: providerName, query: query });
+		}
 	}
 
 	for (item of providerQueries) {
@@ -119,7 +145,12 @@ function updateSearch(event) {
 		elResult.id = "search-result-" + resultCount;
 		elResult.classList.add("search-result");
 		elIcon.src = p.icon;
-		elQueryLink.href = p.getURL(q);
+		if (p.action) {
+			elQueryLink.addEventListener('click', p.action);
+			elQueryLink.href = "#";
+		} else {
+			elQueryLink.href = p.getURL(q);
+		}
 		elQueryLink.innerHTML = '<b>' + p.desc + '</b>: ' + q;
 		elShortcut.classList.add("search-shortcut");
 		elShortcut.innerHTML = (resultCount < 10 ?
