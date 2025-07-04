@@ -50,7 +50,7 @@ out of commission due to heel blisters from new shoes).
 ## Listening to...
 
 * Rush -- Digital Man
-* Tears for Fears -- The Seeds of Love
+* Tears for Fears -- Year of the Knife
 * Steely Dan -- Bodhisattva
 * Kavinsky -- Zenith
 * Philip Bailey -- Easy Lover
