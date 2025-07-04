@@ -27,6 +27,7 @@
 			<!--<li><a href="https://github.com/wesleydeal">👨🏻‍💻 GitHub</a>
 			<li><a href="https://linkedin.com/in/wesley-deal">🏢 LinkedIn</a>-->
 			<li><a href="/resume">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
 		</ul>
 	</nav>
 	{% if (page and not page.extra.nobreadcrumbs) -%}
@@ -67,9 +68,10 @@
 	{% endblock %}
 </section>
 <footer>
+	<p>Welcome to deal.digital v2025 (concourse) -=[WD]=-
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
 	<p>% show system-information
-    <p>No rights reserved. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>. Provided as-is, no warranty, etc.
-	<p>Built {{ now(utc=true) | date(format="%Y-%m-%d %H:%M:%S UTC") }} with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages.
+	<p>Built {{ now(utc=true) | date(format="%Y-%m-%d %H:%M:%S UTC") }} with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>.
 	<p><b>Fonts:</b> This page uses Roboto Flex with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in Inconsolata.
 	<p>% tree deal.digital
 	{% block sitetree -%}

@@ -756,9 +756,8 @@ kbd {
 #search-container {
 	grid-area: search;
 	padding: 32px 5vw;
-	min-height: 50vh;
 	height: auto;
-	transition: min-height 250ms cubic-bezier(0.23, 1, 0.320, 1);
+	transition: height 250ms cubic-bezier(0.23, 1, 0.320, 1);
 	overflow: hidden;
 	border-bottom: 2px solid var(--color-primary);
 	background: linear-gradient(172deg in oklch, var(--color-bg), var(--color-primary) 750%), var(--color-bg);
@@ -769,8 +768,19 @@ kbd {
 	}
 	& label {
 		margin: 0 0 0.5em;
-		font-size: 0.9em;
+		background: var(--color-fg-hc);
+		color: var(--color-bg-hc);
+		padding: 0 0.5em;
 		display: inline-block;
+		font-variation-settings: "YTLC" 555;
+		& b {
+			font-weight: 570;
+		}
+		& i {
+			font-weight: 300;
+			opacity: 0.8;
+			font-style: normal;
+		}
 	}
 	& #search-close {
 		font-family: inherit;
@@ -792,10 +802,12 @@ kbd {
 		font-family: inherit;
 		border: none;
 		border-bottom: 1px solid var(--color-h1);
-		background: transparent;
+		background: var(--color-bg-hc);
+		box-shadow: var(--button-shadow);
 		color: inherit;
 		font-size: 1.3rem;
 		font-stretch: 150%;
+		padding: 0.25em;
 	}
 	& #search-results {
 		list-style-type: none;

@@ -20,7 +20,7 @@ function toggleSearch(event=null, force=false) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
 				<button id="search-close" aria-label="Close Navigator">⨯</button>
-				<label for="search-box"><b>🧭 Navigator</b> <i>ALPHA</i></label>
+				<label for="search-box"><b>///// Navigator</b> <i>alpha one</i></label>
 				<input id="search-box" type="text" placeholder="Type to search">
 				<menu id="search-results">
 					<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to close.
@@ -35,6 +35,7 @@ function toggleSearch(event=null, force=false) {
 						<li><b>Mozilla Developer</b>: mdn
 						<li><b>Zola Docs</b>: zola
 						<li><b>Tera Docs</b>: tera
+						<li><b>Anna's Archive</b>: an
 					</ul>
 				  <h2>Examples</h2>
 					<ul>
@@ -42,6 +43,7 @@ function toggleSearch(event=null, force=false) {
 						<li><a href="https://www.ebay.com/sch/i.html?_nkw=+ibm+model+m+(bolt%2Cscrew)+(mod%2Cmodded)">eb ibm model m (bolt,screw) (mod,modded)</a>
 						<li><a href="https://youtube.com/results?search_query=+moments+with+heavy+french+toast">yt moments with heavy french toast</a>
 						<li><a href="https://chatgpt.com/?q=where+can+I+get+a+good+asada+burrito+nearby+">where can I get a good asada burrito nearby !gpt</a>
+						<li><a href="https://annas-archive.org/search?q=mike+ma">mike ma !an</a>
 					</ul>
 				</menu>
 			</div>
@@ -124,8 +126,31 @@ function updateSearch(event) {
 			getURL: (query) => 'https://www.amazon.com/s?k=' + encodeURIComponent(query).replaceAll("%20", "+"),
 			validate: (query) => true,
 			action: null,
+		},
+		MDN: {
+			desc: 'Mozilla Developer',
+			icon: '/icons/search/mdn.png',
+			suggest: false,
+			getURL: (query) => 'https://developer.mozilla.org/en-US/search?q='  + encodeURIComponent(query).replaceAll("%20", "+"),
+			validate: (query) => true,
+			action: null,
+		},
+		AnnasArchive: {
+			desc: "Anna's Archive",
+			icon: '/icons/search/annas-archive.png',
+			suggest: false,
+			getURL: (query) => 'https://annas-archive.org/search?q='  + encodeURIComponent(query).replaceAll("%20", "+"),
+			validate: (query) => true,
+			action: null,
+		},
+		Zola: {
+			desc: 'Zola Documentation',
+			icon: '/icons/search/zola.png',
+			suggest: false,
+			getURL: (query) => 'https://search.brave.com/search?q=site%3Agetzola.org+' + encodeURIComponent(query).replaceAll("%20", "+"),
+			validate: (query) => true,
+			action: null,
 		}
-
 	}
 	const keywordMap = {
 		"g": "Google",
@@ -138,7 +163,14 @@ function updateSearch(event) {
 		"gpt": "ChatGPT",
 		"chatgpt": "ChatGPT",
 		"color": "SetColor",
-		"am": "Amazon"
+		"am": "Amazon",
+		"mdn": "MDN",
+		"an": "AnnasArchive",
+		"anna": "AnnasArchive",
+		"annasarchive": "AnnasArchive",
+		"book": "AnnasArchive",
+		"zo": "Zola",
+		"zola": "Zola"
 	};
 	let query = searchBox.value;
 	let htmlresults = "";
@@ -169,7 +201,7 @@ function updateSearch(event) {
 
 	// TODO: add options for all currently nonexistent providers
 	for (providerName in providers) {
-		if (providers[providerName].validate(query)){
+		if (providers[providerName].validate(query) && providers[providerName].suggest){
 			providerQueries.push({ providerName: providerName, query: query });
 		}
 	}
@@ -241,6 +273,7 @@ function load() {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	});
 	elid("btn_search")?.addEventListener("click", toggleSearch);
+	elid("search-link")?.addEventListener("click", toggleSearch);
 }
 
 document.addEventListener("keyup", (e) => {
