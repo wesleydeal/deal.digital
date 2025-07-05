@@ -843,33 +843,59 @@ kbd {
 		width: 100%;
 	}
 	& .search-result {
+		--h: 0;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 5px;
 		padding: 0.25em 0;
-		border-bottom: 1px solid var(--color-h1);
+		//border-bottom: 1px solid oklch(from var(--color-h1) l c calc(h + var(--h)));
+		& a:any-link {
+			text-decoration-color: oklch(from var(--color-link-underline) l c calc(h + var(--h)));
+		}
+		&:nth-of-type(1)  { --h:   0; }
+		&:nth-of-type(2)  { --h:  40; }
+		&:nth-of-type(3)  { --h:  80; }
+		&:nth-of-type(4)  { --h: 120; }
+		&:nth-of-type(5)  { --h: 160; }
+		&:nth-of-type(6)  { --h: 200; }
+		&:nth-of-type(7)  { --h: 240; }
+		&:nth-of-type(8)  { --h: 280; }
+		&:nth-of-type(9)  { --h: 320; }
+		&:nth-of-type(10) { --h:  20; }
+		&:nth-of-type(11) { --h:  60; }
+		&:nth-of-type(12) { --h: 100; }
+		&:nth-of-type(13) { --h: 140; }
+		&:nth-of-type(14) { --h: 180; }
+		&:nth-of-type(15) { --h: 220; }
+		&:nth-of-type(16) { --h: 260; }
+		&:nth-of-type(17) { --h: 300; }
+		&:nth-of-type(18) { --h: 340; }
 	}
 	& .search-shortcut {
 		margin-left: auto;
+		@media screen and (width < 500px) {
+			display: none;
+		}
 	}
 	& #search-keyword-list {
 		padding-left: 0;
 		list-style: none;
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 		max-width: 100%;
 		gap: 0.25em;
 		& li {
+			--h: 0;
+			--c: oklch(from var(--color-h2) l c calc(h + var(--h)));
 			margin: 0;
 			display: flex;
 			flex-direction: row-reverse;
 			justify-content: space-between;
 			align-items: center;
-			flex: 1 0 150px;
 			gap: 0.5em;
 			padding: 0.3em 0.5em;
-			width: max-content;
-			background: linear-gradient(to bottom right in oklch, oklch(from var(--color-h2) l c h / 25%), oklch(from var(--color-h2) l c h / 10%));
+			//min-width: max-content;
+			background: linear-gradient(to bottom right in oklch, oklch(from var(--c) l c h / 25%), oklch(from var(--c) l c h / 10%));
 			border-radius: 5px;
 			font-stretch: 50%;
 			line-height: 1.25;
@@ -879,6 +905,24 @@ kbd {
 				background: var(--color-bg);
 				font-family: inherit;
 			}
+			&:nth-of-type(1)  { --h:   0; }
+			&:nth-of-type(2)  { --h:  40; }
+			&:nth-of-type(3)  { --h:  80; }
+			&:nth-of-type(4)  { --h: 120; }
+			&:nth-of-type(5)  { --h: 160; }
+			&:nth-of-type(6)  { --h: 200; }
+			&:nth-of-type(7)  { --h: 240; }
+			&:nth-of-type(8)  { --h: 280; }
+			&:nth-of-type(9)  { --h: 320; }
+			&:nth-of-type(10) { --h:  20; }
+			&:nth-of-type(11) { --h:  60; }
+			&:nth-of-type(12) { --h: 100; }
+			&:nth-of-type(13) { --h: 140; }
+			&:nth-of-type(14) { --h: 180; }
+			&:nth-of-type(15) { --h: 220; }
+			&:nth-of-type(16) { --h: 260; }
+			&:nth-of-type(17) { --h: 300; }
+			&:nth-of-type(18) { --h: 340; }
 		}
 	}
 }
