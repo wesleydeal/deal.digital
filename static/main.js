@@ -19,7 +19,7 @@ function toggleSearch(event=null, force=false) {
 	if (!searchCtr) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
-				<button id="search-close" aria-label="Close Navigator">⨯</button>
+				<button id="search-close" aria-label="Close Navigator">🗙</button>
 				<label for="search-box"><b>///// Navigator</b> <i>alpha one</i></label>
 				<input id="search-box" type="text" placeholder="Type to search 🧭">
 				<menu id="search-results">
@@ -204,7 +204,7 @@ function updateSearch(event) {
 	}
 
 	// TODO: handle !bangs and searches beginning with provider queries
-	for (word of query.split(" ").reverse()) {
+	for (word of query.toLowerCase().split(" ").reverse()) {
 		if (word.search("!") > -1) {
 			let possibleKeyword = word.substring(word.search("!") + 1);
 			if (Array.from(Object.keys(keywordMap)).includes(possibleKeyword)) {
@@ -214,8 +214,11 @@ function updateSearch(event) {
 		}
 	}
 
-	if (Array.from(Object.keys(keywordMap)).includes(query.split(" ")[0])) {
-		providerQueries.push({ providerName: keywordMap[query.split(" ")[0]], query: query.substring(query.search(" ")) });
+	if (Array.from(Object.keys(keywordMap)).includes(query.toLowerCase().split(" ")[0])) {
+		providerQueries.push({
+			providerName: keywordMap[query.toLowerCase().split(" ")[0]],
+			query: query.search(" ") > -1 ? query.substring(query.search(" ")) : '',
+		});
 		//foundKeyword = true;
 	}
 
