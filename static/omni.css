@@ -864,13 +864,15 @@ kbd {
 			display: flex;
 			flex-direction: row-reverse;
 			justify-content: space-between;
+			align-items: center;
 			flex: 1 0 150px;
 			gap: 0.5em;
-			padding: 0.25em 0.5em;
+			padding: 0.3em 0.5em;
 			width: max-content;
-			background: linear-gradient(to bottom right in oklch, oklch(from var(--color-h2) l c h / 10%), oklch(from var(--color-h2) l c h / 20%));
+			background: linear-gradient(to bottom right in oklch, oklch(from var(--color-h2) l c h / 25%), oklch(from var(--color-h2) l c h / 10%));
 			border-radius: 5px;
 			font-stretch: 50%;
+			line-height: 1.25;
 			& samp {
 				padding: 0 0.25em;
 				border: 1px solid var(--color-h2);
