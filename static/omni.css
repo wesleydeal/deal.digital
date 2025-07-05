@@ -828,6 +828,19 @@ kbd {
 		margin: 1em 0;
 		width: max-content;
 		max-width: 100%;
+		&:not(:has(.search-result)) {
+			display: none;
+		}
+	}
+	& #search-help {
+		:has(.search-result) & {
+			display: none;
+		}
+		display: flex;
+		flex-direction: column;
+		padding: 0;
+		marign: 1em 0;
+		width: 100%;
 	}
 	& .search-result {
 		display: flex;

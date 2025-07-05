@@ -21,8 +21,10 @@ function toggleSearch(event=null, force=false) {
 			<div id="search-container">
 				<button id="search-close" aria-label="Close Navigator">⨯</button>
 				<label for="search-box"><b>///// Navigator</b> <i>alpha one</i></label>
-				<input id="search-box" type="text" placeholder="🧭 Type to search">
+				<input id="search-box" type="text" placeholder="Type to search 🧭">
 				<menu id="search-results">
+				</menu>
+				<div id="search-help">
 					<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to close.
 					<h2>Keywords</h2>
 					<ul id="search-keyword-list">
@@ -45,7 +47,7 @@ function toggleSearch(event=null, force=false) {
 						<li><a href="https://chatgpt.com/?q=where+can+I+get+a+good+asada+burrito+nearby+">where can I get a good asada burrito nearby !gpt</a>
 						<li><a href="https://annas-archive.org/search?q=mike+ma">mike ma !an</a>
 					</ul>
-				</menu>
+				</div>
 			</div>
 		`);
 		elid("search-close").addEventListener("click", () => elid("search-container").remove());
@@ -173,7 +175,6 @@ function updateSearch(event) {
 		"zola": "Zola"
 	};
 	let query = searchBox.value;
-	let htmlresults = "";
 	let resultCount = 0;
 	let foundKeyword = false;
 	searchShortcutRegistry = {}
@@ -185,6 +186,10 @@ function updateSearch(event) {
 	let entries = []; //todo replace
 	let providerQueries = [];
 	searchResults.innerHTML = '';
+
+	if (query.replace(" ","") === "") {
+		return;
+	}
 
 	// TODO: handle !bangs and searches beginning with provider queries
 	for (word of query.split(" ").reverse()) {
