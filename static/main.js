@@ -26,7 +26,7 @@ function toggleSearch(event=null, force=false) {
 				</menu>
 				<div id="search-help">
 					<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to close.
-					<h2>Keywords</h2>
+					<h2>!keywords</h2>
 					<ul id="search-keyword-list">
 						<li>Brave Search <samp>b</samp>
 						<li>Google Search <samp>g</samp>
@@ -289,7 +289,13 @@ function load() {
 		if (e.key === '/' && document.activeElement.tagName != "INPUT") {
 			toggleSearch(null, true);
 		} else if (e.key === 'Escape') {
-			elid("search-container").remove();
+			const searchBox = elid("search-box");
+			if (searchBox.value === "") {
+				elid("search-container").remove();
+			} else {
+				searchBox.value = "";
+				updateSearch(null);
+			}
 		}
 
 		if (document.activeElement === elid("search-box")) {
@@ -297,6 +303,9 @@ function load() {
 			if (key in searchShortcutRegistry) {
 				elQueryLink = searchShortcutRegistry[key];
 				elQueryLink.click();
+			}
+			if (e.key === "ArrowUp") {
+
 			}
 		}
 	});
