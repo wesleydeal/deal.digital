@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample Page - Wesley Deal</title>
+<link rel="stylesheet" href="/omni.css">
+<body id="sample">
+<header>
+	<nav id="topnav">
+		<a href="/" id="homelink">Wesley Deal</a>
+		<ul class="topnav-links">
+			<li><a href="/tools">🛠️ Tools</a>
+			<li><a href="/blog">✍🏻 Blog</a>
+			<li><a href="/now">⏳ Now</a>
+			<li><a href="/links">🔗 Links</a>
+			<li><a href="/uses">⌨️ Uses</a>
+			<!--<li><a href="https://github.com/wesleydeal">👨🏻‍💻 GitHub</a>
+			<li><a href="https://linkedin.com/in/wesley-deal">🏢 LinkedIn</a>-->
+			<li><a href="/resume">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+	<nav id="breadcrumbs">
+		<span>/</span>
+		<a href="https://deal.digital/sample/">●</a>
+		</nav>
+	</header>
+
+<nav id="toc">
+	<details open>
+	<summary><h2>Contents</h2></summary>
+	<ol>
+		<li>
+			<a href="https://deal.digital/sample/#colors">Colors</a>
+		</li>
+		<li>
+			<a href="https://deal.digital/sample/#code">Code</a>
+		</li>
+		<li>
+			<a href="https://deal.digital/sample/#blockquotes">Blockquotes</a>
+		</li>
+		<li>
+			<a href="https://deal.digital/sample/#domain-eukaryota">Domain Eukaryota</a>
+			<ol><li><a href="https://deal.digital/sample/#kingdom-animalia">Kingdom Animalia</a>
+			</ol>
+		</li>
+		<li><a href="#" class="toplink">↑ Top of page</a>
+	</ol>
+	</details>
+</nav>
+
+<section class="content">
+	
+<h1 class="title">
+	Sample Page
+</h1>
+<p>This page is here to demonstrate all of the common elements used on this website. This is primarily intended for
+my personal use during stylesheet development. Oh, and by the way, <a href="#">here is a link</a> that goes nowhere.</p>
+<p>This paragraph contains <em><strong>bold, <em>bold italic (some of which is <a href="#">linked</a>),</em></strong> plain italic,</em> and <del>strikethrough</del> text.</p>
+<h2 id="colors"><a class="zola-anchor" href="#colors" aria-label="Anchor link for: colors">#</a>Colors</h2>
+<p>Set the <strong>primary color</strong> for this page using this or the field in the table below: <input id="primary-color-picker" type="color"></p>
+<table><thead><tr><th style="text-align: left">Color Name</th><th style="text-align: center">… Color Preview …</th><th style="text-align: left">Color String</th></tr></thead><tbody>
+<tr><td style="text-align: left">--color-primary</td><td style="text-align: center">Sample</td><td style="text-align: left"><input id="primary-color-picker-text"></td></tr>
+<tr><td style="text-align: left">--color-primary-sat</td><td style="text-align: center">Sample</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">--color-pop</td><td style="text-align: center">Sample</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">--color-pop-bgcontrast</td><td style="text-align: center">Sample</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">--color-h1</td><td style="text-align: center">Sample</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">--color-fg</td><td style="text-align: center">Sample</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">--color-bg</td><td style="text-align: center">Sample</td><td style="text-align: left"></td></tr>
+</tbody></table>
+<script>
+document.getElementById('primary-color-picker').addEventListener('input', clickColor);
+document.getElementById('primary-color-picker-text').addEventListener('input', typeColor);
+
+function updateColorTable() {
+	let textInput = document.getElementById('primary-color-picker-text');
+	let table = textInput.parentElement.parentElement.parentElement;
+	let demoRows = table.querySelectorAll('tbody tr');
+	
+	for (row of demoRows){
+		let nameCell = row.querySelectorAll('td')[0]
+		let previewCell = row.querySelectorAll('td')[1]
+		let valCell = row.querySelectorAll('td')[2]
+		let varName = nameCell.innerHTML;
+		let val = getComputedStyle(document.documentElement).getPropertyValue(varName);
+		nameCell.style.setProperty('color', val);
+		nameCell.style.setProperty('text-shadow', '1px 1px 0 var(--color-fg)');
+		if(varName == "--color-primary") {
+			if (document.activeElement != textInput) {
+				textInput.value = val;
+			}
+		} else {
+			valCell.innerHTML = val;
+		}
+		previewCell.style.setProperty('background', val);
+	}
+}
+
+function clickColor() {
+	let picker = document.getElementById('primary-color-picker');
+	document.documentElement.style.setProperty('--color-primary',picker.value);
+	updateColorTable();
+}
+
+function typeColor() {
+	let val = document.getElementById('primary-color-picker-text').value
+	if (!CSS.supports('color',val)) {
+		return;
+	}
+	document.documentElement.style.setProperty('--color-primary', val);
+	updateColorTable();
+}
+
+updateColorTable();
+</script>
+<style>
+:has(#primary-color-picker) + table tbody tr td:nth-child(2) {
+	
+}
+</style>
+<h2 id="code"><a class="zola-anchor" href="#code" aria-label="Anchor link for: code">#</a>Code</h2>
+<p>There’s two primary ways to write code. You can use inline code by quoting it with <code>`single backticks`</code>
+or a multiline <code>&lt;pre&gt;&lt;code&gt;</code> surrounded by triple backticks, optionally placing a language on the first
+line after the backticks. For example, here’s some HTML.</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic">&lt;!doctype html&gt;
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-structure z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-structure z-any z-html">html</span> <span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">lang</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>en<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-inline z-any z-html">meta</span> <span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">charset</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>utf-8<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-inline z-any z-html">title</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>Hello, world!<span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-inline z-any z-html">title</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">main</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">	<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">h1</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>Hello, world.<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-block z-any z-html">h1</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">	<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">p</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>This is a complete sample HTML document within my sample document. A meta sample, so to speak. And it has a rather ~w~i~d~e~ line of text. A line of text that might compress the size of the left sidebar if you&#39;re on a wide enough screen. Actually, that may be a bit of a bug. The line of text in question, the one you&#39;re currently reading, is so wide that even on a 4k monitor set to 96 DPI, you should still have to scroll just a little bit in order to see the whole thing.
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">main</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></code></pre>
+<h2 id="blockquotes"><a class="zola-anchor" href="#blockquotes" aria-label="Anchor link for: blockquotes">#</a>Blockquotes</h2>
+<p>Sometimes, you want a blockquote that doesn’t quote anyone.</p>
+<blockquote>
+<p>Who wrote this?</p>
+</blockquote>
+<p>But more often, you’ll want to attribute the quote to an author (or even <em>–Anonymous</em>). Here’s what that would look like, with a longer quote.</p>
+<blockquote>
+	<p>Freak the fuck out and panic sell everything right now.</p>
+<p>It’s fucking over.</p>
+
+</blockquote>
+	<div class="quote-signoff">
+		<p class="author">—Warren Buffet
+		
+			<p class="date"><time datetime="2025-06-23">2025-06-23</time>
+		
+		
+	</div><h1 id="domain-eukaryota"><a class="zola-anchor" href="#domain-eukaryota" aria-label="Anchor link for: domain-eukaryota">#</a>Domain <em>Eukaryota</em></h1>
+<p>Organisms whose cells possess a membrane-bound nucleus.</p>
+<h2 id="kingdom-animalia"><a class="zola-anchor" href="#kingdom-animalia" aria-label="Anchor link for: kingdom-animalia">#</a>Kingdom <em>Animalia</em></h2>
+<p>Multicellular eukaryotes which generally consume organic material, breathe oxygen, move, and reproduce sexually.</p>
+<h3 id="phylum-chordata"><a class="zola-anchor" href="#phylum-chordata" aria-label="Anchor link for: phylum-chordata">#</a>Phylum <em>Chordata</em></h3>
+<p>Animals possessing a notochord at some stage in development.</p>
+<h4 id="class-mammalia"><a class="zola-anchor" href="#class-mammalia" aria-label="Anchor link for: class-mammalia">#</a>Class <em>Mammalia</em></h4>
+<p>Warm-blooded vertebrates with hair/fur and mammary glands.</p>
+<h5 id="order-carnivora"><a class="zola-anchor" href="#order-carnivora" aria-label="Anchor link for: order-carnivora">#</a>Order <em>Carnivora</em></h5>
+<p>Meat-eating mammals with specialized teeth and claws.</p>
+<h6 id="family-felidae"><a class="zola-anchor" href="#family-felidae" aria-label="Anchor link for: family-felidae">#</a>Family <em>Felidae</em></h6>
+<p>The biological family of cats, known for retractable claws and keen predation skills.</p>
+<p><strong>Snow Leopard</strong>, <em>Panthera uncia</em><br />
+The snow leopard — a solitary, mountain-dwelling big cat native to Central and South Asia.</p>
+
+
+<section class="article-signoff">
+	
+	
+	
+	
+</section>
+
+</section>
+<footer>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<p>Built 2025-07-05 21:28:42 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/sample.md">View source here</a>.
+	<p><b>Fonts:</b> This page uses Roboto Flex with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in Inconsolata.
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;">blog&#x2F;</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;librechat&#x2F;">librechat/</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;shorelock&#x2F;">shorelock/</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;smart-seagate&#x2F;">smart-seagate/</a>
+        <br>│ └─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;wintricks&#x2F;">wintricks/</a>
+        <br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;">tools&#x2F;</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;netlibram&#x2F;">netlibram/</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;prune&#x2F;">prune/</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;pwgen&#x2F;">pwgen/</a>
+        <br>│ └─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;tpmiddle&#x2F;">tpmiddle/</a>
+        <br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;contact&#x2F;">contact&#x2F;</a>
+		<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;home&#x2F;">home&#x2F;</a>
+		<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;links&#x2F;">links&#x2F;</a>
+		<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;now&#x2F;">now&#x2F;</a>
+		<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;sample&#x2F;">sample&#x2F;</a>
+		<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;todo&#x2F;">todo&#x2F;</a>
+		<br>└─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;uses&#x2F;">uses&#x2F;</a>
+		<p>% show :3
+	<p class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</p>
+</footer>
+<menu id="ui-tools">
+	<button id="btn_top" aria-label="Jump to top">⬆</button>
+	<!--<button id="btn_toc">📑</button>-->
+	<!--<button id="btn_search">🧭</button>-->
+	<button id="btn_theme" aria-label="Toggle dark mode">💡</button>
+	<button id="btn_larger" aria-label="Increase font size">T<b>▲</b></button>
+	<button id="btn_smaller" aria-label="Decrease font size">T<b>▼</b></button>
+</menu>
+<script src="/main.js"></script>
+</body>
+</html>

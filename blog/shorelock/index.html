@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="en" style="--color-primary: #00A1F4">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unlock a [Shore&#x2F;Mi]Tel Director - Wesley Deal</title>
+<link rel="stylesheet" href="/omni.css">
+<body id="shorelock">
+<header>
+	<nav id="topnav">
+		<a href="/" id="homelink">Wesley Deal</a>
+		<ul class="topnav-links">
+			<li><a href="/tools">🛠️ Tools</a>
+			<li><a href="/blog">✍🏻 Blog</a>
+			<li><a href="/now">⏳ Now</a>
+			<li><a href="/links">🔗 Links</a>
+			<li><a href="/uses">⌨️ Uses</a>
+			<!--<li><a href="https://github.com/wesleydeal">👨🏻‍💻 GitHub</a>
+			<li><a href="https://linkedin.com/in/wesley-deal">🏢 LinkedIn</a>-->
+			<li><a href="/resume">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+	<nav id="breadcrumbs">
+		<span>/</span>
+		<a href="https://deal.digital/blog/">Blog</a>
+		<span>/</span>
+		<a href="https://deal.digital/blog/shorelock/">●</a>
+		</nav>
+	</header>
+
+<section class="content">
+	
+<h1 class="title">
+	Fix a locked Shoretel&#x2F;Mitel Director
+</h1>
+<p>Let’s say, for the sake of argument, that you’re a very busy systems administrator. A while ago, something popped up on the top of your Shoretel management page. You noticed it when you were hastily onboarding a new employee:</p>
+<blockquote>
+<p>Due to license violation, access to Director will be locked in 38 days. Take proper action before the grace period has expired. Note that there are additional charges if you need to recover from a locked Director.</p>
+</blockquote>
+<p>You made a mental note and moved onto the next task.</p>
+<p>6 weeks later, a ticket arrives requesting a voicemail PIN reset. You go into the director but find that you’re now locked out entirely. How can you fix it?</p>
+<h2 id="the-process"><a class="zola-anchor" href="#the-process" aria-label="Anchor link for: the-process">#</a>The Process</h2>
+<p><strong>Beware</strong>: I cannot comment on the legal or technical ramifications of poking around in the running production database of your vendor software to bypass a license restriction.</p>
+<ul>
+<li>
+<p>Remote in to your Shoretel server. If Shoretel is holding your server hostage on a very old version of Windows, you might need to disable CredSSP remediation on your box with</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch"><span class="z-keyword z-command z-dosbatch">reg</span> add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters /v AllowEncryptionOracle /t REG_DWORD /d <span class="z-constant z-numeric z-integer z-decimal z-dosbatch">2</span>
+</span></code></pre>
+</li>
+<li>
+<p>Install <a href="https://dev.mysql.com/downloads/workbench/">MySQL Workbench</a> on the server.</p>
+</li>
+<li>
+<p>Add a connection with these details:</p>
+<ul>
+<li>
+<p>Hostname: <code>localhost</code></p>
+</li>
+<li>
+<p>Port: <code>4308</code></p>
+</li>
+<li>
+<p>Username: <code>root</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Connect with the password <code>shorewaredba</code></p>
+</li>
+<li>
+<p>Run this query:</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-other z-DML z-sql">select</span> UserDNID,UserDN,GuiLoginName,LicenseTypeID,ClientType <span class="z-keyword z-other z-DML z-sql">from</span> users <span class="z-keyword z-other z-DML z-sql">order by</span> licensetypeID
+</span></code></pre>
+</li>
+<li>
+<p>In the table that appears, edit the license type  numbers for LicenseTypeID and ClientType to reduce your license count. Refer to the locked director for which license you’re over on. Refer to this table for the meaning of license type numbers.</p>
+<table><thead><tr><th style="text-align: center">#</th><th style="text-align: center">LicenseTypeID</th><th style="text-align: center">ClientType</th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">?</td><td style="text-align: center">Phone Only</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">Mailbox Only</td><td style="text-align: center">Operator</td></tr>
+<tr><td style="text-align: center">2</td><td style="text-align: center">Phone Only</td><td style="text-align: center">WG Supervisor</td></tr>
+<tr><td style="text-align: center">3</td><td style="text-align: center">Phone &amp; Mailbox</td><td style="text-align: center">WG Agent</td></tr>
+<tr><td style="text-align: center">4</td><td style="text-align: center">N/A</td><td style="text-align: center">?</td></tr>
+<tr><td style="text-align: center">5</td><td style="text-align: center">N/A</td><td style="text-align: center">Shoretel Connect</td></tr>
+</tbody></table>
+</li>
+<li>
+<p>In the bottom right corner, click <strong>Apply</strong>, review the changes, and <strong>Apply</strong> again. Exit MySQL Workbench.</p>
+</li>
+<li>
+<p>Restart the Shoretel-Director service (or, if preferred, the entire server).</p>
+</li>
+</ul>
+<h2 id="by-the-way"><a class="zola-anchor" href="#by-the-way" aria-label="Anchor link for: by-the-way">#</a>By the way…</h2>
+<p>If you’re still operating under the advice that you have to avoid Windows updates for Mitel Connect, you should consider <a href="https://www.shoretelforums.com/forum/shoretel-tech/installers/80664-windows-updates">changing your approach</a>.</p>
+
+
+
+
+
+<section class="article-signoff">
+	
+	
+	
+	<p class="created-at">written <time datetime="2020-09-15">2020-09-15</time></p>
+	
+	
+	<p class="updated-at">updated <time datetime="2025-03-04">2025-03-04</time></p>
+	
+</section>
+
+
+</section>
+<footer>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<p>Built 2025-07-05 21:28:42 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/blog&#x2F;shorelock.md">View source here</a>.
+	<p><b>Fonts:</b> This page uses Roboto Flex with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in Inconsolata.
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;">blog&#x2F;</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;librechat&#x2F;">librechat/</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;shorelock&#x2F;">shorelock/</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;smart-seagate&#x2F;">smart-seagate/</a>
+        <br>│ └─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;blog&#x2F;wintricks&#x2F;">wintricks/</a>
+        <br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;">tools&#x2F;</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;netlibram&#x2F;">netlibram/</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;prune&#x2F;">prune/</a>
+        <br>│ ├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;pwgen&#x2F;">pwgen/</a>
+        <br>│ └─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;tools&#x2F;tpmiddle&#x2F;">tpmiddle/</a>
+        <br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;contact&#x2F;">contact&#x2F;</a>
+		<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;home&#x2F;">home&#x2F;</a>
+		<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;links&#x2F;">links&#x2F;</a>
+		<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;now&#x2F;">now&#x2F;</a>
+		<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;sample&#x2F;">sample&#x2F;</a>
+		<br>├─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;todo&#x2F;">todo&#x2F;</a>
+		<br>└─<a href="https:&#x2F;&#x2F;deal.digital&#x2F;uses&#x2F;">uses&#x2F;</a>
+		<p>% show :3
+	<p class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</p>
+</footer>
+<menu id="ui-tools">
+	<button id="btn_top" aria-label="Jump to top">⬆</button>
+	<!--<button id="btn_toc">📑</button>-->
+	<!--<button id="btn_search">🧭</button>-->
+	<button id="btn_theme" aria-label="Toggle dark mode">💡</button>
+	<button id="btn_larger" aria-label="Increase font size">T<b>▲</b></button>
+	<button id="btn_smaller" aria-label="Decrease font size">T<b>▼</b></button>
+</menu>
+<script src="/main.js"></script>
+</body>
+</html>
