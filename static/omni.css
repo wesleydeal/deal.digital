@@ -761,6 +761,7 @@ kbd {
 	overflow: hidden;
 	border-bottom: 2px solid var(--color-primary);
 	background: linear-gradient(172deg in oklch, var(--color-bg), var(--color-primary) 750%), var(--color-bg);
+	background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%), linear-gradient(to top right in oklch longer hue, #b90000, #00cd88);
 	box-shadow: inset 0 -1px 5px oklch(from var(--color-tinted-shadow) l c h / 30%), inset 0 -4px 10px oklch(from var(--color-tinted-shadow) l c h / 20%);
 	@starting-style {
 		height: 0;
@@ -768,9 +769,10 @@ kbd {
 	}
 	& label[for="search-box"] {
 		margin: 0 0 0.5em;
+		//background: linear-gradient(to bottom, #0000 0 3px, var(--color-fg-hc) 0), linear-gradient(to right in oklch longer hue, #ff0000, #00ffa9);
 		background: var(--color-fg-hc);
 		color: var(--color-bg-hc);
-		padding: 0 0.5em;
+		padding: 1px 0.5em;
 		display: inline-block;
 		font-variation-settings: "YTLC" 555;
 		position: relative;
@@ -781,15 +783,6 @@ kbd {
 			font-weight: 300;
 			opacity: 0.8;
 			font-style: normal;
-		}
-		&::after{
-			content: '';
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			height: 2px;
-			background: linear-gradient(to right in oklch, #ff0000, #00ffa9);
 		}
 	}
 	& #search-close {
