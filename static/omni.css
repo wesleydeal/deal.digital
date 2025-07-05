@@ -766,13 +766,14 @@ kbd {
 		height: 0;
 		min-height: 0;
 	}
-	& label {
+	& label[for="search-box"] {
 		margin: 0 0 0.5em;
 		background: var(--color-fg-hc);
 		color: var(--color-bg-hc);
 		padding: 0 0.5em;
 		display: inline-block;
 		font-variation-settings: "YTLC" 555;
+		position: relative;
 		& b {
 			font-weight: 570;
 		}
@@ -780,6 +781,15 @@ kbd {
 			font-weight: 300;
 			opacity: 0.8;
 			font-style: normal;
+		}
+		&::after{
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 2px;
+			background: linear-gradient(to right in oklch, #ff0000, #00ffa9);
 		}
 	}
 	& #search-close {
@@ -808,6 +818,7 @@ kbd {
 		font-size: 1.3rem;
 		font-stretch: 150%;
 		padding: 0.25em;
+		border-radius: 0;
 	}
 	& #search-results {
 		list-style-type: none;

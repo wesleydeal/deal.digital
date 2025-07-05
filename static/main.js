@@ -21,7 +21,7 @@ function toggleSearch(event=null, force=false) {
 			<div id="search-container">
 				<button id="search-close" aria-label="Close Navigator">⨯</button>
 				<label for="search-box"><b>///// Navigator</b> <i>alpha one</i></label>
-				<input id="search-box" type="text" placeholder="Type to search">
+				<input id="search-box" type="text" placeholder="🧭 Type to search">
 				<menu id="search-results">
 					<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to close.
 					<h2>Keywords</h2>
@@ -175,6 +175,7 @@ function updateSearch(event) {
 	let query = searchBox.value;
 	let htmlresults = "";
 	let resultCount = 0;
+	let foundKeyword = false;
 	searchShortcutRegistry = {}
 
 	while(query[0] === "/") {
@@ -191,12 +192,14 @@ function updateSearch(event) {
 			let possibleKeyword = word.substring(word.search("!") + 1);
 			if (Array.from(Object.keys(keywordMap)).includes(possibleKeyword)) {
 				providerQueries.push({ providerName: keywordMap[possibleKeyword], query: query.replace(/!.*?( |$)/g, '') });
+				foundKeyword = true;
 			}
 		}
 	}
 
 	if (Array.from(Object.keys(keywordMap)).includes(query.split(" ")[0])) {
 		providerQueries.push({ providerName: keywordMap[query.split(" ")[0]], query: query.substring(query.search(" ")) });
+		foundKeyword = true;
 	}
 
 	// TODO: add options for all currently nonexistent providers
@@ -227,6 +230,8 @@ function updateSearch(event) {
 			elQueryLink.href = p.getURL(q);
 		}
 		elQueryLink.innerHTML = '<b>' + p.desc + '</b>: ' + q;
+		elQueryLink.classList.add("search-link");
+		if (foundKeyword) elQueryLink.classList.add("instant");
 		elResult.insertAdjacentElement("beforeend", elQueryLink);
 
 		if (resultCount < 11) {
@@ -274,22 +279,32 @@ function load() {
 	});
 	elid("btn_search")?.addEventListener("click", toggleSearch);
 	elid("search-link")?.addEventListener("click", toggleSearch);
+
+	document.addEventListener("keyup", (e) => {
+		if (e.key === '/' && document.activeElement.tagName != "INPUT") {
+			toggleSearch(null, true);
+		} else if (e.key === 'Escape') {
+			elid("search-container").remove();
+		}
+
+		if (document.activeElement === elid("search-box")) {
+			let key = "Alt".repeat(e.altKey) + e.key;
+			if (key in searchShortcutRegistry) {
+				elQueryLink = searchShortcutRegistry[key];
+				elQueryLink.click();
+			}
+		}
+	});
+
+	if (document.location.search.search("q=") > -1) {
+		toggleSearch(null, true);
+		searchString = document.location.search.split("q=")[1].split("#")[0].split("&")[0].replaceAll("+", "%20");
+		elid("search-box").value = decodeURIComponent(searchString);
+		updateSearch(null);
+		document.querySelectorAll("a.search-link.instant")?.[0].click?.();
+	}
 }
 
-document.addEventListener("keyup", (e) => {
-	if (e.key === '/' && document.activeElement.tagName != "INPUT") {
-		toggleSearch(null, true);
-	} else if (e.key === 'Escape') {
-		elid("search-container").remove();
-	}
 
-	if (document.activeElement === elid("search-box")) {
-		let key = "Alt".repeat(e.altKey) + e.key;
-		if (key in searchShortcutRegistry) {
-			elQueryLink = searchShortcutRegistry[key];
-			elQueryLink.click();
-		}
-	}
-});
 
 load();
