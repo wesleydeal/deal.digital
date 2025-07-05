@@ -19,7 +19,7 @@ function toggleSearch(event=null, force=false) {
 	if (!searchCtr) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
-				<button id="search-close" aria-label="Close Navigator">🗙</button>
+				<button id="search-close" aria-label="Close Navigator">X</button>
 				<label for="search-box"><b>///// Navigator</b> <i>alpha one</i></label>
 				<input id="search-box" type="text" placeholder="Type to search 🧭">
 				<menu id="search-results">
