@@ -25,17 +25,17 @@ function toggleSearch(event=null, force=false) {
 				<menu id="search-results">
 					<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to close.
 					<h2>Keywords</h2>
-					<ul>
-						<li><b>Brave Search</b>: b
-						<li><b>Google Search</b>: g
-						<li><b>ChatGPT Search</b>: gpt
-						<li><b>YouTube</b>: yt
-						<li><b>eBay</b>: eb
-						<li><b>Amazon</b>: am
-						<li><b>Mozilla Developer</b>: mdn
-						<li><b>Zola Docs</b>: zola
-						<li><b>Tera Docs</b>: tera
-						<li><b>Anna's Archive</b>: an
+					<ul id="search-keyword-list">
+						<li>Brave Search <samp>b</samp>
+						<li>Google Search <samp>g</samp>
+						<li>ChatGPT Search <samp>gpt</samp>
+						<li>YouTube <samp>yt</samp>
+						<li>eBay <samp>eb</samp>
+						<li>Amazon <samp>am</samp>
+						<li>Mozilla Dev <samp>mdn</samp>
+						<li>Zola Docs <samp>zola</samp>
+						<li>Tera Docs <samp>tera</samp>
+						<li>Anna's Archive <samp>an</samp>
 					</ul>
 				  <h2>Examples</h2>
 					<ul>
@@ -128,7 +128,7 @@ function updateSearch(event) {
 			action: null,
 		},
 		MDN: {
-			desc: 'Mozilla Developer',
+			desc: 'Mozilla Dev',
 			icon: '/icons/search/mdn.png',
 			suggest: false,
 			getURL: (query) => 'https://developer.mozilla.org/en-US/search?q='  + encodeURIComponent(query).replaceAll("%20", "+"),
@@ -199,7 +199,7 @@ function updateSearch(event) {
 
 	if (Array.from(Object.keys(keywordMap)).includes(query.split(" ")[0])) {
 		providerQueries.push({ providerName: keywordMap[query.split(" ")[0]], query: query.substring(query.search(" ")) });
-		foundKeyword = true;
+		//foundKeyword = true;
 	}
 
 	// TODO: add options for all currently nonexistent providers
