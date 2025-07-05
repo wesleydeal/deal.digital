@@ -878,12 +878,13 @@ kbd {
 		}
 	}
 	& #search-keyword-list {
+		margin-top: 0.25em;
 		padding-left: 0;
 		list-style: none;
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(20ch, 1fr));
 		max-width: 100%;
-		gap: 0.25em;
+		gap: 6px 4px;
 		& li {
 			--h: 0;
 			--c: oklch(from var(--color-h2) l c calc(h + var(--h)));
@@ -895,8 +896,9 @@ kbd {
 			gap: 0.5em;
 			padding: 0.3em 0.5em;
 			//min-width: max-content;
+			border: 1px solid oklch(from var(--color-h1) l c calc(h + var(--h)));
 			background: linear-gradient(to bottom right in oklch, oklch(from var(--c) l c h / 25%), oklch(from var(--c) l c h / 10%));
-			border-radius: 5px;
+			//border-radius: 5px;
 			font-stretch: 50%;
 			line-height: 1.25;
 			& samp {

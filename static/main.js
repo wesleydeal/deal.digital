@@ -38,6 +38,7 @@ function toggleSearch(event=null, force=false) {
 						<li>Zola Docs <samp>zola</samp>
 						<li>Tera Docs <samp>tera</samp>
 						<li>Anna's Archive <samp>an</samp>
+						<li>Mapple TV <samp>tv</samp>
 					</ul>
 				  <h2>Examples</h2>
 					<ul>
@@ -152,6 +153,14 @@ function updateSearch(event) {
 			getURL: (query) => 'https://search.brave.com/search?q=site%3Agetzola.org+' + encodeURIComponent(query).replaceAll("%20", "+"),
 			validate: (query) => true,
 			action: null,
+		},
+		mappletv: {
+			desc: 'Mapple.tv',
+			icon: '/icons/search/mapple.png',
+			suggest: false,
+			getURL: (query) => 'https://mapple.tv/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+			validate: (query) => true,
+			action: null,
 		}
 	}
 	const keywordMap = {
@@ -172,7 +181,10 @@ function updateSearch(event) {
 		"annasarchive": "AnnasArchive",
 		"book": "AnnasArchive",
 		"zo": "Zola",
-		"zola": "Zola"
+		"zola": "Zola",
+		"tv": "mappletv",
+		"mapple": "mappletv",
+		"mappletv": "mappletv",
 	};
 	let query = searchBox.value;
 	let resultCount = 0;
@@ -302,7 +314,14 @@ function load() {
 			let key = "Alt".repeat(e.altKey) + e.key;
 			if (key in searchShortcutRegistry) {
 				elQueryLink = searchShortcutRegistry[key];
-				elQueryLink.click();
+				if (e.ctrlKey) {
+					let original = elQueryLink.target;
+					elQueryLink.target = "_blank";
+					elQueryLink.click();
+					elQueryLink.target = original;
+				} else {
+					elQueryLink.click();
+				}
 			}
 			if (e.key === "ArrowUp") {
 
