@@ -770,6 +770,10 @@ kbd {
 	&.hidden {
 		height: 0;
 	}
+	& kbd{
+		font-family: var(--typeface-body);
+		font-stretch: 50%;
+	}
 	& label[for="search-box"] {
 		margin: 0 0 0.5em;
 		//background: linear-gradient(to bottom, #0000 0 3px, var(--color-fg-hc) 0), linear-gradient(to right in oklch longer hue, #ff0000, #00ffa9);
@@ -827,6 +831,7 @@ kbd {
 		list-style-type: none;
 		display: flex;
 		flex-direction: column;
+		gap: 4px;
 		padding: 0;
 		margin: 1em 0;
 		width: max-content;
@@ -849,13 +854,21 @@ kbd {
 		--h: 0;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 5px;
-		padding: 0.25em 0;
-		//border-bottom: 1px solid oklch(from var(--color-h1) l c calc(h + var(--h)));
+		gap: 0.2em 0.5em;
+		padding: 0.15em 0.5em;
+		border: 1px solid oklch(from var(--color-h1) l c calc(h + var(--h)));
+		background: linear-gradient(to bottom right in oklch, oklch(from var(--color-h2) l c calc(h + var(--h)) / 15%), oklch(from var(--color-h2) l c calc(h + var(--h) + 10) / 5%));
+		position: relative;
 		& a:any-link {
 			text-decoration-color: oklch(from var(--color-link-underline) l c calc(h + var(--h)));
 		}
-		&:nth-of-type(1)  { --h:   0; }
+		&:hover {
+			filter: brightness(1.2);
+			cursor: pointer;
+		}
+		&:nth-of-type(1)  {
+			--h:   0;
+		}
 		&:nth-of-type(2)  { --h:  40; }
 		&:nth-of-type(3)  { --h:  80; }
 		&:nth-of-type(4)  { --h: 120; }

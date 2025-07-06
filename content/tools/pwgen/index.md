@@ -80,16 +80,27 @@ button#generate {
 	border: 2px solid var(--color-primary);
 	border-radius: 3px;
 	background: var(--color-bg);
-	padding: 5px 15px 10px;
+	background: var(--button-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+	padding: 5px 15px;
 	transition: border 150ms ease-out, color 150ms ease-out, background 150ms ease-out;
 	width: 100%;
 	user-select: none;
 	box-shadow: 0 2px 5px color-mix(in srgb, var(--color-fg) 20%, transparent);
+	box-shadow: var(--button-shadow);
+	border: var(--button-border);
+	color: #fff;
+	text-shadow: 1px 1px 0 #000;
+	transition: all 70ms ease-out;
 }
 button#generate:hover {
-	background: var(--color-pop);
-	color: var(--color-bg);
-	border: 2px solid var(--color-pop);
+	//background: var(--color-pop);
+	//color: var(--color-bg);
+	//border: 2px solid var(--color-pop);
+	background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+	box-shadow: var(--button-shadow-hover);
+}
+button#generate:active {
+	background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-pop), #000 45%);
 }
 #copied-caption{
 	opacity: 0;
@@ -243,8 +254,8 @@ genButton.addEventListener('pointerdown', (e) => { genButtonHeld = true; });
 genButton.addEventListener('pointerup', (e) => { genButtonHeld = false; });
 genButton.addEventListener('pointerleave', (e) => { genButtonHeld = false; });
 genButton.addEventListener('pointercancel', (e) => { genButtonHeld = false; });
-document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = true; });
-document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" || event.code == "KeyM") genButtonHeld = false; });
+document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "Space" || event.code == "KeyM") genButtonHeld = true; });
+document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" || event.code == "Space" || event.code == "KeyM") genButtonHeld = false; });
 
 
 // Set userEntropy[last 3 milliseconds of timestamp] to pressed or released keycode or screen X or Y position

@@ -14,9 +14,10 @@ function uniq(a) {
 // SEARCH ------------------------------------------
 let searchShortcutRegistry = {};
 
-function toggleSearch(event=null, force=false) {
+function toggleSearch(event=null, force=false, remove=false) {
 	searchCtr = elid("search-container");
-	if (!searchCtr) {
+	const url = new URL(window.location.href);
+	if (!searchCtr && !remove) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
 				<button id="search-close" aria-label="Close Navigator">X</button>
@@ -51,15 +52,21 @@ function toggleSearch(event=null, force=false) {
 				</div>
 			</div>
 		`);
-		elid("search-close").addEventListener("click", () => elid("search-container").remove());
+		if (!url.searchParams.get("q")) {
+			url.searchParams.set('q', '');
+			window.history.replaceState(null, null, url);
+		}
+		elid("search-close").addEventListener("click", () => toggleSearch(null,false,true));
 		elid("search-box").focus();
 		elid("search-box").addEventListener('keyup', updateSearch);
-	} else if (force) {
+	} else if (force && !remove) {
 		elid("search-box").placeholder = elid("search-box").value;
 		elid("search-box").value = "";
 		elid("search-box").focus();
 	} else {
 		elid("search-container").remove();
+		url.searchParams.delete('q');
+		window.history.replaceState(null, null, url);
 	}
 }
 
@@ -254,6 +261,8 @@ function updateSearch(event) {
 		if (foundKeyword) elQueryLink.classList.add("instant");
 		elResult.insertAdjacentElement("beforeend", elQueryLink);
 
+		elResult.addEventListener("click", () => elQueryLink.click());
+
 		if (resultCount < 11) {
 			let elShortcut = document.createElement("div");
 			elShortcut.classList.add("search-shortcut");
@@ -272,6 +281,10 @@ function updateSearch(event) {
 	}
 
 	// TODO: implement search this site
+
+	const url = new URL(window.location.href);
+	url.searchParams.set('q', query);
+	window.history.replaceState(null, null, url);
 }
 
 
@@ -306,7 +319,7 @@ function load() {
 		} else if (e.key === 'Escape') {
 			const searchBox = elid("search-box");
 			if (searchBox.value === "") {
-				elid("search-container").remove();
+				toggleSearch(null,false,true)
 			} else {
 				searchBox.value = "";
 				updateSearch(null);
