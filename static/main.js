@@ -93,6 +93,23 @@ function updateSearch(event) {
 				document.documentElement.style.setProperty('--color-primary', color);
 			}
 		},
+		Brave: {
+			desc: 'Brave Search',
+			icon: '/icons/search/brave.png',
+			suggest: true,
+			getURL: (query) => 'https://search.brave.com/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+			validate: (query) => true,
+			action: null,
+		},
+		ChatGPT: {
+			keywords: ['gpt', 'chatgpt'],
+			desc: 'ChatGPT Search',
+			icon: '/icons/search/chatgpt.png',
+			suggest: true,
+			getURL: (query) => 'https://chatgpt.com/?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+			validate: (query) => true,
+			action: null,
+		},
 		Google: {
 			keywords: ['g', 'google'],
 			desc: 'Google Search',
@@ -117,15 +134,6 @@ function updateSearch(event) {
 			icon: '/icons/search/youtube.png',
 			suggest: true,
 			getURL: (query) => 'https://youtube.com/results?search_query=' + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		},
-		ChatGPT: {
-			keywords: ['gpt', 'chatgpt'],
-			desc: 'ChatGPT Search',
-			icon: '/icons/search/chatgpt.png',
-			suggest: true,
-			getURL: (query) => 'https://chatgpt.com/?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
 			validate: (query) => true,
 			action: null,
 		},
@@ -171,6 +179,8 @@ function updateSearch(event) {
 		}
 	}
 	const keywordMap = {
+		"b": "Brave",
+		"brave": "Brave",
 		"g": "Google",
 		"google": "Google",
 		"e": "eBay",
