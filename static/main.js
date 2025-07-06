@@ -3,7 +3,7 @@ const content = document.getElementsByClassName('content')[0];
 const root = document.documentElement;
 
 // UTILITY FUNCTIONS -------------------------------
-const el = (selector) => document.querySelector(selector);
+//const el = (selector) => document.querySelector(selector);
 const elid = (id) => document.getElementById(id);
 const inrange = (x, start, end) => (x >= start) && (x <= end);
 function uniq(a) {
