@@ -38,7 +38,7 @@ highlight_themes_css = [
 smart_punctuation = true
 
 [search]
-index_format = "fuse_javascript"
+index_format = "fuse_json"
 
 [extra]
 

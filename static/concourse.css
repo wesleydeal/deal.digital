@@ -865,9 +865,16 @@ kbd {
 		position: relative;
 		& a:any-link {
 			text-decoration-color: oklch(from var(--color-link-underline) l c calc(h + var(--h)));
+			&:hover {
+				background: transparent;
+				color: inherit;
+				box-shadow: none;
+				text-shadow: inherit;
+				text-decoration: underline;
+			}
 		}
 		&:hover {
-			filter: brightness(1.2);
+			filter: brightness(1.2) saturate(1.5);
 			cursor: pointer;
 		}
 		&:nth-of-type(1)  {

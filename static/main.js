@@ -1,6 +1,9 @@
 // GLOBAL VARIABLES --------------------------------
 const content = document.getElementsByClassName('content')[0];
 const root = document.documentElement;
+let ddIndex = null;
+let Fuse = null;
+let fuse = null;
 
 // UTILITY FUNCTIONS -------------------------------
 //const el = (selector) => document.querySelector(selector);
@@ -70,7 +73,7 @@ function toggleSearch(event=null, force=false, remove=false) {
 	}
 }
 
-function updateSearch(event) {
+async function updateSearch(event) {
 	const searchBox = elid("search-box");
 	const searchResults = elid("search-results");
 	const providers = {
@@ -214,10 +217,48 @@ function updateSearch(event) {
 
 	let entries = []; //todo replace
 	let providerQueries = [];
+	let localResults = [];
 	searchResults.innerHTML = '';
 
 	if (query.replace(" ","") === "") {
 		return;
+	}
+
+	if (query[0] === "&") {
+		if (!ddIndex || !Fuse || !fuse) {
+			let d = await import("/search_index.en.json", { with: { type: "json" } });
+			let f = await import("/fuse.min.mjs");
+
+			ddIndex = d.default;
+			Fuse = f.default;
+
+			const fuseOptions = {
+				// isCaseSensitive: false,
+				// includeScore: false,
+				// ignoreDiacritics: false,
+				// shouldSort: true,
+				// includeMatches: false,
+				// findAllMatches: false,
+				// minMatchCharLength: 1,
+				// location: 0,
+				threshold: 0.2,
+				// distance: 100,
+				// useExtendedSearch: false,
+				ignoreLocation: true,
+				// ignoreFieldNorm: false,
+				// fieldNormWeight: 1,
+				keys: [
+					"title",
+					"url",
+					"body",
+					"description",
+				]
+			};
+
+			fuse = new Fuse(ddIndex, fuseOptions);
+		}
+
+		localResults = fuse.search(query.substring(1));
 	}
 
 	// TODO: handle !bangs and searches beginning with provider queries
@@ -244,6 +285,38 @@ function updateSearch(event) {
 		if (providers[providerName].validate(query) && providers[providerName].suggest){
 			providerQueries.push({ providerName: providerName, query: query });
 		}
+	}
+
+	console.log(localResults);
+	for (result of localResults) {
+		let elResult = document.createElement("div");
+		elResult.id = "search-result-" + resultCount;
+		elResult.classList.add("search-result", "search-result-local");
+
+		let elResultLink = document.createElement("a");
+		elResultLink.classList.add("search-link");
+		elResultLink.innerHTML = result.item.title;
+		elResultLink.href = result.item.url;
+
+		elResult.insertAdjacentElement("beforeend", elResultLink);
+
+		if (resultCount < 11) {
+			let elShortcut = document.createElement("div");
+			elShortcut.classList.add("search-shortcut");
+			if (resultCount === 0) {
+				elShortcut.innerHTML = '<kbd>ENTER</kbd>';
+				searchShortcutRegistry['Enter'] = elResultLink;
+			} else {
+				elShortcut.innerHTML = '<kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>' + resultCount + '</kbd>';
+				searchShortcutRegistry['Alt' + " !@#$%^&*()"[resultCount]] = elResultLink;
+			}
+			elResult.insertAdjacentElement("beforeend", elShortcut);
+		}
+
+		elResult.addEventListener("click", () => elResultLink.click());
+		searchResults.insertAdjacentElement("beforeend", elResult);
+
+		resultCount++;
 	}
 
 	for (item of providerQueries) {
