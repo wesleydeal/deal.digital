@@ -38,6 +38,7 @@
 		{% if loop.first -%}
 		{% continue -%}
 		{% endif -%}
+		<a href="/">~</a>
 		<span>/</span>
 		{% set section = get_section(path=ancestor) -%}
 		<a href="{{ section.permalink | safe }}">{{ section.title }}</a>

@@ -42,5 +42,5 @@ index_format = "fuse_javascript"
 
 [extra]
 
-# Options: "neomillenial", "mini", "apricot", TODO: "aquatic", "obsidian"
+# Options: "concourse", "neomillenial", "mini", "apricot", TODO: "aquatic", "obsidian"
 stylesheet = "concourse"

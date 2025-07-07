@@ -50,6 +50,7 @@
 }
 
 :root {
+	container: root / size;
 	--color-fg: #000;
 	--color-bg: #fafafa;
 	--color-link: #0068fa;
@@ -63,6 +64,21 @@
 
 @media screen and (prefers-color-scheme:dark){
 	:root {
+		--color-fg: #fff9f9;
+		--color-bg: #111;
+		--color-link: #4df;
+		--color-hover: #f7a;
+		--blockquote-bg: linear-gradient(135deg, #7fa1, #7fa0);
+		--gradient-bg: repeating-linear-gradient(#0000 0 3px, #7771 3px 5px), radial-gradient(ellipse at 50% 20%, #1a0011, #001);
+	}
+	
+	html{
+		color-scheme: dark;
+	}
+}
+
+@container style(--dark-mode: true) {
+	body {
 		--color-fg: #fff9f9;
 		--color-bg: #111;
 		--color-link: #4df;
@@ -92,7 +108,7 @@
 
 @media only screen {
 	html {
-		margin-left: calc(100vw - 100%);
+		//margin-left: calc(100vw - 100%);
 	}
 }
 
@@ -153,55 +169,25 @@ img{
 header{
 	max-width: 780px;
 	width: 100%;
-	margin: 0 auto .5em;
-	padding: 32px;
+	margin: 0 auto;
+	padding: 64px 10px 0;
 }
 
-header nav{
+header nav#topnav {
 	display: flex;
-	align-items: center;
 	flex-wrap: wrap;
-	position: fixed;
-	left: -1px;
-	top: 12px;
-	background: linear-gradient(358deg, color-mix(in srgb, var(--color-bg) 80%, transparent), color-mix(in srgb, color-mix(in oklab, var(--color-hover) 15%, var(--color-bg)) 80%, transparent));
-	//background: var(--color-bg);
-	line-height: 28px;
+	align-items: center;
+	background: linear-gradient(358deg, color-mix(in oklch, var(--color-bg) 80%, transparent), color-mix(in oklch, color-mix(in oklab, var(--color-hover) 15%, var(--color-bg)) 80%, transparent));
 	box-shadow: 0 0 0 1.5px var(--color-fg), 0 3px 7px color-mix(in srgb, var(--color-fg) 25%, transparent);
+	margin: 0;
 	border-radius: 3px;
+	position: fixed;
+	top: 5px;
+	width: calc(min(760px, 100%));
 	z-index: 100;
 }
 
-@media (min-width: 800px){
-	header nav{
-		left: calc((100vw - 780px)/2 + 10px);
-	}
-	#index {
-		gap: 100px;
-	}
-}
-
-header nav span{
-	font-size: 0;
-	width: 24px;
-	height: 34px;
-	background: linear-gradient(120deg, transparent 46%, var(--color-fg) 50%, var(--color-fg) 50%, transparent 54%);
-	margin: 0 8px;
-}
-
-header nav span:nth-child(2){
-	margin-left: -30px;
-	z-index: 100;
-	margin-right: 8px;
-}
-
-header nav a:not(:first-child){
-	top: 1px;
-	padding: 0 10px;
-}
-
-
-header nav a:link:first-child, header nav a:visited:first-child{
+header nav#topnav a#homelink:any-link {
 	color: var(--color-logo-fg);
 	transition: background-position 250ms ease-out;
 	font-weight: 500;
@@ -214,20 +200,59 @@ header nav a:link:first-child, header nav a:visited:first-child{
 	border-radius: 3px;
 }
 
-header nav a:hover:first-child, header nav a:hover:first-child{
-	background-position: bottom right;
-
-}
-
-header nav a:first-child:not(:last-child){
+header nav#topnav a#homelink:not(:last-child){
 	border-radius: 1px 0 0 1px;
 	padding: 3px 38px 3px 15px;
 	clip-path: polygon(0 0, calc(100% - 8px) 0px, calc(100% - 28px) 100%, 0 100%);
 	box-shadow: none;
+	margin-right: -0.5em;
 }
 
-header nav a:last-child:not(:first-child){
-	margin-right: 15px;
+header nav#topnav a#homelink:hover {
+	background-position: bottom right;
+}
+
+header nav#topnav ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1em;
+}
+
+header nav#topnav li {
+	margin: 0;
+	padding: 0;
+}
+
+header nav#topnav li a:any-link {
+	font-weight: 475;
+}
+
+header nav#breadcrumbs{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em;
+	margin-top: 1em;
+	z-index: 100;
+	width: max-content;
+	max-width: 100%;
+	margin-bottom: -0.5em;
+}
+
+header nav#breadcrumbs a:last-child {
+	display: none;
+}
+
+header nav#breadcrumbs:not(:has(a:nth-of-type(3))) {
+	display: none;
+}
+
+@media (min-width: 800px){
+	#index {
+		gap: 100px;
+	}
 }
 
 @media (max-width: 370px) {
@@ -242,12 +267,16 @@ header nav a:last-child:not(:first-child){
 }
 
 footer {
-	font-size: .85em;
+	font: 400 0.85em/1.2 "Red Hat Mono", monospace;
+	border-top: 1px solid;
+}
+
+footer .ascii-art {
+	white-space: pre;
 }
 
 h1{
-	font: 500 1.75em/1.2 "Red Hat Display", "Red Hat Text", sans-serif;
-	line-height: 1.1;
+	font: 500 1.75em/1.1 "Red Hat Display", "Red Hat Text", sans-serif;
 	margin: 0 0 .5em;
 	position: relative;
 }
@@ -403,7 +432,7 @@ time {
 .landing-link-container .sitebuttons ul li {
 	margin: 0;
 	padding: 0;
-	flex: 1 0 160px;
+	flex: 1 0 max-content;
 }
 
 @keyframes button-popp {
@@ -514,6 +543,17 @@ nav#toc h2{
 	background-size: 100% 1px;
 	background-repeat: no-repeat;
 	background-position: bottom left;
+}
+
+#ui-tools {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	position: fixed;
+	right: 10px;
+	bottom: 10px;
 }
 
 @media screen and (min-width: 1150px){
