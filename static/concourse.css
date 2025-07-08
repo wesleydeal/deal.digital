@@ -4,7 +4,7 @@
 @font-face {
   font-family: 'Roboto Flex';
   font-style: oblique 0deg 10deg;
-  font-display: swap;
+  font-display: fallback;
   font-weight: 100 1000;
   font-stretch: 25% 151%;
   src: url('/fonts/roboto-flex_5.2.5_latin-full-normal.woff2') format('woff2-variations');
@@ -14,7 +14,7 @@
 @font-face {
   font-family: 'Instrument Serif';
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
   font-weight: 400;
   src: url('/fonts/instrument-serif_5.2.5_latin-400-normal.woff2') format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/instrument-serif@latest/latin-400-normal.woff) format('woff');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
@@ -58,8 +58,8 @@
 
 	--text-width: 50rem;
 	--content-margins: 5vw;
-	--typeface-body: "Roboto Flex", sans-serif;
-	--typeface-display: "Instrument Serif", serif;
+	--typeface-body: "Roboto Flex", "Segoe UI Variable", system-ui, sans-serif;
+	--typeface-display: "Instrument Serif", -apple-system-ui-serif, "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
 	--typeface-mono: "Cascadia Code", ui-monospace, Consolas, "Source Code Pro", "Ubuntu Mono", "Fira Code", "Fira Mono", monospace;
 
 	box-sizing: border-box;
@@ -102,7 +102,7 @@ body {
 
 	padding: 0;
 	margin: 0;
-	font: 325 1em/1.6 var(--typeface-body);
+	font: 326 1em/1.6 var(--typeface-body);
 	font-stretch: 110%;
 	font-optical-sizing: auto;
 
@@ -410,19 +410,22 @@ a:any-link {
 	color: var(--color-link);
 	text-decoration-color: var(--color-link-underline);
 	text-underline-offset: 6%;
-	transition: all 200ms cubic-bezier(0.23, 1, 0.320, 1);
 	text-decoration-thickness: 0.09em;
+	transition: color 200ms cubic-bezier(0.23, 1, 0.320, 1),
+		border 200ms cubic-bezier(0.23, 1, 0.320, 1),
+		background 200ms cubic-bezier(0.23, 1, 0.320, 1),
+		box-shadow 200ms cubic-bezier(0.23, 1, 0.320, 1);
+	
 	&:hover, &:active, &:focus {
-		--c: var(--color-h1);
 		--c: color-mix(in oklch, transparent 20%, color-mix(in oklch, var(--color-fg), var(--color-primary-sat) 80%));
 		--c: var(--color-pop);
 		--c: var(--color-pop-bgcontrast);
+		--c: var(--color-link-underline);
 		background: var(--c);
 		color: var(--color-bg-hc);
 		box-shadow: 0 0 0 3px var(--c);
 		text-decoration: none;
 		text-shadow: 0 0 2px var(--color-fg);
-		border-radius: 1px;
 	}
 	&:active {
 		--c: var(--color-pop-bgcontrast);
@@ -590,6 +593,7 @@ ul.blog-listing {
 	display: flex;
 	flex-direction: column;
 	font: 400 clamp(1.6em, 3.5vw, 2.1em)/1.1 var(--typeface-display);
+	font-variant-numeric: lining-nums;
 	margin: 0.5rem 0;
 	width: max-content;
 	min-width: 50%;
