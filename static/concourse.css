@@ -109,6 +109,8 @@ body {
 	display: flex;
 	flex-direction: column;
 
+	transition: none;
+
 	&:has(nav#toc details[open]) {
 		display: grid;
 		grid-template-columns: minmax(250px,1fr) minmax(150px,5fr);
@@ -137,7 +139,9 @@ nav#topnav {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 3px;
+	line-height: 1.6;
 	& a#homelink {
+		margin: 0;
 		flex: 0 0;
 		padding: 0.22em 0.35em 0.22em 0.45em;
 		font: 500 2em/1 var(--typeface-body);
@@ -201,6 +205,8 @@ nav#breadcrumbs{
 }
 
 nav#toc {
+	float: none;
+	max-width: none;
 	grid-area: sidebar;
 	padding: 0 1.5em;
 	top: 0;
@@ -331,6 +337,7 @@ section.content {
 	padding: 0 var(--content-margins) 1em;
 	min-height: 100vh;
 	overflow-wrap: anywhere;
+	margin: 0;
 	& p, & li, & blockquote {
 		max-width: var(--text-width);
 	}
@@ -370,6 +377,7 @@ footer {
 	box-shadow: 2px 2px 30px #000 inset, 2px 2px 30px #000 inset;
 	border-top: 2px solid var(--color-pop);
 	overflow-x: hidden;
+	margin: 0;
 	& .sitetree {
 		text-overflow: ellipsis;
 		text-wrap: nowrap;
@@ -415,7 +423,7 @@ a:any-link {
 		border 200ms cubic-bezier(0.23, 1, 0.320, 1),
 		background 200ms cubic-bezier(0.23, 1, 0.320, 1),
 		box-shadow 200ms cubic-bezier(0.23, 1, 0.320, 1);
-	
+
 	&:hover, &:active, &:focus {
 		--c: color-mix(in oklch, transparent 20%, color-mix(in oklch, var(--color-fg), var(--color-primary-sat) 80%));
 		--c: var(--color-pop);
@@ -434,7 +442,7 @@ a:any-link {
 
 h1 {
 	font: 400 4em/1.05 var(--typeface-display);
-	transform-origin: left;
+	letter-spacing: normal;
 	font-size: clamp(3em, 5vw, 6em);
 	color: var(--color-h1);
 	max-width: 24ch;
