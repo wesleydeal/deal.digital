@@ -8,6 +8,7 @@ let fuse = null;
 // UTILITY FUNCTIONS -------------------------------
 const elid = (id) => document.getElementById(id);
 const inrange = (x, start, end) => (x >= start) && (x <= end);
+const tru = () => true;
 function uniq(a) {
     var seen = {};
     return a.filter((item) => seen.hasOwnProperty(item) ? false : (seen[item] = true));
@@ -32,7 +33,7 @@ const providers = {
 		desc: 'Brave Search',
 		icon: '/icons/search/brave.png',
 		getURL: (query) => 'https://search.brave.com/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: (query) => true,
+		suggestIf: tru,
 		color: '#f50',
 	},
 	ChatGPT: {
@@ -40,7 +41,7 @@ const providers = {
 		desc: 'ChatGPT Search',
 		icon: '/icons/search/chatgpt.png',
 		getURL: (query) => 'https://chatgpt.com/?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: (query) => true,
+		suggestIf: tru,
 		color: '#74AA9C',
 	},
 	Google: {
@@ -48,7 +49,7 @@ const providers = {
 		desc: 'Google Search',
 		icon: '/icons/search/google.png',
 		getURL: (query) => "https://google.com/search?q=" + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: (query) => true,
+		suggestIf: tru,
 		color: '#1368F4',
 	},
 	eBay: {
@@ -56,7 +57,7 @@ const providers = {
 		desc: 'eBay',
 		icon: '/icons/search/ebay.png',
 		getURL: (query) => "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: (query) => true,
+		suggestIf: tru,
 		color: '#3665f3',
 	},
 	YouTube: {
@@ -64,7 +65,7 @@ const providers = {
 		desc: 'YouTube',
 		icon: '/icons/search/youtube.png',
 		getURL: (query) => 'https://youtube.com/results?search_query=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: (query) => true,
+		suggestIf: tru,
 		color: '#f00',
 	},
 	Amazon: {
@@ -72,7 +73,7 @@ const providers = {
 		desc: 'Amazon',
 		icon: '/icons/search/amazon.png',
 		getURL: (query) => 'https://www.amazon.com/s?k=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: (query) => true,
+		suggestIf: tru,
 		color: '#f90',
 	},
 	MDN: {
@@ -253,7 +254,6 @@ async function updateSearch(event=null) {
 		query = query.substring(1);
 	}
 
-	let entries = []; //todo replace
 	let providerQueries = [];
 	let localResults = [];
 	searchResults.innerHTML = '';
@@ -267,9 +267,9 @@ async function updateSearch(event=null) {
 
 	// prioritize providers with !bangs
 	for (word of query.toLowerCase().split(" ").reverse()) {
-		if (word.search("!") > -1) {
+		if (word.includes("!")) {
 			let possibleKeyword = word.substring(word.search("!") + 1);
-			if (Array.from(Object.keys(keywordMap)).includes(possibleKeyword)) {
+			if (Object.keys(keywordMap).includes(possibleKeyword)) {
 				providerQueries.push({ providerName: keywordMap[possibleKeyword], query: query.replace(/!.*?( |$)/g, '') });
 				foundKeyword = true;
 			}
@@ -277,7 +277,7 @@ async function updateSearch(event=null) {
 	}
 
 	// prioritize providers with a bangless keyword at the beginning
-	if (Array.from(Object.keys(keywordMap)).includes(query.toLowerCase().split(" ")[0])) {
+	if (Object.keys(keywordMap).includes(query.toLowerCase().split(" ")[0])) {
 		providerQueries.push({
 			providerName: keywordMap[query.toLowerCase().split(" ")[0]],
 			query: query.search(" ") > -1 ? query.substring(query.search(" ")) : '',
