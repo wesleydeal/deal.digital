@@ -6,7 +6,6 @@ let Fuse = null;
 let fuse = null;
 
 // UTILITY FUNCTIONS -------------------------------
-//const el = (selector) => document.querySelector(selector);
 const elid = (id) => document.getElementById(id);
 const inrange = (x, start, end) => (x >= start) && (x <= end);
 function uniq(a) {
@@ -16,11 +15,127 @@ function uniq(a) {
 
 // SEARCH ------------------------------------------
 let searchShortcutRegistry = {};
+const providers = {
+	/*
+	each top-level key represents the internal ID of a provider, with values as follows:
+	- keywords (opt) - array of strings, a list of words which prioritize this query if used as the first word of a query or anywhere prefixed with a !bang
+	- desc (req) - string, the displayed name of the search provider
+	- icon (opt, unused) - string, a path to a square icon representing the search provider
+	- suggestIf (opt) - function(string) returning boolean, determines whether to show as a suggested provider
+	- getURL (req if no action) - function(string) returning string, convert the search terms into a search link from this provider
+	- action (req if no getURL) - function(event), JS function to run on page if the link is clicked (for example, set the page color or dark/light mode)
+	TODO: prioritizeIf (opt) - function(string) returning boolean, determines whether this is a particularly good suggestion for this query and should be placed near the top
+	TODO: color (opt) - string, valid CSS color associated with this provider
+	*/
+	Brave: {
+		keywords: ["b", "br", "brave"],
+		desc: 'Brave Search',
+		icon: '/icons/search/brave.png',
+		getURL: (query) => 'https://search.brave.com/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+		suggestIf: (query) => true,
+	},
+	ChatGPT: {
+		keywords: ['gpt', 'chatgpt'],
+		desc: 'ChatGPT Search',
+		icon: '/icons/search/chatgpt.png',
+		getURL: (query) => 'https://chatgpt.com/?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+		suggestIf: (query) => true,
+	},
+	Google: {
+		keywords: ['g', 'google'],
+		desc: 'Google Search',
+		icon: '/icons/search/google.png',
+		getURL: (query) => "https://google.com/search?q=" + encodeURIComponent(query).replaceAll("%20", "+"),
+		suggestIf: (query) => true,
+	},
+	eBay: {
+		keywords: ['e', 'eb', 'ebay'],
+		desc: 'eBay',
+		icon: '/icons/search/ebay.png',
+		getURL: (query) => "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(query).replaceAll("%20", "+"),
+		suggestIf: (query) => true,
+	},
+	YouTube: {
+		keywords: ['y', 'yt', 'youtube'],
+		desc: 'YouTube',
+		icon: '/icons/search/youtube.png',
+		getURL: (query) => 'https://youtube.com/results?search_query=' + encodeURIComponent(query).replaceAll("%20", "+"),
+		suggestIf: (query) => true,
+	},
+	Amazon: {
+		keywords: ['am', 'amazon', 'amzn'],
+		desc: 'Amazon',
+		icon: '/icons/search/amazon.png',
+		getURL: (query) => 'https://www.amazon.com/s?k=' + encodeURIComponent(query).replaceAll("%20", "+"),
+		suggestIf: (query) => true,
+	},
+	MDN: {
+		keywords: ['mdn'],
+		desc: 'Mozilla Dev',
+		icon: '/icons/search/mdn.png',
+		getURL: (query) => 'https://developer.mozilla.org/en-US/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+	},
+	AnnasArchive: {
+		keywords: ['an','anna','annas','annasarchive','book'],
+		desc: "Anna's Archive",
+		icon: '/icons/search/annas-archive.png',
+		getURL: (query) => 'https://annas-archive.org/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+	},
+	Zola: {
+		keywords: ['zola'],
+		desc: 'Zola Docs',
+		icon: '/icons/search/zola.png',
+		getURL: (query) => 'https://search.brave.com/search?q=site%3Agetzola.org+' + encodeURIComponent(query).replaceAll("%20", "+"),
+	},
+	Tera: {
+		keywords: ['tera'],
+		desc: 'Tera Docs',
+		getURL: (query) => 'https://search.brave.com/search?q=site%3Ahttps%3A%2F%2Fkeats.github.io%2Ftera%2Fdocs%2F+' + encodeURIComponent(query).replaceAll("%20", "+"),
+	},
+	mappletv: {
+		keywords: ['tv','mapple','mapple.tv'],
+		desc: 'Mapple.TV',
+		icon: '/icons/search/mapple.png',
+		getURL: (query) => 'https://mapple.tv/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+	},
+	SetColor: {
+		keywords: ['color'],
+		desc: 'Set Site Color',
+		suggestIf: (query) => {
+			let s = new Option().style;
+			s.color = query;
+			return s.color !== '' || query.search('rand') > -1;
+		},
+		action: (event) => {
+			let color = event.target.title;
+			if (color.search('rand') > -1) {
+				color = "#" + Array.from(crypto.getRandomValues(new Uint8Array(3))).map(b => b.toString(16).padStart(2, '0')).join('');
+				console.log("Randomly selected", color);
+			}
+			document.documentElement.style.setProperty('--color-primary', color);
+			closeSearch();
+		}
+	},
 
-function toggleSearch(event=null, force=false, remove=false) {
-	searchCtr = elid("search-container");
+};
+let keywordMap = {};
+for (providerName in providers) {
+	for (kw of providers[providerName]?.keywords) {
+		keywordMap[kw] = providerName;
+	}
+}
+
+function toggleSearch(query="") {
+	if (elid("search-container")) {
+		closeSearch();
+	} else {
+		openSearch(query);
+	}
+}
+
+function openSearch(query=null) {
 	const url = new URL(window.location.href);
-	if (!searchCtr && !remove) {
+	if (!elid("search-container")) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
 				<button id="search-close" aria-label="Close Navigator">X</button>
@@ -29,20 +144,9 @@ function toggleSearch(event=null, force=false, remove=false) {
 				<menu id="search-results">
 				</menu>
 				<div id="search-help">
-					<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to close.
+					<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> clear or close.
 					<h2>!keywords</h2>
 					<ul id="search-keyword-list">
-						<li>Brave Search <samp>b</samp>
-						<li>Google Search <samp>g</samp>
-						<li>ChatGPT Search <samp>gpt</samp>
-						<li>YouTube <samp>yt</samp>
-						<li>eBay <samp>eb</samp>
-						<li>Amazon <samp>am</samp>
-						<li>Mozilla Dev <samp>mdn</samp>
-						<li>Zola Docs <samp>zola</samp>
-						<li>Tera Docs <samp>tera</samp>
-						<li>Anna's Archive <samp>an</samp>
-						<li>Mapple TV <samp>tv</samp>
 					</ul>
 				  <h2>Examples</h2>
 					<ul>
@@ -55,157 +159,54 @@ function toggleSearch(event=null, force=false, remove=false) {
 				</div>
 			</div>
 		`);
+		const keywordList = elid("search-keyword-list");
+		for (providerName in providers) {
+			if (providers[providerName].keywords) {
+				const keywordEntry = document.createElement("li");
+				keywordEntry.textContent = providers[providerName].desc;
+				const keywordSamp = document.createElement("samp");
+				keywordSamp.textContent = providers[providerName].keywords[0];
+				keywordEntry.insertAdjacentElement("beforeend", keywordSamp);
+				keywordEntry.addEventListener("click", () => openSearch(keywordSamp.textContent + " "));
+				keywordList.insertAdjacentElement("beforeend", keywordEntry);
+			}
+		}
 		if (!url.searchParams.get("q")) {
-			url.searchParams.set('q', '');
+			url.searchParams.set('q', query);
 			window.history.replaceState(null, null, url);
 		}
-		elid("search-close").addEventListener("click", () => toggleSearch(null,false,true));
+		elid("search-close").addEventListener("click", closeSearch);
 		elid("search-box").focus();
 		elid("search-box").addEventListener('keyup', updateSearch);
-	} else if (force && !remove) {
-		elid("search-box").placeholder = elid("search-box").value;
-		elid("search-box").value = "";
-		elid("search-box").focus();
+		if (query !== null) {
+			elid("search-box").value = query;
+			updateSearch();
+		}
 	} else {
-		elid("search-container").remove();
-		url.searchParams.delete('q');
-		window.history.replaceState(null, null, url);
+		elid("search-box").placeholder = elid("search-box").value;
+		elid("search-box").value = query;
 	}
+	if (query !== null) {
+		elid("search-box").value = query;
+		updateSearch();
+	}
+	elid("search-box").focus();
+	url.searchParams.set('q', query);
+	window.history.replaceState(null, null, url);
 }
 
-async function updateSearch(event) {
+function closeSearch() {
+	elid("search-container").remove();
+	const url = new URL(window.location.href);
+	url.searchParams.delete('q');
+	window.history.replaceState(null, null, url);
+}
+
+async function updateSearch(event=null) {
 	const searchBox = elid("search-box");
 	const searchResults = elid("search-results");
-	const providers = {
-		SetColor: {
-			desc: 'Set Primary Color',
-			icon: null,
-			suggest: true,
-			getURL: (query) => '',
-			validate: (query) => {
-				let s = new Option().style;
-				s.color = query;
-				return s.color !== '' || query.search('rand') > -1;
-			},
-			action: (event) => {
-				let color = event.target.title;
-				if (color.search('rand') > -1) {
-					color = "#" + Array.from(crypto.getRandomValues(new Uint8Array(3))).map(b => b.toString(16).padStart(2, '0')).join('');
-					console.log("Randomly selected", color);
-				}
-				document.documentElement.style.setProperty('--color-primary', color);
-			}
-		},
-		Brave: {
-			desc: 'Brave Search',
-			icon: '/icons/search/brave.png',
-			suggest: true,
-			getURL: (query) => 'https://search.brave.com/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		},
-		ChatGPT: {
-			keywords: ['gpt', 'chatgpt'],
-			desc: 'ChatGPT Search',
-			icon: '/icons/search/chatgpt.png',
-			suggest: true,
-			getURL: (query) => 'https://chatgpt.com/?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		},
-		Google: {
-			keywords: ['g', 'google'],
-			desc: 'Google Search',
-			icon: '/icons/search/google.png',
-			suggest: true,
-			getURL: (query) => "https://google.com/search?q=" + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		},
-		eBay: {
-			keywords: ['e', 'eb', 'ebay'],
-			desc: 'eBay',
-			icon: '/icons/search/ebay.png',
-			suggest: true,
-			getURL: (query) => "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		},
-		YouTube: {
-			keywords: ['y', 'yt', 'youtube'],
-			desc: 'YouTube',
-			icon: '/icons/search/youtube.png',
-			suggest: true,
-			getURL: (query) => 'https://youtube.com/results?search_query=' + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		},
-		Amazon: {
-			desc: 'Amazon',
-			icon: '/icons/search/amazon.png',
-			suggest: true,
-			getURL: (query) => 'https://www.amazon.com/s?k=' + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		},
-		MDN: {
-			desc: 'Mozilla Dev',
-			icon: '/icons/search/mdn.png',
-			suggest: false,
-			getURL: (query) => 'https://developer.mozilla.org/en-US/search?q='  + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		},
-		AnnasArchive: {
-			desc: "Anna's Archive",
-			icon: '/icons/search/annas-archive.png',
-			suggest: false,
-			getURL: (query) => 'https://annas-archive.org/search?q='  + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		},
-		Zola: {
-			desc: 'Zola Documentation',
-			icon: '/icons/search/zola.png',
-			suggest: false,
-			getURL: (query) => 'https://search.brave.com/search?q=site%3Agetzola.org+' + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		},
-		mappletv: {
-			desc: 'Mapple.tv',
-			icon: '/icons/search/mapple.png',
-			suggest: false,
-			getURL: (query) => 'https://mapple.tv/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
-			validate: (query) => true,
-			action: null,
-		}
-	}
-	const keywordMap = {
-		"b": "Brave",
-		"brave": "Brave",
-		"g": "Google",
-		"google": "Google",
-		"e": "eBay",
-		"eb": "eBay",
-		"ebay": "eBay",
-		"y": "YouTube",
-		"yt": "YouTube",
-		"gpt": "ChatGPT",
-		"chatgpt": "ChatGPT",
-		"color": "SetColor",
-		"am": "Amazon",
-		"mdn": "MDN",
-		"an": "AnnasArchive",
-		"anna": "AnnasArchive",
-		"annasarchive": "AnnasArchive",
-		"book": "AnnasArchive",
-		"zo": "Zola",
-		"zola": "Zola",
-		"tv": "mappletv",
-		"mapple": "mappletv",
-		"mappletv": "mappletv",
-	};
+	const url = new URL(window.location.href);
+
 	let query = searchBox.value;
 	let resultCount = 0;
 	let foundKeyword = false;
@@ -220,48 +221,14 @@ async function updateSearch(event) {
 	let localResults = [];
 	searchResults.innerHTML = '';
 
-	if (query.replace(" ","") === "") {
+	url.searchParams.set('q', query);
+	window.history.replaceState(null, null, url);
+
+	if (query.replaceAll(" ","") === "") {
 		return;
 	}
 
-	if (query[0] === "&") {
-		if (!ddIndex || !Fuse || !fuse) {
-			let d = await import("/search_index.en.json", { with: { type: "json" } });
-			let f = await import("/fuse.min.mjs");
-
-			ddIndex = d.default;
-			Fuse = f.default;
-
-			const fuseOptions = {
-				// isCaseSensitive: false,
-				// includeScore: false,
-				// ignoreDiacritics: false,
-				// shouldSort: true,
-				// includeMatches: false,
-				// findAllMatches: false,
-				// minMatchCharLength: 1,
-				// location: 0,
-				threshold: 0.2,
-				// distance: 100,
-				// useExtendedSearch: false,
-				ignoreLocation: true,
-				// ignoreFieldNorm: false,
-				// fieldNormWeight: 1,
-				keys: [
-					"title",
-					"url",
-					"body",
-					"description",
-				]
-			};
-
-			fuse = new Fuse(ddIndex, fuseOptions);
-		}
-
-		localResults = fuse.search(query.substring(1));
-	}
-
-	// TODO: handle !bangs and searches beginning with provider queries
+	// prioritize providers with !bangs
 	for (word of query.toLowerCase().split(" ").reverse()) {
 		if (word.search("!") > -1) {
 			let possibleKeyword = word.substring(word.search("!") + 1);
@@ -272,22 +239,59 @@ async function updateSearch(event) {
 		}
 	}
 
+	// prioritize providers with a bangless keyword at the beginning
 	if (Array.from(Object.keys(keywordMap)).includes(query.toLowerCase().split(" ")[0])) {
 		providerQueries.push({
 			providerName: keywordMap[query.toLowerCase().split(" ")[0]],
 			query: query.search(" ") > -1 ? query.substring(query.search(" ")) : '',
 		});
-		//foundKeyword = true;
 	}
 
-	// TODO: add options for all currently nonexistent providers
+	// add options for all currently nonexistent providers
+	let ignoreProviders = providerQueries.map((p) => p.providerName);
 	for (providerName in providers) {
-		if (providers[providerName].validate(query) && providers[providerName].suggest){
+		if ((providers[providerName].suggestIf?.(query) ?? false) && !(ignoreProviders.includes(providerName))){
 			providerQueries.push({ providerName: providerName, query: query });
 		}
 	}
 
-	console.log(localResults);
+	// handle local queries
+	if (query[0] === "&") {
+		if (!ddIndex || !Fuse || !fuse) {
+			let f = await import("/fuse.min.mjs");
+
+			ddIndex = (await import("/search_index.en.json", { with: { type: "json" } })).default;
+			Fuse = f.default;
+
+			const fuseOptions = {
+				isCaseSensitive: false,
+				includeScore: true,
+				ignoreDiacritics: true,
+				shouldSort: true,
+				includeMatches: false,
+				findAllMatches: false,
+				minMatchCharLength: 2,
+				location: 0,
+				threshold: 0.2,
+				distance: 100,
+				useExtendedSearch: true,
+				ignoreLocation: true,
+				ignoreFieldNorm: false,
+				fieldNormWeight: 1,
+				keys: [
+					{ name: "title", weight: 1 },
+					{ name: "url", weight: 1 },
+					{ name: "body", weight: 1 },
+					{ name: "description", weight: 1 },
+				]
+			};
+
+			fuse = new Fuse(ddIndex, fuseOptions);
+		}
+
+		localResults = fuse.search(query.substring(1));
+	}
+
 	for (result of localResults) {
 		let elResult = document.createElement("div");
 		elResult.id = "search-result-" + resultCount;
@@ -307,8 +311,8 @@ async function updateSearch(event) {
 				elShortcut.innerHTML = '<kbd>ENTER</kbd>';
 				searchShortcutRegistry['Enter'] = elResultLink;
 			} else {
-				elShortcut.innerHTML = '<kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>' + resultCount + '</kbd>';
-				searchShortcutRegistry['Alt' + " !@#$%^&*()"[resultCount]] = elResultLink;
+				elShortcut.innerHTML = '<kbd>Alt</kbd> <kbd>' + resultCount + '</kbd>';
+				searchShortcutRegistry['Alt' + resultCount] = elResultLink;
 			}
 			elResult.insertAdjacentElement("beforeend", elShortcut);
 		}
@@ -332,12 +336,12 @@ async function updateSearch(event) {
 		//elResult.insertAdjacentElement("beforeend", elIcon);
 
 		let elQueryLink = document.createElement("a");
-		if (p.action) {
+		if (p?.action) {
 			elQueryLink.addEventListener('click', p.action);
 			elQueryLink.title = q;
-			elQueryLink.href = "#";
+			elQueryLink.href = "javascript:;";
 		} else {
-			elQueryLink.href = p.getURL(q);
+			elQueryLink.href = p?.getURL(q);
 		}
 		elQueryLink.innerHTML = '<b>' + p.desc + '</b>: ' + q;
 		elQueryLink.classList.add("search-link");
@@ -353,8 +357,8 @@ async function updateSearch(event) {
 				elShortcut.innerHTML = '<kbd>ENTER</kbd>';
 				searchShortcutRegistry['Enter'] = elQueryLink;
 			} else {
-				elShortcut.innerHTML = '<kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>' + resultCount + '</kbd>';
-				searchShortcutRegistry['Alt' + " !@#$%^&*()"[resultCount]] = elQueryLink;
+				elShortcut.innerHTML = '<kbd>Alt</kbd> <kbd>' + resultCount + '</kbd>';
+				searchShortcutRegistry['Alt' + resultCount] = elQueryLink;
 			}
 			elResult.insertAdjacentElement("beforeend", elShortcut);
 		}
@@ -363,9 +367,6 @@ async function updateSearch(event) {
 		resultCount++;
 	}
 
-	// TODO: implement search this site
-
-	const url = new URL(window.location.href);
 	url.searchParams.set('q', query);
 	window.history.replaceState(null, null, url);
 }
@@ -398,28 +399,27 @@ function load() {
 
 	document.addEventListener("keyup", (e) => {
 		if (e.key === '/' && document.activeElement.tagName != "INPUT") {
-			toggleSearch(null, true);
+			openSearch(window.getSelection().toString().replaceAll('\n',''));
 		} else if (e.key === 'Escape') {
-			const searchBox = elid("search-box");
-			if (searchBox.value === "") {
-				toggleSearch(null,false,true)
+			if (elid("search-box") && elid("search-box")?.value.replaceAll(' ','') === "") {
+				closeSearch();
 			} else {
-				searchBox.value = "";
-				updateSearch(null);
+				openSearch("");
 			}
 		}
 
 		if (document.activeElement === elid("search-box")) {
 			let key = "Alt".repeat(e.altKey) + e.key;
 			if (key in searchShortcutRegistry) {
-				elQueryLink = searchShortcutRegistry[key];
-				if (e.ctrlKey) {
-					let original = elQueryLink.target;
-					elQueryLink.target = "_blank";
-					elQueryLink.click();
-					elQueryLink.target = original;
+				e.preventDefault();
+				const link = searchShortcutRegistry[key];
+				if (e.ctrlKey) { // open in new tab on CTRL
+					const original = link.target;
+					link.target = "_blank";
+					link.click();
+					link.target = original;
 				} else {
-					elQueryLink.click();
+					link.click();
 				}
 			}
 			if (e.key === "ArrowUp") {
@@ -429,11 +429,13 @@ function load() {
 	});
 
 	if (document.location.search.search("q=") > -1) {
-		toggleSearch(null, true);
-		searchString = document.location.search.split("q=")[1].split("#")[0].split("&")[0].replaceAll("+", "%20");
-		elid("search-box").value = decodeURIComponent(searchString);
-		updateSearch(null);
-		document.querySelectorAll("a.search-link.instant")?.[0].click?.();
+		const url = new URL(window.location.href);
+		searchString = url.searchParams.get("q");
+		openSearch(searchString);
+		updateSearch();
+		if (window.performance.getEntriesByType("navigation")[0].type === "navigate") { // only click instant links when not back/forward/reload
+			document.querySelectorAll("a.search-link.instant")?.[0]?.click?.();
+		}
 	}
 }
 
