@@ -9,13 +9,13 @@ This is a [/uses](https://uses.tech/) page
 
 ## Hardware
 
-* 💻 ThinkPad Z13 (AMD 6850U, 16GB RAM, Windows 11 x [Fedora 42 KDE](https://fedoraproject.org/spins/kde/))  
+* 💻 ThinkPad Z13 (AMD 6850U, 16GB RAM, Windows 11 x [Fedora 42 KDE](https://fedoraproject.org/spins/kde/))
   *Note: The soldered-in Qualcomm wireless chip has been a bit problematic in Linux. Buyer beware.*
 * 💽 A [51nb X210](https://blog.mattgauger.com/2022/08/01/the-51nb-x210/) running [Proxmox](https://www.proxmox.com/en/) as a small homelab server with a built-in UPS :^)
 * 📱 a Motorola edge 2024
 * 🎧 SIVGA SV007 headphones at my desk, Sony WF-C510 on the go (they stay in during workouts!)
 * 🔦 Zebralight SC64c LE with a sliced LH351D emitter for rosy, high CRI light out of a tiny, efficiently driven light
-* 🖱️ Pulsar Xlite V2 at home, Razer Deathadder V2 Pro at wrok
+* 🖱️ Pulsar Xlite V2 at home, Razer Deathadder V2 Pro at work
 * ⌨️ Entirely too many keyboards, including
   + WOBKEY Rainy75 (Kailh Cocoa linears)
   + Feker Galaxy80 (Keygeek X Neo Oat linears)
