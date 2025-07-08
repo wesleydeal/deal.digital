@@ -74,6 +74,10 @@ input[type=number]::-webkit-inner-spin-button {
 #genbutton-wrapper {
 	flex: 1 0 200px;
 }
+@keyframes bgmove {
+	from {background-position: 0 0}
+	to {background-position: 0 0, 0 0, 800px 0, 0 0}
+}
 button#generate {
 	font: 350 1.5em/1.5 var(--typeface-body), sans-serif;
 	color: inherit;
@@ -101,6 +105,7 @@ button#generate:hover {
 }
 button#generate:active {
 	background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-pop), #000 45%);
+	animation: bgmove 15s infinite linear;
 }
 #copied-caption{
 	opacity: 0;
