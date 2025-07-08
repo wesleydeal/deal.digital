@@ -262,7 +262,7 @@ function openSearch(query=null) {
 	} else {
 		elid("search-box").placeholder = elid("search-box").value;
 	}
-	
+
 	elid("search-box").value = query;
 	updateSearch();
 	elid("search-box").focus();
@@ -339,7 +339,7 @@ async function updateSearch(event=null) {
 		const p = providers[item.providerName];
 		const q = item.query;
 		let urls = await p.getURLs?.(q) ?? [[q, p.getURL?.(q)]];
-		
+
 		for ([title, resultUrl] of urls) {
 			let elResult = document.createElement("div");
 			elResult.id = "search-result-" + resultCount;
@@ -372,7 +372,7 @@ async function updateSearch(event=null) {
 				}
 				elResult.insertAdjacentElement("beforeend", elShortcut);
 			}
-			
+
 			if (p?.color) elResult.style.setProperty('--c', p.color);
 
 			searchResults.insertAdjacentElement("beforeend", elResult);
@@ -418,7 +418,7 @@ function load() {
 		} else if (e.key === 'Escape') {
 			if (elid("search-box") && elid("search-box")?.value.replaceAll(' ','') === "") {
 				closeSearch();
-			} else {
+			} else if (elid("search-box")) {
 				openSearch("");
 			}
 		}
