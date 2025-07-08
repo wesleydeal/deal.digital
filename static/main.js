@@ -33,6 +33,7 @@ const providers = {
 		icon: '/icons/search/brave.png',
 		getURL: (query) => 'https://search.brave.com/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
 		suggestIf: (query) => true,
+		color: '#f50',
 	},
 	ChatGPT: {
 		keywords: ['gpt', 'chatgpt'],
@@ -40,6 +41,7 @@ const providers = {
 		icon: '/icons/search/chatgpt.png',
 		getURL: (query) => 'https://chatgpt.com/?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
 		suggestIf: (query) => true,
+		color: '#74AA9C',
 	},
 	Google: {
 		keywords: ['g', 'google'],
@@ -47,6 +49,7 @@ const providers = {
 		icon: '/icons/search/google.png',
 		getURL: (query) => "https://google.com/search?q=" + encodeURIComponent(query).replaceAll("%20", "+"),
 		suggestIf: (query) => true,
+		color: '#1368F4',
 	},
 	eBay: {
 		keywords: ['e', 'eb', 'ebay'],
@@ -54,6 +57,7 @@ const providers = {
 		icon: '/icons/search/ebay.png',
 		getURL: (query) => "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(query).replaceAll("%20", "+"),
 		suggestIf: (query) => true,
+		color: '#3665f3',
 	},
 	YouTube: {
 		keywords: ['y', 'yt', 'youtube'],
@@ -61,6 +65,7 @@ const providers = {
 		icon: '/icons/search/youtube.png',
 		getURL: (query) => 'https://youtube.com/results?search_query=' + encodeURIComponent(query).replaceAll("%20", "+"),
 		suggestIf: (query) => true,
+		color: '#f00',
 	},
 	Amazon: {
 		keywords: ['am', 'amazon', 'amzn'],
@@ -68,35 +73,41 @@ const providers = {
 		icon: '/icons/search/amazon.png',
 		getURL: (query) => 'https://www.amazon.com/s?k=' + encodeURIComponent(query).replaceAll("%20", "+"),
 		suggestIf: (query) => true,
+		color: '#f90',
 	},
 	MDN: {
 		keywords: ['mdn'],
 		desc: 'Mozilla Dev',
 		icon: '/icons/search/mdn.png',
 		getURL: (query) => 'https://developer.mozilla.org/en-US/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+		color: '#8cb4ff',
 	},
 	AnnasArchive: {
 		keywords: ['an','anna','annas','annasarchive','book'],
 		desc: "Anna's Archive",
 		icon: '/icons/search/annas-archive.png',
 		getURL: (query) => 'https://annas-archive.org/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+		color: '#0195ff',
 	},
 	Zola: {
 		keywords: ['zola'],
 		desc: 'Zola Docs',
 		icon: '/icons/search/zola.png',
 		getURL: (query) => 'https://search.brave.com/search?q=site%3Agetzola.org+' + encodeURIComponent(query).replaceAll("%20", "+"),
+		color: '#191919',
 	},
 	Tera: {
 		keywords: ['tera'],
 		desc: 'Tera Docs',
 		getURL: (query) => 'https://search.brave.com/search?q=site%3Ahttps%3A%2F%2Fkeats.github.io%2Ftera%2Fdocs%2F+' + encodeURIComponent(query).replaceAll("%20", "+"),
+		color: '#de6262',
 	},
 	mappletv: {
 		keywords: ['tv','mapple','mapple.tv'],
 		desc: 'Mapple.TV',
 		icon: '/icons/search/mapple.png',
 		getURL: (query) => 'https://mapple.tv/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
+		color: '#fff',
 	},
 	SetColor: {
 		keywords: ['color'],
@@ -116,7 +127,25 @@ const providers = {
 			closeSearch();
 		}
 	},
-
+	toggleDark: {
+		keywords: ['dark', 'light', 'toggle'],
+		desc: 'Set Dark Mode',
+		suggestIf: (q) => (['dark', 'light', 'toggle'].includes(q.toLowerCase().replaceAll(' ',''))),
+		action: (event) => {
+			let q = elid("search-box").value;
+			if (q.includes('toggle')) {
+				let currentDarkMode = getComputedStyle(root).getPropertyValue('--dark-mode') == 'true';
+				root.style.setProperty('--dark-mode', !currentDarkMode);
+			} else if (q.includes('unset') || q.includes('none')) {
+				root.style.setProperty('--dark-mode', null);
+			} else if (q.includes('light')) {
+				root.style.setProperty('--dark-mode', false);
+			} else {
+				root.style.setProperty('--dark-mode', true);
+			}
+			closeSearch();
+		},
+	}
 };
 let keywordMap = {};
 for (providerName in providers) {
@@ -168,6 +197,9 @@ function openSearch(query=null) {
 				keywordSamp.textContent = providers[providerName].keywords[0];
 				keywordEntry.insertAdjacentElement("beforeend", keywordSamp);
 				keywordEntry.addEventListener("click", () => openSearch(keywordSamp.textContent + " "));
+				if (providers[providerName]?.color) {
+					keywordEntry.style.setProperty('--c', providers[providerName]?.color);
+				}
 				keywordList.insertAdjacentElement("beforeend", keywordEntry);
 			}
 		}
@@ -258,10 +290,8 @@ async function updateSearch(event=null) {
 	// handle local queries
 	if (query[0] === "&") {
 		if (!ddIndex || !Fuse || !fuse) {
-			let f = await import("/fuse.min.mjs");
-
 			ddIndex = (await import("/search_index.en.json", { with: { type: "json" } })).default;
-			Fuse = f.default;
+			Fuse = (await import("/fuse.min.mjs")).default;
 
 			const fuseOptions = {
 				isCaseSensitive: false,
@@ -407,7 +437,8 @@ function load() {
 				openSearch("");
 			}
 		}
-
+	});
+	document.addEventListener("keydown", (e) => {
 		if (document.activeElement === elid("search-box")) {
 			let key = "Alt".repeat(e.altKey) + e.key;
 			if (key in searchShortcutRegistry) {
