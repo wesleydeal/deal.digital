@@ -164,6 +164,10 @@ function toggleSearch(query="") {
 
 function openSearch(query=null) {
 	const url = new URL(window.location.href);
+	console.log(query);
+	if (query.type == 'click' || query === null) {
+		query = "";
+	}
 	if (!elid("search-container")) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
@@ -235,6 +239,7 @@ function closeSearch() {
 }
 
 async function updateSearch(event=null) {
+	let startTime = Date.now();
 	const searchBox = elid("search-box");
 	const searchResults = elid("search-results");
 	const url = new URL(window.location.href);
@@ -399,6 +404,8 @@ async function updateSearch(event=null) {
 
 	url.searchParams.set('q', query);
 	window.history.replaceState(null, null, url);
+
+	elid("search-results").insertAdjacentHTML("beforeend", "<p>Retrieved in " + (Date.now() - startTime) + "ms");
 }
 
 
