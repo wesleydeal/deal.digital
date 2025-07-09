@@ -180,7 +180,8 @@ th,td{border: 1px solid; padding: 5px;}
 	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
 	<p>% show system-information
 	<p>Built {{ now(utc=true) | date(format="%Y-%m-%d %H:%M:%S UTC") }} with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>.
-	<p><b>Fonts:</b> This page uses Roboto Flex with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in Inconsolata.
+	<p><b>Fonts:</b> This page uses Roboto Flex with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in one of your system fonts.
+	<p><b>Navigator:</b> Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</p>
 	<p>% tree deal.digital
 	{% block sitetree -%}
 	<p class="sitetree">

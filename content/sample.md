@@ -27,8 +27,8 @@ Set the **primary color** for this page using this or the field in the table bel
 | \--color-bg | Sample |
 | \--color-bg-hc | Sample |
 | \--color-tinted-shadow | Sample |
-| \--bg | Sample | 
-| \--header-bg | Sample | 
+| \--bg | Sample |
+| \--header-bg | Sample |
 
 <script>
 document.getElementById('primary-color-picker').addEventListener('input', clickColor);
@@ -38,7 +38,7 @@ function updateColorTable() {
 	let textInput = document.getElementById('primary-color-picker-text');
 	let table = textInput.parentElement.parentElement.parentElement;
 	let demoRows = table.querySelectorAll('tbody tr');
-	
+
 	for (row of demoRows){
 		let nameCell = row.querySelectorAll('td')[0]
 		let previewCell = row.querySelectorAll('td')[1]
@@ -73,11 +73,11 @@ function typeColor() {
 	updateColorTable();
 }
 
-updateColorTable();
+window.setTimeout(updateColorTable, 500);
 </script>
 <style>
 :has(#primary-color-picker) + table tbody tr td:nth-child(2) {
-	
+
 }
 </style>
 
@@ -187,6 +187,5 @@ Meat-eating mammals with specialized teeth and claws.
 ###### Family *Felidae*
 The biological family of cats, known for retractable claws and keen predation skills.
 
-**Snow Leopard**, *Panthera uncia*  
+**Snow Leopard**, *Panthera uncia*
 The snow leopard — a solitary, mountain-dwelling big cat native to Central and South Asia.
-
