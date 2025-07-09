@@ -59,7 +59,7 @@
 	--text-width: 50rem;
 	--content-margins: 5vw;
 	--typeface-body: "Roboto Flex", "Segoe UI Variable", system-ui, sans-serif;
-	--typeface-display: "Instrument Serif", -apple-system-ui-serif, "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
+	--typeface-display: "Instrument Serif", "Iowan Old Style", "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
 	--typeface-mono: "Cascadia Code", ui-monospace, Consolas, "Source Code Pro", "Ubuntu Mono", "Fira Code", "Fira Mono", monospace;
 
 	box-sizing: border-box;
@@ -89,7 +89,7 @@
 
 }
 
-*, *:before, *:after{
+*, *:before, *:after {
 	box-sizing: inherit;
 }
 

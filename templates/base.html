@@ -14,25 +14,29 @@
 <style>
 :root { container: root / size; }
 body {
-	font-family: "Roboto Flex", "Segoe UI Variable", system-ui, sans-serif;
-	line-height: 1.6;
+	font: 100%/1.6 system-ui, sans-serif;
 	transition: opacity 500ms 100ms ease-out;
 	opacity: 1;
-	padding: 0;
 	margin: 0;
 	@starting-style { opacity: 0; }
+	width: 100%;
+	background: oklch(from var(--color-primary, #056) 0.96 0.01 h);
 }
 
 header {
 	background: #056;
 	background: oklch(from var(--color-primary, #056) 0.4 c h);
 	padding: 10px;
+	padding: 10px 5vw;
 	color: #fff;
-	line-height: 2;
+	font-size: 110%;
+	line-height: 1.8;
 }
 header a, header :any-link {
 	color: inherit;
 	white-space: nowrap;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 25%;
 }
 .topnav-links {
 	list-style: none;
@@ -41,11 +45,11 @@ header a, header :any-link {
 }
 nav#topnav li, #homelink {
 	padding: 0;
-	margin: 10px;
+	margin: 8px;
 	list-style: none;
 	display: inline;
 }
-#homelink { font-weight: bold; }
+#homelink { text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180)); }
 header nav#breadcrumbs { display: none; visibility: hidden; }
 
 #toc details summary {list-style: none}
@@ -56,22 +60,30 @@ header nav#breadcrumbs { display: none; visibility: hidden; }
 	position: absolute;
 	bottom: -16px;
 }
-.content {padding: 0 10px}
+.content {
+	padding: 0 10px;
+	max-width: 100%;
+}
 ul, ol {padding-left: 25px}
 h1 {
 	font-size: xx-large;
 	font-size: clamp(32px, 4vw, 60px);
-	font-family: -apple-system-ui-serif, "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
-	letter-spacing: -3%;
 	font-weight: 500;
 	color: oklch(from var(--color-primary) 0.4 c h);
+	margin: 32px 0 24px;
+	text-shadow: 2px 2px 0 #7773;
 }
+h2 { margin: 20px 0 8px; font-size: 150%; font-weight: 500; }
+h3 { margin: 16px 0 6px; font-size: 130%; font-weight: 400; }
+h4 { margin: 14px 0 4px; font-size: 120%; }
+h5 { margin: 12px 0 0; font-size: 120%; font-weight: normal }
+h6 { margin: 12px 0 4px; font-size: 100%; font-style: italic }
 footer {
 	border-top: 2px solid;
-	font-family: Consolas, monospace;
+	font-family: ui-monospace, Consolas, monospace;
 	margin: 200px 0 800px;
 	padding: 20px;
-	line-height: 1.2;
+	line-height: 1.1;
 }
 #ui-tools {
 	position: fixed;
@@ -83,11 +95,13 @@ a, :any-link{
 	color: oklch(from var(--color-primary, #056) 0.4 c h);
 	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
 }
-img { max-width: 100%; }
+:is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
 p, li { max-width: 800px; }
+img { max-width: 100%; }
 pre {overflow-x: auto;}
 table {border-collapse: collapse;}
-th,td{border: 1px solid; padding: 5px;}
+th,td {border: 1px solid; padding: 5px;}
+th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 .zola-anchor {display: none; visibility: hidden;}
 #search-container { padding: 20px; overflow: hidden; }
 #search-box { width: 100%;}
