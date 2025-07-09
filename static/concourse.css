@@ -421,7 +421,7 @@ a:any-link {
 	text-underline-offset: 6%;
 	text-decoration-thickness: 0.09em;
 	transition: color 200ms cubic-bezier(0.23, 1, 0.320, 1),
-		border 200ms cubic-bezier(0.23, 1, 0.320, 1),
+		border-color 200ms cubic-bezier(0.23, 1, 0.320, 1),
 		background 200ms cubic-bezier(0.23, 1, 0.320, 1),
 		box-shadow 200ms cubic-bezier(0.23, 1, 0.320, 1);
 
@@ -617,7 +617,7 @@ ul.blog-listing {
 		margin: 0;
 		align-items: end;
 		--c: var(--color-h1);
-		transition: padding 100ms cubic-bezier(0.215, 0.610, 0.355, 1);
+		transition: padding-left 100ms cubic-bezier(0.215, 0.610, 0.355, 1);
 		color: var(--color-h2);
 		& a:any-link:first-child {
 			grid-area: title;
