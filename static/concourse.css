@@ -237,7 +237,6 @@ nav#toc {
 		list-style: none;
 		display: flex;
 		flex-direction: column;
-		position: relative;
 		&::-webkit-details-marker {
 			display: none;
 		}
@@ -245,6 +244,7 @@ nav#toc {
 			display: none;
 		}
 		&::after {
+			position: static;
 			content: '▼ Show Contents';
 			margin-left: calc(var(--content-margins) - 1.5em);
 			margin-bottom: -10px;
@@ -961,9 +961,11 @@ kbd {
 
 @media screen and (width > 1800px) {
 	body {
+		width: 100%;
+		overflow-x: clip;
 		display: grid;
 		grid-template-rows: auto;
-		grid-template-columns: minmax(max-content,1fr) minmax(1000px, 9fr);
+		grid-template-columns: minmax(285px,1fr) minmax(1000px, 9fr);
 		grid-template-areas: "search search" "header main" "footer footer";
 		&:has(nav#toc), &:has(nav#toc details[open]) {
 			background: var(--header-bg);

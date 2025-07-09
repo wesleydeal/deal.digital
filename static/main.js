@@ -171,6 +171,7 @@ const providers = {
 	style: {
 		keywords: ['style', 'stylesheet'],
 		desc: 'Set Stylesheet',
+		hide: true,
 		action: (event) => {
 			let ssLink = document.querySelector("link[rel='stylesheet'][as='style']");
 			ssLink.href = "/" + event.target.title.replaceAll(" ","") + ".css";
@@ -257,7 +258,7 @@ function openSearch(query=null) {
 		`);
 		const keywordList = elid("search-keyword-list");
 		for (providerName in providers) {
-			if (providers[providerName].keywords) {
+			if (providers[providerName].keywords && !(providers[providerName]?.hide)) {
 				const keywordEntry = document.createElement("li");
 				keywordEntry.textContent = providers[providerName].desc;
 				const keywordSamp = document.createElement("samp");
@@ -271,7 +272,7 @@ function openSearch(query=null) {
 			}
 		}
 		elid("search-close").addEventListener("click", closeSearch);
-		elid("search-box").addEventListener('keyup', updateSearch);
+		elid("search-box").addEventListener('input', updateSearch);
 	} else {
 		elid("search-box").placeholder = elid("search-box").value;
 	}

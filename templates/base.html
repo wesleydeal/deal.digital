@@ -12,20 +12,17 @@
 <title>{% if page.extra.shorttitle %}{{ page.extra.shorttitle }} - {% elif page.title %}{{ page.title }} - {% endif %}Wesley Deal</title>
 {% endblock title -%}
 <style>
-:root {
-	container: root / size;
-}
+:root { container: root / size; }
 body {
 	font-family: "Roboto Flex", "Segoe UI Variable", system-ui, sans-serif;
 	line-height: 1.6;
-	transition: opacity 1000ms 100ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	transition: opacity 500ms 100ms ease-out;
 	opacity: 1;
 	padding: 0;
 	margin: 0;
-	@starting-style {
-		opacity: 0;
-	}
+	@starting-style { opacity: 0; }
 }
+
 header {
 	background: #056;
 	background: oklch(from var(--color-primary, #056) 0.4 c h);
@@ -48,50 +45,33 @@ nav#topnav li, #homelink {
 	list-style: none;
 	display: inline;
 }
-#homelink {
-	font-weight: bold;
-}
-header nav#breadcrumbs {
-	visibility: hidden;
-	display: none
-}
-#toc details summary {
-	list-style: none;
-}
-#toc {
-	padding: 0 20px 20px;
-}
-#toc summary{
-	position: relative;
-}
+#homelink { font-weight: bold; }
+header nav#breadcrumbs { display: none; visibility: hidden; }
+
+#toc details summary {list-style: none}
+#toc {padding: 0 20px 20px}
+#toc summary{position: relative}
 #toc summary:after{
-	content: ' (click to show/hide)';
+	content: '(click to show/hide)';
 	position: absolute;
 	bottom: -16px;
 }
-.content {
-	padding: 0 10px;
-}
-ul, ol {
-	padding-left: 25px;
-}
+.content {padding: 0 10px}
+ul, ol {padding-left: 25px}
 h1 {
 	font-size: xx-large;
 	font-size: clamp(32px, 4vw, 60px);
 	font-family: -apple-system-ui-serif, "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
 	letter-spacing: -3%;
 	font-weight: 500;
-	color: oklch(from var(--color-primary) 0.6 c h);
+	color: oklch(from var(--color-primary) 0.4 c h);
 }
 footer {
 	border-top: 2px solid;
 	font-family: Consolas, monospace;
-	margin-top: 100px;
+	margin: 200px 0 800px;
 	padding: 20px;
 	line-height: 1.2;
-}
-.ascii-art{
-	white-space: pre;
 }
 #ui-tools {
 	position: fixed;
@@ -101,20 +81,31 @@ footer {
 a, :any-link{
 	color: #056;
 	color: oklch(from var(--color-primary, #056) 0.4 c h);
-	text-decoration-color: lightseagreen;
 	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
 }
-p, li, img { max-width: 800px; }
+img { max-width: 100%; }
+p, li { max-width: 800px; }
 pre {overflow-x: auto;}
 table {border-collapse: collapse;}
 th,td{border: 1px solid; padding: 5px;}
 .zola-anchor {display: none; visibility: hidden;}
-#search-container { padding: 20px; }
+#search-container { padding: 20px; overflow: hidden; }
 #search-box { width: 100%;}
 #search-keyword-list samp { padding: 0 10px; }
+@container root style(--dark-mode: true){
+	body { background: #000; color: #fff; }
+	a, :any-link { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
+	h1 { color: oklch(from var(--color-primary) 0.7 c h); }
+}
 @media (prefers-color-scheme: dark) {
 	body { background: #000; color: #fff; }
 	a, :any-link { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
+	h1 { color: oklch(from var(--color-primary) 0.7 c h); }
+}
+@container root style(--dark-mode: false) {
+	body { background: #fff; color: #000; }
+	a, :any-link { color: oklch(from var(--color-primary, #056) 0.4 c h); }
+	h1 { color: oklch(from var(--color-primary) 0.4 c h); }
 }
 @media (width > 720px) {
 	.content { padding: 0 5vw; }
