@@ -31,6 +31,7 @@ const providers = {
 		- TODO NOT IMPLEMENTED - getActions - function(string) returning array[array[string, function(event)], ...] where each element is a [name, action]
 	- TODO prioritizeIf (opt) - function(string) returning boolean, determines whether this is a particularly good suggestion for this query and should be placed near the top
 	- color (opt) - string, valid CSS color associated with this provider
+	- hide (opt) - boolean, if true don't list in !keywords
 	*/
 	Local: {
 		keywords: ['d','dd','deal','deal.digital'],
@@ -166,7 +167,16 @@ const providers = {
 			}
 			closeSearch();
 		},
-	}
+	},
+	style: {
+		keywords: ['style', 'stylesheet'],
+		desc: 'Set Stylesheet',
+		action: (event) => {
+			let ssLink = document.querySelector("link[rel='stylesheet'][as='style']");
+			ssLink.href = "/" + event.target.title.replaceAll(" ","") + ".css";
+			closeSearch();
+		},
+	},
 };
 let keywordMap = {};
 for (providerName in providers) {
@@ -224,22 +234,25 @@ function openSearch(query=null) {
 				<button id="search-close" aria-label="Close Navigator">X</button>
 				<label for="search-box"><b>///// Navigator</b> <i>alpha one</i></label>
 				<input id="search-box" type="text" placeholder="Type to search 🧭">
-				<menu id="search-results">
-				</menu>
-				<div id="search-help">
-					<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to clear or close.
-					<h2>!keywords</h2>
-					<ul id="search-keyword-list">
-					</ul>
-				  <h2>Examples</h2>
-					<ul>
-						<li><a href="#" onclick="document.documentElement.style.setProperty('--color-primary', 'aquamarine')">color aquamarine</a>
-						<li><a href="https://www.ebay.com/sch/i.html?_nkw=+ibm+model+m+(bolt%2Cscrew)+(mod%2Cmodded)">eb ibm model m (bolt,screw) (mod,modded)</a>
-						<li><a href="https://youtube.com/results?search_query=+moments+with+heavy+french+toast">yt moments with heavy french toast</a>
-						<li><a href="https://chatgpt.com/?q=where+can+I+get+a+good+asada+burrito+nearby+">where can I get a good asada burrito nearby !gpt</a>
-						<li><a href="https://annas-archive.org/search?q=mike+ma">mike ma !an</a>
-					</ul>
-				</div>
+			</div>
+		`);
+		elid("search-box").focus();
+		elid('search-container').insertAdjacentHTML('beforeend', `
+			<menu id="search-results">
+			</menu>
+			<div id="search-help">
+				<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to clear or close.
+				<h2>!keywords</h2>
+				<ul id="search-keyword-list">
+				</ul>
+			  <h2>Examples</h2>
+				<ul>
+					<li><a href="#" onclick="document.documentElement.style.setProperty('--color-primary', 'aquamarine')">color aquamarine</a>
+					<li><a href="https://www.ebay.com/sch/i.html?_nkw=+ibm+model+m+(bolt%2Cscrew)+(mod%2Cmodded)">eb ibm model m (bolt,screw) (mod,modded)</a>
+					<li><a href="https://youtube.com/results?search_query=+moments+with+heavy+french+toast">yt moments with heavy french toast</a>
+					<li><a href="https://chatgpt.com/?q=where+can+I+get+a+good+asada+burrito+nearby+">where can I get a good asada burrito nearby !gpt</a>
+					<li><a href="https://annas-archive.org/search?q=mike+ma">mike ma !an</a>
+				</ul>
 			</div>
 		`);
 		const keywordList = elid("search-keyword-list");
@@ -284,6 +297,7 @@ function closeSearch() {
 }
 
 async function updateSearch(event=null) {
+	searchShortcutRegistry = {}
 	let startTime = Date.now();
 	const searchBox = elid("search-box");
 	const searchResults = elid("search-results");
@@ -292,7 +306,6 @@ async function updateSearch(event=null) {
 	let query = searchBox.value;
 	let resultCount = 0;
 	let foundKeyword = false;
-	searchShortcutRegistry = {}
 
 	while(query[0] === "/") {
 		query = query.substring(1);
@@ -413,9 +426,7 @@ function load() {
 	elid("search-link")?.addEventListener("click", toggleSearch);
 
 	document.addEventListener("keyup", (e) => {
-		if (e.key === '/' && document.activeElement.tagName != "INPUT") {
-			openSearch(window.getSelection().toString().replaceAll('\n',''));
-		} else if (e.key === 'Escape') {
+		if (e.key === 'Escape') {
 			if (elid("search-box") && elid("search-box")?.value.replaceAll(' ','') === "") {
 				closeSearch();
 			} else if (elid("search-box")) {
@@ -424,6 +435,10 @@ function load() {
 		}
 	});
 	document.addEventListener("keydown", (e) => {
+		if (e.key === '/' && document.activeElement.tagName != "INPUT") {
+			e.preventDefault();
+			openSearch(window.getSelection().toString().replaceAll('\n',''));
+		}
 		if (document.activeElement === elid("search-box")) {
 			let key = "Alt".repeat(e.altKey) + e.key;
 			if (key in searchShortcutRegistry) {
