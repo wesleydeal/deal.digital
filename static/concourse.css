@@ -24,7 +24,7 @@
 	container: root / size;
 
 	--dark-mode: false;
-	--color-primary: #e21; /*#fa7;*/
+	--color-primary: #e43; /*#fa7;*/
 	--c: var(--color-primary);
 
 	--color-fg-hc: #000;
