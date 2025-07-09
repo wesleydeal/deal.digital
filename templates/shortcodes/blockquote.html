@@ -2,7 +2,7 @@
 	{{ body | markdown | safe }}
 </blockquote>
 	<div class="quote-signoff">
-		<p class="author">{% if url %}<a href="{{ url }}">{% endif %}—{{author}}{% if url %}</a>{% endif %}
+		<p class="author">{% if url %}<a href="{{ url | safe }}">{% endif %}—{{author}}{% if url %}</a>{% endif %}
 		{% if date %}
 			<p class="date"><time datetime="{{ date }}">{{ date }}</time>
 		{% endif %}

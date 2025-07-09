@@ -27,7 +27,6 @@ header {
 	background: #056;
 	background: oklch(from var(--color-primary, #056) 0.4 c h);
 	padding: 10px;
-	padding: 10px 5vw;
 	color: #fff;
 	font-size: 110%;
 	line-height: 1.8;
@@ -69,6 +68,7 @@ h1 {
 	font-size: xx-large;
 	font-size: clamp(32px, 4vw, 60px);
 	font-weight: 500;
+	line-height: 1.1;
 	color: oklch(from var(--color-primary) 0.4 c h);
 	margin: 32px 0 24px;
 	text-shadow: 2px 2px 0 #7773;
@@ -209,7 +209,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 	{% set t2_end = "│ └─" -%}
 	{% for s in sections | sort -%}
 	    {% set section = get_section(path=s) -%}
-        <br>{{ t1 }}<a href="{{ section.permalink }}">{{ section.path | trim_start_matches(pat="/") }}</a>
+        <br>{{ t1 }}<a href="{{ section.path | trim_end_matches(pat="/") | safe }}">{{ section.path | trim_start_matches(pat="/") }}</a>
         {% if section.pages -%}
         {% set subpages = section.pages -%}
         {% for subpage in subpages | sort(attribute="path") -%}
@@ -218,7 +218,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
             {% else -%}
             {% set t = t2 -%}
             {% endif -%}
-            <br>{{ t }}<a href="{{ subpage.permalink }}">{{ subpage.slug ~ "/" }}</a>
+            <br>{{ t }}<a href="{{ subpage.path | trim_end_matches(pat="/") | safe }}">{{ subpage.slug }}</a>
         {% endfor -%}
         {% endif -%}
 	{% endfor -%}
@@ -228,7 +228,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
         {% else -%}
         {% set t = t1 -%}
         {% endif -%}
-		<br>{{ t }}<a href="{{ page.permalink }}">{{ page.path | trim_start_matches(pat="/") }}</a>
+		<br>{{ t }}<a href="{{ page.path | trim_end_matches(pat="/") | safe }}">{{ page.path | trim_end_matches(pat="/") | trim_start_matches(pat="/") }}</a>
 		{% if page.pages -%}
 		{% for subpage in page.pages -%}
 		{% if loop.last -%}
@@ -236,7 +236,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
             {% else -%}
             {% set t = t2 -%}
             {% endif -%}
-            <br>{{ t }}<a href="{{ subpage.permalink }}">{{ subpage.slug ~ "/" }}</a>
+            <br>{{ t }}<a href="{{ subpage.path | trim_end_matches(pat="/") | safe }}">{{ subpage.slug }}</a>
 		{% endfor -%}
 		{% endif -%}
 	{% endfor -%}

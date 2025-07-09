@@ -1,6 +1,8 @@
 +++
 updated = 2025-06-24
 title = "Contact Me"
+[extra]
+color = "#caced2"
 +++
 
 I can be reached by email at the address:

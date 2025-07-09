@@ -4,7 +4,7 @@ updated = 2025-06-24
 [extra]
 shorttitle = "Links"
 toc = true
-color = "#0cf"
+color = "#00aec9"
 +++
 
 Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brave-browser/issues/35042) and search engines are less useful by the day

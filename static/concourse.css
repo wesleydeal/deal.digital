@@ -24,7 +24,7 @@
 	container: root / size;
 
 	--dark-mode: false;
-	--color-primary: #f30; /*#fa7;*/
+	--color-primary: #e21; /*#fa7;*/
 	--c: var(--color-primary);
 
 	--color-fg-hc: #000;
@@ -34,22 +34,25 @@
 	--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) .97 calc(c * .25) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px max(60vw, 1400px), oklch(from var(--color-primary) .97 calc(c * .25) h) max(100vw, 1500px));
 
 	--color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
+	--color-primary-sat: oklch(from var(--color-primary) clamp(0.85, l, 0.95) max(.14, c) h);
+	--color-button-important: oklch(from var(--color-primary) clamp(0.3, calc(l + 0.05), 0.57) calc(c + .02) h);
 	--color-link: oklch(from var(--color-primary) 0.2 max(c, 0.1) h);
 	--color-link-underline: oklch(from var(--color-primary) clamp(0.33, l, 0.77) max(c, 0.1) h);
 	--color-h1: oklch(from var(--color-primary) min(.45, l) min(.13, c) h);
 	--color-h2: oklch(from var(--color-primary) min(.4, l) min(.13, c) h);
-	--color-tinted-shadow: oklch(from var(--color-primary) 0.2 0.2 h / 50%);
+	--color-tinted-shadow: oklch(from var(--color-primary) 0.2 min(c,0.2) h / 50%);
 	--color-pop: oklch(from var(--color-primary) clamp(.77, l, .85) clamp(0.11, calc(c + .05), .27) calc(h - 180));
 	--color-pop-bgcontrast: oklch(from var(--color-pop) 0.4 c h);
 	--header-bg: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%) 0 / cover fixed;
-	--button-shadow: inset 1px 1px 0 color-mix(in oklch, var(--color-primary) 50%, #ffff), inset -1px -1px 0 color-mix(in oklch, var(--color-h1) 40%, #ffff);
 	--button-shadow: inset 1px 1px 0 oklch(from var(--color-primary) 0.85 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.75 calc(c * .8) h);
 	--button-shadow-hover: inset 1px 1px 0 oklch(from var(--color-primary) 0.45 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.55 calc(c * .8) h);
 	--button-border: 1px solid oklch(from var(--color-pop) 0.2 0.1 h);
 	--button-overlay: linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent);
-	--button-highlight-overlay: linear-gradient(to right in oklch, #0000 -100%, #fff3, #0000 200%),
+	--button-highlight-overlay:
+		linear-gradient(to right in oklch, #0000 -100%, #fff3, #0000 200%),
 		linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent),
-		repeating-linear-gradient(135deg, #ffffff07 0 4px, transparent 4px 8px);
+		repeating-linear-gradient(135deg, #ffffff03 0 4px, #00000003 0 8px) 0 / calc(8px/sin(135deg)) 100%;
+	--royale-overlay: linear-gradient(to bottom in oklch, #fff5, #fff3 50%, #fff1 50%, #0002);
 	--weight-h2: 500;
 
 	@media (prefers-color-scheme: dark) {
@@ -79,7 +82,7 @@
 		--color-fg-hc: #fff;
 		--color-bg-hc: #000;
 		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
-		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.15, c) h);
+		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.1, c) h);
 		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
 		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
 		--weight-h2: 400;
@@ -155,7 +158,12 @@ nav#topnav {
 			"GRAD" 150; /* additional weight without spacing */
 		background: linear-gradient(180deg in oklch, #fff1, #fff2 50%, #0002 0, #0000),
 			linear-gradient(90deg in oklch, #fff -15%, var(--color-pop) 0.25em, #0001 0.26em, #0000 0.36em),
-			color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
+			var(--color-button-important);
+		&:hover {
+			background: var(--button-highlight-overlay),
+				linear-gradient(90deg in oklch, #fff -15%, var(--color-primary) 0.25em, #0001 0.26em, #0000 0.36em),
+				var(--color-button-important);
+		}
 	}
 	& ul {
 		display: flex;
@@ -182,14 +190,14 @@ nav#topnav {
 		min-width: max-content;
 		box-shadow: var(--button-shadow);
 		border: var(--button-border);
-		background: var(--button-overlay), color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
+		background: var(--button-overlay), var(--color-button-important);
 		padding: 0.3em 1ch 0.3em 0.8ch;
 		text-decoration: none;
 		text-shadow: 1px 1px 0 #000;
 		font-stretch: 125%;
 		font-variation-settings: "YTLC" 560; /* lowercase height */
 		&:hover, &:focus {
-			background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-primary-sat) 20%, transparent);
+			background: var(--button-highlight-overlay), var(--color-button-important);
 			backdrop-filter: saturate(1.2);
 			box-shadow: var(--button-shadow-hover);
 			color: #fff;
@@ -254,13 +262,13 @@ nav#toc {
 			color: #fff;
 			box-shadow: var(--button-shadow);
 			border: var(--button-border);
-			background: var(--button-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+			background: var(--button-overlay), var(--color-button-important);
 			text-shadow: 1px 1px 0 #000;
 			width: fit-content;
 			transition: background 200ms cubic-bezier(0.23, 1, 0.320, 1), box-shadow 200ms cubic-bezier(0.23, 1, 0.320, 1);
 		}
 		&:hover::after {
-			background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+			background: var(--button-highlight-overlay), var(--color-button-important);
 			box-shadow: var(--button-shadow-hover);
 		}
 		[open] &::after {
@@ -314,6 +322,7 @@ menu#ui-tools {
 		background: transparent;
 		border-bottom: 1px solid #fff9;
 		padding: 0.1em 0.15em;
+		transition: background 100ms ease-out;
 		&:last-child {
 			border-bottom: none;
 		}
@@ -329,7 +338,10 @@ menu#ui-tools {
 			margin: 0 -0.15em;
 		}
 		&:hover {
-			background: var(--button-highlight-overlay);
+			background: var(--button-highlight-overlay), var(--color-button-important);
+			border-radius: 5px;
+			border-bottom-color: #0000;
+			outline: 1px solid var(--color-link-underline);
 		}
 	}
 }
@@ -448,7 +460,7 @@ h1 {
 	color: var(--color-h1);
 	max-width: 24ch;
 	margin: 0.5em 0 0.25em;
-	text-shadow: 2px 2px 0 #7773;
+	text-shadow: 2px 2px 0 oklch(from var(--color-tinted-shadow) l c h / 15%);
 	& em, & i{
 		font-style: normal;
 		text-decoration: 0.05em underline var(--color-pop-bgcontrast);
@@ -474,6 +486,7 @@ h2 {
 		background: linear-gradient(to right, color-mix(in oklch, var(--color-pop) 50%, var(--color-fg)), var(--color-bg));
 		background: linear-gradient(to right in oklab, var(--color-pop-bgcontrast), oklch(from var(--color-bg) l c h / 50%));
 		background: linear-gradient(to right in oklab, var(--color-h1) -100%, oklch(from var(--color-bg) l c h / 50%));
+		background: linear-gradient(to right in oklab, var(--color-h1) -100%, transparent));
 	}
 }
 
@@ -691,10 +704,11 @@ table {
 	border: border: 1px solid var(--color-h1);
 	border-collapse: collapse;
 	& th {
-		background: var(--color-h1);
+		background: var(--color-h2);
 		color: var(--color-bg);
-		border: 1px solid var(--color-h1);
+		border: 1px solid var(--color-h2);
 		padding: 0.2em 0.5em;
+		font-weight: 400;
 	}
 	& td {
 		border: 1px solid oklch(from var(--color-h1) l c h / 50%);
@@ -790,7 +804,6 @@ kbd {
 	}
 	& label[for="search-box"] {
 		margin: 0 0 0.5em;
-		//background: linear-gradient(to bottom, #0000 0 3px, var(--color-fg-hc) 0), linear-gradient(to right in oklch longer hue, #ff0000, #00ffa9);
 		background: var(--color-fg-hc);
 		color: var(--color-bg-hc);
 		padding: 1px 0.5em;
@@ -815,8 +828,8 @@ kbd {
 		position: absolute;
 		top: 10px;
 		right: 10px;
-		padding: 0.05em 0.2em 0.05em;
-		background: var(--button-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+		padding: 0.05em 0.2em;
+		background: var(--button-overlay), var(--color-button-important);
 		border: var(--button-border);
 		box-shadow: var(--button-shadow);
 		font-stretch: 150%;

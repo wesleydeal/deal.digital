@@ -7,6 +7,7 @@ tags = ["software", "IT", "cloud", "AI"]
 [extra]
 shorttitle = "Deploy LibreChat for cheap LLM queries"
 toc = true
+color = "#a5bc84"
 +++
 
 Do you want to deploy an inexpensive ChatGPT-like web app for your school, business, or friends?

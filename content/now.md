@@ -4,7 +4,7 @@ updated = 2025-07-03
 title = "What I’m doing now"
 draft = false
 [extra]
-color = "#9bcaff"
+color = "#83abe8"
 +++
 
 {% blockquote(author="Derek Silvers",url="https://nownownow.com/about") %}
