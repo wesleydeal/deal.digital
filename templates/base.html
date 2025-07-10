@@ -1,9 +1,9 @@
 {% import "macros.html" as macros %}
 <!DOCTYPE html>
 {% if page.extra.color -%}
-    {% set color = page.extra.color -%}
+	{% set color = page.extra.color -%}
 {% elif section.extra.color -%}
-    {% set color = section.extra.color -%}
+	{% set color = section.extra.color -%}
 {% endif %}
 <html lang="en"{% if color %} style="--color-primary: {{ color }}"{% endif %}>
 <meta charset="utf-8">
@@ -12,15 +12,19 @@
 <title>{% if page.extra.shorttitle %}{{ page.extra.shorttitle }} - {% elif page.title %}{{ page.title }} - {% endif %}Wesley Deal</title>
 {% endblock title -%}
 <style type="text/css">
-html { container: root / size; }
+html {
+	container: root / size;
+	scroll-behavior: smooth;
+}
 body {
 	font: 100%/1.6 system-ui, sans-serif;
 	margin: 0;
 	width: 100%;
 	background: oklch(from var(--color-primary, #056) 0.96 0.01 h);
 	overflow-wrap: break-word;
+	tab-size: 4;
 }
-.content, header, footer, #toc, #search-container {
+body>* {
 	padding: 16px;
 	max-width: 100%;
 	opacity: 1;
@@ -100,7 +104,7 @@ a, :any-link{
 }
 :is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
 img { max-width: 100%; }
-pre,code {overflow-x: auto; font-family: ui-monospace, Consolas, SYSTEM, monospace}
+pre,code {overflow: auto; padding-bottom: 1px; font-family: ui-monospace, Consolas, SYSTEM, monospace}
 table {border-collapse: collapse;}
 th,td {border: 1px solid; padding: 5px;}
 th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
@@ -135,7 +139,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 <!--[if !IE]><!-->
 <link rel="preload" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
 <!--<![endif]-->
-<body{% if page.slug %} id="{{ page.slug }}"{% elif not page.title %} id="index"{% endif %}>
+<body{% if page %} id="{{ page.path | trim_end_matches(pat="/") | trim_start_matches(pat="/") | replace(from="/", to="-")}}"{% elif section %} id="{{ section.path | trim_end_matches(pat="/") | trim_start_matches(pat="/") | replace(from="/", to="-")}}"{% elif not page.title %} id="index"{% endif %}>
 <header>
 	<nav id="topnav">
 		{% block homelink -%}
@@ -205,36 +209,36 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 	{% set t1_end = "└─" -%}
 	{% set t2_end = "│ └─" -%}
 	{% for s in sections | sort -%}
-	    {% set section = get_section(path=s) -%}
-        <br>{{ t1 }}<a href="{{ section.path | trim_end_matches(pat="/") | safe }}">{{ section.path | trim_start_matches(pat="/") }}</a>
-        {% if section.pages -%}
-        {% set subpages = section.pages -%}
-        {% for subpage in subpages | sort(attribute="path") -%}
-            {% if loop.last -%}
-            {% set t = t2_end -%}
-            {% else -%}
-            {% set t = t2 -%}
-            {% endif -%}
-            <br>{{ t }}<a href="{{ subpage.path | trim_end_matches(pat="/") | safe }}">{{ subpage.slug }}</a>
-        {% endfor -%}
-        {% endif -%}
+		{% set section = get_section(path=s) -%}
+		<br>{{ t1 }}<a href="{{ section.path | trim_end_matches(pat="/") | safe }}">{{ section.path | trim_start_matches(pat="/") }}</a>
+		{% if section.pages -%}
+		{% set subpages = section.pages -%}
+		{% for subpage in subpages | sort(attribute="path") -%}
+			{% if loop.last -%}
+			{% set t = t2_end -%}
+			{% else -%}
+			{% set t = t2 -%}
+			{% endif -%}
+			<br>{{ t }}<a href="{{ subpage.path | trim_end_matches(pat="/") | safe }}">{{ subpage.slug }}</a>
+		{% endfor -%}
+		{% endif -%}
 	{% endfor -%}
 	{% for page in pages | sort(attribute="path") -%}
-        {% if loop.last -%}
-        {% set t = t1_end -%}
-        {% else -%}
-        {% set t = t1 -%}
-        {% endif -%}
+		{% if loop.last -%}
+			{% set t = t1_end -%}
+		{% else -%}
+			{% set t = t1 -%}
+		{% endif -%}
 		<br>{{ t }}<a href="{{ page.path | trim_end_matches(pat="/") | safe }}">{{ page.path | trim_end_matches(pat="/") | trim_start_matches(pat="/") }}</a>
 		{% if page.pages -%}
-		{% for subpage in page.pages -%}
-		{% if loop.last -%}
-            {% set t = t2_end -%}
-            {% else -%}
-            {% set t = t2 -%}
-            {% endif -%}
-            <br>{{ t }}<a href="{{ subpage.path | trim_end_matches(pat="/") | safe }}">{{ subpage.slug }}</a>
-		{% endfor -%}
+			{% for subpage in page.pages -%}
+			{% if loop.last -%}
+				{% set t = t2_end -%}
+				{% else -%}
+				{% set t = t2 -%}
+				{% endif -%}
+				<br>{{ t }}<a href="{{ subpage.path | trim_end_matches(pat="/") | safe }}">{{ subpage.slug }}</a>
+			{% endfor -%}
 		{% endif -%}
 	{% endfor -%}
 	{% endblock sitetree -%}

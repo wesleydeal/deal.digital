@@ -214,9 +214,10 @@ nav#toc {
 	flex: unset;
 	position: sticky;
 	z-index: 10;
-	background: oklch(from var(--color-primary) min(calc(l - 0.1), 0.2) c h / 80%);
-	backdrop-filter: blur(5px);
+	background: repeating-linear-gradient(135deg in oklch, #8981, #0001 100px, #7771 140px, #0001 250px, #7771 300px, #8981 320px), oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c h / 80%);
+	backdrop-filter: saturate(2) ;
 	font-stretch: 50%;
+	border-bottom: 1px solid var(--color-primary-sat);
 	&>div {
 		max-width: 100%;
 		margin: 0 auto;
@@ -224,7 +225,10 @@ nav#toc {
 	& b {
 		text-transform: uppercase;
 		font-stretch: 150%;
-		color: var(--color-link-underline);
+		color: oklch(from var(--color-primary-sat) 0.9 c h / 80%);
+	}
+	& :any-link {
+		text-decoration-color: oklch(from var(--color-primary-sat) 0.9 c h / 80%);
 	}
 }
 
@@ -302,6 +306,13 @@ section.content {
 	flex: unset;
 	&>* {
 		max-width: var(--text-width);
+		margin-left: auto;
+		margin-right: auto;
+	}
+	&>h1 {
+		max-width: 1200px;
+		text-align: center;
+		text-wrap: balance;
 	}
 	& img {
 		max-width: 100%;
@@ -569,6 +580,7 @@ ul.blog-listing {
 	flex-direction: column;
 	font: 400 clamp(1.6em, 3.5vw, 2.1em)/1.1 var(--typeface-display);
 	font-variant-numeric: lining-nums;
+	text-wrap: balance;
 	& li {
 		display: grid;
 		grid-template-areas: "date tags author" "title title title";
@@ -613,7 +625,11 @@ ul.blog-listing {
 			line-height: 1;
 		}
 	}
+}
 
+body#blog h1, body#tools h1 {
+	max-width: var(--text-width);
+	text-align: left;
 }
 
 h2 + p, h3 + p, h4 + p {
@@ -758,7 +774,7 @@ kbd {
 		padding: 1px 0.5em 3px;
 		display: inline-block;
 		font-variation-settings: "YTLC" 555;
-		background: linear-gradient(to bottom in oklch, #000 60%, oklch(from var(--color-primary) 0.85 calc(c * .8) h));
+		background: linear-gradient(to bottom in oklab, #fff -10%, var(--color-fg-hc) 10%, 85%, oklch(from var(--color-primary) 0.85 calc(c * .8) h));
 		& b {
 			font-weight: 570;
 		}
@@ -901,19 +917,6 @@ kbd {
 		justify-content: center;
 		& a#homelink, & ul {
 			flex: 1 1 350px;
-		}
-	}
-	nav#toc {
-		position: static !important;
-		padding: 0 5vw;
-		& ol {
-			margin-bottom: 0;
-		}
-		& li:has(.toplink) {
-			display: none;
-		}
-		& h2::after{
-			background: linear-gradient(to right, var(--color-fg), transparent);
 		}
 	}
 	footer {
