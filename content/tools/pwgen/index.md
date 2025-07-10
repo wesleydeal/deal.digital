@@ -12,12 +12,6 @@ color = "#00ba89"
 +++
 
 <style type="text/css">
-/*
-.content > *:not(div#result) {
-	width: calc(min(780px,100%));
-	padding: 0 10px;
-}
-*/
 #passwords-exposition p{
 	margin-top: 0;
 }
@@ -83,8 +77,8 @@ button#generate {
 	color: inherit;
 	border: 2px solid var(--color-primary);
 	border-radius: 3px;
-	background: var(--color-bg);
-	background: var(--button-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+	background: #000;
+	background: var(--button-overlay, linear-gradient(#0000, #fff2)), var(--color-button-important, var(--color-primary));
 	padding: 5px 15px;
 	transition: border 150ms ease-out, color 150ms ease-out, background 150ms ease-out;
 	width: 100%;
@@ -100,11 +94,11 @@ button#generate:hover {
 	//background: var(--color-pop);
 	//color: var(--color-bg);
 	//border: 2px solid var(--color-pop);
-	background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+	background: var(--button-highlight-overlay, linear-gradient(#fff2, #fff4)), var(--color-button-important, var(--color-primary));
 	box-shadow: var(--button-shadow-hover);
 }
 button#generate:active {
-	background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-pop), #000 45%);
+	background: var(--button-highlight-overlay, linear-gradient(#fff2, #fff4)), color-mix(in oklch, var(--color-pop, #999), #000 45%);
 	animation: bgmove 15s infinite linear;
 }
 #copied-caption{
@@ -124,13 +118,12 @@ button#generate:active {
 	opacity: 1;
 }
 #result{
-	font-family: var(--typeface-mono),"Red Hat Mono",Consolas,monospace;
+	font-family: Consolas,monospace;
+	font-family: var(--typeface-mono,Consolas,monospace);
 	font-size: 1.5em;
 	border: 1px solid var(--color-fg);
 	background: color-mix(in srgb, var(--color-bg) 80%, transparent);
-	margin: 10px 0;
 	overflow-x: auto;
-	max-width: min(100%,1600px);
 }
 #result.smaller{
 	font-size: 1em;
@@ -139,7 +132,7 @@ button#generate:active {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 24px 20px;
-	justify-content: start;
+	justify-content: center;
 	padding: 0 20px;
 }
 #result li{
@@ -209,7 +202,7 @@ button#generate:active {
 	COPIED TO CLIPBOARD
 </div>
 
-<div id="result"></div>
+<div id="result" class="fullbleed"></div>
 
 <div id="alphabet-container">
 	<p>from alphabet <code id="alphabet"></code></p>

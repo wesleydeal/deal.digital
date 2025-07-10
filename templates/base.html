@@ -11,22 +11,32 @@
 {% block title -%}
 <title>{% if page.extra.shorttitle %}{{ page.extra.shorttitle }} - {% elif page.title %}{{ page.title }} - {% endif %}Wesley Deal</title>
 {% endblock title -%}
-<style>
-:root { container: root / size; }
+<style type="text/css">
+html { container: root / size; }
 body {
 	font: 100%/1.6 system-ui, sans-serif;
-	transition: opacity 500ms 100ms ease-out;
-	opacity: 1;
 	margin: 0;
-	@starting-style { opacity: 0; }
 	width: 100%;
 	background: oklch(from var(--color-primary, #056) 0.96 0.01 h);
+	overflow-wrap: break-word;
 }
-
+.content, header, footer, #toc, #search-container {
+	padding: 16px;
+	max-width: 100%;
+	opacity: 1;
+	@starting-style { opacity: 0; }
+	transition: opacity 500ms 100ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+header>*, .content>*, footer>*, #search-container>*, #toc>* {
+	max-width: 800px;
+	max-width: 54rem;
+	margin-left: auto;
+	margin-left: max(calc(50vw - 30rem), 0px);
+	margin-right: auto;
+}
 header {
 	background: #056;
 	background: oklch(from var(--color-primary, #056) 0.4 c h);
-	padding: 10px;
 	color: #fff;
 	font-size: 110%;
 	line-height: 1.8;
@@ -44,61 +54,53 @@ header a, header :any-link {
 }
 nav#topnav li, #homelink {
 	padding: 0;
-	margin: 8px;
+	margin-right: 16px;
 	list-style: none;
 	display: inline;
 }
 #homelink { text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180)); }
 header nav#breadcrumbs { display: none; visibility: hidden; }
+#toc {
+	background: #023;
+	background: oklch(from var(--color-primary, #056) 0.2 c h);
+	color: #fff;
+}
+#toc  a, #toc  :any-link {
+	color: inherit;
+}
 
-#toc details summary {list-style: none}
-#toc {padding: 0 20px 20px}
-#toc summary{position: relative}
-#toc summary:after{
-	content: '(click to show/hide)';
-	position: absolute;
-	bottom: -16px;
-}
-.content {
-	padding: 0 10px;
-	max-width: 100%;
-}
-ul, ol {padding-left: 25px}
+.content {min-height: 100vh}
+ul, ol {padding-left: 24px}
 h1 {
 	font-size: xx-large;
 	font-size: clamp(32px, 4vw, 60px);
 	font-weight: 500;
 	line-height: 1.1;
 	color: oklch(from var(--color-primary) 0.4 c h);
-	margin: 32px 0 24px;
+	margin: 32px auto 24px;
 	text-shadow: 2px 2px 0 #7773;
 }
-h2 { margin: 20px 0 8px; font-size: 150%; font-weight: 500; }
-h3 { margin: 16px 0 6px; font-size: 130%; font-weight: 400; }
-h4 { margin: 14px 0 4px; font-size: 120%; }
-h5 { margin: 12px 0 0; font-size: 120%; font-weight: normal }
-h6 { margin: 12px 0 4px; font-size: 100%; font-style: italic }
+h2 { margin: 20px auto 8px; font-size: 150%; font-weight: 500; }
+h3 { margin: 16px auto 6px; font-size: 130%; font-weight: 400; }
+h4 { margin: 14px auto 4px; font-size: 120%; }
+h5 { margin: 12px auto   0; font-size: 120%; font-weight: normal }
+h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic }
 footer {
 	border-top: 2px solid;
-	font-family: ui-monospace, Consolas, monospace;
+	font-family: ui-monospace, Consolas, SYSTEM, monospace;
 	margin: 200px 0 800px;
 	padding: 20px;
 	line-height: 1.1;
 }
-#ui-tools {
-	position: fixed;
-	bottom: 5px;
-	right: 5px;
-}
+#ui-tools {display: none;}
 a, :any-link{
 	color: #056;
 	color: oklch(from var(--color-primary, #056) 0.4 c h);
 	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
 }
 :is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
-p, li { max-width: 800px; }
 img { max-width: 100%; }
-pre {overflow-x: auto;}
+pre,code {overflow-x: auto; font-family: ui-monospace, Consolas, SYSTEM, monospace}
 table {border-collapse: collapse;}
 th,td {border: 1px solid; padding: 5px;}
 th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
@@ -121,7 +123,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 	a, :any-link { color: oklch(from var(--color-primary, #056) 0.4 c h); }
 	h1 { color: oklch(from var(--color-primary) 0.4 c h); }
 }
-@media (width > 720px) {
+@/media (width > 720px) {
 	.content { padding: 0 5vw; }
 	body { display: flex; flex-wrap: wrap; }
 	header { width: 100%; }
@@ -131,8 +133,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 }
 </style>
 <!--[if !IE]><!-->
-<link rel="preload" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css"></noscript>
+<link rel="preload" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
 <!--<![endif]-->
 <body{% if page.slug %} id="{{ page.slug }}"{% elif not page.title %} id="index"{% endif %}>
 <header>
@@ -173,16 +174,12 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 </header>
 {% if page.extra.toc and page.toc %}
 <nav id="toc">
-	<details open>
-	<summary><h2>Contents</h2></summary>
-	<ol>{% for h1 in page.toc %}
-		<li>
-			<a href="{{ h1.permalink | safe }}">{{ h1.title }}</a>{% if h1.children %}
-			<ol>{% for h2 in h1.children %}<li><a href="{{ h2.permalink | safe }}">{{ h2.title }}</a>
-			{% endfor %}</ol>{% endif %}
-		</li>{% endfor %}
-	</ol>
-	</details>
+	<div>
+		<b>Jump to: </b>
+		{% for h1 in page.toc -%}
+		<a href="#{{ h1.id | safe }}">{{ h1.title }}</a>{% if not loop.last -%}<span>, </span>{% endif -%}
+		{% endfor -%}
+	</div>
 </nav>
 {% endif %}
 <section class="content">
