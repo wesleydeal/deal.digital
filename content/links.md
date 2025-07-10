@@ -106,6 +106,15 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 
 * [Human or Not](https://humanornot.ai)
 
+## Emulation
+
+### In-browser
+* [v86 by Fabian (copy.sh)](https://copy.sh/v86/) lets you run a variety of OSes in an emulated P4 class machine, in browser
+* [JSLinux by Fabrice Bellard](https://bellard.org/jslinux/) is quite similar, emulates Windows 2000 impressively in addition to RISC-V Linux
+* [Infinite Mac](https://infinitemac.org/) emulates Mac up to OS X Tiger
+* [PCE.js by James Friend](https://infinitemac.org/) emulates a Mac Plus, Atari ST, or IBM PC
+* [MartyPC](https://martypc.net) is a cycle-accurate IBM PC 5150 emulator for your browser
+
 ## Unsorted Items
 * [Sad Servers](https://sadservers.com/)
 * [Zola](https://www.getzola.org/documentation) & [Tera](https://keats.github.io/tera/docs/) docs
