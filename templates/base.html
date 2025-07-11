@@ -23,6 +23,7 @@ body {
 	background: oklch(from var(--color-primary, #056) 0.96 0.01 h);
 	overflow-wrap: break-word;
 	tab-size: 4;
+	scroll-margin-top: 20px;
 }
 body>* {
 	padding: 16px;
@@ -127,13 +128,8 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 	a, :any-link { color: oklch(from var(--color-primary, #056) 0.4 c h); }
 	h1 { color: oklch(from var(--color-primary) 0.4 c h); }
 }
-@/media (width > 720px) {
-	.content { padding: 0 5vw; }
-	body { display: flex; flex-wrap: wrap; }
-	header { width: 100%; }
-	#toc { flex: 0 2 220px; }
-	.content { flex: 10 1 500px; }
-	footer { flex: 1 1 100%; }
+[id] {
+	scroll-margin-top: 100px;
 }
 </style>
 <!--[if !IE]><!-->

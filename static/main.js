@@ -404,6 +404,34 @@ async function updateSearch(event=null) {
 
 // ON LOAD -----------------------------------------
 function load() {
+	if (elid("toc")) {
+		document.addEventListener('scroll', () => {
+			const links = document.querySelectorAll('#toc a[href^="#"]');
+			const tocDiv = document.querySelector('#toc div:first-child');
+			let current;
+
+			for (link of links) {
+				const target = document.querySelector(link.getAttribute('href'));
+				if (target?.getBoundingClientRect().bottom <= window.innerHeight / 4) {
+					current = link;
+				}
+			}
+			for (link of links) {
+				if (link !== current && link.classList.contains('scroll-current')) {
+					link.classList.remove('scroll-current');
+				}
+			}
+
+			if (!(current?.classList.contains('scroll-current'))) {
+				current?.classList.add('scroll-current');
+			}
+
+			if (tocDiv.scrollWidth > tocDiv.clientWidth && current) {
+				//tocDiv.scrollTo({ top: 0, left: current.offsetLeft - 16, behavior: 'smooth' });
+			}
+		});
+	}
+
 	elid("btn_larger")?.addEventListener("click", () => {
 		currentSize = getComputedStyle(content).fontSize;
 		content.style.fontSize = 'calc(' + currentSize + ' * 1.0667)';
