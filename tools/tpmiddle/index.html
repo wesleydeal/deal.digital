@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="en" style="--color-primary: #E10020">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scroll &amp; middle-click with a TrackPoint - Wesley Deal</title>
+<style type="text/css">
+html {
+	container: root / size;
+	scroll-behavior: smooth;
+}
+body {
+	font: 100%/1.6 system-ui, sans-serif;
+	margin: 0;
+	width: 100%;
+	background: oklch(from var(--color-primary, #056) 0.96 0.01 h);
+	overflow-wrap: break-word;
+	tab-size: 4;
+	scroll-margin-top: 20px;
+}
+body>* {
+	padding: 16px;
+	max-width: 100%;
+	opacity: 1;
+	@starting-style { opacity: 0; }
+	transition: opacity 500ms 100ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+header>*, .content>*, footer>*, #search-container>*, #toc>* {
+	max-width: 800px;
+	max-width: 54rem;
+	margin-left: auto;
+	margin-left: max(calc(50vw - 30rem), 0px);
+	margin-right: auto;
+}
+header {
+	background: #056;
+	background: oklch(from var(--color-primary, #056) 0.4 c h);
+	color: #fff;
+	font-size: 110%;
+	line-height: 1.8;
+}
+header a, header :any-link {
+	color: inherit;
+	white-space: nowrap;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 25%;
+}
+.topnav-links {
+	list-style: none;
+	display: inline;
+	padding: 0;
+}
+nav#topnav li, #homelink {
+	padding: 0;
+	margin-right: 16px;
+	list-style: none;
+	display: inline;
+}
+#homelink { text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180)); }
+header nav#breadcrumbs { display: none; visibility: hidden; }
+#toc {
+	background: #023;
+	background: oklch(from var(--color-primary, #056) 0.2 c h);
+	color: #fff;
+}
+#toc  a, #toc  :any-link {
+	color: inherit;
+}
+
+.content {min-height: 100vh}
+ul, ol {padding-left: 24px}
+h1 {
+	font-size: xx-large;
+	font-size: clamp(32px, 4vw, 60px);
+	font-weight: 500;
+	line-height: 1.1;
+	color: oklch(from var(--color-primary) 0.4 c h);
+	margin: 32px auto 24px;
+	text-shadow: 2px 2px 0 #7773;
+}
+h2 { margin: 20px auto 8px; font-size: 150%; font-weight: 500; }
+h3 { margin: 16px auto 6px; font-size: 130%; font-weight: 400; }
+h4 { margin: 14px auto 4px; font-size: 120%; }
+h5 { margin: 12px auto   0; font-size: 120%; font-weight: normal }
+h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic }
+footer {
+	border-top: 2px solid;
+	font-family: ui-monospace, Consolas, SYSTEM, monospace;
+	margin: 200px 0 800px;
+	padding: 20px;
+	line-height: 1.1;
+}
+#ui-tools {display: none;}
+a, :any-link{
+	color: #056;
+	color: oklch(from var(--color-primary, #056) 0.4 c h);
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
+}
+:is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
+img { max-width: 100%; }
+pre,code {overflow: auto; padding-bottom: 1px; font-family: ui-monospace, Consolas, SYSTEM, monospace}
+table {border-collapse: collapse;}
+th,td {border: 1px solid; padding: 5px;}
+th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
+.zola-anchor {display: none; visibility: hidden;}
+#search-container { padding: 20px; overflow: hidden; }
+#search-box { width: 100%;}
+#search-keyword-list samp { padding: 0 10px; }
+@container root style(--dark-mode: true){
+	body { background: #000; color: #fff; }
+	a, :any-link { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
+	h1 { color: oklch(from var(--color-primary) 0.7 c h); }
+}
+@media (prefers-color-scheme: dark) {
+	body { background: #000; color: #fff; }
+	a, :any-link { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
+	h1 { color: oklch(from var(--color-primary) 0.7 c h); }
+}
+@container root style(--dark-mode: false) {
+	body { background: #fff; color: #000; }
+	a, :any-link { color: oklch(from var(--color-primary, #056) 0.4 c h); }
+	h1 { color: oklch(from var(--color-primary) 0.4 c h); }
+}
+[id] {
+	scroll-margin-top: 100px;
+}
+</style>
+<!--[if !IE]><!-->
+<link rel="preload" href="/concourse.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<!--<![endif]-->
+<body id="tools-tpmiddle">
+<header>
+	<nav id="topnav">
+		<a href="/" id="homelink">Wesley Deal</a>
+		<ul class="topnav-links">
+			<li><a href="/tools">🛠️ Tools</a>
+			<li><a href="/blog">✍🏻 Blog</a>
+			<li><a href="/now">⏳ Now</a>
+			<li><a href="/links">🔗 Links</a>
+			<li><a href="/uses">⌨️ Uses</a>
+			<!--<li><a href="https://github.com/wesleydeal">👨🏻‍💻 GitHub</a>
+			<li><a href="https://linkedin.com/in/wesley-deal">🏢 LinkedIn</a>-->
+			<li><a href="/resume">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+	<nav id="breadcrumbs">
+		<a href="/">~</a>
+		<span>/</span>
+		<a href="https://deal.digital/tools/">Tools</a>
+		<span>/</span>
+		<a href="https://deal.digital/tools/tpmiddle/">●</a>
+		</nav>
+	</header>
+
+<section class="content">
+	
+<h1 class="title">
+	Scroll &amp; middle-click with the TrackPoint
+</h1>
+<p>On ThinkPads running Windows (and a steadily decreasing number of competitors), the middle mouse button below the TrackPoint can be used as a scroll modifier
+for the trackpoint or a middle-click/MOUSE3 button, but not both at the same time. Here’s some ways to make it work with both.</p>
+<h2 id="recommended-solution-librescroll"><a class="zola-anchor" href="#recommended-solution-librescroll" aria-label="Anchor link for: recommended-solution-librescroll">#</a>Recommended Solution: LibreScroll</h2>
+<p><a href="https://github.com/EsportToys/LibreScroll">LibreScroll</a> is a general solution to this problem written by EsportToys. It converts motion into scroll momentum with any mouse while the middle button is held.</p>
+<p>As with TPMiddle, it’s recommend to drop it into your startup folder <code>%appdata%\Microsoft\Windows\Start Menu\Programs\Startup</code>.</p>
+<h2 id="tpmiddle"><a class="zola-anchor" href="#tpmiddle" aria-label="Anchor link for: tpmiddle">#</a>TPMiddle</h2>
+<p>TPMiddle.exe was a brilliant program by Gerhard Wiesinger that allows both functions at once by detecting whether or not the mouse is moved between press and release.</p>
+<p>This tool has some issues on newer devices. Please consider the other options on this page.</p>
+<h3 id="downloads"><a class="zola-anchor" href="#downloads" aria-label="Anchor link for: downloads">#</a>Downloads</h3>
+<ul>
+<li>
+<p><a href="https://github.com/Jyny/TPmiddle/releases/download/v0.7/tpmiddle.exe">tpmiddle-0.6.exe</a> - <strong>Recommended</strong>, especially for Windows 10 users, 10.5kb</p>
+</li>
+<li>
+<p><a href="https://github.com/Jyny/TPmiddle/releases/download/v0.6/tpmiddle.exe">tpmiddle-0.7.exe</a> - Incompatible with some newer systems, 11kb<br />
+(also available from the <a href="https://www.wiesinger.com/opensource/TPMiddle/V0.7/Release/tpmiddle.exe">author’s site</a>)</p>
+</li>
+</ul>
+<h3 id="installation"><a class="zola-anchor" href="#installation" aria-label="Anchor link for: installation">#</a>Installation</h3>
+<ol>
+<li>Make sure you have <a href="https://www.microsoft.com/en-us/download/details.aspx?id=26999">Microsoft Visual C++ 2010 Redistributables</a> installed</li>
+<li>Ensure your middle button is set to “Use for scrolling” under Control Panel &gt; Mouse &gt; ThinkPad</li>
+<li>Download the file</li>
+<li>Drop it into <code>%appdata%\Microsoft\Windows\Start Menu\Programs\Startup</code></li>
+<li>Log out and back in to start it</li>
+</ol>
+<h2 id="other-alternatives"><a class="zola-anchor" href="#other-alternatives" aria-label="Anchor link for: other-alternatives">#</a>Other Alternatives</h2>
+<p>An <a href="http://web.archive.org/web/20220125153630/http://forum.notebookreview.com/threads/ultranav-middle-click-button-scroll.423415/">AutoHotKey-based substitute</a> was listed in the Notebook Review forums a few years ago.</p>
+<h3 id="w10wheel-net"><a class="zola-anchor" href="#w10wheel-net" aria-label="Anchor link for: w10wheel-net">#</a>W10Wheel.NET</h3>
+<p><a href="https://github.com/ykon/w10wheel.net/releases/latest">W10Wheel.NET</a> by ykon (<a href="https://github.com/ykon/w10wheel.net/wiki">wiki</a>) seems to be the best option. You’ll need <a href="https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-web-installer">.NET Framework 4.x</a>.</p>
+<p>As per <a href="https://old.reddit.com/r/thinkpad/comments/q2cfup/tpmiddle_on_newer_thinkpads/">/u/JakandClank on reddit</a>:</p>
+<blockquote>
+<p>I’ve got a pretty decent workaround with w10wheel that works just about as well as tpmiddle did. Here’s how I do it:</p>
+<ol>
+<li>Download w10wheel and unzip it somewhere.</li>
+<li>Follow the instructions on <a href="https://www.tenforums.com/tutorials/57690-create-elevated-shortcut-without-uac-prompt-windows-10-a.html">this page</a> to create a UAC-less shortcut for the program. This will allow the program to run as administrator without having to allow it every time with the User Account Control prompt. You want to run it as admin so you can scroll on things like Task Manager and your clipboard history.</li>
+<li>Copy the shortcut into this directory: <code>C:\Users\(username)\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</code></li>
+</ol>
+<p>Now the w10wheel program will be installed (by just unzipping it, there’s no installer) and will launch at startup without an annoying UAC prompt.</p>
+<p>To make w10wheel work just like tpmiddle, I did this:</p>
+<ol>
+<li>Go to the trackpoint settings by going to Start-&gt; start typing “mouse settings” -&gt; click on “Mouse settings”.</li>
+<li>Under “Synaptics Trackpoint” click on <strong>Settings</strong>.</li>
+<li>Set the <strong>Middle Button Action</strong> to <strong>Middle Button</strong>.</li>
+<li>Launch w10wheel if it’s not running already.</li>
+<li>Right click on the w10wheel tray icon.</li>
+<li>Set <strong>Trigger</strong> to <strong>MiddleDrag</strong>. This makes it so that holding down the middle button will allow you to scroll. Setting it to “Middle” makes it a toggle and I don’t recommend that.</li>
+<li>Make sure that <strong>Horizontal Scroll</strong> is checked in the same menu.</li>
+<li>In the <strong>Set Number</strong> menu, set <strong>verticalThreshold</strong> to 1 and <strong>horizontalThreshold</strong> to 4. These values are the “resistance” to your mouse movement. It maxes at 500 but really anything past 5 is hard on a trackpoint but YMMV. If you’re gonna adjust it I’d recommend doing it a few ticks at a time.</li>
+<li><em>Optional</em> Enable <strong>Cursor Change</strong> in the menu. This gives you a visual indicator that you are scrolling. I am yet to find a way to change which cursor type it changes to, unfortunately. I don’t really like the “resize window” cursor it gives you.</li>
+</ol>
+</blockquote>
+
+
+<section class="article-signoff">
+	
+	
+	
+	
+	<p class="updated-at">updated <time datetime="2025-06-24">2025-06-24</time></p>
+	
+</section>
+
+</section>
+<footer>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<p>Built 2025-07-11 11:39:23 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/tools&#x2F;tpmiddle&#x2F;index.md">View source here</a>.
+	<p><b>Fonts:</b> This page uses Roboto Flex with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in one of your system fonts.
+	<p><b>Navigator:</b> Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</p>
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="/blog">blog&#x2F;</a>
+		<br>│ ├─<a href="/blog/librechat">librechat</a>
+		<br>│ ├─<a href="/blog/shorelock">shorelock</a>
+		<br>│ ├─<a href="/blog/smart-seagate">smart-seagate</a>
+		<br>│ └─<a href="/blog/wintricks">wintricks</a>
+		<br>├─<a href="/tools">tools&#x2F;</a>
+		<br>│ ├─<a href="/tools/netlibram">netlibram</a>
+		<br>│ ├─<a href="/tools/prune">prune</a>
+		<br>│ ├─<a href="/tools/pwgen">pwgen</a>
+		<br>│ └─<a href="/tools/tpmiddle">tpmiddle</a>
+		<br>├─<a href="/contact">contact</a>
+		<br>├─<a href="/home">home</a>
+		<br>├─<a href="/links">links</a>
+		<br>├─<a href="/now">now</a>
+		<br>├─<a href="/sample">sample</a>
+		<br>├─<a href="/todo">todo</a>
+		<br>└─<a href="/uses">uses</a>
+		<p>% show :3
+	<pre class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</pre>
+</footer>
+<menu id="ui-tools">
+	<button id="btn_top" aria-label="Jump to top">⬆</button>
+	<!--<button id="btn_toc">📑</button>-->
+	<!--<button id="btn_search">🧭</button>-->
+	<button id="btn_theme" aria-label="Toggle dark mode">💡</button>
+	<button id="btn_larger" aria-label="Increase font size">T<b>▲</b></button>
+	<button id="btn_smaller" aria-label="Decrease font size">T<b>▼</b></button>
+</menu>
+<script defer src="/main.js"></script>
+</body>
+</html>
