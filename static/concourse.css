@@ -206,8 +206,9 @@ nav#toc {
 	flex: unset;
 	position: sticky;
 	z-index: 10;
-	background: repeating-linear-gradient(135deg in oklch, #8981, #0001 100px, #7771 140px, #0001 250px, #7771 300px, #8981 320px), oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c h / 80%);
-	backdrop-filter: saturate(2) blur(3px);
+	background: repeating-linear-gradient(135deg in oklch, #8981, #0001 50px, #7771 70px, #0001 125px, #7771 150px, #8981 160px), oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c h / 85%);
+	background: linear-gradient(to bottom, #ffffff07, #ffffff15 49%, #0001 51%, #0000 85%, #ffffff12), linear-gradient(to right in oklab, oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c calc(h + 7) / 85%), oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c calc(h - 7) / 85%));
+	//backdrop-filter: saturate(2) blur(3px);
 	font-stretch: 50%;
 	border-bottom: 1px solid var(--color-primary-sat);
 	& a:any-link {
@@ -358,9 +359,11 @@ section.content {
 	& img {
 		max-width: 100%;
 		height: auto;
-		filter: drop-shadow(1px 2px 2px oklch(from var(--color-tinted-shadow) l c h / 20%))
-		drop-shadow(3px 4px 4px oklch(from var(--color-tinted-shadow) l c h / 20%))
-		drop-shadow(6px 8px 8px oklch(from var(--color-tinted-shadow) l c h / 10%));
+		--sc: oklch(from var(--color-tinted-shadow) l c h / 20%);
+		--sc2: oklch(from var(--color-tinted-shadow) l c h / 10%);
+		box-shadow: 1px 2px 2px var(--sc),
+			3px 4px 4px var(--sc),
+			6px 8px 8px var(--sc2);
 		border-radius: 5px;
 		&:active{
 			image-rendering: pixelated;
@@ -948,9 +951,6 @@ kbd {
 }
 
 @media screen and (width <= 700px) {
-	body:has(nav#toc details[open]) {
-		display: flex;
-	}
 	nav#topnav {
 		justify-content: center;
 		& a#homelink, & ul {
@@ -958,90 +958,7 @@ kbd {
 		}
 	}
 	footer {
-		font-size : 14px !important;
-	}
-}
-
-@media screen and (width > 1800000px) {
-	body {
-		width: 100%;
-		overflow-x: clip;
-		display: grid;
-		grid-template-rows: auto;
-		grid-template-columns: minmax(285px,1fr) minmax(1000px, 9fr);
-		grid-template-areas: "search search" "header main" "footer footer";
-		&:has(nav#toc), &:has(nav#toc details[open]) {
-			background: var(--header-bg);
-			display: grid;
-			grid-template-columns: minmax(350px,1fr) minmax(1000px,9fr);
-			grid-template-rows: auto auto 1fr auto;
-			grid-template-areas: "search search" "header main" "sidebar main" "footer footer";
-			header {
-				position: static;
-				background: none;
-			}
-			nav#topnav {
-				& ul {
-					flex-direction: row;
-				}
-				& li {
-					flex: 1 1;
-				}
-				&>ul a:any-link {
-					justify-content: center;
-				}
-			}
-		}
-		& nav#toc {
-			border-right: 1px solid var(--color-primary);
-			min-height: 100vh;
-			color: #fff;
-			& a:any-link {
-				color: #fff;
-			}
-			& ::marker {
-				color: var(--color-link-underline);
-			}
-			& h2 {
-				color: #fff;
-			}
-			& h2::after {
-				background: linear-gradient(to right, #fff, transparent);
-			}
-			& details summary::after {
-				margin-left: 0;
-			}
-		}
-		section.content {
-			background: var(--color-bg);
-			background: var(--bg);
-			box-shadow: inset 0 -4px 7px var(--color-tinted-shadow);
-		}
-	}
-	header {
-		border-right: 1px solid var(--color-primary);
-		display: block;
-		max-height: 100vh;
-		position: sticky;
-		top: 0;
-	}
-	nav#topnav {
-		flex-direction: column;
-		ul {
-			flex: 1 1;
-			padding: 1px;
-			flex-direction: column;
-		}
-		&>ul a:any-link {
-			justify-content: start;
-			font-stretch: 150%;
-			font-variation-settings: "YTLC" 550;
-			font-weight: 350;
-		}
-		& a#homelink {
-			flex: 1 0;
-			margin: 1px;
-		}
+		font-size: 14px !important;
 	}
 }
 
