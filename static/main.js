@@ -405,7 +405,7 @@ async function updateSearch(event=null) {
 // ON LOAD -----------------------------------------
 function load() {
 	if (elid("toc")) {
-		document.addEventListener('scroll', () => {
+		document.addEventListener('scrollend', () => {
 			const links = document.querySelectorAll('#toc a[href^="#"]');
 			const tocDiv = document.querySelector('#toc div:first-child');
 			let current;
@@ -427,7 +427,7 @@ function load() {
 			}
 
 			if (tocDiv.scrollWidth > tocDiv.clientWidth && current) {
-				//tocDiv.scrollTo({ top: 0, left: current.offsetLeft - 16, behavior: 'smooth' });
+				tocDiv.scrollTo({ top: 0, left: current.offsetLeft - 16, behavior: 'smooth' });
 			}
 		});
 	}
