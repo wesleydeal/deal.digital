@@ -207,7 +207,7 @@ nav#toc {
 	position: sticky;
 	z-index: 10;
 	background: repeating-linear-gradient(135deg in oklch, #8981, #0001 50px, #7771 70px, #0001 125px, #7771 150px, #8981 160px), oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c h / 85%);
-	background: linear-gradient(to bottom in oklab, #ffffff11, #ffffff22 49%, #0001 51%, #0000, 106%, var(--color-primary-sat) 120%), linear-gradient(to right in oklab, oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c calc(h + 7) / 85%), oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c calc(h - 7) / 85%));
+	background: linear-gradient(to bottom in oklab, #ffffff11, #ffffff22 49%, #0001 51%, #0000, 106%, var(--color-primary-sat) 120%), linear-gradient(to right in oklab, oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c calc(h + 7) / 85%), oklch(from var(--color-primary) min(calc(l - 0.06), 0.44) c calc(h - 7) / 85%));
 	//backdrop-filter: saturate(2) blur(3px);
 	font-stretch: 75%;
 	border-bottom: 1px solid var(--color-primary-sat);
