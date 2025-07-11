@@ -2,22 +2,22 @@
 @import url("/syntax-light.css") print, (prefers-color-scheme: light);
 
 @font-face {
-  font-family: 'Roboto Flex';
-  font-style: oblique 0deg 10deg;
-  font-display: fallback;
-  font-weight: 100 1000;
-  font-stretch: 25% 151%;
-  src: url('/fonts/roboto-flex_5.2.5_latin-full-normal.woff2') format('woff2-variations');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-
-@font-face {
   font-family: 'Instrument Serif';
   font-style: normal;
   font-display: fallback;
   font-weight: 400;
   src: url('/fonts/instrument-serif_5.2.5_latin-400-normal.woff2') format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/instrument-serif@latest/latin-400-normal.woff) format('woff');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+	font-family: 'TikTok Sans';
+	font-style: oblique 0deg 6deg;
+	font-weight: 300 900;
+	font-stretch: 75% 150%;
+	font-display: swap;
+	src: url(/fonts/TikTok_Sans.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 :root {
@@ -53,7 +53,6 @@
 		linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent),
 		repeating-linear-gradient(135deg, #ffffff03 0 4px, #00000003 0 8px) 0 / calc(8px/sin(135deg)) 100%;
 	--royale-overlay: linear-gradient(to bottom in oklch, #fff5, #fff3 50%, #fff1 50%, #0002);
-	--weight-h2: 500;
 
 	@media (prefers-color-scheme: dark) {
 		--dark-mode: true;
@@ -61,7 +60,7 @@
 
 	--text-width: 50rem;
 	--content-margins: 16px;
-	--typeface-body: "Roboto Flex", "Segoe UI Variable", system-ui, sans-serif;
+	--typeface-body: "TikTok Sans", "Segoe UI Variable", system-ui, sans-serif;
 	--typeface-display: "Instrument Serif", "Iowan Old Style", "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
 	--typeface-mono: "Cascadia Code", ui-monospace, Consolas, "Source Code Pro", "Ubuntu Mono", "Fira Code", "Fira Mono", monospace;
 
@@ -84,7 +83,6 @@
 		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.1, c) h);
 		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
 		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
-		--weight-h2: 400;
 		--color-pop-bgcontrast: var(--color-pop);
 		--color-tinted-shadow: oklch(from var(--color-primary) 0.85 0.15 h / 50%);
 	}
@@ -104,8 +102,8 @@ body {
 
 	padding: 0;
 	margin: 0;
-	font: 326 1em/1.6 var(--typeface-body);
-	font-stretch: 110%;
+	font: 350 1em/1.6 var(--typeface-body);
+	font-stretch: 100%;
 	font-optical-sizing: auto;
 
 	display: flex;
@@ -138,19 +136,13 @@ nav#topnav {
 	flex-wrap: wrap;
 	gap: 3px;
 	line-height: 1.6;
-	//padding: 0 max(0px, calc(50vw - 700px));
+	padding: 0 max(0px, calc(50vw - 1300px));
 	& a#homelink {
 		margin: 0;
 		flex: 0 0;
 		padding: 0.22em 0.35em 0.22em 0.45em;
-		font: 500 2em/1 var(--typeface-body);
-		font-stretch: 110%;
-		letter-spacing: -0.02em;
-		font-variation-settings:
-			"YTLC" 570, /* lowercase height */
-			"XTRA" 530, /* counter width */
-			"YTDE" -180, /* descender depth */
-			"GRAD" 150; /* additional weight without spacing */
+		font: semi-expanded 600 2em/1 var(--typeface-body);
+		letter-spacing: -0.03em;
 		background: linear-gradient(180deg in oklch, #fff1, #fff2 50%, #0002 0, #0000),
 			linear-gradient(90deg in oklch, #fff -15%, var(--color-pop) 0.25em, #0001 0.26em, #0000 0.36em),
 			var(--color-button-important);
@@ -188,7 +180,7 @@ nav#topnav {
 		padding: 0.3em 1ch 0.3em 0.8ch;
 		text-decoration: none;
 		text-shadow: 1px 1px 0 #000;
-		font-stretch: 125%;
+		font-stretch: normal;
 		font-variation-settings: "YTLC" 560; /* lowercase height */
 		&:hover, &:focus {
 			background: var(--button-highlight-overlay), var(--color-button-important);
@@ -208,7 +200,7 @@ nav#breadcrumbs{
 }
 
 nav#toc {
-	padding: 5px 1em;
+	padding: 5px max(1em, calc(50vw - 1300px + 1em));;
 	top: 0;
 	height: fit-content;
 	flex: unset;
@@ -229,7 +221,7 @@ nav#toc {
 	}
 	& b {
 		text-transform: uppercase;
-		font-stretch: 150%;
+		font-stretch: expanded;
 		color: oklch(from var(--color-primary-sat) 0.9 c h / 80%);
 	}
 	& :any-link {
@@ -355,6 +347,9 @@ section.content {
 		margin-left: auto;
 		margin-right: auto;
 	}
+	&>table {
+		max-width: calc(var(--text-width) * 1.2);
+	}
 	&>h1 {
 		max-width: 1200px;
 		text-align: center;
@@ -437,7 +432,7 @@ footer {
 
 a:any-link {
 	color: inherit;
-	font-weight: 450;
+	font-weight: 500;
 	text-decoration: underline;
 	color: var(--color-link);
 	text-decoration-color: var(--color-link-underline);
@@ -482,12 +477,10 @@ h1 {
 
 h2 {
 	color: var(--color-h2);
-	font: var(--weight-h2) 1.5em/1.2 var(--typeface-body);
+	font: semi-expanded 375 1.6em/1.15 var(--typeface-body);
 	margin: 1em 0 0.25em;
 	position: relative;
 	max-width: var(--text-width);
-	font-stretch: 135%;
-	font-variation-settings: "YTLC" 550;
 	&::after{
 		content: '';
 		position: absolute;
@@ -503,9 +496,8 @@ h2 {
 }
 
 h3 {
-	font: 350 1.2em/1.4 var(--typeface-body);
+	font: semi-expanded 350 1.2em/1.4 var(--typeface-body);
 	text-transform: uppercase;
-	font-stretch: 150%;
 	margin: 1em 0 0.3em;
 }
 
@@ -520,24 +512,23 @@ h4 {
 }
 
 h5 {
-	font: 700 1em/1.6 var(--typeface-body);
-	font-stretch: 150%;
+	font: ultra-expanded 700 1em/1.6 var(--typeface-body);
 	text-transform: uppercase;
 	color: var(--color-h2);
 	margin: 1em 0 0.4em;
 	&::before {
 		content: '↪ ';
+		color: var(--color-fg);
 		font-style: normal;
 	}
 }
 
 h6 {
-	font: 700 1em/1.6 var(--typeface-body);
-	font-stretch: 150%;
-	font-variation-settings: "YTLC" 555, "XTRA" 520;
+	font: condensed 700 1em/1.6 var(--typeface-body);
 	margin: 1em 0 0.4em;
 	&::before {
 		content: '↪ ';
+		color: var(--color-h2);
 		font-style: normal;
 	}
 }
