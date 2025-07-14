@@ -134,6 +134,10 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 </style>
 <!--[if !IE]><!-->
 <link rel="preload" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<link rel="preload" href="/syntax-dark.css" as="style" onload="this.onload=null">
+<link rel="preload" href="/syntax-light.css" as="style" onload="this.onload=null">
+<link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/TikTok_Sans.woff2" as="font" type="font/woff2" crossorigin>
 <!--<![endif]-->
 <body{% if page %} id="{{ page.path | trim_end_matches(pat="/") | trim_start_matches(pat="/") | replace(from="/", to="-")}}"{% elif section %} id="{{ section.path | trim_end_matches(pat="/") | trim_start_matches(pat="/") | replace(from="/", to="-")}}"{% elif not page.title %} id="index"{% endif %}>
 <header>
