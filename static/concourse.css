@@ -6,7 +6,16 @@
   font-style: normal;
   font-display: fallback;
   font-weight: 400;
-  src: url('/fonts/instrument-serif_5.2.5_latin-400-normal.woff2') format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/instrument-serif@latest/latin-400-normal.woff) format('woff');
+  src: url('/fonts/instrument-serif_5.2.5_latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-display: fallback;
+  font-weight: 400;
+  src: url('/fonts/instrument-serif_5.1.0_latin-400-italic.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
@@ -61,6 +70,7 @@
 	--text-width: 50rem;
 	--content-margins: 16px;
 	--typeface-body: "TikTok Sans", "Segoe UI Variable", system-ui, sans-serif;
+	--typeface-body-em: "Instrument Serif", "Iowan Old Style", "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
 	--typeface-display: "Instrument Serif", "Iowan Old Style", "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
 	--typeface-mono: "Cascadia Code", ui-monospace, Consolas, "Source Code Pro", "Ubuntu Mono", "Fira Code", "Fira Mono", monospace;
 
@@ -200,7 +210,7 @@ nav#breadcrumbs{
 }
 
 nav#toc {
-	padding: 5px max(1em, calc(50vw - 1300px + 1em));;
+	padding: 5px max(1em, calc(50vw - 1300px + 1em));
 	top: 0;
 	height: fit-content;
 	flex: unset;
@@ -581,7 +591,11 @@ strong, b{
 }
 
 i, em {
-	font-style: oblique 10deg;
+	font-style: oblique 6deg;
+	font-weight: 400;
+	font-stretch: 90%;
+	text-decoration: solid underline oklch(from var(--color-tinted-shadow) l c h / 15%);
+	text-underline-offset: 6%;
 }
 
 ol {
