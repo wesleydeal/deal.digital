@@ -70,7 +70,7 @@
 	@media (prefers-color-scheme: dark) {
 		--dark-mode: true;
 	}
-	
+
 	@media screen and (width < 1000px) {
 		--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) .97 calc(c * .25) h), 20px, oklch(from var(--color-primary) .99 calc(c * .1) h) 100px calc(100% - 100px), calc(100% - 20px), oklch(from var(--color-primary) .97 calc(c * .25) h)), var(--color-bg);
 	}

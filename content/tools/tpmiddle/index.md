@@ -10,6 +10,8 @@ shorttitle = "Scroll & middle-click with a TrackPoint"
 color = "#E10020"
 +++
 
+![Diagram showing trackpoint middle mouse button mapped to a normal mouse scroll wheel](diagram.svg)
+
 On ThinkPads running Windows (and a steadily decreasing number of competitors), the middle mouse button below the TrackPoint can be used as a scroll modifier
 for the trackpoint or a middle-click/MOUSE3 button, but not both at the same time. Here's some ways to make it work with both.
 
@@ -27,7 +29,7 @@ This tool has some issues on newer devices. Please consider the other options on
 
 * [tpmiddle-0.6.exe](https://github.com/Jyny/TPmiddle/releases/download/v0.7/tpmiddle.exe) - **Recommended**, especially for Windows 10 users, 10.5kb
 
-* [tpmiddle-0.7.exe](https://github.com/Jyny/TPmiddle/releases/download/v0.6/tpmiddle.exe) - Incompatible with some newer systems, 11kb  
+* [tpmiddle-0.7.exe](https://github.com/Jyny/TPmiddle/releases/download/v0.6/tpmiddle.exe) - Incompatible with some newer systems, 11kb
 (also available from the [author's site](https://www.wiesinger.com/opensource/TPMiddle/V0.7/Release/tpmiddle.exe))
 
 ### Installation

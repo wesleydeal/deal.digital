@@ -16,16 +16,16 @@ html {
 	container: root / size;
 	scroll-behavior: smooth;
 }
+*, *:before, *:after {box-sizing: border-box;}
 body {
 	font: 100%/1.6 system-ui, sans-serif;
 	margin: 0;
 	width: 100%;
-	background: oklch(from var(--color-primary, #056) 0.96 0.01 h);
 	overflow-wrap: break-word;
 	tab-size: 4;
 	scroll-margin-top: 20px;
+	background: oklch(from var(--color-primary, #056) 0.96 0.01 h);
 }
-*, *:before, *:after {box-sizing: border-box;}
 body>* {
 	padding: 16px;
 	max-width: 100%;
@@ -33,21 +33,23 @@ body>* {
 	@starting-style { opacity: 0; }
 	transition: opacity 500ms 100ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
-header>*, .content>*, footer>*, #toc>*, #search-container {
+header nav, .content>*, footer>*, #toc>div, #search-container {
 	max-width: 800px;
-	max-width: 54rem;
 	margin-left: auto;
 	margin-right: auto;
 }
+header,article,section,nav,footer { display: block }
 header {
 	background: #056;
-	background: oklch(from var(--color-primary, #056) 0.4 c h);
 	color: #fff;
 	font-size: 110%;
 	line-height: 1.8;
+	width: 100%;
+	display: block;
+	background: oklch(from var(--color-primary, #056) 0.4 c h);
 }
-header a, header :any-link {
-	color: inherit;
+header a:link, header a:visited {
+	color: #fff;
 	white-space: nowrap;
 	text-decoration-thickness: 2px;
 	text-underline-offset: 25%;
@@ -60,7 +62,6 @@ header a, header :any-link {
 nav#topnav li, #homelink {
 	padding: 0;
 	margin-right: 16px;
-	list-style: none;
 	display: inline;
 }
 #homelink { text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180)); }
@@ -69,9 +70,10 @@ header nav#breadcrumbs { display: none; visibility: hidden; }
 	background: #023;
 	background: oklch(from var(--color-primary, #056) 0.2 c h);
 	color: #fff;
+	display: block;
 }
-#toc  a, #toc  :any-link {
-	color: inherit;
+#toc a:link, #toc a:visited {
+	color: #fff;
 }
 
 .content {min-height: 100vh}
@@ -99,20 +101,20 @@ h1 small {
 }
 footer {
 	border-top: 2px solid;
-	font-family: ui-monospace, Consolas, SYSTEM, monospace;
+	font-family: ui-monospace, Consolas, monospace;
 	margin: 200px 0 800px;
 	padding: 20px;
 	line-height: 1.1;
 }
 #ui-tools {display: none;}
-a, :any-link{
+a:link, a:visited {
 	color: #056;
 	color: oklch(from var(--color-primary, #056) 0.4 c h);
 	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
 }
 :is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
 img { max-width: 100%; }
-pre,code {overflow: auto; padding-bottom: 2px; font-family: ui-monospace, Consolas, SYSTEM, monospace}
+pre,code {overflow: auto; padding-bottom: 2px; font-family: ui-monospace, Consolas, monospace}
 table {border-collapse: collapse;}
 th,td {border: 1px solid; padding: 5px;}
 th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
