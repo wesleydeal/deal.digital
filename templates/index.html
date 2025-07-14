@@ -25,15 +25,15 @@
 		<section>
 			<h2>Recent Articles &amp; Web Tools</h2>
 			<ul class="blog-listing">
-				{% set articles=[] %}
-				{% for s in section.subsections %}
-					{% set sectionobject = get_section(path=s) %}
-					{% set_global articles = articles | concat(with=sectionobject.pages) %}
-				{% endfor %}
-				{% set articles = articles | filter(attribute="date") | sort(attribute="date") | reverse %}
-				{% for article in articles %}
+				{% set articles=[] -%}
+				{% for s in section.subsections -%}
+					{% set sectionobject = get_section(path=s) -%}
+					{% set_global articles = articles | concat(with=sectionobject.pages) -%}
+				{% endfor -%}
+				{% set articles = articles | filter(attribute="date") | sort(attribute="date") | reverse -%}
+				{% for article in articles -%}
 				<li><a href="{{ article.permalink | safe }}">{% if article.extra.shorttitle %}{{article.extra.shorttitle}}{% else %}{{ article.title }}{% endif %}</a><span class="article-separator"> • </span><time date="{{ article.date }}">{{ article.date }}</time></li>
-				{% endfor %}
+				{% endfor -%}
 			</ul>
 		</section>
 	</div>
