@@ -139,7 +139,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 <link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/TikTok_Sans.woff2" as="font" type="font/woff2" crossorigin>
 <!--<![endif]-->
-<body{% if page %} id="{{ page.path | trim_end_matches(pat="/") | trim_start_matches(pat="/") | replace(from="/", to="-")}}"{% elif section %} id="{{ section.path | trim_end_matches(pat="/") | trim_start_matches(pat="/") | replace(from="/", to="-")}}"{% elif not page.title %} id="index"{% endif %}>
+<body{% if page %} id="{{ page.path | trim_end_matches(pat='/') | trim_start_matches(pat='/') | replace(from='/', to='-')}}"{% elif section %} id="{{ section.path | trim_end_matches(pat='/') | trim_start_matches(pat='/') | replace(from='/', to='-')}}"{% elif not page.title %} id="index"{% endif %}>
 <header>
 	<nav id="topnav">
 		{% block homelink -%}
@@ -194,9 +194,16 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
 	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
 	<p>% show system-information
-	<p>Built {{ now(utc=true) | date(format="%Y-%m-%d %H:%M:%S UTC") }} with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>.
-	<p><b>Fonts:</b> This page uses Roboto Flex with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in one of your system fonts.
-	<p><b>Navigator:</b> Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</p>
+	<dl>
+		<dt>Build</dt>
+		<dd>{{ now(utc=true) | date(format="%Y-%m-%d %H:%M:%S UTC") }} with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>.</dd>
+
+		<dt>Fonts</dt>
+		<dd> <a href="https://github.com/tiktok/TikTokSans">TikTok Sans</a> (yes) with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in one of your system fonts</dd>
+
+		<dt>Navigator</dt>
+		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>
+	</dl>
 	<p>% tree deal.digital
 	{% block sitetree -%}
 	<p class="sitetree">

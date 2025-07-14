@@ -4,7 +4,7 @@
 @font-face {
   font-family: 'Instrument Serif';
   font-style: normal;
-  font-display: fallback;
+  font-display: optional;
   font-weight: 400;
   src: url('/fonts/instrument-serif_5.2.5_latin-400-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
@@ -13,7 +13,7 @@
 @font-face {
   font-family: 'Instrument Serif';
   font-style: italic;
-  font-display: fallback;
+  font-display: optional;
   font-weight: 400;
   src: url('/fonts/instrument-serif_5.1.0_latin-400-italic.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
@@ -24,7 +24,7 @@
 	font-style: oblique 0deg 6deg;
 	font-weight: 300 900;
 	font-stretch: 75% 150%;
-	font-display: fallback;
+	font-display: optional;
 	src: url(/fonts/TikTok_Sans.woff2) format('woff2');
 	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -411,6 +411,8 @@ footer {
 	margin: 0;
 	&>* {
 		max-width: var(--text-width);
+		margin-left: auto;
+		margin-right: auto;
 	}
 	& .sitetree {
 		text-overflow: ellipsis;
@@ -436,10 +438,22 @@ footer {
 			text-shadow: inherit;
 		}
 	}
-	& p, & li, & pre {
+	& p, & li, & pre, & dl {
 		max-width: var(--text-width);
 		filter: drop-shadow(0 0 0.5em var(--c70));
 		border: none;
+	}
+	dd {
+		text-align: left;
+		margin-left: 1ch;
+	}
+	dt {
+		font-weight: bold;
+		&::after {
+			content: ':';
+			font-weight: normal;
+		}
+		margin-top: 1em;
 	}
 }
 
@@ -458,9 +472,6 @@ a:any-link {
 		text-decoration 500ms cubic-bezier(0.23, 1, 0.320, 1);
 
 	&:hover, &:active, &:focus {
-		--c: color-mix(in oklch, transparent 20%, color-mix(in oklch, var(--color-fg), var(--color-primary-sat) 80%));
-		--c: var(--color-pop);
-		--c: var(--color-pop-bgcontrast);
 		--c: var(--color-link-underline);
 		background: var(--c);
 		color: var(--color-bg-hc);
@@ -589,7 +600,7 @@ strong, b{
 	font-weight: 600;
 }
 
-i, em {
+p i, p em {
 	font-style: oblique 6deg;
 	font-weight: 400;
 	font-stretch: 90%;
