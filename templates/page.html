@@ -1,8 +1,10 @@
 {% extends "base.html" %}
-
-{% block content %}
+{% block content -%}
 <h1 class="title">
 	{{ page.title }}
+	{% if page.extra.subtitle -%}
+	<small>{{ page.extra.subtitle | markdown(inline=true) | safe }}</small>
+	{% endif -%}
 </h1>
 {{page.content | safe}}
 {% if page.authors -%}

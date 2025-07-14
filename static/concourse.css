@@ -41,6 +41,10 @@
 	--color-bg-hc: #fff;
 	--color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
 	--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) .97 calc(c * .25) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px max(60vw, 1400px), oklch(from var(--color-primary) .97 calc(c * .25) h) max(100vw, 1500px));
+	--bg: linear-gradient(to right in oklch, #0000, oklch(from var(--color-bg) l c h / 60%), oklch(from var(--color-bg) l c h / 90%), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 5vw) min(calc(50% + (var(--text-width) / 2)), 95vw), oklch(from var(--color-bg) l c h / 90%), oklch(from var(--color-bg) l c h / 60%), #0000) 0 / cover,
+			repeating-linear-gradient( 0deg in oklch, oklch(from var(--color-h1) l c h / 5%), transparent 8em),
+			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l c h / 15%), transparent 6em),
+			var(--color-bg);
 
 	--color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
 	--color-primary-sat: oklch(from var(--color-primary) clamp(0.85, l, 0.95) max(.14, c) h);
@@ -66,6 +70,10 @@
 	@media (prefers-color-scheme: dark) {
 		--dark-mode: true;
 	}
+	
+	@media screen and (width < 1000px) {
+		--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) .97 calc(c * .25) h), 20px, oklch(from var(--color-primary) .99 calc(c * .1) h) 100px calc(100% - 100px), calc(100% - 20px), oklch(from var(--color-primary) .97 calc(c * .25) h)), var(--color-bg);
+	}
 
 	--text-width: 50rem;
 	--content-margins: 16px;
@@ -89,11 +97,10 @@
 		--color-fg-hc: #fff;
 		--color-bg-hc: #000;
 		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
-		--bg: oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
 		--bg:
 			linear-gradient(to right in oklch, #0000, oklch(from var(--color-bg) l c h / 60%), oklch(from var(--color-bg) l c h / 90%), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 5vw) min(calc(50% + (var(--text-width) / 2)), 95vw), oklch(from var(--color-bg) l c h / 90%), oklch(from var(--color-bg) l c h / 60%), #0000) 0 / cover,
-			repeating-linear-gradient( 0deg in oklch, oklch(from var(--color-h1) l c h / 5%) 5em, transparent 10em),
-			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-h2) l c h / 15%) 5em, transparent 11em),
+			repeating-linear-gradient( 0deg in oklch, oklch(from var(--color-h1) l c h / 5%) 0, transparent 8em),
+			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-h2) l c h / 15%) 0, transparent 6em),
 			var(--color-bg);
 		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.1, c) h);
 		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
@@ -101,7 +108,7 @@
 		--color-pop-bgcontrast: var(--color-pop);
 		--color-tinted-shadow: oklch(from var(--color-primary) 0.85 0.15 h / 50%);
 		@media screen and (width < 1200px) {
-			--bg: var(--color-bg);
+			--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) 100px calc(100% - 100px), oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h)), var(--color-bg);
 		}
 	}
 }
@@ -505,6 +512,13 @@ h1 {
 		text-decoration: 0.05em underline var(--color-pop-bgcontrast);
 		text-underline-offset: 0.05em;
 	}
+	& small {
+		display: block;
+		font: italic normal 1.5rem/1.2 var(--typeface-display);
+		padding-top: 0.5em;
+		color: var(--color-h2);
+		text-shadow: none;
+	}
 }
 
 h2 {
@@ -608,7 +622,7 @@ strong, b{
 	font-weight: 600;
 }
 
-p i, p em {
+:is(p, li) :is(i, em) {
 	font-style: oblique 6deg;
 	font-weight: 400;
 	font-stretch: 90%;

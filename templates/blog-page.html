@@ -1,14 +1,16 @@
 {% extends "base.html" %}
-
-{% block content %}
+{% block content -%}
 <h1 class="title">
 	{{ page.title }}
+	{% if page.extra.subtitle -%}
+	<small>{{ page.extra.subtitle | markdown(inline=true) | safe }}</small>
+	{% endif -%}
 </h1>
 {{page.content | safe}}
-{% if page.authors %}
-{% set author=page.author[0] %}
-{% else %}
-{% set author="" %}
-{% endif %}
+{% if page.authors -%}
+	{% set author=page.authors | first -%}
+{% else -%}
+	{% set author="" -%}
+{% endif -%}
 {{ macros::signoff(date=page.date, updated=page.updated, author=author) }}
 {%endblock content%}

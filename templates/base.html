@@ -25,6 +25,7 @@ body {
 	tab-size: 4;
 	scroll-margin-top: 20px;
 }
+*, *:before, *:after {box-sizing: border-box;}
 body>* {
 	padding: 16px;
 	max-width: 100%;
@@ -89,6 +90,13 @@ h3 { margin: 16px auto 6px; font-size: 130%; font-weight: 400; }
 h4 { margin: 14px auto 4px; font-size: 120%; }
 h5 { margin: 12px auto   0; font-size: 120%; font-weight: normal }
 h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic }
+h1 small {
+	display: block;
+	font-style: italic;
+	font-size: 20px;
+	padding-top: 10px;
+	text-shadow: none;
+}
 footer {
 	border-top: 2px solid;
 	font-family: ui-monospace, Consolas, SYSTEM, monospace;
