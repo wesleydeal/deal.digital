@@ -41,7 +41,7 @@ a pleasant reading experience in even Firefox 3 and the structure should do the 
 4. Not everything needs rounded corners.
 5. Depth adds interest and helps the user feel grounded, if it is coherent.
 6. Use relative colors, such that the page looks good with ANY selected primary color.
-7. This isn't Geocities: keep styles coherent such that most of the site is obviously in the same design language.
+7. This isn't Neocities: keep styles coherent such that most of the site is obviously in the same design language.
 8. This isn't Serious Business: a little bit of whimsy doesn't hurt
 
 ## C. Usability & Accessibility

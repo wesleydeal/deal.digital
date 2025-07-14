@@ -178,6 +178,25 @@ const providers = {
 			closeSearch();
 		},
 	},
+	load: {
+		keywords: ['load'],
+		desc: 'Load Content From Internal Page',
+		hide: true,
+		action: async (event) => {
+			const response = await fetch(elid("search-box").value.replaceAll("load ", "").replaceAll("!load", "").replaceAll(" ",""));
+			if (!response.ok) return;
+			
+			const html = await response.text();
+			const doc = (new DOMParser()).parseFromString(html, 'text/html');
+			document.querySelector('section.content').replaceWith(doc.querySelector('section.content'));
+			if (doc.documentElement.style) {
+				document.documentElement.style = doc.documentElement.style;
+			}
+			document.title = doc.title;
+			
+			closeSearch();
+		},
+	},
 };
 let keywordMap = {};
 for (providerName in providers) {
