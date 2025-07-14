@@ -4,7 +4,7 @@
 @font-face {
   font-family: 'Instrument Serif';
   font-style: normal;
-  font-display: optional;
+  font-display: auto;
   font-weight: 400;
   src: url('/fonts/instrument-serif_5.2.5_latin-400-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
@@ -13,7 +13,7 @@
 @font-face {
   font-family: 'Instrument Serif';
   font-style: italic;
-  font-display: optional;
+  font-display: auto;
   font-weight: 400;
   src: url('/fonts/instrument-serif_5.1.0_latin-400-italic.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
@@ -24,7 +24,7 @@
 	font-style: oblique 0deg 6deg;
 	font-weight: 300 900;
 	font-stretch: 75% 150%;
-	font-display: optional;
+	font-display: auto;
 	src: url(/fonts/TikTok_Sans.woff2) format('woff2');
 	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -89,13 +89,21 @@
 		--color-fg-hc: #fff;
 		--color-bg-hc: #000;
 		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
+		--bg: oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
+		--bg:
+			linear-gradient(to right in oklch, #0000, oklch(from var(--color-bg) l c h / 60%), oklch(from var(--color-bg) l c h / 90%), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 5vw) min(calc(50% + (var(--text-width) / 2)), 95vw), oklch(from var(--color-bg) l c h / 90%), oklch(from var(--color-bg) l c h / 60%), #0000) 0 / cover,
+			repeating-linear-gradient( 0deg in oklch, oklch(from var(--color-h1) l c h / 10%) 5em, transparent 10em),
+			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-h1) l c h / 30%) 5em, transparent 11em),
+			var(--color-bg);
 		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.1, c) h);
 		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
 		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
 		--color-pop-bgcontrast: var(--color-pop);
 		--color-tinted-shadow: oklch(from var(--color-primary) 0.85 0.15 h / 50%);
+		@media screen and (width < 1200px) {
+			--bg: var(--color-bg);
+		}
 	}
-
 }
 
 *, *:before, *:after {
@@ -813,8 +821,10 @@ kbd {
 }
 
 #search-container {
+	width: 100%;
+	max-width: none;
 	grid-area: search;
-	padding: 32px 5vw;
+	padding: 32px max(5vw, calc(50% - (var(--text-width) / 2)));
 	height: auto;
 	transition: height 250ms cubic-bezier(0.23, 1, 0.320, 1);
 	overflow: hidden;
@@ -863,7 +873,7 @@ kbd {
 		background: var(--button-overlay), var(--color-button-important);
 		border: var(--button-border);
 		box-shadow: var(--button-shadow);
-		font-stretch: 150%;
+		font-stretch: 110%;
 		font-weight: 600;
 		transition: all 200ms cubic-bezier(0.23, 1, 0.320, 1);
 		&:hover {
