@@ -259,7 +259,7 @@ function openSearch(query=null) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
 				<div id="search-titlebar">
-					<label for="search-box"><b>///// Navigator</b> <i>alpha one</i></label>
+					<label for="search-box"><b>Navigator</b> <i>alpha one</i></label>
 					<div class="window-buttons">
 						<button id="search-min" aria-label="Minimize Navigator">−</button>
 						<button id="search-max" aria-label="Maximize Navigator">🗖</button>
@@ -365,10 +365,17 @@ function toggleMaximizeSearch() {
 function dragSearchStart(event) {
 	const sC = elid("search-container");
 	const style = getComputedStyle(sC);
-	if (sC.classList.contains('max')) toggleMaximizeSearch();
+	if (document.querySelector("#search-titlebar .window-buttons").contains(event.target)) {
+		return;
+	}
+	if (sC.classList.contains('max')) {
+		sC.style.setProperty('width', searchWindowPos.width);
+		sC.style.setProperty('height', 'auto');
+		sC.style.setProperty('top', 0);
+		sC.style.setProperty('left', (event.screenX / window.innerWidth) * (window.innerWidth - parseFloat(searchWindowPos.width)) + "px");
+		sC.classList.remove('max');
+	}
 	if (!searchDrag || searchDrag.length < 1) {
-		console.log(event);
-		console.log(style);
 		searchDrag = [event.offsetX - parseFloat(style['border-left-width']), event.offsetY - parseFloat(style['border-right-width'])];
 		searchDrag = [event.screenX - sC.offsetLeft, event.screenY - sC.offsetTop]
 		elid("search-container").classList.add('drag');

@@ -840,9 +840,10 @@ kbd {
 	width: auto;
 	top: max(100px, 5vh);
 	right: calc(max(12px, (50vw - (var(--text-width) + 70px) / 2)));
+	right: 12px;
 	width: calc(var(--text-width) + 70px);
 	padding: 10px;
-	max-width: 90%;
+	max-width: calc(100% - 24px);
 	display: flex;
 	flex-direction: column;
 	grid-area: search;
@@ -852,29 +853,25 @@ kbd {
 		height 100ms cubic-bezier(0.23, 1, 0.320, 1),
 		top 50ms cubic-bezier(0.23, 1, 0.320, 1),
 		left 50ms cubic-bezier(0.23, 1, 0.320, 1);
-	transform-origin: center top;
+	transform-origin: center;
 	overflow: hidden;
 	padding: 0;
 	border: 1px solid var(--color-link);
 	background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%), linear-gradient(to top right in oklch longer hue, #b90000, #00cd88);
 	box-shadow: 0 1px 5px oklch(from var(--color-tinted-shadow) l c h / 30%), 0 4px 10px oklch(from var(--color-tinted-shadow) l c h / 20%);
 	opacity: 95%;
+	border-radius: 3px;
 	@starting-style {
-		transform: scale(0) perspective(200px) rotateX(-70deg);
+		transform: perspective(200px) rotateX(-60deg) scale(0);
 		opacity: 0;
 	}
-	&.draggable {
-		
-	}
 	&.min-in-progress {
-		transform-origin: top right;
-		transform: scale(0);
-		top: 0;
-		right: 0;
+		transform: scaleY(0) perspective(1000px) rotateX(-90deg);
+		transform-origin: top center;
 		opacity: 0;
 	}
 	&.hidden {
-		transform: scale(0) perspective(200px) rotateX(-70deg);
+		transform: perspective(1000px) rotateX(70deg) scale(0);
 		opacity: 0;
 	}
 	&.max {
@@ -883,9 +880,12 @@ kbd {
 		width: 100%;
 		height: 100%;
 		max-width: 100%;
+		opacity: 1;
 	}
 	&.drag {
-		border-style: dotted;
+		border-color: var(--color-pop);
+		box-shadow: 0 0 2px var(--color-primary-sat);
+		opacity: 0.75;
 		transition: none;
 	}
 	& kbd{
@@ -897,18 +897,17 @@ kbd {
 		margin: 0;
 		display: inline-block;
 		& b {
-			font-weight: 570;
+			font-weight: 650;
 		}
 		& i {
-			font-weight: 300;
-			opacity: 0.8;
+			font-weight: 350;
 			font-style: normal;
 		}
 	}
 	& #search-titlebar {
 		background: var(--button-overlay), var(--color-button-important);
 		background: var(--button-overlay), linear-gradient(120deg in oklch longer hue, #b90000, #00cd88);
-		background: var(--button-overlay), linear-gradient(120deg in oklch longer hue, oklch(from var(--color-primary-sat) 0.3 c calc(h + 1)) 10%, var(--color-primary-sat) 90%);
+		background: var(--button-overlay), linear-gradient(120deg in oklch, #0000 200px, #fff2 201px 205px, #0000 206px 210px, #fff3 211px 215px, #0000 216px 220px, #fff4 221px 225px, #0000 226px 230px, #fff5 231px 235px, #0000 236px 240px, #fff6 241px 245px, #0000 246px), linear-gradient(120deg in oklch, oklch(from var(--color-primary) 0.4 c h), var(--color-primary-sat) 90%);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -934,7 +933,7 @@ kbd {
 		line-height: 1;
 		color: #fff;
 		appearance: none;
-		background: var(--button-overlay), var(--color-button-important);
+		background: var(--button-overlay), oklch(from var(--color-button-important) l c h / 40%);
 		border: var(--button-border);
 		box-shadow: var(--button-shadow);
 		font-stretch: 110%;
@@ -943,7 +942,7 @@ kbd {
 		transition: all 200ms cubic-bezier(0.23, 1, 0.320, 1);
 		margin: 0;
 		&:hover {
-			background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
+			background: var(--button-highlight-overlay), var(--color-button-important);
 			box-shadow: var(--button-shadow-hover);
 		}
 	}
@@ -992,13 +991,15 @@ kbd {
 		}
 	}
 	& #search-help {
-		grid-area: help;
 		:has(.search-result) & {
 			display: none;
 		}
 		display: flex;
 		flex-direction: column;
-		margin: 1em;
+		margin: 0 1em 1em;
+		& h2 {
+			margin: 0.5em 0 0.25em;
+		}
 	}
 	& .search-result {
 		--c: var(--color-primary);
