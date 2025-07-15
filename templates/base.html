@@ -124,17 +124,17 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 #search-keyword-list samp { padding: 0 10px; }
 @container root style(--dark-mode: true){
 	body { background: #000; color: #fff; }
-	a, :any-link { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
+	a:link, a:visited { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
 	h1 { color: oklch(from var(--color-primary) 0.7 c h); }
 }
 @media (prefers-color-scheme: dark) {
 	body { background: #000; color: #fff; }
-	a, :any-link { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
+	a:link, a:visited { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
 	h1 { color: oklch(from var(--color-primary) 0.7 c h); }
 }
 @container root style(--dark-mode: false) {
 	body { background: #fff; color: #000; }
-	a, :any-link { color: oklch(from var(--color-primary, #056) 0.4 c h); }
+	a:link, a:visited { color: oklch(from var(--color-primary, #056) 0.4 c h); }
 	h1 { color: oklch(from var(--color-primary) 0.4 c h); }
 }
 [id] {

@@ -1,19 +1,18 @@
-{% macro signoff(date, updated, author="Wesley Deal") %}
+{% macro signoff(date, updated, author="Wesley Deal") -%}
 <section class="article-signoff">
-	{% if author %}
-	<p class="author">—{{ author }}</p>
-	{% endif %}
-	{% if authors %}
-	{% for a in authors %}
+{% if author -%}
+		<p class="author">—{{ author }}
+{% endif -%}
+{% if authors -%}
+{% for a in authors -%}
 	<p class="author">—{{ a }}{% if not loop.last %},{% endif %}
-	{% endfor %}
-	</p>
-	{% endif %}
-	{% if date %}
-	<p class="created-at">written <time datetime="{{ date }}">{{ date }}</time></p>
-	{% endif %}
-	{% if updated %}
-	<p class="updated-at">updated <time datetime="{{ updated }}">{{ updated }}</time></p>
-	{% endif %}
+{% endfor -%}
+{% endif -%}
+{% if date -%}
+	<p class="created-at">written <time datetime="{{ date }}">{{ date }}</time>
+{% endif -%}
+{% if updated -%}
+	<p class="updated-at">updated <time datetime="{{ updated }}">{{ updated }}</time>
+{% endif -%}
 </section>
-{% endmacro signoff %}
+{% endmacro signoff -%}

@@ -1,9 +1,9 @@
 +++
-title = "Things I use (and like)"
+title = "Things I use and like"
 updated = 2025-06-26
 [extra]
 color = "#ea7299"
-subtitle = 'my [/uses](https://uses.tech) page'
+subtitle = '(my [/uses](https://uses.tech) page)'
 +++
 
 ## Hardware

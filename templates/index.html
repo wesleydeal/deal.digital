@@ -44,26 +44,22 @@
 	</section>
 </article>
 <script>
-	window.addEventListener('DOMContentLoaded', (event) => {
-		var hoursNow = (new Date()).getHours();
-		if (hoursNow > 22 || hoursNow < 6) {
-			message = "Good night!";
-			color = '#440e8b';
-		}
-		else if (hoursNow < 12) {
-			message = "Good morning!";
-			color = '#52b5c5';
-		}
-		else if (hoursNow < 18) {
-			message = "Good afternoon!";
-			color = '#e57a0c'
-		}
-		else {
-			message = "Good evening!";
-			color = '#d78989'
-		}
-		document.querySelector('h1.title').innerHTML = message;
-		document.documentElement.style.setProperty('--color-primary', color);
-	}, false);
+	hoursNow = (new Date()).getHours();
+	function setGreeting(message) {document.getElementsByTagName('H1')[0].innerHTML = message;}
+	function setPrimaryColor(color) {document.documentElement.style.setProperty('--color-primary', color);}
+
+	if (hoursNow > 22 || hoursNow < 6) {
+		setGreeting("Good night!");
+		setPrimaryColor('#440e8b');
+	} else if (hoursNow < 12) {
+		setGreeting("Good morning!");
+		setPrimaryColor('#52b5c5');
+	} else if (hoursNow < 18) {
+		setGreeting("Good afternoon!");
+		setPrimaryColor('#e57a0c');
+	} else {
+		setGreeting("Good evening!");
+		setPrimaryColor('#d78989');
+	}
 </script>
 {% endblock content %}
