@@ -7,7 +7,7 @@ color = "#CCA957"
 Pardon the mess, I'm just sort of dumping things to check out here
 
 * Website
-	* [ ] center the page
+	* [x] center the page
 	* [ ] add variable width for text, images, and pre
 	* [ ] language name and click to copy for code
 	* [ ] test line numbers in code
@@ -39,7 +39,7 @@ Pardon the mess, I'm just sort of dumping things to check out here
 	* [ ] stylesheet, color: offer dropdown presets
 	* [ ] add texture option for bg and buttons (default, textile, mechanical, metallic, gloss)
 	* [ ] Navigator α2
-	  * [ ] position:fixed in a view that resembles spotlight somewhat
+	  * [x] position:fixed in a view that resembles spotlight somewhat
 	  * [ ] (optionally, as a draggable, resizable window on desktops)
 	  * [ ] do math from the search bar
 	  * [ ] display colors and gradients from the search bar

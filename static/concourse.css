@@ -42,7 +42,7 @@
 	--color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
 	--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) .97 calc(c * .25) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px max(60vw, 1400px), oklch(from var(--color-primary) .97 calc(c * .25) h) max(100vw, 1500px));
 	--bg: linear-gradient(to right in oklch, #0000, oklch(from var(--color-bg) l c h / 60%), oklch(from var(--color-bg) l c h / 90%), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 5vw) min(calc(50% + (var(--text-width) / 2)), 95vw), oklch(from var(--color-bg) l c h / 90%), oklch(from var(--color-bg) l c h / 60%), #0000) 0 / cover,
-			repeating-linear-gradient( 0deg in oklch, oklch(from var(--color-h1) l c h / 5%), transparent 8em),
+			repeating-linear-gradient( 90deg in oklch, oklch(from var(--color-h1) l c h / 5%), transparent 8em),
 			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l c h / 15%), transparent 6em),
 			var(--color-bg);
 
@@ -835,17 +835,23 @@ kbd {
 }
 
 #search-container {
-	width: 100%;
-	max-width: none;
+	z-index: 100;
+	position: fixed;
+	width: auto;
+	top: max(100px, 5vh);
+	right: calc(max(12px, (50vw - (var(--text-width) + 70px) / 2)));
+	width: calc(var(--text-width) + 70px);
+	padding: 10px;
+	max-width: 90%;
 	grid-area: search;
-	padding: 32px max(5vw, calc(50% - (var(--text-width) / 2)));
 	height: auto;
 	transition: height 250ms cubic-bezier(0.23, 1, 0.320, 1);
 	overflow: hidden;
-	border-bottom: 2px solid var(--color-primary);
-	background: linear-gradient(172deg in oklch, var(--color-bg), var(--color-primary) 750%), var(--color-bg);
-	background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%), linear-gradient(to top right in oklch longer hue, #b90000, #00cd88);
-	box-shadow: inset 0 -1px 5px oklch(from var(--color-tinted-shadow) l c h / 30%), inset 0 -4px 10px oklch(from var(--color-tinted-shadow) l c h / 20%);
+	display: grid;
+	grid-template-areas: "label . close" "bar bar bar" "results results results" "help help help";
+	grid-template-columns: max-content 1fr max-content;
+	grid-template-rows: auto auto auto auto;
+	padding: 0;
 	@starting-style {
 		height: 0;
 		min-height: 0;
@@ -858,6 +864,7 @@ kbd {
 		font-stretch: 50%;
 	}
 	& label[for="search-box"] {
+		grid-area: label;
 		margin-bottom: 0;
 		background: var(--color-fg-hc);
 		color: var(--color-bg-hc);
@@ -875,14 +882,12 @@ kbd {
 		}
 	}
 	& #search-close {
+		grid-area: close;
 		font-family: inherit;
 		font-size: 1.5em;
 		line-height: 1;
 		color: #fff;
 		appearance: none;
-		position: absolute;
-		top: 10px;
-		right: 10px;
 		padding: 0.05em 0.2em;
 		background: var(--button-overlay), var(--color-button-important);
 		border: var(--button-border);
@@ -890,12 +895,14 @@ kbd {
 		font-stretch: 110%;
 		font-weight: 600;
 		transition: all 200ms cubic-bezier(0.23, 1, 0.320, 1);
+		margin: 0;
 		&:hover {
 			background: var(--button-highlight-overlay), color-mix(in oklch, var(--color-primary-sat), #000 45%);
 			box-shadow: var(--button-shadow-hover);
 		}
 	}
 	& #search-box {
+		grid-area: bar;
 		width: 100%;
 		appearance: none;
 		font-family: inherit;
@@ -905,31 +912,38 @@ kbd {
 		box-shadow: var(--button-shadow);
 		color: inherit;
 		font-size: 1.3rem;
-		font-stretch: 150%;
+		font-stretch: 125%;
 		padding: 0.25em;
 		border-radius: 0;
 	}
 	& #search-results {
+		grid-area: results;
 		list-style-type: none;
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
-		padding: 0;
-		margin: 1em 0;
+		padding: 1em;
 		max-width: 100%;
+		margin: 0;
 		&:not(:has(.search-result)) {
 			display: none;
 		}
+		background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%), linear-gradient(to top right in oklch longer hue, #b90000, #00cd88);
+		border-bottom: 2px solid var(--color-primary);
+		box-shadow: 0 1px 5px oklch(from var(--color-tinted-shadow) l c h / 30%), 0 4px 10px oklch(from var(--color-tinted-shadow) l c h / 20%);
 	}
 	& #search-help {
+		grid-area: help;
 		:has(.search-result) & {
 			display: none;
 		}
 		display: flex;
 		flex-direction: column;
-		padding: 0;
-		marign: 1em 0;
+		padding: 1em;
 		width: 100%;
+		background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%), linear-gradient(to top right in oklch longer hue, #b90000, #00cd88);
+		border-bottom: 2px solid var(--color-primary);
+		box-shadow: 0 1px 5px oklch(from var(--color-tinted-shadow) l c h / 30%), 0 4px 10px oklch(from var(--color-tinted-shadow) l c h / 20%);
 	}
 	& .search-result {
 		--c: var(--color-primary);
