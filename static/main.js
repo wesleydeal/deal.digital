@@ -187,7 +187,7 @@ const providers = {
 		action: async (event) => {
 			const response = await fetch(elid("search-box").value.replaceAll("load ", "").replaceAll("!load", "").replaceAll(" ",""));
 			if (!response.ok) return;
-			
+
 			const html = await response.text();
 			const doc = (new DOMParser()).parseFromString(html, 'text/html');
 			document.querySelector('section.content').replaceWith(doc.querySelector('section.content'));
@@ -262,7 +262,7 @@ function openSearch(query=null) {
 					<label for="search-box"><b>Navigator</b> <i>alpha one</i></label>
 					<div class="window-buttons">
 						<button id="search-min" aria-label="Minimize Navigator">−</button>
-						<button id="search-max" aria-label="Maximize Navigator">🗖</button>
+						<button id="search-max" aria-label="Maximize Navigator">⛶</button>
 						<button id="search-close" aria-label="Close Navigator">X</button>
 					</div>
 				</div>
@@ -309,7 +309,7 @@ function openSearch(query=null) {
 		elid("search-min").addEventListener("click", minimizeSearch);
 		elid("search-max").addEventListener("click", toggleMaximizeSearch);
 		elid("search-titlebar").addEventListener("dblclick", toggleMaximizeSearch);
-		elid("search-titlebar").addEventListener("mousedown", dragSearchStart);
+		elid("search-titlebar").addEventListener("pointerdown", dragSearchStart);
 		elid("search-box").addEventListener('input', updateSearch);
 	} else {
 		elid("search-box").placeholder = elid("search-box").value;
@@ -341,7 +341,7 @@ function minimizeSearch() {
 function toggleMaximizeSearch() {
 	const sC = elid("search-container");
 	const style = getComputedStyle(sC);
-	
+
 	if (sC.classList.contains('max')) {
 		sC.classList.remove('max');
 		for (pName in searchWindowPos) {
@@ -362,7 +362,16 @@ function toggleMaximizeSearch() {
 	}
 }
 
+function onDragRelease(event) {
+	searchDrag = [];
+	document.removeEventListener('pointermove', dragSearchUpdate, {passive: false});
+	elid("search-container").classList.remove('drag');
+	document.documentElement.style.removeProperty('touch-action');
+	document.removeEventListener('pointerup', onDragRelease, {passive: false});
+}
+
 function dragSearchStart(event) {
+	console.log(event);
 	const sC = elid("search-container");
 	const style = getComputedStyle(sC);
 	if (document.querySelector("#search-titlebar .window-buttons").contains(event.target)) {
@@ -377,23 +386,20 @@ function dragSearchStart(event) {
 	}
 	if (!searchDrag || searchDrag.length < 1) {
 		searchDrag = [event.offsetX - parseFloat(style['border-left-width']), event.offsetY - parseFloat(style['border-right-width'])];
-		searchDrag = [event.screenX - sC.offsetLeft, event.screenY - sC.offsetTop]
+		searchDrag = [event.clientX - sC.offsetLeft, event.clientY - sC.offsetTop];
 		elid("search-container").classList.add('drag');
-		document.addEventListener('mousemove', dragSearchUpdate);
-		document.addEventListener('mouseup', () => {
-			searchDrag = [];
-			document.removeEventListener('mousemove', dragSearchUpdate);
-			elid("search-container").classList.remove('drag');
-		});
+		document.addEventListener('pointermove', dragSearchUpdate, {passive: false});
+		document.addEventListener('pointerup', onDragRelease, {passive: false});
+		//document.documentElement.style.setProperty('touch-action', 'none');
 	}
 }
 
 function dragSearchUpdate(event) {
+	console.log(event);
 	const sC = elid("search-container");
-	const style = getComputedStyle(sC);
 	sC.style.setProperty('right', 'unset');
-	sC.style.setProperty('left', event.screenX - searchDrag[0] + 'px');
-	sC.style.setProperty('top', event.screenY - searchDrag[1] + 'px');
+	sC.style.setProperty('left', event.clientX - searchDrag[0] + 'px');
+	sC.style.setProperty('top', event.clientY - searchDrag[1] + 'px');
 }
 
 async function updateSearch(event=null) {
