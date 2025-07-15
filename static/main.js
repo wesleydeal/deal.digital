@@ -192,10 +192,10 @@ const providers = {
 			const doc = (new DOMParser()).parseFromString(html, 'text/html');
 			document.querySelector('section.content').replaceWith(doc.querySelector('section.content'));
 			if (doc.documentElement.style) {
-				document.documentElement.style = doc.documentElement.style;
+				document.documentElement.setAttribute('style', doc.documentElement.getAttribute('style'));
 			}
 			document.title = doc.title;
-			
+			console.log(response);
 			closeSearch();
 		},
 	},
