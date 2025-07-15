@@ -859,7 +859,7 @@ kbd {
 	overflow: hidden;
 	padding: 0;
 	border: 1px solid var(--color-primary-sat);
-	outline: 1px solid var(--color-fg);
+	outline: 1px solid #000;
 	background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%), linear-gradient(to top right in oklch longer hue, #b90000, #00cd88);
 	box-shadow: 0 1px 5px oklch(from var(--color-tinted-shadow) l c h / 30%), 0 3px 10px oklch(from var(--color-tinted-shadow) l c h / 20%);
 	opacity: 97%;
@@ -940,7 +940,7 @@ kbd {
 		color: #fff;
 		appearance: none;
 		background: radial-gradient(ellipse 100% 50% at bottom center, #fff5, #0000), oklch(from var(--color-button-important) l calc(c + 0.1) h / 40%);
-		border: 1px solid var(--color-h1);
+		border: 1px solid oklch(from var(--color-primary) min(.45, l) min(.13, c) h);
 		border-radius: 2px;
 		box-shadow: var(--button-shadow);
 		font-stretch: 110%;

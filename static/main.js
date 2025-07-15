@@ -7,6 +7,7 @@ let fuse = Object;
 fuse.search = async (...args) => {await initFuse(); return fuse.search(...args)}
 let searchWindowPos;
 let searchDrag = [];
+let savedPage;
 
 // UTILITY FUNCTIONS -------------------------------
 const elid = (id) => document.getElementById(id);
@@ -40,6 +41,9 @@ const providers = {
 		desc: 'deal.digital',
 		getURLs: async (query) => {
 			r = await fuse.search(query);
+			if (r?.[0]?.score < 0.05 && query.length > 3 && r?.[0].item.url != window.location.href.split('?')[0].split('#')[0]) {
+				await replacePage(r[0].item.url);
+			}
 			return r.map((result) => [result.item.title, result.item.url]);
 		},
 		//suggestIf: async (query) => (await fuse.search(query))?.[0]?.score < 0.1,
@@ -184,26 +188,37 @@ const providers = {
 		keywords: ['load'],
 		desc: 'Load Content From Internal Page',
 		hide: true,
-		action: async (event) => {
-			const response = await fetch(elid("search-box").value.replaceAll("load ", "").replaceAll("!load", "").replaceAll(" ",""));
-			if (!response.ok) return;
-
-			const html = await response.text();
-			const doc = (new DOMParser()).parseFromString(html, 'text/html');
-			document.querySelector('section.content').replaceWith(doc.querySelector('section.content'));
-			if (doc.documentElement.style) {
-				document.documentElement.setAttribute('style', doc.documentElement.getAttribute('style'));
-			}
-			document.title = doc.title;
-			console.log(response);
-			closeSearch();
-		},
+		action: replacePage,
 	},
 };
 let keywordMap = {};
 for (providerName in providers) {
 	for (kw of providers[providerName]?.keywords) {
 		keywordMap[kw] = providerName;
+	}
+}
+
+async function replacePage(path) {
+	if (path instanceof Event) {
+		path = elid("search-box").value.replaceAll(" !load", "").split(" ").at(-1);
+	}
+	const response = await fetch(path);
+	if (!response.ok) return;
+
+	const html = await response.text();
+	const doc = (new DOMParser()).parseFromString(html, 'text/html');
+	document.querySelector('section.content').replaceWith(doc.querySelector('section.content'));
+	if (doc.documentElement.style) {
+		document.documentElement.setAttribute('style', doc.documentElement.getAttribute('style'));
+	}
+
+	document.title = doc.title;
+	window.history.replaceState(null, null, response.url);
+
+	if (window.location.hash) {
+		window.scrollTo({top: document.querySelector(window.location.hash).getBoundingClientRect().top, behavior: 'smooth'});
+	} else {
+		window.scrollTo({top: 0, behavior: 'smooth'});
 	}
 }
 
@@ -494,9 +509,6 @@ async function updateSearch(event=null) {
 			resultCount++;
 		}
 	}
-
-	url.searchParams.set('q', query);
-	window.history.replaceState(null, null, url);
 
 	elid("search-results").insertAdjacentHTML("beforeend", "<p>Retrieved in " + (Date.now() - startTime) + "ms");
 }
