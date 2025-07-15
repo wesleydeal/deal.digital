@@ -5,6 +5,8 @@ let ddIndex = null;
 let Fuse = null;
 let fuse = Object;
 fuse.search = async (...args) => {await initFuse(); return fuse.search(...args)}
+let searchWindowPos;
+let searchDrag = [];
 
 // UTILITY FUNCTIONS -------------------------------
 const elid = (id) => document.getElementById(id);
@@ -207,7 +209,12 @@ for (providerName in providers) {
 
 function toggleSearch(query="") {
 	if (elid("search-container")) {
-		closeSearch();
+		if (elid("search-container").classList.contains('hidden')) {
+			elid("search-container").classList.remove('hidden');
+			elid("search-box").focus();
+		} else {
+			closeSearch();
+		}
 	} else {
 		openSearch(query);
 	}
@@ -251,13 +258,21 @@ function openSearch(query=null) {
 	if (!elid("search-container")) {
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
-				<button id="search-close" aria-label="Close Navigator">X</button>
-				<label for="search-box"><b>///// Navigator</b> <i>alpha one</i></label>
-				<input id="search-box" type="text" placeholder="Type to search 🧭">
+				<div id="search-titlebar">
+					<label for="search-box"><b>///// Navigator</b> <i>alpha one</i></label>
+					<div class="window-buttons">
+						<button id="search-min" aria-label="Minimize Navigator">−</button>
+						<button id="search-max" aria-label="Maximize Navigator">🗖</button>
+						<button id="search-close" aria-label="Close Navigator">X</button>
+					</div>
+				</div>
+				<div id="search-inner">
+					<input id="search-box" type="text" placeholder="Type to search 🧭" autocomplete="off">
+				</div>
 			</div>
 		`);
 		elid("search-box").focus();
-		elid('search-container').insertAdjacentHTML('beforeend', `
+		elid('search-inner').insertAdjacentHTML('beforeend', `
 			<menu id="search-results">
 			</menu>
 			<div id="search-help">
@@ -291,6 +306,10 @@ function openSearch(query=null) {
 			}
 		}
 		elid("search-close").addEventListener("click", closeSearch);
+		elid("search-min").addEventListener("click", minimizeSearch);
+		elid("search-max").addEventListener("click", toggleMaximizeSearch);
+		elid("search-titlebar").addEventListener("dblclick", toggleMaximizeSearch);
+		elid("search-titlebar").addEventListener("mousedown", dragSearchStart);
 		elid("search-box").addEventListener('input', updateSearch);
 	} else {
 		elid("search-box").placeholder = elid("search-box").value;
@@ -307,13 +326,67 @@ function closeSearch() {
 	const url = new URL(window.location.href);
 	url.searchParams.delete('q');
 	window.history.replaceState(null, null, url);
-	elid("search-close").remove();
-	elid("search-container").style['height'] = 0;
-	elid("search-container").style['padding-top'] = 0;
-	elid("search-container").style['padding-bottom'] = 0;
-	elid("search-container").style['border'] = 0;
-	elid("search-box").remove();
-	setTimeout(() => {elid("search-container").remove()}, 200);
+	elid("search-container").classList.add('hidden');
+	setTimeout(() => {elid("search-container").remove()}, 300);
+}
+
+function minimizeSearch() {
+	elid("search-container").classList.add('min-in-progress');
+	setTimeout(() => {
+		elid("search-container").classList.remove('min-in-progress');
+		elid("search-container").classList.add('hidden');
+	}, 300);
+}
+
+function toggleMaximizeSearch() {
+	const sC = elid("search-container");
+	const style = getComputedStyle(sC);
+	
+	if (sC.classList.contains('max')) {
+		sC.classList.remove('max');
+		for (pName in searchWindowPos) {
+			sC.style.setProperty(pName, searchWindowPos[pName]);
+		}
+	} else {
+		searchWindowPos = {
+			top: style.top,
+			left: style.left,
+			width: style.width,
+			height: style.height,
+		};
+		sC.style.removeProperty('top');
+		sC.style.removeProperty('left');
+		sC.style.removeProperty('width');
+		sC.style.removeProperty('height');
+		sC.classList.add('max');
+	}
+}
+
+function dragSearchStart(event) {
+	const sC = elid("search-container");
+	const style = getComputedStyle(sC);
+	if (sC.classList.contains('max')) toggleMaximizeSearch();
+	if (!searchDrag || searchDrag.length < 1) {
+		console.log(event);
+		console.log(style);
+		searchDrag = [event.offsetX - parseFloat(style['border-left-width']), event.offsetY - parseFloat(style['border-right-width'])];
+		searchDrag = [event.screenX - sC.offsetLeft, event.screenY - sC.offsetTop]
+		elid("search-container").classList.add('drag');
+		document.addEventListener('mousemove', dragSearchUpdate);
+		document.addEventListener('mouseup', () => {
+			searchDrag = [];
+			document.removeEventListener('mousemove', dragSearchUpdate);
+			elid("search-container").classList.remove('drag');
+		});
+	}
+}
+
+function dragSearchUpdate(event) {
+	const sC = elid("search-container");
+	const style = getComputedStyle(sC);
+	sC.style.setProperty('right', 'unset');
+	sC.style.setProperty('left', event.screenX - searchDrag[0] + 'px');
+	sC.style.setProperty('top', event.screenY - searchDrag[1] + 'px');
 }
 
 async function updateSearch(event=null) {
