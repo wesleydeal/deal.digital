@@ -261,8 +261,8 @@ function openSearch(query=null) {
 				<div id="search-titlebar">
 					<label for="search-box"><b>Navigator</b> <i>alpha one</i></label>
 					<div class="window-buttons">
-						<button id="search-min" aria-label="Minimize Navigator">−</button>
-						<button id="search-max" aria-label="Maximize Navigator">⛶</button>
+						<button id="search-min" aria-label="Minimize Navigator">—</button>
+						<button id="search-max" aria-label="Maximize Navigator">◻</button>
 						<button id="search-close" aria-label="Close Navigator">X</button>
 					</div>
 				</div>
@@ -371,7 +371,6 @@ function onDragRelease(event) {
 }
 
 function dragSearchStart(event) {
-	console.log(event);
 	const sC = elid("search-container");
 	const style = getComputedStyle(sC);
 	if (document.querySelector("#search-titlebar .window-buttons").contains(event.target)) {
@@ -381,21 +380,18 @@ function dragSearchStart(event) {
 		sC.style.setProperty('width', searchWindowPos.width);
 		sC.style.setProperty('height', 'auto');
 		sC.style.setProperty('top', 0);
-		sC.style.setProperty('left', (event.screenX / window.innerWidth) * (window.innerWidth - parseFloat(searchWindowPos.width)) + "px");
+		sC.style.setProperty('left', (event.clientX / window.innerWidth) * (window.innerWidth - parseFloat(searchWindowPos.width)) + "px");
 		sC.classList.remove('max');
 	}
 	if (!searchDrag || searchDrag.length < 1) {
-		searchDrag = [event.offsetX - parseFloat(style['border-left-width']), event.offsetY - parseFloat(style['border-right-width'])];
 		searchDrag = [event.clientX - sC.offsetLeft, event.clientY - sC.offsetTop];
 		elid("search-container").classList.add('drag');
 		document.addEventListener('pointermove', dragSearchUpdate, {passive: false});
 		document.addEventListener('pointerup', onDragRelease, {passive: false});
-		//document.documentElement.style.setProperty('touch-action', 'none');
 	}
 }
 
 function dragSearchUpdate(event) {
-	console.log(event);
 	const sC = elid("search-container");
 	sC.style.setProperty('right', 'unset');
 	sC.style.setProperty('left', event.clientX - searchDrag[0] + 'px');

@@ -912,7 +912,7 @@ kbd {
 	& #search-titlebar {
 		background: var(--button-overlay), var(--color-button-important);
 		background: var(--button-overlay), linear-gradient(120deg in oklch longer hue, #b90000, #00cd88);
-		background: var(--button-overlay), linear-gradient(120deg in oklch, #0000 200px, #fff2 201px 205px, #0000 206px 210px, #fff3 211px 215px, #0000 216px 220px, #fff4 221px 225px, #0000 226px 230px, #fff5 231px 235px, #0000 236px 240px, #fff6 241px 245px, #0000 246px), linear-gradient(120deg in oklch, oklch(from var(--color-primary) 0.4 c h), var(--color-primary-sat) 90%);
+		background: var(--button-overlay), linear-gradient(120deg in oklch, #0000 150px, #fff6 151px 154px, #0000 155px 159px, #fff6 160px 164px, #0000 165px 169px, #fff5 170px 174px, #0000 175px 179px, #fff4 180px 184px, #0000 185px 189px, #fff3 190px 194px, #0000 195px), linear-gradient(120deg in oklch, oklch(from var(--color-primary-sat) 0.4 c h), var(--color-primary) 90%);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -939,8 +939,7 @@ kbd {
 		line-height: 1;
 		color: #fff;
 		appearance: none;
-		background: var(--button-overlay), oklch(from var(--color-button-important) l c h / 40%);
-		//border: var(--button-border);
+		background: radial-gradient(ellipse 100% 50% at bottom center, #fff5, #0000), oklch(from var(--color-button-important) l calc(c + 0.1) h / 40%);
 		border: 1px solid var(--color-h1);
 		border-radius: 2px;
 		box-shadow: var(--button-shadow);
@@ -955,11 +954,11 @@ kbd {
 		}
 	}
 	& #search-min {
-		line-height: 0.8;
+		line-height: 0.9;
 		&:hover { text-shadow: 0 0 6px #fa0; }
 	}
 	& #search-max {
-		line-height: 1;
+		line-height: 0.85;
 		&:hover { text-shadow: 0 0 6px #0f5; }
 	}
 	& #search-close {
