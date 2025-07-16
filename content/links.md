@@ -54,9 +54,7 @@ Consult your local laws before using the following websites to retrieve copyrigh
 * [🍁 Mapple.TV](https://mapple.tv), paired with an ad blocker, has a lot of TV and movies (see also: [fmovies0](https://fmovies0.cc/))
 * [❗ h!anime](https://hianime.gs) [[alts](https://hianime.tv)] is likewise comprehensive and easy to use
 * [🦈 Grooveshark (no relation)](https://groovesharks.org/) is an ad-free YouTube Music proxy
-* [🔗 awesome-piracy](https://shakil-shahadat.github.io/awesome-piracy/)
-* [🔗 reddit megathread](https://old.reddit.com/r/Piracy/wiki/megathread)
-* [🔗 /u/nbatman's wiki](https://old.reddit.com/r/FREEMEDIAHECKYEAH/wiki/index)
+* 🔗 Meta: [Yarrlist](https://yarrlist.com/), [awesome-piracy](https://shakil-shahadat.github.io/awesome-piracy/), [megathread](https://old.reddit.com/r/Piracy/wiki/megathread), [/u/nbatman wiki](https://old.reddit.com/r/FREEMEDIAHECKYEAH/wiki/index)
 
 ## Development
 * [The Grug Brained Developer](https://grugbrain.dev/), a layman's guide to thinking like the self-aware smol brained

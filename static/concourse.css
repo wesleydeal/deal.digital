@@ -390,11 +390,25 @@ section.content {
 			2px 3px 4px var(--sc),
 			5px 6px 8px var(--sc2);
 		border-radius: 5px;
-		&:active{
+		z-index: 2;
+		transform: scale(1);
+		transform-origin: center;
+		transition: 250ms transform cubic-bezier(0.165, 0.84, 0.44, 1);
+		&.zoomed{
+			position: relative;
 			image-rendering: pixelated;
+			box-shadow: 1px 2px 2px var(--sc),
+				2px 3px 4px var(--sc),
+				5px 6px 8px var(--sc2),
+				5px 6px 20px 10px var(--sc);
 		}
 	}
-   	& p.fullbleed, & div.fullbleed, & p:has(img.fullbleed), & p:has(img:active) {
+	& pre {
+		resize: horizontal;
+		max-width: calc(100vw - 20px);
+		width: var(--text-width);
+	}
+   	& p.fullbleed, & div.fullbleed, & p:has(img.fullbleed) {
 		margin-left: calc(-1 * var(--content-margins));
 		margin-right: calc(-1 * var(--content-margins));
 		width: calc(100% + (2 * var(--content-margins)));
@@ -518,6 +532,9 @@ h1 {
 		padding-top: 0.5em;
 		color: var(--color-h2);
 		text-shadow: none;
+		& :any-link {
+			text-underline-offset: auto;
+		}
 	}
 }
 

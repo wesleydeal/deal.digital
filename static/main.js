@@ -567,6 +567,33 @@ function load() {
 	elid("btn_search")?.addEventListener("click", toggleSearch);
 	elid("search-link")?.addEventListener("click", toggleSearch);
 
+	for (img of document.querySelectorAll("section.content :not(a):not(.no-zoom) img:not(.no-zoom)")) {
+		img.addEventListener("click", (e) => {
+			if (e.target?.parentElement?.href) return;
+			if (e.target.classList.contains("zoomed")) {
+				e.target.classList.remove("zoomed");
+				e.target.style.removeProperty('transform');
+			} else {
+				e.target.classList.add("zoomed");
+				let boundingRect = e.target.getBoundingClientRect();
+				let targetTranslateX = (window.innerWidth / 2) - (boundingRect.x + (boundingRect.width / 2));
+				let targetTranslateY = (window.innerHeight / 2) - (boundingRect.y + (boundingRect.height / 2));
+				let targetScale = Math.min(window.innerWidth / e.target.clientWidth, window.innerHeight / e.target.clientHeight);
+				e.target.style.transform = 'translate(' + targetTranslateX + 'px, ' + targetTranslateY +'px) scale(' + targetScale + ')';
+
+				const controller = new AbortController();
+				document.addEventListener('scroll', () => {
+					let b = e.target.getBoundingClientRect();
+					if (b.top <= 0 || b.bottom >= window.innerHeight) {
+						e.target.classList.remove("zoomed");
+						e.target.style.removeProperty('transform');
+						controller.abort();
+					}
+				}, { signal: controller.signal });
+			}
+		});
+	}
+
 	document.addEventListener("keyup", (e) => {
 		if (e.key === 'Escape') {
 			if (elid("search-box") && elid("search-box")?.value.replaceAll(' ','') === "") {
