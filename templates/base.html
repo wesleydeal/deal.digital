@@ -226,7 +226,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 	{% set t2_end = "│ └─" -%}
 	{% for s in sections | sort -%}
 		{% set section = get_section(path=s) -%}
-		<br>{{ t1 }}<a href="{{ section.path | trim_end_matches(pat="/") | safe }}">{{ section.path | trim_start_matches(pat="/") }}</a>
+		<br>{{ t1 }}<a href="{{ section.path | safe }}">{{ section.path | trim_start_matches(pat="/") }}</a>
 		{% if section.pages -%}
 		{% set subpages = section.pages -%}
 		{% for subpage in subpages | sort(attribute="path") -%}
@@ -235,7 +235,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 			{% else -%}
 			{% set t = t2 -%}
 			{% endif -%}
-			<br>{{ t }}<a href="{{ subpage.path | trim_end_matches(pat="/") | safe }}">{{ subpage.slug }}</a>
+			<br>{{ t }}<a href="{{ subpage.path | safe }}">{{ subpage.slug }}</a>
 		{% endfor -%}
 		{% endif -%}
 	{% endfor -%}
@@ -245,7 +245,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 		{% else -%}
 			{% set t = t1 -%}
 		{% endif -%}
-		<br>{{ t }}<a href="{{ page.path | trim_end_matches(pat="/") | safe }}">{{ page.path | trim_end_matches(pat="/") | trim_start_matches(pat="/") }}</a>
+		<br>{{ t }}<a href="{{ page.path | safe }}">{{ page.path | trim_end_matches(pat="/") | trim_start_matches(pat="/") }}</a>
 		{% if page.pages -%}
 			{% for subpage in page.pages -%}
 			{% if loop.last -%}
@@ -253,7 +253,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 				{% else -%}
 				{% set t = t2 -%}
 				{% endif -%}
-				<br>{{ t }}<a href="{{ subpage.path | trim_end_matches(pat="/") | safe }}">{{ subpage.slug }}</a>
+				<br>{{ t }}<a href="{{ subpage.path | safe }}">{{ subpage.slug }}</a>
 			{% endfor -%}
 		{% endif -%}
 	{% endfor -%}

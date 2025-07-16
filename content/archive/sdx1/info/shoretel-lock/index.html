@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<title>Unlock Shoretel Director - sdx1.net</title>
+<link href="/archive/sdx1/style.css" rel="stylesheet">
+<script type="text/javascript" src="/archive/sdx1/lightswitch.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000">
+<nav>
+	<a href="/archive/sdx1/">sdx1.net</a> > <a href="/archive/sdx1/info">Info</a> > <a>Unlock Shoretel Director</a>
+</nav>
+<div class="content">
+	<h1>Fix a locked Shoretel/Shoreware/Mitel Director</h1>
+	<p class="meta">Updated 2020-09-15. Written by sdx1, originally published 2020-09-15.</p>
+	<p>Let's say, for the sake of argument, that you're overworked and understaffed. A while ago, something popped up on the top of your Shoretel management page. You noticed it when you were hastily onboarding a new employee:</p>
+	<blockquote style="color: orangered; font-size: small">Due to license violation, access to Director will be locked in 38 days. Take proper action before the grace period has expired. Note that there are additional charges if you need to recover from a locked Director.</blockquote>
+	<p>You made a mental note and moved onto the next thing.</p>
+	<p>Now it's 6 weeks later and you get a ticket to change someone's voicemail PIN. You go into the director but find that you're now locked out entirely.</p>
+	<p>But you can fix it: Shoretel stores your users' licensing status in a MySQL database that you can edit directly.</p>
+	<p>A note: this is all bad practice. Don't let your licenses expire. Don't run an old version of Shoretel on an older version of Windows and leave UAC and updates both disabled because that's what your vendor says you have to do. Don't poke around haphazardly in your production database with baby's first SQL Management app from an insecure RDP connection, reading instructions from some random website. Now I'm going to give you instructions to do all of the above.</p>
+	<h2>The Process</h2>
+	<ul>
+	    <li>Remote in to your Shoretel server. If Shoretel is holding your server hostage on an old version of Windows, you might need to disable CredSSP remediation on your box with <code>reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters /v AllowEncryptionOracle /t REG_DWORD /d 2</code></li>
+	    <li>Install <a href="https://dev.mysql.com/downloads/workbench/">MySQL Workbench</a> on the server.</li>
+	    <li>Add a connection with these details:
+	        <ul>
+	            <li>Hostname: <b>localhost</b></li>
+	            <li>Port: <b>4308</b></li>
+	            <li>Username: <b>root</b></li>
+	        </ul>
+	    </li>
+	    <li>Connect with the password <b>shorewaredba</b></li>
+	    <li>Run this query:<br><code>select UserDNID,UserDN,GuiLoginName,LicenseTypeID,ClientType from users order by licensetypeID</code></li>
+	    <li>In the table that appears, edit the license type numbers for LicenseTypeID and ClientType to reduce your license count. Refer to the locked director for which license you're over on. Refer to this table for the meaning of license type numbers.<br>
+	        <code class="block">
+  # | LicenseTypeID   | ClientType
+  --+-----------------+------------
+  0 | ?               | None
+  1 | Mailbox Only    | ?
+  2 | Phone Only      | ?
+  3 | Phone & Mailbox | ?
+  4 | N/A             | ?
+  5 | N/A             | Shoretel Connect
+	        </code>
+	    </li>
+	    <li>In the bottom right corner, click <b>Apply</b>, review the changes, and <b>Apply</b> again. Exit MySQL Workbench.</li>
+	    <li>Restart the Shoretel-Director service (or just the restart the whole server).</li>
+    </ul>
+</div>

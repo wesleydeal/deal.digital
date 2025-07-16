@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<title>T420 BIOS Mod with downgrade support for 1.48 & 1.49 - sdx1.net</title>
+<link href="/archive/sdx1/style.css" rel="stylesheet">
+<script type="text/javascript" src="/archive/sdx1/lightswitch.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#333">
+<meta name="description" content="This BIOS mod for the ThinkPad T420 allows stable use of an eGPU, 16GB RAM support, & removes the WLAN whitelist. This updated release includes support for downgrading from BIOS 1.48 and 1.49">
+<body style="background: #ddd url('../../tpbg.jpg') no-repeat center right fixed; background-size: cover">
+    <nav>
+        <a href="/archive/sdx1/">sdx1.net</a> > <a href="/archive/sdx1/">Tools</a> > <a>T420 BIOS Mod</a>
+    </nav>
+    <div class="content">
+        <h1>ThinkPad T420 BIOS Mod with downgrade support for 1.48+</h1>
+		<p class="meta">Updated 2018-02-08. Written by sdx1, adapted from <a href="http://www.thinkwiki.org/wiki/Custom_BIOS">thinkwiki.org/wiki/Custom_BIOS</a>. Originally published 2017-12-09.</p>
+        <p>The ThinkPad T420 and other xx20 laptops have long suffered from a crippling bug that causes 100% CPU usage when an eGPU and 16GB of RAM are installed simultaneously. This most likely stems from a lack of support in BIOS for 1600 and 1866 MHz memory modules. Lenovo has never bothered to release a patch, but Oleh and later <a href="https://www.bios-mods.com/forum/Thread-REQUEST-Whitelist-Lenovo-T420-BIOS-v-1-22-83uj05us?page=2">BDMaster from BIOS-Mods released a custom BIOS fixing the issue</a>. For ease of access, I've uploaded his BIOS here, along with a nicer BIOS logo and a method to downgrade from versions 1.48 and 1.49.</p>
+        <h2>Features</h2>
+        <ul>
+            <li>Based on v1.46</li>
+            <li>WLAN whitelist removed - can use any wireless card</li>
+            <li>1600MHz & 1866MHz RAM support</li>
+            <li>16GB RAM Support, stable with an eGPU</li>
+            <li>Lots of extra menus available for additional configuration</li>
+            <li><a href="LOGO.gif">Updated splash logo</a> included</li>
+            <li>Can downgrade from 1.48 or 1.49 by using winflash's <code>/sv /sd</code> options</li>
+        </ul>
+        <h2>Disclaimer</h2>
+        <p>This software can and may turn your computer into an unusable brick. I didn't write this software, and I offer no support, guarantee, or warranty in relation to this product.</p>
+        <h2>Downloads</h2>
+        <p>
+            <strong><a href="t420-bios-sdx1.zip">t420-bios-sdx1.zip</a></strong> - For T420 and T420i <strong>ONLY</strong>, v1.46, 8.22MB
+        </p>
+        <h2>Installation</h2>
+        <ol>
+            <li>Plug in your ThinkPad. Make sure it's fully charged.</li>
+            <li>Unzip the archive.</li>
+            <li>Run "Downgrade from 1.48 or later.cmd". Follow the on-screen instructions.</li>
+            <li>(Optional--to get the new logo) After restarting, run WINUPTP.EXE from the same folder and follow instructions. Click yes when prompted about the startup image and the older version.</li>
+        </ol>
+    </div>
+</body>
