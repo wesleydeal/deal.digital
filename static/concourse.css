@@ -531,7 +531,7 @@ h2 {
 		content: '';
 		position: absolute;
 		width: 100%;
-		height: 0.08em;
+		height: 1px;
 		right: 0;
 		bottom: -3px;
 		background: linear-gradient(to right, color-mix(in oklch, var(--color-pop) 50%, var(--color-fg)), var(--color-bg));
@@ -542,9 +542,12 @@ h2 {
 }
 
 h3 {
-	font: semi-expanded 350 1.2em/1.4 var(--typeface-body);
+	font: semi-expanded 400 1.2em/1.4 var(--typeface-body);
 	text-transform: uppercase;
 	margin: 1em 0 0.3em;
+	h2 + & {
+		margin-top: 0.6em;
+	}
 }
 
 h4 {
@@ -641,7 +644,7 @@ ol {
 		}
 	}
 	h2 + &, h3 + &, summary + & {
-		margin-top: 0;
+		margin-top: 0.25em;
 	}
 	& ol {
 		padding-left: 2.5ch;
@@ -659,7 +662,7 @@ ul {
 		}
 	}
 	h2 + &, h3 + &{
-		margin-top: 0;
+		margin-top: 0.25em;
 	}
 }
 ul.blog-listing {

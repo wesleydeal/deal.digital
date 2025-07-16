@@ -8,6 +8,7 @@
 <html lang="en"{% if color %} style="--color-primary: {{ color }}"{% endif %}>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="view-transition" content="same-origin" />
 {% block title -%}
 <title>{% if page.extra.shorttitle %}{{ page.extra.shorttitle }} - {% elif page.title %}{{ page.title }} - {% endif %}Wesley Deal</title>
 {% endblock title -%}
@@ -15,6 +16,7 @@
 html {
 	container: root / size;
 	scroll-behavior: smooth;
+	transform-origin: center;
 }
 *, *:before, *:after {box-sizing: border-box;}
 body {
@@ -30,8 +32,8 @@ body>* {
 	padding: 16px;
 	max-width: 100%;
 	opacity: 1;
-	@starting-style { opacity: 0; }
-	transition: opacity 500ms 100ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	//@starting-style { opacity: 0; }
+	//transition: opacity 500ms 100ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 header nav, .content>*, footer>*, #toc>div, #search-container {
 	max-width: 800px;
@@ -139,6 +141,22 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 }
 [id] {
 	scroll-margin-top: 100px;
+}
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: 0.3s; }
+@keyframes screen-in {
+	from { transform: scale(1.2); opacity: 0; }
+	to { transform: scale(1); opacity: 1; }
+}
+@keyframes screen-out {
+	from { filter: grayscale(0) brightness(1) }
+	to {  filter: grayscale(0.5) brightness(0.5)  }
+}
+::view-transition-old(root) { animation: 0.3s cubic-bezier(0.23, 1, 0.320, 1) both screen-out; }
+::view-transition-new(root) { animation: 0.3s cubic-bezier(0.23, 1, 0.320, 1) both screen-in; }
+:root[data-transition="pop"] {
+	&::view-transition-old(root) { animation: 0.3s cubic-bezier(0.23, 1, 0.320, 1) both screen-out reverse; }
+	&::view-transition-new(root) { animation: 0.3s cubic-bezier(0.23, 1, 0.320, 1) both screen-in reverse; }
 }
 </style>
 <!--[if !IE]><!-->

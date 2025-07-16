@@ -3,15 +3,12 @@ title = "Links of interest"
 updated = 2025-06-24
 [extra]
 shorttitle = "Links"
+subtitle = "[the most useful page on this website]"
 toc = true
 color = "#00aec9"
 +++
 
-Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brave-browser/issues/35042) and search engines are less useful by the day
-
-## Blogs & Personal Sites
-
-* [adryd](https://adryd.com/)
+## Neat Blogs and Personal Sites
 
 ### Lists of sites
 * [The 512KB Club](https://512kb.club/) and [1MB Club](https://1mb.club/)
@@ -36,37 +33,51 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 * [Nathan Linebacks Toasty Technology](https://toastytech.com/)
 * [Ncommander's Tech Corner](https://casadevall.pro/) (see also, his [YouTube channel](https://www.youtube.com/@NCommander/))
 
-### Funny
+### Humor
 * [David Thorne's 27B/6](https://27bslash6.com/index.html)
 
-## Cool Websites
-
-(websites whose primary characteristic is that they are visually, audibly, or mechanically interesting)
-
+### Aesthetic & Music
 * [Poolsuite / Poolside FM](https://poolsuite.net/)
 * [Windows 93](https://www.windows93.net/)
 * [CoolModFiles](https://coolmodfiles.com/) and [chiptune3.js demo](https://drsnuggles.github.io/chiptune/demo.html)
 * [Cameron's World](https://www.cameronsworld.net/), a love letter to GeoCities
 
-## Sharing 🏴‍☠️🦜
+### I just think they're neat
+* [adryd](https://adryd.com/)
+* [DIMDEN](https://dimden.dev/)
+
+## 🏴‍☠️ Sharing 🦜
+Consult your local laws before using the following websites to retrieve copyright-protected content.
 * [📚 Anna's Archive](https://annas-archive.org) seems to have most every ebook and PDF
+* [🍁 Mapple.TV](https://mapple.tv), paired with an ad blocker, has a lot of TV and movies (see also: [fmovies0](https://fmovies0.cc/))
+* [❗ h!anime](https://hianime.gs) [[alts](https://hianime.tv)] is likewise comprehensive and easy to use
+* [🦈 Grooveshark (no relation)](https://groovesharks.org/) is an ad-free YouTube Music proxy
 * [🔗 awesome-piracy](https://shakil-shahadat.github.io/awesome-piracy/)
 * [🔗 reddit megathread](https://old.reddit.com/r/Piracy/wiki/megathread)
 * [🔗 /u/nbatman's wiki](https://old.reddit.com/r/FREEMEDIAHECKYEAH/wiki/index)
 
-## Software Development
+## Development
 * [The Grug Brained Developer](https://grugbrain.dev/), a layman's guide to thinking like the self-aware smol brained
 * [Command-Line Interface Guidelines](https://clig.dev/)
+* [Free for Developers](https://free-for.dev/) - a list of tools & platforms with a free tier
+* [CSS Context-Aware Colors](https://buttondown.com/cascade/archive/015-context-aware-colors/)
+* [Visualizing algorithms for rate limiting](https://smudge.ai/blog/ratelimit-algorithms)
 
 ## IT Infrastructure
+
+* [Glory is only 11MB/sec away](https://thmsmlr.com/cheap-infra)
 
 ### VPS & Hosting
 * [LowEndBox](https://lowendbox.com/) has a bunch of promotions for cheap VPS, dedicated, and shared web hosting
 
-### Stories
+### Stories & Humor
+* [BOFH API](https://bombeck.io/projects/bastard-operator-from-hell-generator) and the [excuse generator](https://it-excuse.bombeck.io/) using it
 * [The case of the 500-mile email](https://www.ibiblio.org/harris/500milemail.html)
 
 ## Typography
+
+* [Modern Font Stacks](https://modernfontstacks.com/) for the web, without any downloads
+* [Matthew Butterick's Practical Typography](https://practicaltypography.com/), a good online book about the subject (though he is wrong about underlines)
 
 ### Collections
 * [UNCUT](https://uncut.wtf/)
@@ -102,7 +113,7 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 * [Cascadia Code](https://github.com/microsoft/cascadia-code). Yeah, I know it's M$ and it's now a default font, but it's pretty and readable.
 * [Block Mono](https://blockmonofont.com/)
 
-## Display Typefaces
+### Display Typefaces
 * [alagard](https://www.dafont.com/alagard.font) - a readable bitmap gothic font
 
 ### Tools
@@ -117,10 +128,6 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 ### Tools
 * [OKLCH](https://oklch.com/)
 
-## AI Dreck 🤖
-
-* [Human or Not](https://humanornot.ai)
-
 ## Emulation
 
 ### In-browser
@@ -133,9 +140,7 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 ## Unsorted Items
 * [Sad Servers](https://sadservers.com/)
 * [Zola](https://www.getzola.org/documentation) & [Tera](https://keats.github.io/tera/docs/) docs
-* [BOFH API](https://bombeck.io/projects/bastard-operator-from-hell-generator) and the [excuse generator](https://it-excuse.bombeck.io/) using it
-* [Free for Developers](https://free-for.dev/) - a list of tools & platforms with a free tier
-* [CSS Context-Aware Colors](https://buttondown.com/cascade/archive/015-context-aware-colors/)
+
 
 ## Lists of Lists
 * [awesome-* on GitHub](https://github.com/sindresorhus/awesome#readme)
