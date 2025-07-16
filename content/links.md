@@ -8,7 +8,8 @@ toc = true
 color = "#00aec9"
 +++
 
-## Neat Blogs and Personal Sites
+Neat Blogs and Personal Sites
+-----------------------------
 
 ### Lists of sites
 * [The 512KB Club](https://512kb.club/) and [1MB Club](https://1mb.club/)
@@ -46,7 +47,8 @@ color = "#00aec9"
 * [adryd](https://adryd.com/)
 * [DIMDEN](https://dimden.dev/)
 
-## 🏴‍☠️ Sharing 🦜
+🏴‍☠️ Sharing 🦜
+--------------
 Consult your local laws before using the following websites to retrieve copyright-protected content.
 * [📚 Anna's Archive](https://annas-archive.org) seems to have most every ebook and PDF
 * [🍁 Mapple.TV](https://mapple.tv), paired with an ad blocker, has a lot of TV and movies (see also: [fmovies0](https://fmovies0.cc/))
@@ -63,8 +65,8 @@ Consult your local laws before using the following websites to retrieve copyrigh
 * [CSS Context-Aware Colors](https://buttondown.com/cascade/archive/015-context-aware-colors/)
 * [Visualizing algorithms for rate limiting](https://smudge.ai/blog/ratelimit-algorithms)
 
-## IT Infrastructure
-
+IT & SysOps
+--------------------
 * [Glory is only 11MB/sec away](https://thmsmlr.com/cheap-infra)
 
 ### VPS & Hosting
@@ -74,8 +76,8 @@ Consult your local laws before using the following websites to retrieve copyrigh
 * [BOFH API](https://bombeck.io/projects/bastard-operator-from-hell-generator) and the [excuse generator](https://it-excuse.bombeck.io/) using it
 * [The case of the 500-mile email](https://www.ibiblio.org/harris/500milemail.html)
 
-## Typography
-
+Typography
+------------------
 * [Modern Font Stacks](https://modernfontstacks.com/) for the web, without any downloads
 * [Matthew Butterick's Practical Typography](https://practicaltypography.com/), a good online book about the subject (though he is wrong about underlines)
 
@@ -119,7 +121,8 @@ Consult your local laws before using the following websites to retrieve copyrigh
 ### Tools
 * [Variable font helper](https://variable-font-helper.web.app/) to select, compress, and host variable fonts from Google fonts
 
-## Themes
+Themes
+--------------
 
 ### Syntax highlighting
 * [Selenized](https://github.com/jan-warchol/selenized)
@@ -128,8 +131,8 @@ Consult your local laws before using the following websites to retrieve copyrigh
 ### Tools
 * [OKLCH](https://oklch.com/)
 
-## Emulation
-
+Emulation
+-------------
 ### In-browser
 * [v86 by Fabian (copy.sh)](https://copy.sh/v86/) lets you run a variety of OSes in an emulated P4 class machine, in browser
 * [JSLinux by Fabrice Bellard](https://bellard.org/jslinux/) is quite similar, emulates Windows 2000 impressively in addition to RISC-V Linux
@@ -140,7 +143,7 @@ Consult your local laws before using the following websites to retrieve copyrigh
 ## Unsorted Items
 * [Sad Servers](https://sadservers.com/)
 * [Zola](https://www.getzola.org/documentation) & [Tera](https://keats.github.io/tera/docs/) docs
-
+* [ffmpeg by example](https://ffmpegbyexample.com/)
 
 ## Lists of Lists
 * [awesome-* on GitHub](https://github.com/sindresorhus/awesome#readme)
