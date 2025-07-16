@@ -796,13 +796,13 @@ kbd {
 	font-size: 1.33em;
 	li {
 		display: flex;
-		flex: 1 0;
+		flex: 1 1 max-content;
+		flex-direction: column;
 		padding: 0;
 		margin: 0;
 	}
 	& a:any-link {
-		flex: 1 0;
-		min-width: max-content;
+		flex: 1 1 max-content;
 		display: flex;
 		align-items: center;
 		gap: 0.4em;
