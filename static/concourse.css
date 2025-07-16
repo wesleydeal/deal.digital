@@ -390,7 +390,7 @@ section.content {
 			2px 3px 4px var(--sc),
 			5px 6px 8px var(--sc2);
 		border-radius: 5px;
-		z-index: 2;
+		z-index: 10;
 		transform: scale(1);
 		transform-origin: center;
 		transition: 250ms transform cubic-bezier(0.165, 0.84, 0.44, 1);
