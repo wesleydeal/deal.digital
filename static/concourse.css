@@ -42,8 +42,8 @@
 	--color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
 	--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) .97 calc(c * .25) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px max(60vw, 1400px), oklch(from var(--color-primary) .97 calc(c * .25) h) max(100vw, 1500px));
 	--bg: linear-gradient(to right in oklch, #0000, oklch(from var(--color-bg) l c h / 60%), oklch(from var(--color-bg) l c h / 90%), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 5vw) min(calc(50% + (var(--text-width) / 2)), 95vw), oklch(from var(--color-bg) l c h / 90%), oklch(from var(--color-bg) l c h / 60%), #0000) 0 / cover,
-			repeating-linear-gradient( 90deg in oklch, oklch(from var(--color-h1) l c h / 5%), transparent 8em),
-			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l c h / 15%), transparent 6em),
+			repeating-linear-gradient( 90deg in oklch, oklch(from var(--color-h1) l c h / 5%), transparent 5vw),
+			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l c h / 15%), transparent 6vw),
 			var(--color-bg);
 
 	--color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
