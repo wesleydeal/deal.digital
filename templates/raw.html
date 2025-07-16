@@ -1,0 +1,8 @@
+{% block content -%}
+{# you'll likely want to wrap your page in {% raw () %} {% end %} -#}
+{% if page.content -%}
+{{page.content | safe}}
+{% elif section.content -%}
+{{section.content | safe}}
+{% endif -%}
+{% endblock content -%}

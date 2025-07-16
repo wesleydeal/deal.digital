@@ -1,0 +1,38 @@
++++
+template = 'raw.html'
+page_template = 'raw.html'
++++
+{% raw() %}
+<!DOCTYPE html>
+<head>
+    <title>Lenovo Corporate Discount - sdx1.net</title>
+    <link href="/archive/sdx1/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/archive/sdx1/lightswitch.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta name="theme-color" content="#333">
+	<meta name="description" content="Lenovo's Corporate Discount, which currently uses the code NOV$PAW, offers a significant discount on expensive ThinkPads.">
+</head>
+<body>
+    <nav>
+        <a href="/archive/sdx1/">sdx1.net</a> > <a href="/archive/sdx1/">Info</a> > <a href="/archive/sdx1/">ThinkPads</a> > <a>Lenovo Corporate Discount</a>
+    </nav>
+    <div class="content">
+        <h1>Lenovo Corporate Discount</h1>
+		<p class="meta">Updated 2018-10-29. Written by sdx1 on 2017-09-05.</p>
+        <p>Because of the high quality and typical high-end business market for ThinkPads, Lenovo likes to price them out of the reach of the average consumer. However, they also provide a hidden way to soften the blow: the corporate discount. Also referred to as the Employee Purchase Program (EPP) and occasionally "corporate perks", the discount is intended for employees to share with friends and family. This code is often leaked to the public, and provides a discount of around 33% on most ThinkPads. Many have ordered with this code, and have yet to receive a reprimand or have an order cancelled.</p>
+        <h2>Using the Code</h2>
+        <p>Visit the website:<br> <a href="https://shop.lenovo.com/SEUILibrary/controller/e/perksoffer/StdAffinityPortal/en_US/Lenovo:EnterStdAffinity" target="_blank">https://shop.lenovo.com/SEUILibrary/controller/e/perksoffer/StdAffinityPortal/en_US/Lenovo:EnterStdAffinity</a></p>
+        <p>Enter the code:<br> <code style="font-size: 24px; padding: 10px; display: inline-block">NOV$PAW</code></p>
+        <p>Go ahead and shop. It's easiest to browse using the top navigation.</p>
+		<h2>Additional Codes</h2>
+		<h3>Coca-Cola Employees</h3>
+		<p>Visit <a href="http://www.lenovo.com/shop/deals/CocaCola" target="_blank">http://www.lenovo.com/shop/deals/CocaCola</a> and enter <code>COKE*EPP</code>.
+		<h3>Canadians Corporate Perks</h3>
+		<p>Visit <a href="https://www3.lenovo.com/ca/en/ibmeppfriendca/laptops/thinkpad/thinkpad-t-series/ThinkPad-T480/p/22TP2TT4800?menu-id=T480" target="_blank">https://www3.lenovo.com/ca/en/ibmeppfriendca/laptops/thinkpad/thinkpad-t-series/ThinkPad-T480/p/22TP2TT4800?menu-id=T480</a> and enter <code>FNDEPP</code>.</p>
+        <h2>A note on ordering from Lenovo</h2>
+        <p>Don't trust Lenovo's estimated delivery time. While they're typically within a few days of their estimate, there are a few reports of people waiting over a month for their laptops from Lenovo. A friend ordered a laptop, received a 2 week estimate, got an email that the estimate had doubled to 4 weeks, then received the laptop earlier than the initial estimate.</p>
+        <h2>Invalid Code?</h2>
+        <p>If this site is out of date, I recommend <a href="https://www.reddit.com/r/thinkpad/search?q=corporate+discount&sort=new&restrict_sr=on&t=all" target="_blank">searching the /r/ThinkPad subreddit for "corporate discount", sorted by new.</a> Alternatively, a Google search of <a href="https://www.google.com/search?q=%28site%3Aaffinityperks.com+OR+site%3Acorporateperks.com%29+passcode">(site:affinityperks.com OR site:corporateperks.com) passcode</a> tends to do the trick.</p>
+    </div>
+</body>
+{% end %}
