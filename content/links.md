@@ -11,6 +11,8 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 
 ## Blogs & Personal Sites
 
+* [adryd](https://adryd.com/)
+
 ### Lists of sites
 * [The 512KB Club](https://512kb.club/) and [1MB Club](https://1mb.club/)
 * [/now pages](https://nownownow.com/), [/uses pages](https://uses.tech/)
@@ -28,6 +30,7 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 
 ### *nix
 * [dade](https://0xda.de/blog/)
+* [Vinc](https://vinc.cc/)
 
 ### Retro Computing
 * [Nathan Linebacks Toasty Technology](https://toastytech.com/)
@@ -65,6 +68,11 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 
 ## Typography
 
+### Collections
+* [UNCUT](https://uncut.wtf/)
+* [Fontesk](https://fontesk.com/)
+* [The Ultimate Oldschool PC Font Pack](https://int10h.org/oldschool-pc-fonts/)
+
 ### Sans-serif Typefaces
 
 * [Alegraya Sans](https://fonts.google.com/specimen/Alegreya+Sans) feels a bit older and more hand-etched than most sans-serifs
@@ -92,6 +100,10 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 
 ### Monospace Typefaces
 * [Cascadia Code](https://github.com/microsoft/cascadia-code). Yeah, I know it's M$ and it's now a default font, but it's pretty and readable.
+* [Block Mono](https://blockmonofont.com/)
+
+## Display Typefaces
+* [alagard](https://www.dafont.com/alagard.font) - a readable bitmap gothic font
 
 ### Tools
 * [Variable font helper](https://variable-font-helper.web.app/) to select, compress, and host variable fonts from Google fonts
@@ -101,6 +113,9 @@ Because Brave [doesn't reliably sync my bookmarks](https://github.com/brave/brav
 ### Syntax highlighting
 * [Selenized](https://github.com/jan-warchol/selenized)
 * [Tempus](https://github.com/protesilaos/tempus-themes)
+
+### Tools
+* [OKLCH](https://oklch.com/)
 
 ## AI Dreck 🤖
 
