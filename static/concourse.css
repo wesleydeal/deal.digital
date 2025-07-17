@@ -991,8 +991,8 @@ kbd {
 		height: 32px;
 		place-content: center;
 		font-family: inherit;
-		font-size: 24px;
-		line-height: 24.5px;
+		font-size: 26px;
+		line-height: 24px;
 		color: #fff;
 		appearance: none;
 		background: radial-gradient(ellipse 100% 50% at bottom center, #fff5, #0000), oklch(from var(--color-button-important) l calc(c + 0.1) h / 40%);
@@ -1016,8 +1016,6 @@ kbd {
 		&:hover { text-shadow: 0 0 6px #0f5; }
 	}
 	& #search-close {
-		font-size: 23px;
-		padding-top: 1.5px;
 		&:hover { text-shadow: 0 0 6px #f42; }
 	}
 	& #search-inner {
