@@ -19,9 +19,10 @@ function uniq(a) {
     var seen = {};
     return a.filter((item) => seen.hasOwnProperty(item) ? false : (seen[item] = true));
 }
-function playSound(url) {
+function playSound(url, volume = 1) {
 	const start = new Date();
 	if (!soundPlayers?.[url]) soundPlayers[url] = new Audio(url);
+	soundPlayers[url].volume = volume;
 	const playIt = () => {
 		if ((new Date() - start) > 300) return;
 		soundPlayers[url].currentTime = 0;
@@ -240,8 +241,8 @@ async function replacePage(path) {
 
 function toggleSearch(query="") {
 	if (elid("search-container")) {
-		if (elid("search-container").classList.contains('hidden')) {
-			elid("search-container").classList.remove('hidden');
+		if (elid("search-container").classList.contains('min')) {
+			elid("search-container").classList.remove('min');
 			elid("search-box").focus();
 			playSound('/sounds/KDE_Window_Shade_Up.ogg');
 		} else {
@@ -365,11 +366,7 @@ function closeSearch() {
 }
 
 function minimizeSearch() {
-	elid("search-container").classList.add('min-in-progress');
-	setTimeout(() => {
-		elid("search-container").classList.remove('min-in-progress');
-		elid("search-container").classList.add('hidden');
-	}, 300);
+	elid("search-container").classList.add('min');
 	playSound('/sounds/KDE_Window_Shade_Down.ogg');
 }
 
@@ -537,7 +534,7 @@ async function updateSearch(event=null) {
 
 // ON LOAD -----------------------------------------
 function load() {
-	if (performance.navigation.type === PerformanceNavigation.TYPE_NAVIGATE) playSound('/sounds/KDE_Click_3.ogg');
+	if (performance.navigation.type === PerformanceNavigation.TYPE_NAVIGATE) playSound('/sounds/KDE_Click_3.ogg', .5);
 	if (elid("toc")) {
 		document.addEventListener('scrollend', () => {
 			const links = document.querySelectorAll('#toc a[href^="#"]');
@@ -577,7 +574,7 @@ function load() {
 	elid("btn_theme")?.addEventListener("click", () => {
 		let currentDarkMode = getComputedStyle(root).getPropertyValue('--dark-mode') == 'true';
 		root.style.setProperty('--dark-mode', !currentDarkMode);
-		playSound('/sounds/KDE_Click_2.ogg');
+		playSound('/sounds/KDE_Click_2.ogg', 1);
 	});
 	elid("btn_toc")?.addEventListener("click", () => {
 		tocdetails = document.querySelector('#toc details');
@@ -686,7 +683,5 @@ function load() {
 		}
 	}
 }
-
-
 
 load();

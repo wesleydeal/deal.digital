@@ -1,6 +1,6 @@
 +++
 title = "Links of interest"
-updated = 2025-06-24
+updated = 2025-07-17
 [extra]
 shorttitle = "Links"
 subtitle = "[the most useful page on this website]"

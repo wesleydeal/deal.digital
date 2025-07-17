@@ -31,6 +31,7 @@
 
 :root {
 	container: root / size;
+	color-scheme: light dark;
 
 	--dark-mode: false;
 	--color-primary: #e43; /*#fa7;*/
@@ -68,7 +69,7 @@
 	--royale-overlay: linear-gradient(to bottom in oklch, #fff5, #fff3 50%, #fff1 50%, #0002);
 
 	@media (prefers-color-scheme: dark) {
-		--dark-mode: true;
+		color-scheme: dark;
 	}
 
 	@media screen and (width < 1000px) {
@@ -96,18 +97,17 @@
 		--color-fg: #fff;
 		--color-fg-hc: #fff;
 		--color-bg-hc: #000;
-		--bg: repeating-linear-gradient(135deg in oklch, oklch(from var(--color-primary) 1 0.1 h / 0.15%), oklch(from var(--color-primary) 0 0.1 h / 1%) 0.7vmax), linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) min(50%,800px));
 		--bg:
 			linear-gradient(to right in oklch, #0000, oklch(from var(--color-bg) l c h / 60%), oklch(from var(--color-bg) l c h / 90%), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 5vw) min(calc(50% + (var(--text-width) / 2)), 95vw), oklch(from var(--color-bg) l c h / 90%), oklch(from var(--color-bg) l c h / 60%), #0000) 0 / cover,
-			repeating-linear-gradient( 0deg in oklch, oklch(from var(--color-h1) l c h / 5%) 0, transparent 8em),
-			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-h2) l c h / 15%) 0, transparent 6em),
-			var(--color-bg);
+			radial-gradient(oklch(from var(--color-h1) l c h / 50%) 1px, #0000 1.5px) 0 0 / 16px 16px,
+			radial-gradient(oklch(from var(--color-h1) l c h / 50%) 1px, #0000 1.5px) 8px 8px / 16px 16px,
+      		var(--color-bg);
 		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.1, c) h);
 		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
 		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
 		--color-pop-bgcontrast: var(--color-pop);
 		--color-tinted-shadow: oklch(from var(--color-primary) 0.85 0.15 h / 50%);
-		@media screen and (width < 1200px) {
+		@media screen and (width < 1000px) {
 			--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) 100px calc(100% - 100px), oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h)), var(--color-bg);
 		}
 	}
@@ -891,15 +891,12 @@ kbd {
 #search-container {
 	z-index: 100;
 	position: fixed;
-	width: auto;
 	top: max(100px, 5vh);
-	right: calc(max(12px, (50vw - (var(--text-width) + 70px) / 2)));
 	right: 12px;
 	width: calc(var(--text-width) + 70px);
-	height: auto;
 	max-height: calc(100vh - 120px);
-	padding: 10px;
 	max-width: calc(100% - 24px);
+	padding: 10px;
 	display: flex;
 	flex-direction: column;
 	grid-area: search;
@@ -919,16 +916,16 @@ kbd {
 	opacity: 97%;
 	border-radius: 3px;
 	@starting-style {
-		transform: perspective(200px) rotateX(-60deg) scale(0);
-		opacity: 0;
-	}
-	&.min-in-progress {
-		transform: scaleY(0) perspective(1000px) rotateX(-90deg);
-		transform-origin: top center;
+		transform: perspective(200px) translateZ(-150px) rotateX(-30deg);
 		opacity: 0;
 	}
 	&.hidden {
-		transform: perspective(1000px) rotateX(70deg) scale(0);
+		transform: perspective(200px) translateZ(-200px) rotateX(30deg);
+		opacity: 0;
+	}
+	&.min {
+		transform: perspective(1000px) rotateX(-90deg);
+		transform-origin: top center;
 		opacity: 0;
 	}
 	&.max {
