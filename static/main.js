@@ -597,18 +597,25 @@ function load() {
 				let boundingRect = e.target.getBoundingClientRect();
 				let targetTranslateX = (document.documentElement.clientWidth / 2) - (boundingRect.x + (boundingRect.width / 2));
 				let targetTranslateY = (document.documentElement.clientHeight / 2) - (boundingRect.y + (boundingRect.height / 2));
-				let targetScale = Math.min(document.documentElement.clientWidth / e.target.clientWidth, document.documentElement.clientHeight / e.target.clientHeight);
+				let targetScale = Math.min(document.documentElement.clientWidth / e.target.clientWidth, document.documentElement.clientHeight / e.target.clientHeight, 20);
 				e.target.style.transform = 'translate(' + targetTranslateX + 'px, ' + targetTranslateY +'px) scale(' + targetScale + ')';
 
-				const controller = new AbortController();
-				document.addEventListener('scroll', () => {
+				const unzoom = () => {
+					e.target.classList.remove("zoomed");
+					e.target.style.removeProperty('transform');
+					document.removeEventListener('scroll', unzoomAfterScroll);
+					document.removeEventListener('click', unzoom);
+				}
+
+				const unzoomAfterScroll = () => {
 					let b = e.target.getBoundingClientRect();
 					if (b.top <= 0 || b.bottom >= window.innerHeight) {
-						e.target.classList.remove("zoomed");
-						e.target.style.removeProperty('transform');
-						controller.abort();
+						unzoom();
 					}
-				}, { signal: controller.signal });
+				}
+
+				document.addEventListener('scroll', unzoomAfterScroll);
+				window.setTimeout(() => document.addEventListener('click', unzoom), 100);
 			}
 		});
 	}

@@ -9,6 +9,10 @@ my personal use during stylesheet development. Oh, and by the way, [here is a li
 
 This paragraph contains ***bold, *bold italic (some of which is [linked](#)),*** plain italic,* and ~strikethrough~ text.
 
+This website is best viewed with any browser.
+
+<img src="/badges/anydamn.gif" class="badge"><img src="/badges/right2repair.png" class="badge">
+
 ## Colors
 Set the **primary color** for this page using this or the field in the table below: <input id="primary-color-picker" type="color">
 
