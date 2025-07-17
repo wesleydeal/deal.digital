@@ -16,27 +16,23 @@ This website is best viewed with any browser.
 ## Colors
 Set the **primary color** for this page using this or the field in the table below: <input id="primary-color-picker" type="color">
 
-<div class="fullbleed">
-
 | Color/Gradient Name | ... Color Preview ... | Color String |
 |:-|:-:|:-|
 | \--color-primary | Sample | <input id="primary-color-picker-text">
-| \--color-primary-sat | Sample |
-| \--color-pop | Sample |
-| \--color-pop-bgcontrast | Sample |
-| \--color-link | Sample |
-| \--color-link-underline | Sample |
-| \--color-h1 | Sample |
-| \--color-h2 | Sample |
-| \--color-fg | Sample |
-| \--color-fg-hc | Sample |
-| \--color-bg | Sample |
-| \--color-bg-hc | Sample |
-| \--color-tinted-shadow | Sample |
-| \--bg | Sample |
-| \--header-bg | Sample |
-
-</div>
+| \--color-primary-sat | Sample | ` `
+| \--color-pop | Sample | ` `
+| \--color-pop-bgcontrast | Sample | ` `
+| \--color-link | Sample | ` `
+| \--color-link-underline | Sample | ` `
+| \--color-h1 | Sample | ` `
+| \--color-h2 | Sample | ` `
+| \--color-fg | Sample | ` `
+| \--color-fg-hc | Sample | ` `
+| \--color-bg | Sample | ` `
+| \--color-bg-hc | Sample | ` `
+| \--color-tinted-shadow | Sample | ` `
+| \--bg | Sample | ` `
+| \--header-bg | Sample | ` `
 
 <script>
 document.getElementById('primary-color-picker').addEventListener('input', clickColor);
@@ -48,9 +44,10 @@ function updateColorTable() {
 	let demoRows = table.querySelectorAll('tbody tr');
 
 	for (row of demoRows){
-		let nameCell = row.querySelectorAll('td')[0]
-		let previewCell = row.querySelectorAll('td')[1]
-		let valCell = row.querySelectorAll('td')[2]
+		let nameCell = row.querySelectorAll('td')[0];
+		let previewCell = row.querySelectorAll('td')[1];
+		let valCell = row.querySelectorAll('td')[2];
+		valCell = valCell.querySelector('code') || valCell;
 		let varName = nameCell.innerHTML;
 		let val = getComputedStyle(document.body).getPropertyValue(varName);
 		nameCell.style.setProperty('color', val);
