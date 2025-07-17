@@ -46,6 +46,22 @@ Neat Blogs and Personal Sites
 ### I just think they're neat
 * [adryd](https://adryd.com/)
 * [DIMDEN](https://dimden.dev/)
+* [SYSTEM/LABYRINTH](https://syslbnth.neocities.org/)
+* [neptune's save room](https://xpvm.net/)
+* [corru observer](https://corru.observer/)
+
+Live
+--------------
+### Animal Cams
+* Aquariums: [Georgia](https://www.georgiaaquarium.org/webcam/), [Monterey Bay](https://www.montereybayaquarium.org/animals/live-cams), [of the Pacific](https://www.aquariumofpacific.org/exhibits/webcams), [Shedd](https://www.sheddaquarium.org/), [Seattle](https://www.youtube.com/@seattleaquarium/streams)
+* Cats: [Kittentaz Siamese](https://kittentanz.com/live-webcam)
+* Zoos: [Chattanooga](https://chattzoo.org/explore/video-stream)
+
+### Radio
+* [Krelez's Chiptune and VaporFunk](http://79.120.11.40:8000/)
+* [Nightwave Plaza](https://plaza.one/)
+* [soma fm](https://somafm.com/)
+* [Kohina (chiptune)](https://www.kohina.com/)
 
 🏴‍☠️ Sharing 🦜
 --------------

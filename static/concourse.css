@@ -914,7 +914,7 @@ kbd {
 	padding: 0;
 	border: 1px solid var(--color-primary-sat);
 	outline: 1px solid #000;
-	background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%), linear-gradient(to top right in oklch longer hue, #b90000, #00cd88);
+	background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%) no-repeat 0 34px / cover, linear-gradient(to top right in oklch longer hue, #b90000, #00cd88) no-repeat 0 34px / cover;
 	box-shadow: 0 1px 5px oklch(from var(--color-tinted-shadow) l c h / 30%), 0 3px 10px oklch(from var(--color-tinted-shadow) l c h / 20%);
 	opacity: 97%;
 	border-radius: 3px;
@@ -966,7 +966,7 @@ kbd {
 	& #search-titlebar {
 		background: var(--button-overlay), var(--color-button-important);
 		background: var(--button-overlay), linear-gradient(120deg in oklch longer hue, #b90000, #00cd88);
-		background: var(--button-overlay), linear-gradient(120deg in oklch, #0000 150px, #fff6 151px 154px, #0000 155px 159px, #fff6 160px 164px, #0000 165px 169px, #fff5 170px 174px, #0000 175px 179px, #fff4 180px 184px, #0000 185px 189px, #fff3 190px 194px, #0000 195px), linear-gradient(120deg in oklch, oklch(from var(--color-primary-sat) 0.4 c h), var(--color-primary) 90%);
+		background: var(--button-overlay), linear-gradient(120deg in oklch, #0000 150px, #fff6 151px 154px, #0000 155px 159px, #fff6 160px 164px, #0000 165px 169px, #fff5 170px 174px, #0000 175px 179px, #fff4 180px 184px, #0000 185px 189px, #fff3 190px 194px, #0000 195px), linear-gradient(120deg in oklch, oklch(from var(--color-primary-sat) 0.4 c h / 80%), oklch(from var(--color-primary) l c h / 80%) 90%);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;

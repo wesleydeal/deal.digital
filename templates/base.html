@@ -145,12 +145,12 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 @view-transition { navigation: auto; }
 ::view-transition-group(root) { animation-duration: 0.3s; }
 @keyframes screen-in {
-	from { transform: scale(1.1); opacity: 0; }
+	from { transform: scale(1.1) translateY(-5%); opacity: 0; }
 	to { transform: scale(1); opacity: 1; }
 }
 @keyframes screen-out {
 	from { filter: grayscale(0) brightness(1) }
-	to {  filter: grayscale(0.5) brightness(0.1)  }
+	to {  filter: grayscale(0.5) brightness(0.5)  }
 }
 ::view-transition-old(root) { animation: 0.3s cubic-bezier(0.23, 1, 0.320, 1) both screen-out; }
 ::view-transition-new(root) { animation: 0.3s cubic-bezier(0.25, 1, 0.5, 1) both screen-in; }

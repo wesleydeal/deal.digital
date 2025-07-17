@@ -9,6 +9,7 @@ fuse.search = async (...args) => {await initFuse(); return fuse.search(...args)}
 let searchWindowPos;
 let searchDrag = [];
 let savedPage;
+let soundPlayers = {};
 
 // UTILITY FUNCTIONS -------------------------------
 const elid = (id) => document.getElementById(id);
@@ -17,6 +18,20 @@ const tru = () => true;
 function uniq(a) {
     var seen = {};
     return a.filter((item) => seen.hasOwnProperty(item) ? false : (seen[item] = true));
+}
+function playSound(url) {
+	const start = new Date();
+	if (!soundPlayers?.[url]) soundPlayers[url] = new Audio(url);
+	const playIt = () => {
+		if ((new Date() - start) > 300) return;
+		soundPlayers[url].currentTime = 0;
+		soundPlayers[url].play();
+	};
+	if (soundPlayers[url].readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+		playIt();
+	} else {
+		soundPlayers[url].addEventListener("canplaythrough", playIt, { once: true });
+	}
 }
 
 // SEARCH ------------------------------------------
@@ -228,6 +243,7 @@ function toggleSearch(query="") {
 		if (elid("search-container").classList.contains('hidden')) {
 			elid("search-container").classList.remove('hidden');
 			elid("search-box").focus();
+			playSound('/sounds/KDE_Window_Shade_Up.ogg');
 		} else {
 			closeSearch();
 		}
@@ -272,6 +288,7 @@ function openSearch(query=null) {
 		query = "";
 	}
 	if (!elid("search-container")) {
+		playSound('/sounds/KDE_Window_UnHide.ogg');
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
 				<div id="search-titlebar">
@@ -344,6 +361,7 @@ function closeSearch() {
 	window.history.replaceState(null, null, url);
 	elid("search-container").classList.add('hidden');
 	setTimeout(() => {elid("search-container").remove()}, 300);
+	playSound('/sounds/KDE_Window_Close.ogg')
 }
 
 function minimizeSearch() {
@@ -352,6 +370,7 @@ function minimizeSearch() {
 		elid("search-container").classList.remove('min-in-progress');
 		elid("search-container").classList.add('hidden');
 	}, 300);
+	playSound('/sounds/KDE_Window_Shade_Down.ogg');
 }
 
 function toggleMaximizeSearch() {
@@ -518,6 +537,7 @@ async function updateSearch(event=null) {
 
 // ON LOAD -----------------------------------------
 function load() {
+	if (performance.navigation.type === PerformanceNavigation.TYPE_NAVIGATE) playSound('/sounds/KDE_Click_3.ogg');
 	if (elid("toc")) {
 		document.addEventListener('scrollend', () => {
 			const links = document.querySelectorAll('#toc a[href^="#"]');
@@ -557,6 +577,7 @@ function load() {
 	elid("btn_theme")?.addEventListener("click", () => {
 		let currentDarkMode = getComputedStyle(root).getPropertyValue('--dark-mode') == 'true';
 		root.style.setProperty('--dark-mode', !currentDarkMode);
+		playSound('/sounds/KDE_Click_2.ogg');
 	});
 	elid("btn_toc")?.addEventListener("click", () => {
 		tocdetails = document.querySelector('#toc details');
