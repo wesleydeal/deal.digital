@@ -429,7 +429,7 @@ section.content {
 	}
 	& pre {
 		resize: horizontal;
-		max-width: calc(100vw - 20px);
+		max-width: calc(100% - 20px);
 		width: var(--text-width);
 	}
    	& p.fullbleed, & div.fullbleed, & p:has(img.fullbleed) {
