@@ -394,9 +394,18 @@ section.content {
 		transform: scale(1);
 		transform-origin: center;
 		transition: 250ms transform cubic-bezier(0.165, 0.84, 0.44, 1);
+		&:hover:not(.zoomed) {
+			transform: perspective(200px) translateZ(5px);
+			outline: 2px solid var(--color-pop);
+		}
+		.content a:any-link:has(&) {
+			box-shadow: none;
+			background: none;
+		}
 		&.zoomed{
 			position: relative;
 			image-rendering: pixelated;
+			border-radius: 0;
 			box-shadow: 1px 2px 2px var(--sc),
 				2px 3px 4px var(--sc),
 				5px 6px 8px var(--sc2),

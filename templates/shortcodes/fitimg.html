@@ -1,0 +1,8 @@
+{%- if width is defined and height is defined -%}
+	{%- set image = resize_image(path=path, width=width, height=height, op="fit") -%}
+{%- elif height is defined -%}
+	{%- set image = resize_image(path=path, height=height, op="fit_height") -%}
+{%- elif width is defined -%}
+	{%- set image = resize_image(path=path, width=width, op="fit_width") -%}
+{%- endif -%}
+<p><a href="{{ path }}"><img src="{{ image.url }}"></a>

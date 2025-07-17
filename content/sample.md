@@ -12,6 +12,8 @@ This paragraph contains ***bold, *bold italic (some of which is [linked](#)),***
 ## Colors
 Set the **primary color** for this page using this or the field in the table below: <input id="primary-color-picker" type="color">
 
+<div class="fullbleed">
+
 | Color/Gradient Name | ... Color Preview ... | Color String |
 |:-|:-:|:-|
 | \--color-primary | Sample | <input id="primary-color-picker-text">
@@ -29,6 +31,8 @@ Set the **primary color** for this page using this or the field in the table bel
 | \--color-tinted-shadow | Sample |
 | \--bg | Sample |
 | \--header-bg | Sample |
+
+</div>
 
 <script>
 document.getElementById('primary-color-picker').addEventListener('input', clickColor);
@@ -100,6 +104,18 @@ window.setTimeout(updateColorTable, 500);
       1. software projects
 	  2. budget planning
    2. Lists of instructions that need to be followed from beginning to end, and which the reader may need to refer back to several times during the operation without losing their place.
+
+## Images
+This is an svg:
+![svg diagram](/tools/tpmiddle/diagram.svg)
+
+This is a normal image which links to a page:
+
+[![sample image of librechat](/blog/librechat/librechat-example.png)](/blog/librechat/)
+
+This is a reduced resolutiom image which links to a higher resolution version:
+
+{{ fitimg(path='/blog/librechat/credentials.png', width=100) }}
 
 ## Code and \<pre\>
 

@@ -1,6 +1,7 @@
 // GLOBAL VARIABLES --------------------------------
 const content = document.getElementsByClassName('content')[0];
 const root = document.documentElement;
+const imageExtensions = ["svg", "png", "jpg", "jfif", "gif", "webp", "avif"]
 let ddIndex = null;
 let Fuse = null;
 let fuse = Object;
@@ -567,18 +568,36 @@ function load() {
 	elid("btn_search")?.addEventListener("click", toggleSearch);
 	elid("search-link")?.addEventListener("click", toggleSearch);
 
+	for (a of document.querySelectorAll("section.content a:has(img)")) {
+		if (imageExtensions.includes(a.href.split(".").pop())) {
+			a.addEventListener("click", (e) => e.preventDefault());
+		}
+	}
 	for (img of document.querySelectorAll("section.content :not(a):not(.no-zoom) img:not(.no-zoom)")) {
 		img.addEventListener("click", (e) => {
-			if (e.target?.parentElement?.href) return;
+			if (e.target?.parentElement?.href) {
+				if (imageExtensions.includes(e.target.parentElement.href.split(".").pop())) {
+					if (e.target.src != e.target.parentElement.href) {
+						const iStyle = getComputedStyle(e.target);
+						e.target.style.width = iStyle.width;
+						e.target.style.height = iStyle.height;
+						e.target.addEventListener('load', () => e.target.click(), { once: true });
+						e.target.src = e.target.parentElement.href;
+						return;
+					}
+				} else {
+					return;
+				}
+			}
 			if (e.target.classList.contains("zoomed")) {
 				e.target.classList.remove("zoomed");
 				e.target.style.removeProperty('transform');
 			} else {
 				e.target.classList.add("zoomed");
 				let boundingRect = e.target.getBoundingClientRect();
-				let targetTranslateX = (window.innerWidth / 2) - (boundingRect.x + (boundingRect.width / 2));
-				let targetTranslateY = (window.innerHeight / 2) - (boundingRect.y + (boundingRect.height / 2));
-				let targetScale = Math.min(window.innerWidth / e.target.clientWidth, window.innerHeight / e.target.clientHeight);
+				let targetTranslateX = (document.documentElement.clientWidth / 2) - (boundingRect.x + (boundingRect.width / 2));
+				let targetTranslateY = (document.documentElement.clientHeight / 2) - (boundingRect.y + (boundingRect.height / 2));
+				let targetScale = Math.min(document.documentElement.clientWidth / e.target.clientWidth, document.documentElement.clientHeight / e.target.clientHeight);
 				e.target.style.transform = 'translate(' + targetTranslateX + 'px, ' + targetTranslateY +'px) scale(' + targetScale + ')';
 
 				const controller = new AbortController();
