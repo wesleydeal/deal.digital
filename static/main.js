@@ -610,6 +610,7 @@ function load() {
 					return;
 				}
 			}
+			playSound('/sounds/stone2.ogg');
 			if (e.target.classList.contains("zoomed")) {
 				e.target.classList.remove("zoomed");
 				e.target.style.removeProperty('transform');
@@ -626,6 +627,7 @@ function load() {
 					e.target.style.removeProperty('transform');
 					document.removeEventListener('scroll', unzoomAfterScroll);
 					document.removeEventListener('click', unzoom);
+					playSound('/sounds/stone2.ogg');
 				}
 
 				const unzoomAfterScroll = () => {
