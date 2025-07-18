@@ -1123,7 +1123,7 @@ kbd {
 		}
 		& a#homelink {
 			font-size: 1.8em;
-			padding: 0 0.1em 0.04em;
+			padding: 0 0.3em 0.04em;
 		}
 		& a:any-link {
 			font-stretch: 90%;
