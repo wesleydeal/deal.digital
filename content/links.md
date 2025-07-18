@@ -3,12 +3,12 @@ title = "Links of interest"
 updated = 2025-07-17
 [extra]
 shorttitle = "Links"
-subtitle = "[the most useful page on this website]"
+subtitle = "the most useful page on this website"
 toc = true
 color = "#00aec9"
 +++
 
-Neat Blogs and Personal Sites
+Neat Blogs & Personal Sites
 -----------------------------
 
 ### Lists of sites

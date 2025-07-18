@@ -149,15 +149,14 @@ nav#topnav {
 	line-height: 1.6;
 	padding: 0 max(0px, calc(50vw - 1300px));
 	& a#homelink {
-		padding: 0.18em 0.4em 0.20em;
+		padding: 0.18em 0.38em 0.20em 0.35em;
 		font: italic semi-condensed 400 2em/1 var(--typeface-brand);
 		text-decoration: 2px underline var(--color-pop);
 		text-underline-offset: 3px;
 		letter-spacing: -0.03em;
-		&:hover {
-			background: var(--button-highlight-overlay),
-				linear-gradient(90deg in oklch, #fff -15%, var(--color-primary) 0.25em, #0001 0.26em, #0000 0.36em),
-				var(--color-button-important);
+		text-shadow: 0 0 8px #0007, 1px 1px 0 #000;
+		li:has(&){
+			flex: 0 1 max-content;
 		}
 	}
 	& ul {
@@ -191,7 +190,9 @@ nav#topnav {
 		text-shadow: 1px 1px 0 #000;
 		font-stretch: normal;
 		&:hover, &:focus {
-			background: var(--button-highlight-overlay), var(--color-button-important);
+			background: var(--button-highlight-overlay),
+				linear-gradient(90deg in oklch, #fff -15%, var(--color-primary) 0.25em, #0001 0.26em, #0000 0.36em),
+				var(--color-button-important);
 			backdrop-filter: saturate(1.2);
 			box-shadow: var(--button-shadow-hover);
 			color: #fff;
@@ -213,9 +214,7 @@ nav#toc {
 	height: fit-content;
 	flex: unset;
 	position: sticky;
-	z-index: 10;
-	background: repeating-linear-gradient(135deg in oklch, #8981, #0001 50px, #7771 70px, #0001 125px, #7771 150px, #8981 160px), oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c h / 85%);
-	background: linear-gradient(to bottom in oklab, #ffffff11, #ffffff22 49%, #0001 51%, #0000, 106%, var(--color-primary-sat) 120%), linear-gradient(to right in oklab, oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c calc(h + 7) / 85%), oklch(from var(--color-primary) min(calc(l - 0.06), 0.44) c calc(h - 7) / 85%));
+	z-index: 5;
 	background: linear-gradient(to bottom in oklab, #0003, 20%, #0004, 90%, #0000, oklch(from var(--color-primary-sat) l c h / 30%)), oklch(from var(--color-primary) min(l, 0.4) c h / 85%);
 	font-stretch: 75%;
 	border-bottom: 1px solid var(--color-primary-sat);
@@ -547,7 +546,8 @@ h1 {
 
 h2 {
 	color: var(--color-h2);
-	font: semi-expanded 400 1.6em/1.15 var(--typeface-body);
+	font: 500 1.5em/1.15 var(--typeface-body);
+	letter-spacing: -0.02em;
 	margin: 1em 0 0.35em;
 	position: relative;
 	max-width: var(--text-width);
@@ -563,7 +563,8 @@ h2 {
 }
 
 h3 {
-	font: semi-expanded 375 1.2em/1.4 var(--typeface-body);
+	font: 375 1.2em/1.4 var(--typeface-body);
+	letter-spacing: 0.03em;
 	text-transform: uppercase;
 	margin: 1em 0 0.3em;
 	h2 + & {
@@ -698,16 +699,18 @@ ul.blog-listing {
 		gap: 0.06em 1em;
 		position: relative;
 		background: linear-gradient(to right, var(--color-primary), #0000) no-repeat bottom / 100% 1px, transparent;
-		padding: 0.4em 0 0.3em;
+		padding: 0.4em 0.6em 0.3em 0;
 		margin: 0;
 		align-items: end;
 		--c: var(--color-h1);
-		transition: padding-left 100ms cubic-bezier(0.215, 0.610, 0.355, 1);
+		transition: padding 100ms cubic-bezier(0.215, 0.610, 0.355, 1);
 		color: var(--color-h2);
 		& a:any-link:first-child {
 			grid-area: title;
 			color: oklch(from var(--color-fg) l c h / 90%);
 			text-decoration: none;
+			transition: transform 100ms cubic-bezier(0.215, 0.610, 0.355, 1);
+			transform-origin: center left;
 			&:hover, &:active {
 				color: var(--color-bg);
 				text-shadow: 2px 2px 0 #0004;
@@ -724,6 +727,9 @@ ul.blog-listing {
 			box-shadow: var(--button-shadow-hover);
 			color: var(--color-bg);
 			text-shadow: 1px 1px 0 #0004;
+			a {
+				transform: scaleX(1.05);
+			}
 		}
 		& .article-separator {
 			display: none;
@@ -812,7 +818,7 @@ kbd {
 	min-width: 1.5em;
 	font-family: var(--typeface-mono);
 	line-height: 1.2;
-	padding: 0 0.3em;
+	padding: 0 0.3em 0.1em;
 	border-bottom: 2px solid var(--color-h2);
 	border-right: 1px solid var(--color-h2);
 	box-shadow: 0 0 2px oklch(from var(--color-tinted-shadow) l c h / 20%), 2px 2px 3px oklch(from var(--color-tinted-shadow) l c h / 10%);
@@ -892,8 +898,8 @@ kbd {
 	outline: 1px solid #000;
 	background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%) no-repeat 0 34px / cover, linear-gradient(to top right in oklch longer hue, #b90000, #00cd88) no-repeat 0 34px / cover;
 	box-shadow: 0 1px 5px oklch(from var(--color-tinted-shadow) l c h / 30%), 0 3px 10px oklch(from var(--color-tinted-shadow) l c h / 20%);
-	opacity: 97%;
 	border-radius: 3px;
+	backdrop-filter: blur(2px);
 	@starting-style {
 		transform: perspective(200px) translateZ(-150px) rotateX(-30deg);
 		opacity: 0;
@@ -910,7 +916,6 @@ kbd {
 		max-width: 100%;
 		height: 100%;
 		max-height: 100%;
-		opacity: 1;
 		border-radius: 0;
 	}
 	&.hidden {
@@ -931,34 +936,29 @@ kbd {
 		grid-area: label;
 		margin: 0;
 		display: inline-block;
-		& b {
-			font-weight: 650;
-		}
+		font-size: 18px;
 		& i {
 			font-weight: 350;
-			font-style: normal;
 		}
 	}
 	& #search-titlebar {
-		background: var(--button-overlay), var(--color-button-important);
-		background: var(--button-overlay), linear-gradient(120deg in oklch longer hue, #b90000, #00cd88);
-		background: var(--button-overlay), linear-gradient(120deg in oklch, #0000 150px, #fff6 151px 154px, #0000 155px 159px, #fff6 160px 164px, #0000 165px 169px, #fff5 170px 174px, #0000 175px 179px, #fff4 180px 184px, #0000 185px 189px, #fff3 190px 194px, #0000 195px), linear-gradient(120deg in oklch, oklch(from var(--color-primary-sat) 0.4 c h / 80%), oklch(from var(--color-primary) l c h / 80%) 90%);
+		background: repeating-linear-gradient(135deg in oklch, #0001 0, #0000 24px), repeating-linear-gradient(60deg in oklch, #0001 0, #0000 24px), var(--header-bg);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		color: #fff;
-		padding: 1px 1px 2px 7px;
-		line-height: 1.2;
+		padding: 1px 1px 1px 7px;
+		line-height: 1;
 		text-shadow: 1px 1px 0 #000;
 		user-select: none;
 		touch-action: none;
+		opacity: .85;
 		&:active {
 			cursor: grabbing;
 		}
 	}
 	& .window-buttons {
 		display: flex;
-		gap: 1px;
 		height: 32px;
 	}
 	& .window-buttons button {
@@ -968,18 +968,30 @@ kbd {
 		place-content: center;
 		font-family: inherit;
 		font-size: 26px;
-		line-height: 27px;
+		line-height: 1;
 		color: #fff;
-		appearance: none;
-		background: radial-gradient(ellipse 100% 50% at bottom center, #fff5, #0000), oklch(from var(--color-button-important) l calc(c + 0.1) h / 40%);
-		border: 1px solid oklch(from var(--color-primary) min(.45, l) min(.13, c) h);
-		border-radius: 2px;
-		box-shadow: var(--button-shadow);
+		background: var(--button-overlay), var(--color-button-important);
+		--b: 1px solid oklch(from var(--color-primary) min(.35, calc(l - 0.1)) min(.13, c) h);
+		border: none;
+		border-top: var(--b);
+		border-bottom: var(--b);
+		border-radius: 0;
+		box-shadow: inset 1px 1px var(--color-primary-sat), inset -1px -1px var(--color-primary-sat);
 		font-stretch: 110%;
 		font-weight: 600;
-		text-shadow: 1px 1px 0 #000;
+		text-shadow: inherit;
 		transition: all 200ms cubic-bezier(0.23, 1, 0.320, 1);
 		margin: 0;
+		&:first-child {
+			border-radius: 3px 0 0 3px;
+			border-left: var(--b);
+			margin-right: -1px;
+		}
+		&:last-child {
+			border-radius: 0 3px 3px 0;
+			border-right: var(--b);
+			margin-left: -1px;
+		}
 		&:hover {
 			background: var(--button-highlight-overlay), oklch(from var(--color-button-important) l c h / 40%);
 			box-shadow: var(--button-shadow-hover);
@@ -1092,7 +1104,6 @@ kbd {
 			align-items: center;
 			gap: 0.5em;
 			padding: 0.3em 0.5em;
-			//min-width: max-content;
 			border: 1px solid color-mix(in oklch, var(--c) 60%, var(--color-fg));
 			background: linear-gradient(to bottom right in oklch, oklch(from var(--c) l c h / 15%), oklch(from var(--c) l c h / 5%));
 			font-stretch: 50%;
@@ -1100,11 +1111,11 @@ kbd {
 			cursor: pointer;
 			& samp {
 				font-stretch: 100%;
-				padding: 0 0.25em;
+				padding: 0 0.25em 0.05em;
 				border: 1px solid #7777;
 				background: var(--color-bg);
 				font-family: inherit;
-				font-size: 0.9em;
+				font-size: 0.88em;
 				font-weight: 400;
 				border-radius: 5px;
 			}
@@ -1118,19 +1129,16 @@ kbd {
 		& a#homelink, & ul {
 			flex: 1 1 350px;
 		}
-		& li:has(a#homelink) {
-			flex: 3 1 max-content;
-		}
 		& a#homelink {
 			font-size: 1.8em;
-			padding: 0 0.3em 0.04em;
+			padding: 0.04em 0.3em 0.12em 0.27em;
 		}
 		& a:any-link {
 			font-stretch: 90%;
 		}
 	}
 	footer {
-		font-size: 14px !important;
+		font-size: 1em !important;
 	}
 }
 
