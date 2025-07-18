@@ -534,7 +534,7 @@ async function updateSearch(event=null) {
 
 // ON LOAD -----------------------------------------
 function load() {
-	if (performance.navigation.type === PerformanceNavigation.TYPE_NAVIGATE) playSound('/sounds/KDE_Click_3.ogg', .5);
+	if (performance.navigation.type === PerformanceNavigation.TYPE_NAVIGATE) playSound('/sounds/Woosh2.opus', .4);
 	if (elid("toc")) {
 		document.addEventListener('scrollend', () => {
 			const links = document.querySelectorAll('#toc a[href^="#"]');

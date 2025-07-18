@@ -15,8 +15,6 @@
 <style type="text/css">
 html {
 	container: root / size;
-	//scroll-behavior: smooth;
-	transform-origin: center;
 }
 *, *:before, *:after {box-sizing: border-box;}
 body {
@@ -49,6 +47,7 @@ header {
 	width: 100%;
 	display: block;
 	background: oklch(from var(--color-primary, #056) 0.4 c h);
+	view-transition-name: header;
 }
 header a:link, header a:visited {
 	color: #fff;
@@ -77,8 +76,11 @@ header nav#breadcrumbs { display: none; visibility: hidden; }
 #toc a:link, #toc a:visited {
 	color: #fff;
 }
-
-.content {min-height: 100vh}
+.content {
+	min-height: 100vh;
+	view-transition-name: content;
+	transform-origin: 50vw 50vh;
+}
 ul, ol {padding-left: 24px}
 h1 {
 	font-size: xx-large;
@@ -144,16 +146,23 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 }
 @view-transition { navigation: auto; }
 ::view-transition-group(root) { animation-duration: 0.3s; }
+@keyframes wipe {
+	from {clip-path:polygon(0 0,0% 0,-200px 100%,0 100%);}
+	to {clip-path:polygon(0 0,calc(100% + 200px) 0,100% 100%,0 100%);}
+}
 @keyframes screen-in {
 	from { transform: scale(1.1) translateY(-5%); opacity: 0; }
 	to { transform: scale(1); opacity: 1; }
 }
-@keyframes screen-out {
-	from { filter: grayscale(0) brightness(1) }
-	to {  filter: grayscale(0.5) brightness(0.5)  }
+@keyframes fade-out {
+	to { opacity: 0; }
 }
-::view-transition-old(root) { animation: 0.3s cubic-bezier(0.23, 1, 0.320, 1) both screen-out; }
-::view-transition-new(root) { animation: 0.3s cubic-bezier(0.25, 1, 0.5, 1) both screen-in; }
+@keyframes scale-in {
+	from {transform: scale(1.1); opacity: 0;}
+}
+//::view-transition-old(root) { animation: 0.3s cubic-bezier(0.23, 1, 0.320, 1) both screen-out; }
+::view-transition-old(content) { animation: 0.3s cubic-bezier(0.25, 1, 0.5, 1) both fade-out; }
+::view-transition-new(content) { animation: 0.3s cubic-bezier(0.25, 1, 0.5, 1) both scale-in; pointer-events: none; }
 </style>
 <!--[if !IE]><!-->
 <link rel="preload" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
