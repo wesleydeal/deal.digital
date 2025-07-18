@@ -1412,7 +1412,7 @@ kbd {
 }
 
 /* ayu dark */
-//@container root style(--dark-mode: true) {
+@container root style(--dark-mode: true) {
 	.z-code {
 		color: #ccc9c2;
 		background-color: #212733;

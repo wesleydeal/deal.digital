@@ -1,7 +1,7 @@
 // GLOBAL VARIABLES --------------------------------
 const content = document.getElementsByClassName('content')[0];
 const root = document.documentElement;
-const imageExtensions = ["svg", "png", "jpg", "jfif", "gif", "webp", "avif"]
+const imageExtensions = ["svg", "png", "jpg", "jfif", "gif", "webp", "avif"];
 let ddIndex = null;
 let Fuse = null;
 let fuse = Object;
@@ -168,7 +168,7 @@ const providers = {
 				color = "#" + Array.from(crypto.getRandomValues(new Uint8Array(3))).map(b => b.toString(16).padStart(2, '0')).join('');
 				console.log("Randomly selected", color);
 			}
-			document.documentElement.style.setProperty('--color-primary', color);
+			root.style.setProperty('--color-primary', color);
 			closeSearch();
 		}
 	},
@@ -226,7 +226,7 @@ async function replacePage(path) {
 	const doc = (new DOMParser()).parseFromString(html, 'text/html');
 	document.querySelector('section.content').replaceWith(doc.querySelector('section.content'));
 	if (doc.documentElement.style) {
-		document.documentElement.setAttribute('style', doc.documentElement.getAttribute('style'));
+		root.setAttribute('style', doc.documentElement.getAttribute('style'));
 	}
 
 	document.title = doc.title;
@@ -398,7 +398,7 @@ function onDragRelease(event) {
 	searchDrag = [];
 	document.removeEventListener('pointermove', dragSearchUpdate, {passive: false});
 	elid("search-container").classList.remove('drag');
-	document.documentElement.style.removeProperty('touch-action');
+	root.style.removeProperty('touch-action');
 	document.removeEventListener('pointerup', onDragRelease, {passive: false});
 }
 
@@ -613,10 +613,10 @@ function load() {
 				e.target.style.removeProperty('transform');
 			} else {
 				e.target.classList.add("zoomed");
-				let boundingRect = e.target.getBoundingClientRect();
-				let targetTranslateX = (document.documentElement.clientWidth / 2) - (boundingRect.x + (boundingRect.width / 2));
-				let targetTranslateY = (document.documentElement.clientHeight / 2) - (boundingRect.y + (boundingRect.height / 2));
-				let targetScale = Math.min(document.documentElement.clientWidth / e.target.clientWidth, document.documentElement.clientHeight / e.target.clientHeight, 20);
+				let b = e.target.getBoundingClientRect();
+				let targetTranslateX = (root.clientWidth / 2) - (b.x + (b.width / 2));
+				let targetTranslateY = (root.clientHeight / 2) - (b.y + (b.height / 2));
+				let targetScale = Math.min(root.clientWidth / e.target.clientWidth, root.clientHeight / e.target.clientHeight, 20);
 				e.target.style.transform = 'translate(' + targetTranslateX + 'px, ' + targetTranslateY +'px) scale(' + targetScale + ')';
 
 				const unzoom = () => {
@@ -675,9 +675,7 @@ function load() {
 	});
 
 	if (document.location.search.search("q=") > -1) {
-		const url = new URL(window.location.href);
-		searchString = url.searchParams.get("q");
-		openSearch(searchString);
+		openSearch((new URL(window.location.href)).searchParams.get("q"));
 		if (window.performance.getEntriesByType("navigation")[0].type === "navigate") { // only click instant links when not back/forward/reload
 			document.querySelectorAll("a.search-link.instant")?.[0]?.click?.();
 		}
