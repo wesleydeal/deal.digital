@@ -12,7 +12,7 @@ Neat Blogs and Personal Sites
 -----------------------------
 
 ### Lists of sites
-* [The 512KB Club](https://512kb.club/) and [1MB Club](https://1mb.club/)
+* [The 250KB club](https://250kb.club/), [512KB Club](https://512kb.club/) and [1MB Club](https://1mb.club/)
 * [/now pages](https://nownownow.com/), [/uses pages](https://uses.tech/)
 * [/about, /ideas, OR /now pages](https://aboutideasnow.com/)
 * [PersonalSit.es](https://personalsit.es/)
