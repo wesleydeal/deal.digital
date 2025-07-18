@@ -16,16 +16,6 @@
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
-@font-face {
-	font-family: 'TikTok Sans';
-	font-style: oblique 0deg 6deg;
-	font-weight: 300 900;
-	font-stretch: 75% 150%;
-	font-display: auto;
-	src: url(/fonts/TikTok_Sans.woff2) format('woff2');
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
 :root {
 	container: root / size;
 	color-scheme: light dark;
@@ -38,13 +28,11 @@
 	--color-fg: #000;
 	--color-bg-hc: #fff;
 	--color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
-	--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) .97 calc(c * .25) h), oklch(from var(--color-primary) .99 calc(c * .1) h) 300px max(60vw, 1400px), oklch(from var(--color-primary) .97 calc(c * .25) h) max(100vw, 1500px));
 	--bg: linear-gradient(to right in oklch, #0000, oklch(from var(--color-bg) l c h / 60%), oklch(from var(--color-bg) l c h / 90%), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 5vw) min(calc(50% + (var(--text-width) / 2)), 95vw), oklch(from var(--color-bg) l c h / 90%), oklch(from var(--color-bg) l c h / 60%), #0000) 0 / cover,
 			repeating-linear-gradient( 90deg in oklch, oklch(from var(--color-h1) l c h / 5%), transparent 5vw),
 			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l c h / 15%), transparent 6vw),
 			var(--color-bg);
 
-	--color-primary-sat: oklch(from var(--color-primary) calc(.95) calc(c + .1) h);
 	--color-primary-sat: oklch(from var(--color-primary) clamp(0.85, l, 0.95) max(.14, c) h);
 	--color-button-important: oklch(from var(--color-primary) clamp(0.3, calc(l + 0.05), 0.57) calc(c + .02) h);
 	--color-link: oklch(from var(--color-primary) 0.2 max(c, 0.1) h);
@@ -54,7 +42,7 @@
 	--color-tinted-shadow: oklch(from var(--color-primary) 0.2 min(c,0.2) h / 50%);
 	--color-pop: oklch(from var(--color-primary) clamp(.77, l, .85) clamp(0.11, calc(c + .05), .27) calc(h - 180));
 	--color-pop-bgcontrast: oklch(from var(--color-pop) 0.4 c h);
-	--header-bg: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%) 0 / cover fixed;
+	--header-bg: linear-gradient(to bottom in oklch, #fff3, #fff1 50%, #0000 50%, #0001), linear-gradient(125deg in oklch, oklch(from var(--color-primary) min(calc(l - .1), 0.6) c calc(h - (l * 10))), oklch(from var(--color-primary) clamp(0, calc(l - .25), .3) c calc(h + (l * 10))));
 	--button-shadow: inset 1px 1px 0 oklch(from var(--color-primary) 0.85 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.75 calc(c * .8) h);
 	--button-shadow-hover: inset 1px 1px 0 oklch(from var(--color-primary) 0.45 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.55 calc(c * .8) h);
 	--button-border: 1px solid oklch(from var(--color-pop) 0.2 0.1 h);
@@ -76,8 +64,9 @@
 
 	--text-width: 50rem;
 	--content-margins: 16px;
-	--typeface-body: "TikTok Sans", "Segoe UI Variable", system-ui, sans-serif;
+	--typeface-body: BlinkMacSystemFont, -apple-system, Roboto, "Noto Sans", "Segoe UI Variable", system-ui, sans-serif;
 	--typeface-display: "Instrument Serif", "Iowan Old Style", "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
+	--typeface-brand: "Instrument Serif", system-ui;
 	--typeface-mono: "Cascadia Code", ui-monospace, Consolas, "Source Code Pro", "Ubuntu Mono", "Fira Code", "Fira Mono", monospace;
 
 	background-color: var(--color-bg);
@@ -142,7 +131,7 @@ header {
 
 	margin: 0;
 	padding: 0.45em 0.6em;
-	font-size: clamp(1em, 1.2vw, 1.3em);
+	font-size: clamp(1.1em, 1.2vw, 1.3em);
 
 	color: #fff;
 	background: #000;
@@ -156,18 +145,15 @@ nav#topnav {
 	margin: 0;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 3px;
+	gap: 2px 3px;
 	line-height: 1.6;
 	padding: 0 max(0px, calc(50vw - 1300px));
 	& a#homelink {
-		margin: 0;
-		flex: 0 0;
-		padding: 0.22em 0.35em 0.22em 0.45em;
-		font: semi-expanded 600 2em/1 var(--typeface-body);
+		padding: 0.18em 0.4em 0.20em;
+		font: italic semi-condensed 400 2em/1 var(--typeface-brand);
+		text-decoration: 2px underline var(--color-pop);
+		text-underline-offset: 3px;
 		letter-spacing: -0.03em;
-		background: linear-gradient(180deg in oklch, #fff1, #fff2 50%, #0002 0, #0000),
-			linear-gradient(90deg in oklch, #fff -15%, var(--color-pop) 0.25em, #0001 0.26em, #0000 0.36em),
-			var(--color-button-important);
 		&:hover {
 			background: var(--button-highlight-overlay),
 				linear-gradient(90deg in oklch, #fff -15%, var(--color-primary) 0.25em, #0001 0.26em, #0000 0.36em),
@@ -190,6 +176,7 @@ nav#topnav {
 		padding: 0;
 	}
 	& a:any-link {
+		border-radius: 3px;
 		color: #fff;
 		display: flex;
 		place-items: center;
@@ -198,12 +185,11 @@ nav#topnav {
 		min-width: max-content;
 		box-shadow: var(--button-shadow);
 		border: var(--button-border);
-		background: var(--button-overlay), var(--color-button-important);
+		background: var(--button-overlay), oklch(from var(--color-button-important) l c h / 50%);
 		padding: 0.3em 1ch 0.3em 0.8ch;
 		text-decoration: none;
 		text-shadow: 1px 1px 0 #000;
 		font-stretch: normal;
-		font-variation-settings: "YTLC" 560; /* lowercase height */
 		&:hover, &:focus {
 			background: var(--button-highlight-overlay), var(--color-button-important);
 			backdrop-filter: saturate(1.2);
@@ -230,7 +216,7 @@ nav#toc {
 	z-index: 10;
 	background: repeating-linear-gradient(135deg in oklch, #8981, #0001 50px, #7771 70px, #0001 125px, #7771 150px, #8981 160px), oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c h / 85%);
 	background: linear-gradient(to bottom in oklab, #ffffff11, #ffffff22 49%, #0001 51%, #0000, 106%, var(--color-primary-sat) 120%), linear-gradient(to right in oklab, oklch(from var(--color-primary) min(calc(l - 0.1), 0.4) c calc(h + 7) / 85%), oklch(from var(--color-primary) min(calc(l - 0.06), 0.44) c calc(h - 7) / 85%));
-	//backdrop-filter: saturate(2) blur(3px);
+	background: linear-gradient(to bottom in oklab, #0003, 20%, #0004, 90%, #0000, oklch(from var(--color-primary-sat) l c h / 30%)), oklch(from var(--color-primary) min(l, 0.4) c h / 85%);
 	font-stretch: 75%;
 	border-bottom: 1px solid var(--color-primary-sat);
 	& a:any-link {
@@ -249,7 +235,7 @@ nav#toc {
 	}
 	& :any-link {
 		text-decoration-color: oklch(from var(--color-primary-sat) 0.9 c h / 80%);
-		font-weight: 350;
+		font-weight: inherit;
 	}
 	@media screen and (width < 700px) and (pointer: coarse) {
 		padding: 0;
@@ -514,7 +500,6 @@ a:any-link {
 	text-decoration: underline;
 	color: var(--color-link);
 	text-decoration-color: var(--color-link-underline);
-	text-underline-offset: 6%;
 	text-decoration-thickness: 0.09em;
 	transition: color 200ms cubic-bezier(0.23, 1, 0.320, 1),
 		border-color 200ms cubic-bezier(0.23, 1, 0.320, 1),
@@ -562,8 +547,8 @@ h1 {
 
 h2 {
 	color: var(--color-h2);
-	font: semi-expanded 375 1.6em/1.15 var(--typeface-body);
-	margin: 1em 0 0.25em;
+	font: semi-expanded 400 1.6em/1.15 var(--typeface-body);
+	margin: 1em 0 0.35em;
 	position: relative;
 	max-width: var(--text-width);
 	&::after{
@@ -572,16 +557,13 @@ h2 {
 		width: 100%;
 		height: 1px;
 		right: 0;
-		bottom: -3px;
-		background: linear-gradient(to right, color-mix(in oklch, var(--color-pop) 50%, var(--color-fg)), var(--color-bg));
-		background: linear-gradient(to right in oklab, var(--color-pop-bgcontrast), oklch(from var(--color-bg) l c h / 50%));
-		background: linear-gradient(to right in oklab, var(--color-h1) -100%, oklch(from var(--color-bg) l c h / 50%));
-		background: linear-gradient(to right in oklab, var(--color-h1) -100%, transparent));
+		bottom: -0.2em;
+		background: linear-gradient(to right in oklab, var(--color-h1), transparent);
 	}
 }
 
 h3 {
-	font: semi-expanded 400 1.2em/1.4 var(--typeface-body);
+	font: semi-expanded 375 1.2em/1.4 var(--typeface-body);
 	text-transform: uppercase;
 	margin: 1em 0 0.3em;
 	h2 + & {
@@ -591,10 +573,9 @@ h3 {
 
 h4 {
 	font: 300 1.2em/1.5 var(--typeface-body);
-	font-style: oblique 5deg;
+	font-style: oblique;
 	margin: 1em 0 0.4em;
 	& em, & i {
-		font-style: oblique 10deg;
 		text-decoration: underline 1px;
 	}
 }
@@ -987,7 +968,7 @@ kbd {
 		place-content: center;
 		font-family: inherit;
 		font-size: 26px;
-		line-height: 24px;
+		line-height: 27px;
 		color: #fff;
 		appearance: none;
 		background: radial-gradient(ellipse 100% 50% at bottom center, #fff5, #0000), oklch(from var(--color-button-important) l calc(c + 0.1) h / 40%);
@@ -1136,6 +1117,16 @@ kbd {
 		justify-content: center;
 		& a#homelink, & ul {
 			flex: 1 1 350px;
+		}
+		& li:has(a#homelink) {
+			flex: 3 1 max-content;
+		}
+		& a#homelink {
+			font-size: 1.8em;
+			padding: 0 0.1em 0.04em;
+		}
+		& a:any-link {
+			font-stretch: 90%;
 		}
 	}
 	footer {

@@ -7,7 +7,7 @@ toc = true
 This page is here to demonstrate all of the common elements used on this website. This is primarily intended for
 my personal use during stylesheet development. Oh, and by the way, [here is a link](#) that goes nowhere.
 
-This paragraph contains ***bold, *bold italic (some of which is [linked](#)),*** plain italic,* and ~strikethrough~ text.
+This paragraph contains **bold**, ***bold italic (some of which is [linked](#))***, *plain italic,* and ~strikethrough~ text.
 
 This website is best viewed with any browser.
 

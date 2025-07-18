@@ -15,8 +15,8 @@ while I mess with it.
 
 ## A. Technical
 1. Do much with little: a standard text-only blog page should require \<512KB of resources on first load.
-2. Chained resource loading should be avoided if possible on initial page load. Allow required resources to be downloaded in parallel.
-3. Avoid automatically loading resources which will not be used for this page if they are of substantial size.
+2. If it's needed to render the page, load it all at once, as quickly as possible. No import chains.
+3. But if it's not, load it later. Prefer hiding the asynchronous nature, silently degrading until the resource is loaded.
 4. The page should gracefully degrade for older/simpler browsers. Specifically, the inline stylesheet should allow for
 a pleasant reading experience in even Firefox 3 and the structure should do the same for lynx.
 5. Avoid loading images where possible.

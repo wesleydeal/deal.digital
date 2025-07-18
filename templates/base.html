@@ -53,19 +53,22 @@ header a:link, header a:visited {
 	color: #fff;
 	white-space: nowrap;
 	text-decoration-thickness: 2px;
-	text-underline-offset: 25%;
+	text-underline-offset: 33%;
 }
 .topnav-links {
 	list-style: none;
 	display: inline;
 	padding: 0;
 }
-nav#topnav li, #homelink {
+nav#topnav li{
 	padding: 0;
 	margin-right: 16px;
 	display: inline;
 }
-#homelink { text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180)); }
+#homelink {
+	text-decoration: 2px underline oklch(from var(--color-primary, #056) 0.8 c calc(h + 180));
+	font-weight: bold;
+}
 header nav#breadcrumbs { display: none; visibility: hidden; }
 #toc {
 	background: #023;
@@ -160,15 +163,15 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 <!--[if !IE]><!-->
 <link rel="preload" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
 <link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/TikTok_Sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
 <!--<![endif]-->
 <body{% if page %} id="{{ page.path | trim_end_matches(pat='/') | trim_start_matches(pat='/') | replace(from='/', to='-')}}"{% elif section %} id="{{ section.path | trim_end_matches(pat='/') | trim_start_matches(pat='/') | replace(from='/', to='-')}}"{% elif not page.title %} id="index"{% endif %}>
 <header>
 	<nav id="topnav">
-		{% block homelink -%}
-		<a href="/" id="homelink">deal.digital</a>
-		{% endblock homelink -%}
 		<ul class="topnav-links">
+			<li>{% block homelink -%}
+			<a href="/" id="homelink">deal.digital</a>
+			{% endblock homelink -%}
 			<li><a href="/tools/">🛠️ Tools</a>
 			<li><a href="/blog/">✍🏻 Blog</a>
 			<li><a href="/now/">⏳ Now</a>
@@ -222,7 +225,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 		<dd>{{ now(utc=true) | date(format="%Y-%m-%d %H:%M:%S UTC") }} with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital{% if page.relative_path %}/blob/master/content/{{ page.relative_path }}{% endif %}">View source here</a>.</dd>
 
 		<dt>Fonts</dt>
-		<dd> <a href="https://github.com/tiktok/TikTokSans">TikTok Sans</a> (yes) with headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and code in one of your system fonts</dd>
+		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
 
 		<dt>Navigator</dt>
 		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>
