@@ -2,7 +2,7 @@
 author = "Wesley Deal"
 title = "Local Password Generator"
 date = 2025-02-21
-updated = 2025-03-03
+updated = 2025-07-18
 raw = true
 [taxonomies]
 tags = ["software", "security"]
@@ -247,12 +247,13 @@ const separators = "-_+=";
 var copiedTimeout;
 
 const genButton = document.getElementById("generate");
+const startGenSound = () => {playSound('/sounds/KDE_Event_1.ogg', 0.5)}
 var genButtonHeld = false;
-genButton.addEventListener('pointerdown', (e) => { genButtonHeld = true; });
+genButton.addEventListener('pointerdown', (e) => { genButtonHeld = true; startGenSound(); });
 genButton.addEventListener('pointerup', (e) => { genButtonHeld = false; });
 genButton.addEventListener('pointerleave', (e) => { genButtonHeld = false; });
 genButton.addEventListener('pointercancel', (e) => { genButtonHeld = false; });
-document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "Space" || event.code == "KeyM") genButtonHeld = true; });
+document.body.addEventListener('keydown', (event) => { if(event.code == "Enter" || event.code == "Space" || event.code == "KeyM") genButtonHeld = true; startGenSound(); });
 document.body.addEventListener('keyup', (event) => { if(event.code == "Enter" || event.code == "Space" || event.code == "KeyM") genButtonHeld = false; });
 
 
@@ -350,6 +351,7 @@ function pwgen() {
 			document.getElementById("copied-caption").classList.add("active");
 			window.clearTimeout(copiedTimeout);
 			copiedTimeout = window.setTimeout(() => {document.getElementById("copied-caption").classList.remove("active");}, 1000);
+			playSound('/sounds/Shot_Reverb.ogg', 0.5);
 		});
 	}
 

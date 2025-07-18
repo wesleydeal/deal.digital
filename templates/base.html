@@ -47,7 +47,7 @@ header {
 	width: 100%;
 	display: block;
 	background: oklch(from var(--color-primary, #056) 0.4 c h);
-	view-transition-name: header;
+	view-transition-class: header;
 }
 header a:link, header a:visited {
 	color: #fff;
@@ -72,6 +72,7 @@ header nav#breadcrumbs { display: none; visibility: hidden; }
 	background: oklch(from var(--color-primary, #056) 0.2 c h);
 	color: #fff;
 	display: block;
+	view-transition-class: header;
 }
 #toc a:link, #toc a:visited {
 	color: #fff;
@@ -146,28 +147,18 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 }
 @view-transition { navigation: auto; }
 ::view-transition-group(root) { animation-duration: 0.3s; }
-@keyframes wipe {
-	from {clip-path:polygon(0 0,0% 0,-200px 100%,0 100%);}
-	to {clip-path:polygon(0 0,calc(100% + 200px) 0,100% 100%,0 100%);}
-}
-@keyframes screen-in {
-	from { transform: scale(1.1) translateY(-5%); opacity: 0; }
-	to { transform: scale(1); opacity: 1; }
-}
 @keyframes fade-out {
 	to { opacity: 0; }
 }
 @keyframes scale-in {
 	from {transform: scale(1.1); opacity: 0;}
 }
-//::view-transition-old(root) { animation: 0.3s cubic-bezier(0.23, 1, 0.320, 1) both screen-out; }
 ::view-transition-old(content) { animation: 0.3s cubic-bezier(0.25, 1, 0.5, 1) both fade-out; }
-::view-transition-new(content) { animation: 0.3s cubic-bezier(0.25, 1, 0.5, 1) both scale-in; pointer-events: none; }
+::view-transition-new(content) { animation: 0.3s cubic-bezier(0.25, 1, 0.5, 1) both scale-in; }
+::view-transition {pointer-events: none;}
 </style>
 <!--[if !IE]><!-->
 <link rel="preload" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
-<link rel="preload" href="/syntax-dark.css" as="style" onload="this.onload=null">
-<link rel="preload" href="/syntax-light.css" as="style" onload="this.onload=null">
 <link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/TikTok_Sans.woff2" as="font" type="font/woff2" crossorigin>
 <!--<![endif]-->
