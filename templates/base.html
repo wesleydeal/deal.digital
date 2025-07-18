@@ -8,14 +8,10 @@
 <html lang="en"{% if color %} style="--color-primary: {{ color }}"{% endif %}>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="view-transition" content="same-origin" />
 {% block title -%}
 <title>{% if page.extra.shorttitle %}{{ page.extra.shorttitle }} - {% elif page.title %}{{ page.title }} - {% endif %}Wesley Deal</title>
 {% endblock title -%}
-<style type="text/css">
-html {
-	container: root / size;
-}
+<style>
 *, *:before, *:after {box-sizing: border-box;}
 body {
 	font: 100%/1.6 system-ui, sans-serif;
@@ -30,8 +26,6 @@ body>* {
 	padding: 16px;
 	max-width: 100%;
 	opacity: 1;
-	//@starting-style { opacity: 0; }
-	//transition: opacity 500ms 100ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 header nav, .content>*, footer>*, #toc>div, #search-container {
 	max-width: 800px;
@@ -113,6 +107,7 @@ footer {
 	margin: 200px 0 800px;
 	padding: 20px;
 	line-height: 1.1;
+	position: relative;
 }
 #ui-tools {display: none;}
 a:link, a:visited {
@@ -130,42 +125,36 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 #search-container { padding: 20px; overflow: hidden; }
 #search-box { width: 100%;}
 #search-keyword-list samp { padding: 0 10px; }
-@container root style(--dark-mode: true){
-	body { background: #000; color: #fff; }
-	a:link, a:visited { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
-	h1 { color: oklch(from var(--color-primary) 0.7 c h); }
-}
 @media (prefers-color-scheme: dark) {
 	body { background: #000; color: #fff; }
 	a:link, a:visited { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
 	h1 { color: oklch(from var(--color-primary) 0.7 c h); }
 }
-@container root style(--dark-mode: false) {
-	body { background: #fff; color: #000; }
-	a:link, a:visited { color: oklch(from var(--color-primary, #056) 0.4 c h); }
-	h1 { color: oklch(from var(--color-primary) 0.4 c h); }
-}
 [id] {
 	scroll-margin-top: 100px;
 }
 @view-transition { navigation: auto; }
+::view-transition { pointer-events: none; }
 ::view-transition-group(root) { animation-duration: 0.3s; }
-@keyframes fade-out {
-	to { opacity: 0; }
-}
-@keyframes scale-in {
-	from {transform: scale(1.1); opacity: 0;}
-}
+@keyframes fade-out { to { opacity: 0; } }
+@keyframes scale-in { from {transform: scale(1.1); opacity: 0;} }
 ::view-transition-old(content) { animation: 0.3s cubic-bezier(0.25, 1, 0.5, 1) both fade-out; }
 ::view-transition-new(content) { animation: 0.3s cubic-bezier(0.25, 1, 0.5, 1) both scale-in; }
-::view-transition {pointer-events: none;}
 </style>
 <!--[if !IE]><!-->
 <link rel="preload" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
 <link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
 <!--<![endif]-->
-<body{% if page %} id="{{ page.path | trim_end_matches(pat='/') | trim_start_matches(pat='/') | replace(from='/', to='-')}}"{% elif section %} id="{{ section.path | trim_end_matches(pat='/') | trim_start_matches(pat='/') | replace(from='/', to='-')}}"{% elif not page.title %} id="index"{% endif %}>
+{%- if section is defined -%}
+	{%- set bodyid = section.path | trim_end_matches(pat='/') | trim_start_matches(pat='/') | replace(from='/', to='-') -%}
+{%- elif page is defined -%}
+	{%- set bodyid = page.path | trim_end_matches(pat='/') | trim_start_matches(pat='/') | replace(from='/', to='-')-%}
+{%- endif -%}
+{%- if bodyid is undefined or bodyid == "" -%}
+	{%- set bodyid = "generic" -%}
+{% endif %}
+<body id="{{ bodyid }}">
 <header>
 	<nav id="topnav">
 		<ul class="topnav-links">
@@ -291,14 +280,14 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 	</pre>
 	<a href="https://youtu.be/2KVJ2vm_fyw?t=131" style="position: absolute; bottom: 5px; right: 50px">π</a>
 </footer>
-<menu id="ui-tools">
+<div id="ui-tools">
 	<button id="btn_top" aria-label="Jump to top">⬆</button>
 	<!--<button id="btn_toc">📑</button>-->
 	<!--<button id="btn_search">🧭</button>-->
 	<button id="btn_theme" aria-label="Toggle dark mode">💡</button>
 	<button id="btn_larger" aria-label="Increase font size">T<b>▲</b></button>
 	<button id="btn_smaller" aria-label="Decrease font size">T<b>▼</b></button>
-</menu>
+</div>
 <script defer src="/main.js"></script>
 </body>
 </html>

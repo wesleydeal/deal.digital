@@ -9,10 +9,10 @@
 {% endfor -%}
 {% endif -%}
 {% if date -%}
-	<p class="created-at">written <time datetime="{{ date }}">{{ date }}</time>
+	<p class="created-at">written <time>{{ date }}</time>
 {% endif -%}
 {% if updated -%}
-	<p class="updated-at">updated <time datetime="{{ updated }}">{{ updated }}</time>
+	<p class="updated-at">updated <time>{{ updated }}</time>
 {% endif -%}
 </section>
 {% endmacro signoff -%}

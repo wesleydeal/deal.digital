@@ -280,7 +280,7 @@ nav#toc {
 	}
 }
 
-menu#ui-tools {
+#ui-tools {
 	position: fixed;
 	right: 3px;
 	bottom: 3px;
