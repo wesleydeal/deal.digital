@@ -25,6 +25,7 @@ Neat Blogs & Personal Sites
 * [Aleksandr Hovhannisyan](https://www.aleksandrhovhannisyan.com/) (note his article on [font fallbacks without layout shift](https://www.aleksandrhovhannisyan.com/blog/perfect-font-fallbacks/))
 * [rsapkf](https://rsapkf.org/)
 * [Amelia Wattenberger](https://wattenberger.com/) (check out: [fish eyes](https://wattenberger.com/thoughts/fish-eye))
+* [Neil Panchal](https://neil.computer/)
 
 ### *nix
 * [dade](https://0xda.de/blog/)
