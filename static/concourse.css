@@ -573,7 +573,7 @@ h2 {
 
 h3 {
 	font: 375 1.2em/1.4 var(--typeface-body);
-	letter-spacing: 0.03em;
+	letter-spacing: 0.04em;
 	text-transform: uppercase;
 	margin: 1em 0 0.3em;
 	h2 + & {
@@ -657,8 +657,6 @@ strong, b{
 
 :is(p, li) :is(i, em) {
 	font-stretch: 90%;
-	text-decoration: solid underline oklch(from var(--color-fg) l c h / 12%);
-	text-underline-offset: 6%;
 }
 
 ol {
@@ -667,7 +665,7 @@ ol {
 		padding-left: 0.15em;
 		&::marker {
 			color: var(--color-h1);
-			font-weight: 400;
+			font-weight: 600;
 			margin: .2em 0;
 		}
 	}
@@ -978,6 +976,7 @@ kbd {
 		font: bold 28px/1 var(--typeface-mono);
 		color: #fff;
 		background: var(--button-overlay), var(--color-button-important);
+		padding-top: 3px;
 		--b: 1px solid oklch(from var(--color-primary) min(.35, calc(l - 0.1)) min(.13, c) h);
 		border: none;
 		border-top: var(--b);
