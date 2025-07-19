@@ -566,7 +566,7 @@ h2 {
 		width: 100%;
 		height: 1px;
 		right: 0;
-		bottom: -0.2ex;
+		bottom: -0.3ex;
 		background: linear-gradient(to right in oklab, var(--color-h1), transparent);
 	}
 }
