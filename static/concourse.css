@@ -49,9 +49,8 @@
 	--button-overlay: linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent);
 	--button-highlight-overlay:
 		linear-gradient(to right in oklch, #0000 -100%, #fff3, #0000 200%),
-		linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent),
+		linear-gradient( #fff1, #fff2 50%, #0002 50%, #0000),
 		repeating-linear-gradient(135deg, #ffffff03 0 4px, #00000003 0 8px) 0 / calc(8px/sin(135deg)) 100%;
-	--royale-overlay: linear-gradient(to bottom in oklch, #fff5, #fff3 50%, #fff1 50%, #0002);
 
 	@media (prefers-color-scheme: dark) {
 		color-scheme: dark;
@@ -76,13 +75,6 @@
 	scrollbar-width: thin;
 
 	interpolate-size: allow-keywords;
-
-	/*--typeface-body: 'Segoe UI Variable';*/
-	/*--typeface-body: 'Noto Sans';*/
-	/*--typeface-body: 'SF Pro';*/
-	/*--typeface-body: Arial;*/
-	/*--typeface-body: Verdana;*/
-	/*--typeface-body: Cantarell;*/
 }
 
 @container root style(--dark-mode: true){
@@ -135,7 +127,6 @@ body {
 }
 
 header {
-	grid-area: header;
 	display: flex;
 	flex-direction: column;
 
@@ -165,9 +156,6 @@ nav#topnav {
 		text-underline-offset: 3px;
 		letter-spacing: -0.03em;
 		text-shadow: 0 0 8px #0007, 1px 1px 0 #000;
-		/*background: var(--button-overlay), var(--color-pop-bgcontrast);
-		color: #fff;
-		box-shadow: inset 1px 1px 0 var(--color-pop), inset -1px -1px 0 var(--color-pop);*/
 		li:has(&){
 			flex: 0 1 max-content;
 		}
@@ -177,7 +165,7 @@ nav#topnav {
 		flex-wrap: wrap;
 		margin: 0;
 		gap: 3px;
-		list-style-type: none;
+		list-style: none;
 		flex: 1 1;
 		padding: 0;
 	}
@@ -194,7 +182,6 @@ nav#topnav {
 		place-items: center;
 		place-content: center;
 		flex: 1 0 max-content;
-		min-width: max-content;
 		box-shadow: var(--button-shadow);
 		border: var(--button-border);
 		background: var(--button-overlay), oklch(from var(--color-button-important) l c h / 50%);
@@ -229,8 +216,7 @@ nav#toc {
 	z-index: 5;
 	background: linear-gradient(to bottom in oklab, #0003, 20%, #0004, 90%, #0000, oklch(from var(--color-primary-sat) l c h / 30%)), oklch(from var(--color-primary) min(l, 0.4) c h / 85%);
 	border-bottom: 1px solid var(--color-primary-sat);
-	font-family: var(--typeface-prefer-narrow);
-	font-stretch: 50%;
+	font: condensed 1em/1.4 var(--typeface-prefer-narrow);
 	& a:any-link {
 		&.scroll-current {
 			text-decoration-color: var(--color-pop);
@@ -303,7 +289,7 @@ nav#toc {
 	display: grid;
 	gap: 0;
 
-	background: linear-gradient(175deg in oklch, oklch(from var(--color-primary) l c calc(h - 30)) -100%, oklch(from var(--color-primary) 0.01 c calc(h + 30)) 200%);
+	background: var(--header-bg);
 	opacity: 0.7;
 
 	border: 1px solid var(--color-link-underline);
@@ -359,7 +345,6 @@ nav#toc {
 
 section.content {
 	padding: var(--content-margins);
-	grid-area: main;
 	min-height: 100vh;
 	overflow-wrap: anywhere;
 	margin: 0;
@@ -448,7 +433,6 @@ footer {
 	--c: oklch(from var(--color-primary) max(l,0.85) c h);
 	--c70: color-mix(in oklch, var(--c) 70%, #0000);
 	--c10: color-mix(in oklch, var(--c) 10%, #0000);
-	grid-area: footer;
 	padding: 20px 3ch 60px;
 	background: repeating-linear-gradient(#0000, #000 3px, var(--c10) 4px, var(--c10) 5px, #0000 6px) #000;
 	font: 400 1.5em/1.15 var(--typeface-mono);
@@ -535,7 +519,6 @@ a:any-link {
 
 h1 {
 	font: 400 4em/1.05 var(--typeface-display);
-	letter-spacing: normal;
 	font-size: clamp(3em, 5vw, 6em);
 	color: var(--color-h1);
 	max-width: 24ch;
@@ -896,7 +879,6 @@ kbd {
 	padding: 10px;
 	display: flex;
 	flex-direction: column;
-	grid-area: search;
 	transition: transform 300ms cubic-bezier(0.23, 1, 0.320, 1),
 		opacity 300ms cubic-bezier(0.23, 1, 0.320, 1),
 		width 100ms cubic-bezier(0.23, 1, 0.320, 1),
@@ -908,7 +890,6 @@ kbd {
 	padding: 0;
 	border: 1px solid var(--color-primary-sat);
 	outline: 1px solid #000;
-	background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%) no-repeat 0 34px / cover, linear-gradient(to top right in oklch longer hue, #b90000, #00cd88) no-repeat 0 34px / cover;
 	box-shadow: 0 1px 5px oklch(from var(--color-tinted-shadow) l c h / 30%), 0 3px 10px oklch(from var(--color-tinted-shadow) l c h / 20%);
 	border-radius: 3px;
 	backdrop-filter: blur(2px);
@@ -978,7 +959,6 @@ kbd {
 		width: 36px;
 		height: 32px;
 		place-content: center;
-		font: bold 28px/1 var(--typeface-mono);
 		color: #fff;
 		background: var(--button-overlay), var(--symbol, linear-gradient(#0000)), var(--color-button-important);
 		padding-top: 1.6px;
@@ -988,10 +968,8 @@ kbd {
 		border-bottom: var(--b);
 		border-radius: 0;
 		box-shadow: inset 1px 1px var(--color-primary-sat), inset -1px -1px var(--color-primary-sat);
-		font-stretch: 110%;
-		text-shadow: inherit;
-		transition: box-shadow 200ms cubic-bezier(0.23, 1, 0.320, 1);
 		margin: 0;
+		--hc: var(--color-button-important);
 		&:first-child {
 			border-radius: 3px 0 0 3px;
 			border-left: var(--b);
@@ -1003,28 +981,30 @@ kbd {
 			margin-left: -1px;
 		}
 		&:hover {
-			background: var(--button-highlight-overlay), var(--symbol, linear-gradient(#0000)), oklch(from var(--hc, var(--color-button-important)) l c h / 40%);
-			box-shadow: var(--button-shadow-hover);
+			background: var(--button-highlight-overlay), var(--symbol, linear-gradient(#0000)), oklch(from var(--hc) l c h / 40%);
+			box-shadow: inset 1px 1px var(--hc), inset -1px -1px var(--hc);
 		}
 	}
 	& #search-min {
 		--hc: #fa0;
-		--symbol: linear-gradient(#fff) no-repeat center center / 50% 4px;
+		--symbol: linear-gradient(#fff) no-repeat center / 50% 4px;
 	}
 	& #search-max {
 		--hc: #0f5;
-		--symbol: linear-gradient( #fff 4px, #0000 0 calc(100% - 2px), #fff 0) no-repeat center center / 50% 60%,
-			linear-gradient(90deg,  #fff 2px, #0000 0 calc(100% - 2px), #fff 0) no-repeat center center / 50% 60%;
+		--symbol: linear-gradient( #fff 4px, #0000 0 calc(100% - 2px), #fff 0) no-repeat center / 50% 60%,
+			linear-gradient(90deg,  #fff 2px, #0000 0 calc(100% - 2px), #fff 0) no-repeat center / 50% 60%;
 	}
 	& #search-close {
 		--hc: #f42;
-		--symbol: linear-gradient(45deg,  #0000 42%, #fff 42% 58%, #0000 0) no-repeat center center / 50% 60%,
-			linear-gradient(135deg,  #0000 42%, #fff 42% 58%, #0000 0) no-repeat center center / 50% 60%;
+		--symbol: linear-gradient(45deg,  #0000 42%, #fff 42% 58%, #0000 0) no-repeat center / 50% 60%,
+			linear-gradient(135deg,  #0000 42%, #fff 42% 58%, #0000 0) no-repeat center / 50% 60%;
 	}
 	& #search-inner {
 		overflow: auto;
 		display: flex;
 		flex-direction: column;
+		background: linear-gradient(172deg in oklch, var(--color-bg), #0000 700%), linear-gradient(to top right in oklch longer hue, #b90000, #00cd88);
+		min-height: 100%;
 	}
 	& #search-box {
 		margin: 0.5rem 1rem 0rem;
@@ -1199,7 +1179,7 @@ kbd {
 	header ul {
 		display: none !important;
 	}
-	nav#topnav>a:first-child {
+	#homelink {
 		color: #000;
 		visibility: visible;
 		background: none;
@@ -1212,10 +1192,6 @@ kbd {
 		display: flex;
 		flex-direction: column;
 		align-items: end;
-		&:after{
-			content: 'deal.digital';
-			font-size: 1rem;
-		}
 	}
 	footer {
 		font-size: 10pt !important;
@@ -1237,8 +1213,8 @@ kbd {
 			display: none;
 		}
 	}
-	h1:first-child {
-		margin-top: 0;
+	#ui-tools {
+		display: none;
 	}
 }
 
