@@ -970,6 +970,7 @@ kbd {
 		box-shadow: inset 1px 1px var(--color-primary-sat), inset -1px -1px var(--color-primary-sat);
 		margin: 0;
 		--hc: var(--color-button-important);
+		--ac: #fff;
 		&:first-child {
 			border-radius: 3px 0 0 3px;
 			border-left: var(--b);
@@ -981,23 +982,24 @@ kbd {
 			margin-left: -1px;
 		}
 		&:hover {
-			background: var(--button-highlight-overlay), var(--symbol, linear-gradient(#0000)), oklch(from var(--hc) l c h / 40%);
-			box-shadow: inset 1px 1px var(--hc), inset -1px -1px var(--hc);
+			background: var(--symbol, linear-gradient(#0000)), var(--button-highlight-overlay), oklch(from var(--hc) min(l, 0.4) c h / 40%);
+			box-shadow: inset 1px 1px var(--hc), inset -1px -1px var(--hc), inset 0 0 3px var(--ac);
+			--ac: oklch(from var(--hc) 1 c h);
 		}
 	}
 	& #search-min {
 		--hc: #fa0;
-		--symbol: linear-gradient(#fff) no-repeat center / 50% 4px;
+		--symbol: linear-gradient(var(--ac)) no-repeat center / 50% 4px;
 	}
 	& #search-max {
 		--hc: #0f5;
-		--symbol: linear-gradient( #fff 4px, #0000 0 calc(100% - 2px), #fff 0) no-repeat center / 50% 60%,
-			linear-gradient(90deg,  #fff 2px, #0000 0 calc(100% - 2px), #fff 0) no-repeat center / 50% 60%;
+		--symbol: linear-gradient( var(--ac) 4px, #0000 0 calc(100% - 2px), var(--ac) 0) no-repeat center / 50% 60%,
+			linear-gradient(90deg,  var(--ac) 2px, #0000 0 calc(100% - 2px), var(--ac) 0) no-repeat center / 50% 60%;
 	}
 	& #search-close {
 		--hc: #f42;
-		--symbol: linear-gradient(45deg,  #0000 42%, #fff 42% 58%, #0000 0) no-repeat center / 50% 60%,
-			linear-gradient(135deg,  #0000 42%, #fff 42% 58%, #0000 0) no-repeat center / 50% 60%;
+		--symbol: linear-gradient(45deg,  #0000 42%, var(--ac) 42% 58%, #0000 0) no-repeat center / 50% 60%,
+			linear-gradient(135deg,  #0000 42%, var(--ac) 42% 58%, #0000 0) no-repeat center / 50% 60%;
 	}
 	& #search-inner {
 		overflow: auto;
