@@ -27,7 +27,7 @@
 	--color-fg-hc: #000;
 	--color-fg: #000;
 	--color-bg-hc: #fff;
-	--color-bg: oklch(from var(--color-primary) .99 calc(c * .1) h);
+	--color-bg: oklch(from var(--color-primary) 1 calc(c * .1) h);
 	--bg: linear-gradient(to right in oklch, #0000, oklch(from var(--color-bg) l c h / 60%), oklch(from var(--color-bg) l c h / 90%), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 5vw) min(calc(50% + (var(--text-width) / 2)), 95vw), oklch(from var(--color-bg) l c h / 90%), oklch(from var(--color-bg) l c h / 60%), #0000) 0 / cover,
 			repeating-linear-gradient( 90deg in oklch, oklch(from var(--color-h1) l c h / 5%), transparent 5vw),
 			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l c h / 15%), transparent 6vw),
