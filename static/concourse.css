@@ -64,10 +64,10 @@
 
 	--text-width: 50rem;
 	--content-margins: 16px;
-	--typeface-body: BlinkMacSystemFont, -apple-system, Roboto, "Arial Nova", "Source Sans", "Source Sans 3", "Segoe UI Variable", "Helvetica Neue", "DejaVu Sans", system-ui, sans-serif;
+	--typeface-body: BlinkMacSystemFont, Roboto, "Arial Nova", "Source Sans", "Source Sans 3", "Segoe UI Variable", "Helvetica Neue", "DejaVu Sans", system-ui, sans-serif;
 	--typeface-display: "Instrument Serif", "Iowan Old Style", "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
 	--typeface-brand: "Instrument Serif", system-ui;
-	--typeface-prefer-narrow: BlinkMacSystemFont, -apple-system, "Roboto Condensed", var(--typeface-body);
+	--typeface-prefer-narrow: BlinkMacSystemFont, "Roboto Condensed", var(--typeface-body);
 	--typeface-mono: "Cascadia Code", ui-monospace, Consolas, "Source Code Pro", "Ubuntu Mono", "Fira Code", "Fira Mono", monospace;
 
 	background-color: var(--color-bg);
@@ -77,6 +77,13 @@
 	scrollbar-width: thin;
 
 	interpolate-size: allow-keywords;
+
+	/*--typeface-body: 'Segoe UI Variable';*/
+	/*--typeface-body: 'Noto Sans';*/
+	/*--typeface-body: 'SF Pro';*/
+	/*--typeface-body: Arial;*/
+	/*--typeface-body: Verdana;*/
+	/*--typeface-body: Cantarell;*/
 }
 
 @container root style(--dark-mode: true){
@@ -115,11 +122,6 @@ body {
 	padding: 0;
 	margin: 0;
 	font: 367 1em/1.6 var(--typeface-body);
-	/*font-family: 'Segoe UI Variable';*/
-	/*font-family: 'Noto Sans';*/
-	/*font-family: 'SF Pro';*/
-	/*font-family: Arial;*/
-	/*font-family: Verdana;*/
 	font-optical-sizing: auto;
 
 	display: flex;
