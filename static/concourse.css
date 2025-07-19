@@ -91,22 +91,24 @@
 		--color-fg: #fff;
 		--color-fg-hc: #fff;
 		--color-bg-hc: #000;
+  		--s: 82px;
+        --c1: var(--color-bg);
+        --c2: oklch(from var(--color-h1) l c h);
+        --c3: oklch(from var(--color-h2) l c h);
+        --_l:#0000 calc(25%/3),var(--c1) 0 25%,#0000 0;
+        --_g:conic-gradient(from 120deg at 50% 87.5%,var(--c1) 120deg,#0000 0);
 		--bg:
-			linear-gradient(to right in oklch, #0000, oklch(from var(--color-bg) l c h / 60%), oklch(from var(--color-bg) l c h / 90%), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 5vw) min(calc(50% + (var(--text-width) / 2)), 95vw), oklch(from var(--color-bg) l c h / 90%), oklch(from var(--color-bg) l c h / 60%), #0000) 0 / cover,
-			radial-gradient(oklch(from var(--color-h1) l c h / 50%) 1px, #0000 1.5px) 0 0 / 16px 16px,
-			radial-gradient(oklch(from var(--color-h1) l c h / 50%) 1px, #0000 1.5px) 8px 8px / 16px 16px,
+			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 95%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
+			radial-gradient(oklch(from var(--color-h1) l c h / 20%) 1px, #0000 1.5px) 0 0 / 10px 10px,
+			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
+			radial-gradient(oklch(from var(--color-primary-sat) l c h / 20%) 1px, #0000 1.5px) 5px 5px / 10px 10px,
       		var(--color-bg);
+
 		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.1, c) h);
 		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
 		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
 		--color-pop-bgcontrast: var(--color-pop);
 		--color-tinted-shadow: oklch(from var(--color-primary) 0.85 0.15 h / 50%);
-		@media screen and (width < 1000px) {
-			--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h), oklch(from var(--color-primary) calc(l * .2) calc(c * .2) h) 100px calc(100% - 100px), oklch(from var(--color-primary) calc(l * .3) calc(c * .3) h)), var(--color-bg);
-			--bg: linear-gradient(to right, #0000, oklch(from var(--color-bg) l c h / 80%) 10% 90%, #0000),
-				repeating-linear-gradient(45deg, oklch(from var(--color-h1) l c h / 20%) 0 1px, #0000 0 50%) 0 0 / 12px 12px,
-				var(--color-bg);
-		}
 	}
 }
 
@@ -164,6 +166,9 @@ nav#topnav {
 		text-underline-offset: 3px;
 		letter-spacing: -0.03em;
 		text-shadow: 0 0 8px #0007, 1px 1px 0 #000;
+		/*background: var(--button-overlay), var(--color-pop-bgcontrast);
+		color: #fff;
+		box-shadow: inset 1px 1px 0 var(--color-pop), inset -1px -1px 0 var(--color-pop);*/
 		li:has(&){
 			flex: 0 1 max-content;
 		}
@@ -406,7 +411,8 @@ section.content {
 			box-shadow: 1px 2px 2px var(--sc),
 				2px 3px 4px var(--sc),
 				5px 6px 8px var(--sc2),
-				5px 6px 20px 10px var(--sc);
+				5px 6px 20px 10px var(--sc),
+				0 0 20px 10px var(--sc);
 		}
 		&.badge, &.badge-2x {
 			width: 88px;
@@ -976,7 +982,7 @@ kbd {
 		font: bold 28px/1 var(--typeface-mono);
 		color: #fff;
 		background: var(--button-overlay), var(--color-button-important);
-		padding-top: 3px;
+		padding-top: 1.6px;
 		--b: 1px solid oklch(from var(--color-primary) min(.35, calc(l - 0.1)) min(.13, c) h);
 		border: none;
 		border-top: var(--b);
