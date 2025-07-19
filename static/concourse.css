@@ -553,7 +553,7 @@ h1 {
 
 h2 {
 	color: var(--color-h2);
-	font: 500 1.5em/1.15 var(--typeface-body);
+	font: 400 1.5em/1.15 var(--typeface-body);
 	letter-spacing: -0.02em;
 	margin: 1em 0 0.35em;
 	position: relative;
