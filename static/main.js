@@ -295,9 +295,9 @@ function openSearch(query=null) {
 				<div id="search-titlebar">
 					<label for="search-box"><b>Navigator</b> <i>alpha one</i></label>
 					<div class="window-buttons">
-						<button id="search-min" aria-label="Minimize Navigator">−</button>
-						<button id="search-max" aria-label="Maximize Navigator">+</button>
-						<button id="search-close" aria-label="Close Navigator">×</button>
+						<button id="search-min" aria-label="Minimize Navigator"></button>
+						<button id="search-max" aria-label="Maximize Navigator"></button>
+						<button id="search-close" aria-label="Close Navigator"></button>
 					</div>
 				</div>
 				<div id="search-inner">
