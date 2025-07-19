@@ -64,9 +64,10 @@
 
 	--text-width: 50rem;
 	--content-margins: 16px;
-	--typeface-body: BlinkMacSystemFont, -apple-system, Roboto, "Noto Sans", "Segoe UI Variable", system-ui, sans-serif;
+	--typeface-body: BlinkMacSystemFont, -apple-system, Roboto, "Arial Nova", "Source Sans", "Source Sans 3", "Segoe UI Variable", "Helvetica Neue", "DejaVu Sans", system-ui, sans-serif;
 	--typeface-display: "Instrument Serif", "Iowan Old Style", "Sitka Display", Georgia, "Roboto Serif", ui-serif, serif;
 	--typeface-brand: "Instrument Serif", system-ui;
+	--typeface-prefer-narrow: BlinkMacSystemFont, -apple-system, "Roboto Condensed", var(--typeface-body);
 	--typeface-mono: "Cascadia Code", ui-monospace, Consolas, "Source Code Pro", "Ubuntu Mono", "Fira Code", "Fira Mono", monospace;
 
 	background-color: var(--color-bg);
@@ -113,8 +114,12 @@ body {
 
 	padding: 0;
 	margin: 0;
-	font: 350 1em/1.6 var(--typeface-body);
-	font-stretch: 100%;
+	font: 367 1em/1.6 var(--typeface-body);
+	/*font-family: 'Segoe UI Variable';*/
+	/*font-family: 'Noto Sans';*/
+	/*font-family: 'SF Pro';*/
+	/*font-family: Arial;*/
+	/*font-family: Verdana;*/
 	font-optical-sizing: auto;
 
 	display: flex;
@@ -188,7 +193,6 @@ nav#topnav {
 		padding: 0.3em 1ch 0.3em 0.8ch;
 		text-decoration: none;
 		text-shadow: 1px 1px 0 #000;
-		font-stretch: normal;
 		&:hover, &:focus {
 			background: var(--button-highlight-overlay),
 				linear-gradient(90deg in oklch, #fff -15%, var(--color-primary) 0.25em, #0001 0.26em, #0000 0.36em),
@@ -216,8 +220,9 @@ nav#toc {
 	position: sticky;
 	z-index: 5;
 	background: linear-gradient(to bottom in oklab, #0003, 20%, #0004, 90%, #0000, oklch(from var(--color-primary-sat) l c h / 30%)), oklch(from var(--color-primary) min(l, 0.4) c h / 85%);
-	font-stretch: 75%;
 	border-bottom: 1px solid var(--color-primary-sat);
+	font-family: var(--typeface-prefer-narrow);
+	font-stretch: 50%;
 	& a:any-link {
 		&.scroll-current {
 			text-decoration-color: var(--color-pop);
@@ -557,7 +562,7 @@ h2 {
 		width: 100%;
 		height: 1px;
 		right: 0;
-		bottom: -0.2em;
+		bottom: -0.2ex;
 		background: linear-gradient(to right in oklab, var(--color-h1), transparent);
 	}
 }
@@ -643,12 +648,10 @@ blockquote {
 }
 
 strong, b{
-	font-weight: 600;
+	font-weight: 650;
 }
 
 :is(p, li) :is(i, em) {
-	font-style: oblique 6deg;
-	font-weight: 400;
 	font-stretch: 90%;
 	text-decoration: solid underline oklch(from var(--color-fg) l c h / 12%);
 	text-underline-offset: 6%;
@@ -856,17 +859,19 @@ kbd {
 			font-size: 1.2em;
 			text-shadow: 1px 1px 2px var(--color-tinted-shadow);
 		}
-		& span:not(.emoji) {
+		& span:not(.emoji), &:not(:has(.emoji)) {
 			text-decoration: 0.08em underline var(--color-link-underline) !important;
-			text-underline-offset: 0.07em;
+			text-underline-offset: 0.08em;
 			text-shadow: 1px 1px 2px oklch(from var(--color-tinted-shadow) l c h / 10%);
 		}
 		&:hover, &:focus {
 			background: var(--button-highlight-overlay), oklch(from var(--color-primary) 0.55 c h);
 			color: #fff;
 			box-shadow: var(--button-shadow), 1px 1px 2px var(--color-tinted-shadow);
-			& span:not(.emoji) {
-				text-decoration: transparent !important;
+			text-shadow: 1px 1px 2px #000;
+			text-decoration: none !important;
+			& span {
+				text-decoration: none !important;
 				text-shadow: 1px 1px 2px #000;
 			}
 		}
@@ -966,9 +971,7 @@ kbd {
 		width: 36px;
 		height: 32px;
 		place-content: center;
-		font-family: inherit;
-		font-size: 26px;
-		line-height: 1;
+		font: bold 28px/1 var(--typeface-mono);
 		color: #fff;
 		background: var(--button-overlay), var(--color-button-important);
 		--b: 1px solid oklch(from var(--color-primary) min(.35, calc(l - 0.1)) min(.13, c) h);
@@ -978,7 +981,6 @@ kbd {
 		border-radius: 0;
 		box-shadow: inset 1px 1px var(--color-primary-sat), inset -1px -1px var(--color-primary-sat);
 		font-stretch: 110%;
-		font-weight: 600;
 		text-shadow: inherit;
 		transition: all 200ms cubic-bezier(0.23, 1, 0.320, 1);
 		margin: 0;
@@ -1111,7 +1113,8 @@ kbd {
 			cursor: pointer;
 			& samp {
 				font-stretch: 100%;
-				padding: 0 0.25em 0.05em;
+				padding: 0.4ex;
+				line-height: 1;
 				border: 1px solid #7777;
 				background: var(--color-bg);
 				font-family: inherit;
