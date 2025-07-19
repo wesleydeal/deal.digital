@@ -84,16 +84,16 @@
 		--color-fg-hc: #fff;
 		--color-bg-hc: #000;
 		--bg:
-			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 95%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
+			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 90%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
 			radial-gradient(oklch(from var(--color-h1) l c h / 20%) 1px, #0000 1.5px) 0 0 / 12px 12px,
 			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
 			radial-gradient(oklch(from var(--color-primary-sat) l c h / 20%) 1px, #0000 1.5px) 6px 6px / 12px 12px,
 			var(--color-bg);
 		--bg:
 			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 95%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			conic-gradient(at 2px 2px, #0000 0deg 270deg, oklch(from var(--color-h1) l c h / 30%) 0deg) 0 0 / 8px 8px,
+			conic-gradient(at 2px 2px, #0000 0deg 270deg, oklch(from var(--color-primary) l c h / 30%) 0deg) 0 0 / 8px 8px,
 			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			conic-gradient(at 2px 2px, #0000 0deg 270deg, oklch(from var(--color-primary-sat) l c h / 30%) 0deg) 4px 4px / 8px 8px,
+			conic-gradient(at 2px 2px, #0000 0deg 270deg, oklch(from var(--color-primary) l c h / 30%) 0deg) 4px 4px / 8px 8px,
 			var(--color-bg);
 		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.1, c) h);
 		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
