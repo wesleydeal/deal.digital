@@ -44,3 +44,4 @@ index_format = "fuse_json"
 
 # Options: "concourse", "neomillenial", "mini", "apricot", TODO: "aquatic", "obsidian"
 stylesheet = "concourse"
+breadcrumbs = false

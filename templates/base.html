@@ -4,7 +4,7 @@
 	{% set color = page.extra.color -%}
 {% elif section.extra.color -%}
 	{% set color = section.extra.color -%}
-{% endif %}
+{% endif -%}
 <html lang="en"{% if color %} style="--color-primary: {{ color }}"{% endif %}>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -158,21 +158,17 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 <header>
 	<nav id="topnav">
 		<ul class="topnav-links">
-			<li>{% block homelink -%}
-			<a href="/" id="homelink">deal.digital</a>
-			{% endblock homelink -%}
+			<li>{%- block homelink -%}<a href="/" id="homelink">deal.digital</a>{%- endblock homelink %}
 			<li><a href="/tools/">🛠️ Tools</a>
 			<li><a href="/blog/">📝 Notes</a>
 			<li><a href="/now/">⏳ Now</a>
 			<li><a href="/links/">🔗 Links</a>
 			<li><a href="/uses/">⌨️ Uses</a>
-			<!--<li><a href="https://github.com/wesleydeal">👨🏻‍💻 GitHub</a>
-			<li><a href="https://linkedin.com/in/wesley-deal">🏢 LinkedIn</a>-->
 			<li><a href="/resume/">📄 Resume</a>
 			<li><a href="#" id="search-link">🧭 Navigator</a></li>
 		</ul>
 	</nav>
-	{% if (page and not page.extra.nobreadcrumbs) -%}
+{% if page and config.extra.breadcrumbs and not page.extra.nobreadcrumbs -%}
 	<nav id="breadcrumbs">
 		{% block breadcrumb -%}
 		{% set current = section | default(value=page) -%}
@@ -189,7 +185,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 		<a href="{{ current.permalink | safe }}">●</a>
 		{% endblock breadcrumb -%}
 	</nav>
-	{% endif -%}
+{%- endif -%}
 </header>
 {% if page.extra.toc and page.toc %}
 <nav id="toc">
@@ -232,7 +228,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 	{% set t2_end = "│ └─" -%}
 	{% for s in sections | sort -%}
 		{% set section = get_section(path=s) -%}
-		<br>{{ t1 }}<a href="{{ section.path ~ '/' | safe }}">{{ section.path | trim_start_matches(pat="/") }}</a>
+		<br>{{ t1 }}<a href="{{ section.path | safe }}">{{ section.path | trim_start_matches(pat="/") | safe }}</a>
 		{% if section.pages -%}
 		{% set subpages = section.pages -%}
 		{% for subpage in subpages | sort(attribute="path") -%}
@@ -282,8 +278,6 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 </footer>
 <div id="ui-tools">
 	<button id="btn_top" aria-label="Jump to top">⬆</button>
-	<!--<button id="btn_toc">📑</button>-->
-	<!--<button id="btn_search">🧭</button>-->
 	<button id="btn_theme" aria-label="Toggle dark mode">💡</button>
 	<button id="btn_larger" aria-label="Increase font size">T<b>▲</b></button>
 	<button id="btn_smaller" aria-label="Decrease font size">T<b>▼</b></button>
