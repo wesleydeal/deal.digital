@@ -174,7 +174,8 @@ nav#topnav {
 	& a#homelink {
 		padding: 0.18em 0.38em 0.20em 0.35em;
 		font: italic semi-condensed 400 2em/1 var(--typeface-brand);
-		text-decoration: underline var(--color-pop) 2px;
+		text-decoration: underline var(--color-pop);
+		text-decoration-thickness: 2px;
 		text-underline-offset: 3px;
 		letter-spacing: -0.03em;
 		text-shadow: 0 0 8px #0007, 1px 1px 0 #000;
@@ -515,7 +516,8 @@ footer {
 
 a:any-link {
 	color: var(--color-link);
-	text-decoration: underline var(--color-link-underline) 0.05em;
+	text-decoration: underline var(--color-link-underline);
+	text-decoration-thickness: 0.05em;
 	text-shadow: 1px 1px 3px oklch(from var(--color-link-underline) l c h / 20%);
 	border-radius: 5px;
 	transition: color 200ms cubic-bezier(0.23, 1, 0.320, 1),
@@ -547,7 +549,8 @@ h1 {
 	text-shadow: 2px 2px 0 oklch(from var(--color-tinted-shadow) l c h / 15%);
 	& em, & i{
 		font-style: normal;
-		text-decoration: underline var(--color-pop-bgcontrast) 0.05em;
+		text-decoration: underline var(--color-pop-bgcontrast);
+		text-decoration-thickness: 0.05em;
 		text-underline-offset: 0.05em;
 	}
 	& small {
@@ -595,7 +598,8 @@ h4 {
 	font-style: oblique;
 	margin: 1em 0 0.4em;
 	& em, & i {
-		text-decoration: underline 1px;
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
 	}
 }
 
@@ -872,7 +876,8 @@ kbd {
 			text-shadow: 1px 1px 2px var(--color-tinted-shadow);
 		}
 		& span:not(.emoji), &:not(:has(.emoji)) {
-			text-decoration: 0.08em underline var(--color-link-underline) !important;
+			text-decoration: underline var(--color-link-underline) !important;
+			text-decoration-thickness: 0.08em;
 			text-underline-offset: 0.08em;
 			text-shadow: 1px 1px 2px oklch(from var(--color-tinted-shadow) l c h / 10%);
 		}
