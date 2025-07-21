@@ -114,9 +114,9 @@
 			linear-gradient(90deg, #0000 9px, var(--x) 10px 11px, #0000 0) 0 0 / 20px 20px,
 			var(--color-bg);*/
 		--s: 32px;
-		--bg: linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 90%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
+		--bg: linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 85%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
 			conic-gradient(var(--color-bg) atan(2), #0000 0 calc(180deg - atan(2)), var(--color-bg) 0 180deg, #0000 0 calc(180deg + atan(2)), var(--color-bg) 0 calc(360deg - atan(2)), #0000 0) 0 0 / calc(2*var(--s)) var(--s),
-    		linear-gradient(to right, color-mix(in oklch, oklch(from var(--color-primary) max(.7, l) c h), var(--color-bg) 70%), var(--color-bg)) 0 / var(--s);
+    		linear-gradient(to right, color-mix(in oklch, oklch(from var(--color-primary) max(.75, l) c h), var(--color-bg) 65%), var(--color-bg)) 0 / var(--s);
 		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.1, c) h);
 		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
 		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
@@ -759,7 +759,7 @@ ul.blog-listing {
 	}
 }
 
-body#blog h1, body#tools h1 {
+body:has(.sitebuttons) h1, body:has(.blog-listing) h1 {
 	max-width: var(--text-width);
 	text-align: left;
 }
