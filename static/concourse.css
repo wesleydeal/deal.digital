@@ -119,11 +119,9 @@ header {
 	flex-direction: column;
 
 	margin: 0;
-	padding: 0.45em 0.6em;
+	padding: 7px 9px;
 	font-size: clamp(1.1em, 1.2vw, 1.3em);
 
-	color: #fff;
-	background: #000;
 	background: var(--header-bg);
 	border-bottom: 1px solid var(--color-primary);
 	box-shadow: 0 1px 5px var(--color-tinted-shadow);
@@ -133,9 +131,6 @@ nav#topnav {
 	max-width: 100%;
 	margin: 0;
 	display: flex;
-	flex-wrap: wrap;
-	gap: 2px 3px;
-	line-height: 1.6;
 	padding: 0 max(0px, calc(50vw - 1300px));
 	& a#homelink {
 		padding: 0.18em 0.38em 0.20em 0.35em;
@@ -175,7 +170,7 @@ nav#topnav {
 		box-shadow: var(--button-shadow);
 		border: var(--button-border);
 		background: var(--button-overlay), oklch(from var(--color-button-important) l c h / 50%);
-		padding: 0.3em 1ch 0.3em 0.8ch;
+		padding: 0.3em 0.8ch 0.3em 0.7ch;
 		text-decoration: none;
 		text-shadow: 1px 1px 0 #000;
 		&:hover, &:focus {
@@ -234,7 +229,7 @@ nav#toc {
 			top: 0;
 			width: 100%;
 			height: 100%;
-			background: linear-gradient(90deg in oklab, #555c, 5px, #0000 16px calc(100% - 16px), calc(100% - 5px), #555c);
+			background: linear-gradient(90deg in oklab, #333, 5px, #0000 16px calc(100% - 16px), calc(100% - 5px), #333);
 			pointer-events: none;
 		}
 		&>div {
@@ -364,14 +359,12 @@ section.content {
 		z-index: 10;
 		transform: scale(1);
 		transform-origin: center;
-		transition: 250ms transform cubic-bezier(0.165, 0.84, 0.44, 1);
 		&:hover:not(.zoomed) {
 			transform: perspective(200px) translateZ(5px);
 			outline: 2px solid var(--color-pop);
 			&.badge, &.badge-2x {
 				position: relative;
 				transform: none;
-				//transform: perspective(200px) translateZ(100px);
 			}
 		}
 		.content a:any-link:has(&) {
@@ -421,6 +414,7 @@ section.content {
 
 footer {
 	--c: oklch(from var(--color-primary) max(l,0.85) c h);
+	--c80: color-mix(in oklch, var(--c) 80%, #0000);
 	--c70: color-mix(in oklch, var(--c) 70%, #0000);
 	--c10: color-mix(in oklch, var(--c) 10%, #0000);
 	padding: 20px 3ch 60px;
@@ -443,12 +437,12 @@ footer {
 		display: block;
 	}
 	& a:any-link {
-		background: var(--c);
+		background: var(--c80);
 		color: #000b;
 		text-decoration: none;
-		text-shadow: 0 0 3px #0005;
+		text-shadow: 0 0 3px #0007;
 		border-radius: 3px;
-		box-shadow: 0 0 0.3em var(--c70);
+		box-shadow: 0 0 0 0.1em var(--c70), 0 0 0.3em var(--c70);
 		&:hover, &:active {
 			text-decoration: underline;
 			background: inherit;
@@ -515,13 +509,6 @@ h1 {
 	max-width: 24ch;
 	margin: 0.5em 0 0.25em;
 	text-shadow: 2px 2px 0 oklch(from var(--color-tinted-shadow) l c h / 15%);
-	& em, & i{
-		//font-style: normal;
-		text-decoration: underline;
-		text-decoration-color: var(--color-pop-bgcontrast);
-		text-decoration-thickness: 0.05em;
-		text-underline-offset: 0.05em;
-	}
 	& small {
 		display: block;
 		font: italic normal 1.5rem/1.2 var(--typeface-display);
@@ -618,7 +605,7 @@ code, pre {
 }
 
 blockquote {
-	background: linear-gradient(to bottom right, color-mix(in oklch,var(--color-primary) 10%, transparent), transparent 300%);
+	background: linear-gradient(to bottom right, color-mix(in oklch,var(--color-primary) 10%, transparent), transparent 200%);
 	padding: .5em 2ch;
 	margin: 1em 0;
 	border-left: 2px solid var(--color-primary);
@@ -759,12 +746,8 @@ pre:has(>samp) {
 }
 
 .z-code {
-	counter-reset: line;
 	box-shadow: 1px 1px 5px inset #0003;
 	border: 1px solid var(--color-primary);
-	@container & (width > 300px) & {
-		margin-left: -2em;
-	}
 	&:has(>code>.z-text:only-child), &:has(>code>.z-source:only-child) {
 		box-shadow: 1px 1px 3px inset #0003;
 	}
@@ -922,15 +905,6 @@ kbd {
 		font-family: var(--typeface-body);
 		font-stretch: 50%;
 	}
-	& label[for="search-box"] {
-		grid-area: label;
-		margin: 0;
-		display: inline-block;
-		font-size: 18px;
-		& i {
-			font-weight: 350;
-		}
-	}
 	& #search-titlebar {
 		background: repeating-linear-gradient(135deg in oklch, #0001 0, #0000 24px), repeating-linear-gradient(60deg in oklch, #0001 0, #0000 24px), var(--header-bg);
 		display: flex;
@@ -943,8 +917,17 @@ kbd {
 		user-select: none;
 		touch-action: none;
 		opacity: .85;
+		cursor: grab;
 		&:active {
 			cursor: grabbing;
+		}
+	}
+	& label[for="search-box"] {
+		margin: 0;
+		display: inline-block;
+		font-size: 18px;
+		& i {
+			font-weight: 350;
 		}
 	}
 	& .window-buttons {
