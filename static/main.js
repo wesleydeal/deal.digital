@@ -244,7 +244,7 @@ function toggleSearch(query="") {
 		if (elid("search-container").classList.contains('min')) {
 			elid("search-container").classList.remove('min');
 			elid("search-box").focus();
-			playSound('/sounds/KDE_Window_Shade_Up.ogg');
+			//playSound('/sounds/KDE_Window_Shade_Up.ogg');
 		} else {
 			closeSearch();
 		}
@@ -289,7 +289,7 @@ function openSearch(query=null) {
 		query = "";
 	}
 	if (!elid("search-container")) {
-		playSound('/sounds/KDE_Window_UnHide.ogg');
+		//playSound('/sounds/KDE_Window_UnHide.ogg');
 		document.body.insertAdjacentHTML('afterbegin', `
 			<div id="search-container">
 				<div id="search-titlebar">
@@ -362,12 +362,12 @@ function closeSearch() {
 	window.history.replaceState(null, null, url);
 	elid("search-container").classList.add('hidden');
 	setTimeout(() => {elid("search-container").remove()}, 300);
-	playSound('/sounds/KDE_Window_Close.ogg')
+	//playSound('/sounds/KDE_Window_Close.ogg')
 }
 
 function minimizeSearch() {
 	elid("search-container").classList.add('min');
-	playSound('/sounds/KDE_Window_Shade_Down.ogg');
+	//playSound('/sounds/KDE_Window_Shade_Down.ogg');
 }
 
 function toggleMaximizeSearch() {
@@ -405,17 +405,29 @@ function onDragRelease(event) {
 function dragSearchStart(event) {
 	const sC = elid("search-container");
 	const style = getComputedStyle(sC);
-	if (document.querySelector("#search-titlebar .window-buttons").contains(event.target)) {
-		return;
-	}
-	if (sC.classList.contains('max')) {
-		sC.style.setProperty('width', searchWindowPos.width);
-		sC.style.setProperty('height', 'auto');
-		sC.style.setProperty('top', 0);
-		sC.style.setProperty('left', (event.clientX / window.innerWidth) * (window.innerWidth - parseFloat(searchWindowPos.width)) + "px");
-		sC.classList.remove('max');
-	}
-	if (!searchDrag || searchDrag.length < 1) {
+	if (document.querySelector("#search-titlebar .window-buttons").contains(event.target)) return;
+	if (event.buttons != 1) return;
+
+	if (sC.classList.contains('max')) { // don't start dragging until we've moved at least 4 pixels, if maximized
+		let originalX = event.clientX;
+		let originalY = event.clientY;
+		const moveListener = (event) => {
+			if (event.buttons != 1) {
+				sC.removeEventListener('pointermove', moveListener);
+				return;
+			}
+			if (((originalX + event.clientX)**2 + (originalY + event.clientY)**2)**0.5 > 4) {
+				sC.style.setProperty('width', searchWindowPos.width);
+				sC.style.setProperty('height', 'auto');
+				sC.style.setProperty('top', 0);
+				sC.style.setProperty('left', (event.clientX / window.innerWidth) * (window.innerWidth - parseFloat(searchWindowPos.width)) + "px");
+				sC.classList.remove('max');
+				dragSearchStart(event);
+				sC.removeEventListener('pointermove', moveListener);
+			}
+		}
+		sC.addEventListener('pointermove', moveListener);
+	} else if (!searchDrag || searchDrag.length < 1) {
 		searchDrag = [event.clientX - sC.offsetLeft, event.clientY - sC.offsetTop];
 		elid("search-container").classList.add('drag');
 		document.addEventListener('pointermove', dragSearchUpdate, {passive: false});
@@ -534,7 +546,7 @@ async function updateSearch(event=null) {
 
 // ON LOAD -----------------------------------------
 function load() {
-	if (performance.navigation.type === PerformanceNavigation.TYPE_NAVIGATE) playSound('/sounds/Woosh2.opus', .4);
+	//if (performance.navigation.type === PerformanceNavigation.TYPE_NAVIGATE) playSound('/sounds/Woosh2.opus', .4);
 	if (elid("toc")) {
 		document.addEventListener('scrollend', () => {
 			const links = document.querySelectorAll('#toc a[href^="#"]');
