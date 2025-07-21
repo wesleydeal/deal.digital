@@ -28,9 +28,9 @@
 	--color-fg: #000;
 	--color-bg-hc: #fff;
 	--color-bg: oklch(from var(--color-primary) 1 calc(c * .1) h);
-	--bg: linear-gradient(to right in oklch, #0000, oklch(from var(--color-bg) l c h / 60%), oklch(from var(--color-bg) l c h / 90%), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 5vw) min(calc(50% + (var(--text-width) / 2)), 95vw), oklch(from var(--color-bg) l c h / 90%), oklch(from var(--color-bg) l c h / 60%), #0000) 0 / cover,
+	--bg: linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 80%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
 			repeating-linear-gradient( 90deg in oklch, oklch(from var(--color-h1) l c h / 5%), transparent 5vw),
-			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l c h / 15%), transparent 6vw),
+			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l min(0.15,c) h / 15%), transparent 6vw),
 			var(--color-bg);
 
 	--color-primary-sat: oklch(from var(--color-primary) clamp(0.85, l, 0.95) max(.14, c) h);
@@ -57,10 +57,6 @@
 		--dark-mode: true;
 	}
 
-	@media screen and (width < 1000px) {
-		--bg: linear-gradient(to right in oklch, oklch(from var(--color-primary) .97 calc(c * .25) h), 20px, oklch(from var(--color-primary) .99 calc(c * .1) h) 100px calc(100% - 100px), calc(100% - 20px), oklch(from var(--color-primary) .97 calc(c * .25) h)), var(--color-bg);
-	}
-
 	--text-width: 50rem;
 	--content-margins: 16px;
 	--typeface-body: BlinkMacSystemFont, Roboto, "Segoe UI Variable", system-ui, sans-serif;
@@ -83,40 +79,10 @@
 		--color-fg: #fff;
 		--color-fg-hc: #fff;
 		--color-bg-hc: #000;
-		/*--bg: linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 95%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			repeating-linear-gradient(270deg in oklch, oklch(from var(--color-h1) l c h / 5%), transparent 1.8vw),
-			repeating-linear-gradient(315deg in oklch, oklch(from var(--color-link-underline) l c h / 15%), transparent 1.5vw),
-			var(--color-bg);*/
-		/*--bg:
-			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 90%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			radial-gradient(oklch(from var(--color-h1) l c h / 20%) 1px, #0000 1.5px) 0 0 / 12px 12px,
-			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			radial-gradient(oklch(from var(--color-primary-sat) l c h / 20%) 1px, #0000 1.5px) 6px 6px / 12px 12px,
-			var(--color-bg);*/
-		/*--bg:
-			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 95%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			conic-gradient(at 6px 6px, #0000 0deg 270deg, oklch(from var(--color-primary) l c h / 30%) 0deg) 0 0 / 12px 12px,
-			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), var(--color-bg) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			conic-gradient(at 6px 6px, #0000 0deg 270deg, oklch(from var(--color-primary) l c h / 30%) 0deg) 6px 6px / 12px 12px,
-			var(--color-bg);*/
-		/*--bg:
-			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 80%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			conic-gradient(at 10px 10px, oklch(from var(--color-bg) l c h / 70%) 0deg 270deg, #0000 0deg) 0 0 / 30px 30px,
-			linear-gradient(0deg, #0000 45%, oklch(from var(--color-primary) calc(l * .35) c h) 45% 55%, #0000 0) 0 0 / 10px 10px,
-			linear-gradient(90deg, #0000 45%, oklch(from var(--color-primary) calc(l * .35) c h) 45% 55%, #0000 0) 0 0 / 10px 10px,
-			var(--color-bg);*/
-		/*--x: color-mix(in oklch, oklch(from var(--color-primary) max(.7, l) c h), var(--color-bg) 80%);
-		--bg:
-			linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 90%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			radial-gradient(oklch(from var(--x) calc(l - 0.03) c h) 3.5px, #0000 4px) 30px 30px / 40px 40px,
-			radial-gradient(var(--x) 3.5px, #0000 4px) 10px 10px / 40px 40px,
-			linear-gradient(0deg, #0000 9px, var(--x) 10px 11px, #0000 0) 0 0 / 20px 20px,
-			linear-gradient(90deg, #0000 9px, var(--x) 10px 11px, #0000 0) 0 0 / 20px 20px,
-			var(--color-bg);*/
-		--s: 32px;
+		--s: 40px;
 		--bg: linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 85%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
 			conic-gradient(var(--color-bg) atan(2), #0000 0 calc(180deg - atan(2)), var(--color-bg) 0 180deg, #0000 0 calc(180deg + atan(2)), var(--color-bg) 0 calc(360deg - atan(2)), #0000 0) 0 0 / calc(2*var(--s)) var(--s),
-    		linear-gradient(to right, color-mix(in oklch, oklch(from var(--color-primary) max(.75, l) c h), var(--color-bg) 65%), var(--color-bg)) 0 / var(--s);
+			linear-gradient(to right, color-mix(in oklch, oklch(from var(--color-primary) max(.75, l) c h), var(--color-bg) 65%), var(--color-bg)) 0 / var(--s);
 		--color-h1: oklch(from var(--color-primary) max(0.7, l) max(0.1, c) h);
 		--color-h2: oklch(from var(--color-primary) 0.8 min(c, 0.14) h);
 		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
@@ -871,7 +837,7 @@ kbd {
 		box-shadow: inset 1px 1px 3px oklch(from var(--color-primary) 0.1 c h / 50%);
 		border: 1px solid oklch(from var(--color-primary) l c h / 35%);
 		padding: clamp(0.3em, 1vw, 0.5em) 0.75em;
-		text-decoration: none !important;
+		text-decoration: none;
 		font-weight: 400;
 		border-radius: 5px;
 		& .emoji {
@@ -879,7 +845,7 @@ kbd {
 			text-shadow: 1px 1px 2px var(--color-tinted-shadow);
 		}
 		& span:not(.emoji), &:not(:has(.emoji)) {
-			text-decoration: underline !important;
+			text-decoration: underline;
 			text-decoration-color: var(--color-link-underline);
 			text-decoration-thickness: 0.08em;
 			text-underline-offset: 0.08em;
@@ -890,9 +856,9 @@ kbd {
 			color: #fff;
 			box-shadow: var(--button-shadow), 1px 1px 2px var(--color-tinted-shadow);
 			text-shadow: 1px 1px 2px #000;
-			text-decoration: none !important;
+			text-decoration: none;
 			& span {
-				text-decoration: none !important;
+				text-decoration: none;
 				text-shadow: 1px 1px 2px #000;
 			}
 		}
@@ -943,7 +909,7 @@ kbd {
 		border-radius: 0;
 	}
 	&.hidden {
-		transform: perspective(200px) translateZ(-200px) rotateX(20deg);
+		transform: perspective(200px) translateZ(-200px) rotateX(15deg);
 		opacity: 0;
 	}
 	&.drag {
