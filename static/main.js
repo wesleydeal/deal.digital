@@ -625,6 +625,7 @@ function load() {
 				e.target.style.removeProperty('transform');
 			} else {
 				e.target.classList.add("zoomed");
+				if (!(e.target.classList.contains('pixelated')) && e.target.naturalWidth < (root.clientWidth / 2) && e.target.naturalHeight < (root.clientHeight / 2)) e.target.classList.add('pixelated');
 				let b = e.target.getBoundingClientRect();
 				let targetTranslateX = (root.clientWidth / 2) - (b.x + (b.width / 2));
 				let targetTranslateY = (root.clientHeight / 2) - (b.y + (b.height / 2));
