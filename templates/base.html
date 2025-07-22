@@ -131,6 +131,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 [id] {
 	scroll-margin-top: 100px;
 }
+footer hr:first-child{ display: none }
 
 @view-transition { navigation: auto; }
 ::view-transition-group(root) { animation-duration: 0.3s }
@@ -196,6 +197,7 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 	{% endblock %}
 </section>
 <footer>
+	<hr>
 	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
 	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
 	<p>% show system-information
