@@ -56,7 +56,7 @@
 	--typeface-display: "Instrument Serif", "Iowan Old Style", "Sitka Display", Georgia, ui-serif, serif;
 	--typeface-brand: "Instrument Serif", system-ui;
 	--typeface-prefer-narrow: sans-serif-condensed, Bahnschrift, var(--typeface-body);
-	--typeface-mono: "Cascadia Code", ui-monospace, Consolas, "Source Code Pro", "Ubuntu Mono", "Fira Code", "Fira Mono", monospace;
+	--typeface-mono: "Cascadia Code", Inconsolata, Consolas, ui-monospace, "Source Code Pro", "Ubuntu Mono", "Fira Code", "Fira Mono", monospace;
 
 	background-color: var(--color-bg);
 
@@ -307,7 +307,6 @@ nav#toc {
 			margin: 0 -0.15em;
 		}
 		&#btn_smaller b {
-			color: #fa9122;
 			color: oklch(0.8024 0.1549 58.1);
 			font-size: 1rem;
 			margin: 0 -0.15em;

@@ -8,7 +8,7 @@
 
 {% block content %}
 <article class="landing">
-	<h1 class="title">Hello!</h1>
+	<h1 class="title" id="title">Hello!</h1>
 	<p>I’m Wesley Deal, a technology enthusiast and sysadmin.
 	<div class="landing-link-container">
 		<section class="sitebuttons">
@@ -32,7 +32,7 @@
 				{% endfor -%}
 				{% set articles = articles | filter(attribute="date") | sort(attribute="date") | reverse -%}
 				{% for article in articles -%}
-				<li><a href="{{ article.path | safe }}">{% if article.extra.shorttitle %}{{article.extra.shorttitle}}{% else %}{{ article.title }}{% endif %}</a><span class="article-separator"> • </span><time>{{ article.date }}</time></li>
+				<li><a href="{{ article.path | safe }}">{% if article.extra.shorttitle %}{{article.extra.shorttitle}}{% else %}{{ article.title }}{% endif %}</a><span class="article-separator"> • </span><time>{{ article.date }}</time>
 				{% endfor -%}
 			</ul>
 		</section>
@@ -44,22 +44,17 @@
 	</section>
 </article>
 <script>
-	hoursNow = (new Date()).getHours();
-	function setGreeting(message) {document.getElementsByTagName('H1')[0].innerHTML = message;}
-	function setPrimaryColor(color) {document.documentElement.style.setProperty('--color-primary', color);}
+	const hoursNow = (new Date()).getHours();
+	function setProps(msg, color) {document.getElementById('title').innerText = 'Good ' + msg + '!'; document.documentElement.style.setProperty('--color-primary', color);}
 
 	if (hoursNow > 22 || hoursNow < 6) {
-		setGreeting("Good night!");
-		setPrimaryColor('#5b00d2');
+		setProps("night", '#5b00d2');
 	} else if (hoursNow < 12) {
-		setGreeting("Good morning!");
-		setPrimaryColor('#52b5c5');
+		setProps("morning", '#52b5c5');
 	} else if (hoursNow < 18) {
-		setGreeting("Good afternoon!");
-		setPrimaryColor('#e57a0c');
+		setProps("afternoon", '#e57a0c');
 	} else {
-		setGreeting("Good evening!");
-		setPrimaryColor('#d78989');
+		setProps("evening", '#d78989');
 	}
 </script>
 {% endblock content %}
