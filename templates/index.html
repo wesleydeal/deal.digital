@@ -32,7 +32,7 @@
 				{% endfor -%}
 				{% set articles = articles | filter(attribute="date") | sort(attribute="date") | reverse -%}
 				{% for article in articles -%}
-				<li><a href="{{ article.permalink | safe }}">{% if article.extra.shorttitle %}{{article.extra.shorttitle}}{% else %}{{ article.title }}{% endif %}</a><span class="article-separator"> • </span><time>{{ article.date }}</time></li>
+				<li><a href="{{ article.path | safe }}">{% if article.extra.shorttitle %}{{article.extra.shorttitle}}{% else %}{{ article.title }}{% endif %}</a><span class="article-separator"> • </span><time>{{ article.date }}</time></li>
 				{% endfor -%}
 			</ul>
 		</section>

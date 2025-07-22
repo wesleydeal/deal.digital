@@ -4,7 +4,6 @@
   font-display: auto;
   font-weight: 400;
   src: url('/fonts/instrument-serif_5.2.5_latin-400-normal.woff2') format('woff2');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
 @font-face {
@@ -13,14 +12,14 @@
   font-display: auto;
   font-weight: 400;
   src: url('/fonts/instrument-serif_5.1.0_latin-400-italic.woff2') format('woff2');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
 :root {
 	container: root / size;
-	color-scheme: light dark;
 
 	--dark-mode: false;
+	@media (prefers-color-scheme: dark) {--dark-mode: true;}
+
 	--color-primary: #e43; /*#fa7;*/
 	--c: var(--color-primary);
 
@@ -28,11 +27,10 @@
 	--color-fg: #000;
 	--color-bg-hc: #fff;
 	--color-bg: oklch(from var(--color-primary) 1 calc(c * .1) h);
-	--bg: linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 80%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			repeating-linear-gradient( 90deg in oklch, oklch(from var(--color-h1) l c h / 5%), transparent 5vw),
-			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l min(0.15,c) h / 15%), transparent 6vw),
+	--bg: linear-gradient(90deg, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 80%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
+			repeating-linear-gradient(90deg in oklch, oklch(from var(--color-h1) l c h / 5%), #0000 5vw),
+			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l min(0.15,c) h / 15%), #0000 6vw),
 			var(--color-bg);
-
 	--color-primary-sat: oklch(from var(--color-primary) clamp(0.85, l, 0.95) max(.14, c) h);
 	--color-button-important: oklch(from var(--color-primary) clamp(0.3, calc(l + 0.05), 0.57) calc(c + .02) h);
 	--color-link: oklch(from var(--color-primary) 0.2 max(c, 0.1) h);
@@ -51,11 +49,6 @@
 		linear-gradient(to right in oklch, #0000 -100%, #fff3, #0000 200%),
 		linear-gradient( #fff1, #fff2 50%, #0002 50%, #0000),
 		repeating-linear-gradient(135deg, #ffffff03 0 4px, #00000003 0 8px) 0 / calc(8px/sin(135deg)) 100%;
-
-	@media (prefers-color-scheme: dark) {
-		color-scheme: dark;
-		--dark-mode: true;
-	}
 
 	--text-width: 50rem;
 	--content-margins: 16px;
