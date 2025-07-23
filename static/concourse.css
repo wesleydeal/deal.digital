@@ -81,6 +81,7 @@
 		--color-link: oklch(from var(--color-primary) 1 min(c, 0.05) h);
 		--color-pop-bgcontrast: var(--color-pop);
 		--color-tinted-shadow: oklch(from var(--color-primary) 0.85 0.15 h / 50%);
+		color-scheme: dark;
 	}
 }
 
@@ -406,9 +407,12 @@ section.content {
 			min-width: 100%;
 		}
 	}
+	footer.footnotes{
+		margin-top: 8em;
+	}
 }
 
-footer {
+body>footer {
 	--c: oklch(from var(--color-primary) max(l,0.85) c h);
 	--c80: color-mix(in oklch, var(--c) 80%, #0000);
 	--c70: color-mix(in oklch, var(--c) 70%, #0000);
@@ -1111,7 +1115,7 @@ kbd {
 			font-stretch: 90%;
 		}
 	}
-	footer {
+	body>footer {
 		font-size: 1em !important;
 	}
 	section#content>h1 {

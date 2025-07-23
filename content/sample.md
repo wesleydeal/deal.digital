@@ -4,7 +4,7 @@ title = "Sample Page"
 toc = true
 +++
 
-This page is here to demonstrate all of the common elements used on this website. This is primarily intended for
+This page is here to demonstrate all of the common elements[^foot1] used on this website. This is primarily intended for
 my personal use during stylesheet development. Oh, and by the way, [here is a link](#) that goes nowhere.
 
 This paragraph contains **bold**, ***bold italic (some of which is [linked](#))***, *plain italic,* and ~strikethrough~ text.
@@ -186,6 +186,16 @@ Freak the fuck out and panic sell everything right now.
 It's fucking over.
 {% end %}
 
+## Description Lists
+
+<dl>
+  <dt>First Term</dt>
+  <dd>This is the definition of the first term.</dd>
+  <dt>Second Term</dt>
+  <dd>This is one definition of the second term. </dd>
+  <dd>This is another definition of the second term.</dd>
+</dl>
+
 # Domain *Eukaryota*
 Organisms whose cells possess a membrane-bound nucleus.
 
@@ -206,3 +216,5 @@ The biological family of cats, known for retractable claws and keen predation sk
 
 **Snow Leopard**, *Panthera uncia*
 The snow leopard — a solitary, mountain-dwelling big cat native to Central and South Asia.
+
+[^foot1]: This is an example of a footnote
