@@ -160,5 +160,12 @@ Emulation
 * [Zola](https://www.getzola.org/documentation) & [Tera](https://keats.github.io/tera/docs/) docs
 * [ffmpeg by example](https://ffmpegbyexample.com/)
 
+
+Encoding, Compression, & File Formats
+-------------------------------------
+## ffmpeg
+* [Windows builds](https://github.com/BtbN/FFmpeg-Builds/releases)
+* [Recipes](https://andy-preston.github.io/ffmpeg-recipes/)
+
 ## Lists of Lists
 * [awesome-* on GitHub](https://github.com/sindresorhus/awesome#readme)

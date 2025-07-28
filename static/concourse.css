@@ -488,7 +488,11 @@ a:any-link {
 		box-shadow 200ms cubic-bezier(0.23, 1, 0.320, 1),
 		text-decoration 500ms cubic-bezier(0.23, 1, 0.320, 1),
 		outline 200ms cubic-bezier(0.23, 1, 0.320, 1);
-
+	&.i-ref {
+		text-decoration-style: dotted;
+		text-decoration-thickness: 0.1em;
+		text-underline-offset: 0.16em;
+	}
 	&:hover, &:active, &:focus {
 		--c: var(--color-link-underline);
 		background: var(--c);
@@ -1391,7 +1395,7 @@ kbd {
 	color: #f07171;
 }
 
-/* ayu dark */
+/* ayu mirage */
 @container root style(--dark-mode: true) {
 	.z-code {
 		color: #ccc9c2;

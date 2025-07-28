@@ -1,13 +1,8 @@
-# The URL the site will be built for
 base_url = "https://deal.digital"
-
-# Whether to automatically compile all Sass files in the sass directory
-compile_sass = false
-
-# Whether to build a search index to be used later on by a JavaScript library
-build_search_index = true
-
 output_dir = "public"
+compile_sass = false
+build_search_index = true
+minify_html = false
 
 author = "Wesley Deal"
 
@@ -18,16 +13,13 @@ taxonomies = [
 	{name = "tags", feed = true, render = false},
 ]
 
-
 [markdown]
 insert_anchor_links = "left"
-# Whether to do syntax highlighting
-# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
 highlight_code = true
-#highlight_theme = "ayu-mirage"
+#highlight_theme = "ayu-mirage" # unused at thistime
 extra_syntaxes_and_themes = ["highlight_themes", "highlight_themes"]
 highlight_theme = "css"
-highlight_themes_css = [
+highlight_themes_css = [ # manually inlined into concourse.css
 	{ theme = "ayu-mirage", filename = "syntax-dark.css"  },
 	{ theme = "ayu-light",  filename = "syntax-light.css" },
 #	{ theme = "Tomorrow",   filename = "syntax-light.css" },
@@ -35,7 +27,7 @@ highlight_themes_css = [
 #	{ theme = "halcyon", filename = "syntax-dark.css" },
 ]
 bottom_footnotes = true
-
+lazy_async_image = true
 smart_punctuation = true
 
 [search]
@@ -43,6 +35,5 @@ index_format = "fuse_json"
 
 [extra]
 
-# Options: "concourse", "neomillenial", "mini", "apricot", TODO: "aquatic", "obsidian"
-stylesheet = "concourse"
+stylesheet = "concourse" # Options: "concourse", "neomillenial", "mini", "apricot", TODO: "aquatic", "obsidian"
 breadcrumbs = false
