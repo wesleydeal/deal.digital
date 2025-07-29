@@ -1,4 +1,7 @@
 base_url = "https://deal.digital"
+title = "deal.digital"
+description = "Wesley Deal's Personal Site"
+default_language = "en"
 output_dir = "public"
 compile_sass = false
 build_search_index = true
@@ -27,8 +30,15 @@ highlight_themes_css = [ # manually inlined into concourse.css
 #	{ theme = "halcyon", filename = "syntax-dark.css" },
 ]
 bottom_footnotes = true
-lazy_async_image = true
+#lazy_async_image = true (this breaks table of contents for some reason, TODO: investigate later)
 smart_punctuation = true
+definition_list = true
+
+[slugify]
+paths = "on"
+taxonomies = "on"
+anchors = "on"
+paths_keep_dates = false
 
 [search]
 index_format = "fuse_json"
