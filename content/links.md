@@ -163,9 +163,10 @@ Emulation
 
 Encoding, Compression, & File Formats
 -------------------------------------
-## ffmpeg
+### ffmpeg
 * [Windows builds](https://github.com/BtbN/FFmpeg-Builds/releases)
 * [Recipes](https://andy-preston.github.io/ffmpeg-recipes/)
 
-## Lists of Lists
+Lists of Lists
+---------------
 * [awesome-* on GitHub](https://github.com/sindresorhus/awesome#readme)
