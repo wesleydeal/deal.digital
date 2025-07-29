@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" style="--color-primary: #ea7299">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Things I use and like - Wesley Deal</title>
+<style>
+*, *:before, *:after {box-sizing: border-box;}
+body {
+	font: 100%/1.6 system-ui, sans-serif;
+	margin: 0;
+	width: 100%;
+	overflow-wrap: break-word;
+	scroll-margin-top: 20px;
+	background: oklch(from var(--color-primary, #056) 0.96 0.01 h);
+}
+body>* {
+	padding: 16px;
+	max-width: 100%;
+	opacity: 1;
+}
+header nav, .content>*, footer>*, #toc>div, #search-container {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+header,article,section,nav,footer { display: block }
+header {
+	background: #056;
+	color: #fff;
+	font-size: 110%;
+	line-height: 1.8;
+	width: 100%;
+	display: block;
+	background: oklch(from var(--color-primary, #056) 0.4 c h);
+}
+header a:link, header a:visited {
+	color: #fff;
+	white-space: nowrap;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 33%;
+}
+.topnav-links {
+	list-style: none;
+	display: inline;
+	padding: 0;
+}
+nav#topnav li{
+	padding: 0;
+	margin-right: 16px;
+	display: inline;
+}
+#homelink {
+	text-decoration: 2px underline oklch(from var(--color-primary, #056) 0.8 c calc(h + 180));
+	font-weight: bold;
+}
+header nav#breadcrumbs { display: none; visibility: hidden; }
+#toc {
+	background: #023;
+	background: oklch(from var(--color-primary, #056) 0.2 c h);
+	color: #fff;
+	display: block;
+}
+#toc a:link, #toc a:visited {
+	color: #fff;
+}
+.content {
+	min-height: 100vh;
+	view-transition-name: content;
+	transform-origin: 50vw 50vh;
+}
+ul, ol {padding-left: 24px}
+h1 {
+	font-size: xx-large;
+	font-size: clamp(32px, 4vw, 60px);
+	font-weight: 500;
+	line-height: 1.1;
+	color: oklch(from var(--color-primary) 0.4 c h);
+	margin: 32px auto 24px;
+	text-shadow: 2px 2px 0 #7773;
+}
+h2 { margin: 20px auto 8px; font-size: 150%; font-weight: 400; }
+h3 { margin: 16px auto 6px; font-size: 135%; font-weight: 400; }
+h4 { margin: 14px auto 4px; font-size: 120%; }
+h5 { margin: 12px auto   0; font-size: 120%; font-weight: 400; }
+h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic; }
+h1 small {
+	display: block;
+	font-style: italic;
+	font-size: 20px;
+	padding-top: 10px;
+	text-shadow: none;
+}
+body>footer {
+	border-top: 2px solid;
+	font-family: ui-monospace, Consolas, monospace;
+	margin: 200px 0 800px;
+	padding: 20px;
+	line-height: 1.1;
+	position: relative;
+}
+#ui-tools {display: none;}
+a:link, a:visited {
+	color: #056;
+	color: oklch(from var(--color-primary, #056) 0.4 c h);
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
+}
+:is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
+img { max-width: 100%; }
+pre,code {overflow: auto; padding-bottom: 2px; font-family: ui-monospace, Consolas, monospace}
+table {border-collapse: collapse;}
+th,td {border: 1px solid; padding: 5px;}
+th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
+.zola-anchor {display: none; visibility: hidden;}
+#search-container { padding: 20px; overflow: hidden; }
+#search-box { width: 100%;}
+#search-keyword-list samp { padding: 0 10px; }
+@media (prefers-color-scheme: dark) {
+	body { background: #000; color: #fff; }
+	a:link, a:visited { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
+	h1 { color: oklch(from var(--color-primary) 0.7 c h); }
+}
+[id] {
+	scroll-margin-top: 100px;
+}
+footer hr:first-child{ display: none }
+
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: 0.3s }
+</style>
+<!--[if !IE]><!-->
+<link rel="preload" href="/concourse.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+<!--<![endif]-->
+<body id="uses">
+<header>
+	<nav id="topnav">
+		<ul class="topnav-links">
+			<li><a href="/" id="homelink">deal.digital</a>
+			<li><a href="/tools/">🛠️ Tools</a>
+			<li><a href="/blog/">📝 Notes</a>
+			<li><a href="/now/">⏳ Now</a>
+			<li><a href="/links/">🔗 Links</a>
+			<li><a href="/uses/">⌨️ Uses</a>
+			<li><a href="/resume/">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+</header>
+
+<section class="content">
+	<h1 class="title">
+	Things I use and like
+	<small>(my <a href="https://uses.tech">uses</a> page)</small>
+	</h1>
+<h2 id="hardware"><a class="zola-anchor" href="#hardware" aria-label="Anchor link for: hardware">#</a>Hardware</h2>
+<ul>
+<li>💻 ThinkPad Z13 (AMD 6850U, 16GB RAM, Windows 11 x <a href="https://fedoraproject.org/spins/kde/">Fedora 42 KDE</a>)
+<em>Note: The soldered-in Qualcomm wireless chip has been a bit problematic in Linux. Buyer beware.</em></li>
+<li>💽 A <a href="https://blog.mattgauger.com/2022/08/01/the-51nb-x210/">51nb X210</a> running <a href="https://www.proxmox.com/en/">Proxmox</a> as a small homelab server with a built-in UPS :^)</li>
+<li>📱 a Motorola edge 2024 ($55 from Total after I purchased a plan, let it expire, and waited 60 days for unlock)</li>
+<li>🎧 SIVGA SV007 headphones at my desk, Sony WF-C510 on the go (they stay in during workouts!)</li>
+<li>🔦 Zebralight SC64c LE with a sliced LH351D emitter for rosy, high CRI light out of a tiny, efficiently driven light</li>
+<li>🖱️ Pulsar Xlite V2 at home, Razer Deathadder V2 Pro at work</li>
+<li>⌨️ Entirely too many keyboards, including
+<ul>
+<li>WOBKEY Rainy75 (Kailh Cocoa linears)</li>
+<li>Feker Galaxy80 (Keygeek X Neo Oat linears)</li>
+<li>Weikav Stars80 V2 (Gateron Smoothie Silver linears)</li>
+<li>KBDfans KBD8X MKII (Tealios)</li>
+</ul>
+</li>
+</ul>
+<h2 id="software"><a class="zola-anchor" href="#software" aria-label="Anchor link for: software">#</a>Software</h2>
+<ul>
+<li>🧭 <a href="https://github.com/RamonUnch/AltSnap">AltSnap</a> to Win+Drag move, resize windows</li>
+<li>🗒️ <a href="https://zed.dev/">zed</a>, <a href="https://kate-editor.org/">Kate</a>, <a href="https://notepad-plus-plus.org/">Notepad++</a>, or <a href="https://neovim.io/">neovim</a> depending on my mood.
+<ul>
+<li>I haven’t quite decided if <a href="https://helix-editor.com/">Helix</a> is worth learning the muscle memory for, but I like it as well.</li>
+</ul>
+</li>
+<li>📺 <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a> interfaces: <a href="https://github.com/deniscerri/ytdlnis">YTDLnis for Android</a> and <a href="https://stacher.io/">stacher</a></li>
+<li>🌍 <a href="https://brave.com">Brave Browser</a> with <a href="https://floccus.org/">floccus</a> bookmark sync, <a href="https://chromewebstore.google.com/detail/scrollanywhere/jehmdpemhgfgjblpkilmeoafmkhbckhi?hl=en-US">ScrollAnywhere</a> for rapid <code>MOUSE3</code> click-and-drag scrolling</li>
+<li>🦈 <a href="https://www.wireshark.org/">Wireshark</a> remains the most valuable tool for network and application troubleshooting I have</li>
+<li>✉️ Gmail, because I haven’t yet been convinced of the benefits of <a href="http://www.mutt.org/">mutt</a> or sprung for a subscription to <a href="https://www.hey.com">hey</a></li>
+<li>🎶 YouTube Music, because maintaining a library is too much work when YouTube has <em>everything</em> in 160k Opus or 256k AAC</li>
+</ul>
+<h2 id="services"><a class="zola-anchor" href="#services" aria-label="Anchor link for: services">#</a>Services</h2>
+<ul>
+<li>🟢 Two small virtual private servers from RackNerd via <a href="https://lowendbox.com">LowEndBox</a> deals</li>
+<li>🐿️ <a href="https://pages.github.com/">GitHub Pages</a> because if my code is going to be on their servers anyway, and I want my site on a CDN, I may as well do it all in one place for free. Hopefully nobody will embrace-extend-extinguish it :^)</li>
+</ul>
+<h2 id="vehicles"><a class="zola-anchor" href="#vehicles" aria-label="Anchor link for: vehicles">#</a>Vehicles</h2>
+<ul>
+<li>🚗 My trusty 2007 Lexus GS450h is old enough to vote, yet has 340HP and gets 25mpg thanks to its forward-thinking <a href="https://en.wikipedia.org/wiki/Hybrid_Synergy_Drive">hybrid synergy drive</a></li>
+<li>🏍️ 2010 Kawasaki KLX250S</li>
+<li>👟 Altra Lone Peak 7 trail running shoes (feet are a vehicle, right?)</li>
+</ul>
+
+<section class="article-signoff">
+<p class="updated-at">updated <time>2025-07-17</time>
+</section>
+
+</section>
+<footer>
+	<hr>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<dl>
+		<dt>Build</dt>
+		<dd>2025-07-29 01:58:13 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/uses.md">View source here</a>.</dd>
+
+		<dt>Fonts</dt>
+		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
+
+		<dt>Navigator</dt>
+		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>
+	</dl>
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="/archive/">archive/</a>
+		<br>│ └─<a href="/archive/sdx1/">sdx1</a>
+		<br>├─<a href="/blog/">blog/</a>
+		<br>│ ├─<a href="/blog/design-principles/">design-principles</a>
+		<br>│ ├─<a href="/blog/librechat/">librechat</a>
+		<br>│ ├─<a href="/blog/shorelock/">shorelock</a>
+		<br>│ ├─<a href="/blog/smart-seagate/">smart-seagate</a>
+		<br>│ └─<a href="/blog/wintricks/">wintricks</a>
+		<br>├─<a href="/tools/">tools/</a>
+		<br>│ ├─<a href="/tools/netlibram/">netlibram</a>
+		<br>│ ├─<a href="/tools/prune/">prune</a>
+		<br>│ ├─<a href="/tools/pwgen/">pwgen</a>
+		<br>│ ├─<a href="/tools/tpmiddle/">tpmiddle</a>
+		<br>│ └─<a href="/tools/win11-hta/">win11-hta</a>
+		<br>├─<a href="/contact/">contact</a>
+		<br>├─<a href="/home/">home</a>
+		<br>├─<a href="/links/">links</a>
+		<br>├─<a href="/now/">now</a>
+		<br>├─<a href="/sample/">sample</a>
+		<br>├─<a href="/todo/">todo</a>
+		<br>└─<a href="/uses/">uses</a>
+		<p>% show :3
+	<pre class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</pre>
+	<a href="https://youtu.be/2KVJ2vm_fyw?t=131" style="position: absolute; bottom: 5px; right: 50px">π</a>
+</footer>
+<div id="ui-tools">
+	<button id="btn_top" aria-label="Jump to top">⬆</button>
+	<button id="btn_theme" aria-label="Toggle dark mode">💡</button>
+	<button id="btn_larger" aria-label="Increase font size">T<b>▲</b></button>
+	<button id="btn_smaller" aria-label="Decrease font size">T<b>▼</b></button>
+</div>
+<script defer src="/main.js"></script>
+</body>
+</html>
