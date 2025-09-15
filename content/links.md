@@ -1,6 +1,6 @@
 +++
 title = "Links of interest"
-updated = 2025-07-17
+updated = 2025-09-14
 [extra]
 shorttitle = "Links"
 subtitle = "the most useful page on this website"
@@ -26,6 +26,7 @@ Neat Blogs & Personal Sites
 * [rsapkf](https://rsapkf.org/)
 * [Amelia Wattenberger](https://wattenberger.com/) (check out: [fish eyes](https://wattenberger.com/thoughts/fish-eye))
 * [Neil Panchal](https://neil.computer/)
+* [Josh W. Comeau](https://www.joshwcomeau.com) (check out: [hand-written SVGs](https://www.joshwcomeau.com/svg/friendly-introduction-to-svg/))
 
 ### *nix
 * [dade](https://0xda.de/blog/)
@@ -67,7 +68,7 @@ Live
 🏴‍☠️ Sharing 🦜
 --------------
 Consult your local laws before using the following websites to retrieve copyright-protected content.
-* [📚 Anna's Archive](https://annas-archive.org) seems to have most every ebook and PDF
+* [📚 Anna's Archive](https://annas-archive.org) - present-day library of Alexandria
 * [🍁 Mapple.TV](https://mapple.tv), paired with an ad blocker, has a lot of TV and movies (see also: [fmovies0](https://fmovies0.cc/))
 * [❗ h!anime](https://hianime.gs) [[alts](https://hianime.tv)] is likewise comprehensive and easy to use
 * [🦈 Grooveshark (no relation)](https://groovesharks.org/) is an ad-free YouTube Music proxy
@@ -135,6 +136,10 @@ Typography
 
 ### Tools
 * [Variable font helper](https://variable-font-helper.web.app/) to select, compress, and host variable fonts from Google fonts
+
+UI/UX
+-------------
+* [Qualtrics Glossary](https://www.qualtrics.com/blog/ux-design-glossary/) (thanks Harper!)
 
 Themes
 --------------
