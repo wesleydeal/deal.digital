@@ -139,7 +139,7 @@ Typography
 
 UI/UX
 -------------
-* [Qualtrics Glossary](https://www.qualtrics.com/blog/ux-design-glossary/) (thanks Harper!)
+* [Barry Kehoe's Glossary](https://www.qualtrics.com/blog/ux-design-glossary/) (thanks Harper!)
 
 Themes
 --------------
