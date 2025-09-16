@@ -13,13 +13,17 @@
 {% endblock title -%}
 <style>
 *, *:before, *:after {box-sizing: border-box;}
+:root {
+  color-scheme: light dark;
+}
 body {
 	font: 100%/1.6 system-ui, sans-serif;
 	margin: 0;
 	width: 100%;
 	overflow-wrap: break-word;
 	scroll-margin-top: 20px;
-	background: oklch(from var(--color-primary, #056) 0.96 0.01 h);
+	background: light-dark(oklch(from var(--color-primary, #056) 0.96 0.01 h), #000);
+	color: light-dark(#000, #fff);
 }
 body>* {
 	padding: 16px;
@@ -39,6 +43,7 @@ header {
 	line-height: 1.8;
 	width: 100%;
 	display: block;
+	padding: 10px;
 	background: oklch(from var(--color-primary, #056) 0.4 c h);
 }
 header a:link, header a:visited {
@@ -73,7 +78,6 @@ header nav#breadcrumbs { display: none; visibility: hidden; }
 }
 .content {
 	min-height: 100vh;
-	view-transition-name: content;
 	transform-origin: 50vw 50vh;
 }
 ul, ol {padding-left: 24px}
@@ -82,7 +86,7 @@ h1 {
 	font-size: clamp(32px, 4vw, 60px);
 	font-weight: 500;
 	line-height: 1.1;
-	color: oklch(from var(--color-primary) 0.4 c h);
+	color: oklch(from var(--color-primary) light-dark(0.4, 0.7) c h);
 	margin: 32px auto 24px;
 	text-shadow: 2px 2px 0 #7773;
 }
@@ -109,7 +113,7 @@ body>footer {
 #ui-tools {display: none;}
 a:link, a:visited {
 	color: #056;
-	color: oklch(from var(--color-primary, #056) 0.4 c h);
+	color: oklch(from var(--color-primary, #056) light-dark(0.4,0.95) light-dark(c, 0.05) h);
 	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
 }
 :is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
@@ -122,11 +126,6 @@ th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
 #search-container { padding: 20px; overflow: hidden; }
 #search-box { width: 100%;}
 #search-keyword-list samp { padding: 0 10px; }
-@media (prefers-color-scheme: dark) {
-	body { background: #000; color: #fff; }
-	a:link, a:visited { color: oklch(from var(--color-primary, #056) 0.95 0.05 h); }
-	h1 { color: oklch(from var(--color-primary) 0.7 c h); }
-}
 [id] {
 	scroll-margin-top: 100px;
 }

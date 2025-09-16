@@ -584,8 +584,9 @@ function load() {
 		content.style.fontSize = 'calc(' + currentSize + ' * 0.937)';
 	});
 	elid("btn_theme")?.addEventListener("click", () => {
-		let currentDarkMode = getComputedStyle(root).getPropertyValue('--dark-mode') == 'true';
-		root.style.setProperty('--dark-mode', !currentDarkMode);
+		let currentDarkMode = getComputedStyle(document.body).getPropertyValue('color') == 'rgb(255, 255, 255)';
+		root.classList.add(currentDarkMode ? 'light' : 'dark');
+		root.classList.remove(currentDarkMode ? 'dark' : 'light');
 		playSound('/sounds/KDE_Click_2.ogg', 1);
 	});
 	elid("btn_toc")?.addEventListener("click", () => {
