@@ -8,6 +8,15 @@ toc = true
 color = "#00aec9"
 +++
 
+<style> /* future use */
+	section.content.columnar {
+		div.group {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(800px, 1fr));
+		}
+	}
+</style>
+
 Neat Blogs & Personal Sites
 -----------------------------
 
@@ -175,3 +184,25 @@ Encoding, Compression, & File Formats
 Lists of Lists
 ---------------
 * [awesome-* on GitHub](https://github.com/sindresorhus/awesome#readme)
+
+<script>
+function columnify() { // future use
+	contentSection = document.querySelector('section.content');
+	separator = document.createElement('span');
+	separator.innerHTML = ", ";
+	for (let li of document.querySelectorAll('section.content li')) {
+		for (let node of li.childNodes) {
+			if (node.nodeName != "A") {
+				if (node.textContent.includes(':') && !node.textContent.includes('(')) continue;
+				if (node.textContent == ', ') continue;
+				if (node.nextSibling?.nodeName == "A") {
+					node.replaceWith(", ");
+				} else {
+					node.replaceWith("");
+				}
+			}
+		}
+	}
+	document.querySelector('section.content').classList.add('columnar');
+}
+</script>
