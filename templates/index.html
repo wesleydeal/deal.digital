@@ -44,14 +44,14 @@
 	</section>
 </article>
 <script>
-	const hoursNow = (new Date()).getHours();
+	const hour = (new Date()).getHours();
 	function setProps(msg, color) {document.getElementById('title').innerText = 'Good ' + msg + '!'; document.documentElement.style.setProperty('--color-primary', color);}
 
-	if (hoursNow > 22 || hoursNow < 6) {
+	if (hour > 22 || hour < 6) {
 		setProps("night", '#5b00d2');
-	} else if (hoursNow < 12) {
+	} else if (hour < 12) {
 		setProps("morning", '#52b5c5');
-	} else if (hoursNow < 18) {
+	} else if (hour < 18) {
 		setProps("afternoon", '#e57a0c');
 	} else {
 		setProps("evening", '#d78989');
