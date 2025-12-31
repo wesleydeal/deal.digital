@@ -303,12 +303,12 @@ nav#toc {
 		}
 		&#btn_larger b {
 			color: oklch(0.7 0.2 170);
-			font-size: 1rem;
+			font-size: 0.9rem;
 			margin: 0 -0.15em;
 		}
 		&#btn_smaller b {
 			color: oklch(0.8024 0.1549 58.1);
-			font-size: 1rem;
+			font-size: 0.9rem;
 			margin: 0 -0.15em;
 		}
 		&:hover {
