@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+    <title>TPMiddle: TrackPoint Scroll & Middle Click - sdx1.net</title>
+    <link href="/archive/sdx1/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/archive/sdx1/lightswitch.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#333">
+	<meta name="description" content="Gerhard Wiesinger's TPMiddle allows you to use your ThinkPad TrackPoint's middle button as both a middle click and scroll modifier.">
+</head>
+<body style="background: #ddd url('../../tpbg.jpg') no-repeat center right fixed; background-size: cover">
+    <nav>
+        <a href="/archive/sdx1/">sdx1.net</span></a> > <a href="/archive/sdx1/">Tools</a> > <a>TPMiddle</a>
+    </nav>
+    <div class="content">
+        <h1>TPMiddle - Scroll & middle<wbr>-click with the TrackPoint</h1>
+		<p class="meta">Updated 2018-02-08. Written by sdx1 on 2017-08-06.</p>
+        <p>On ThinkPads running Windows,
+        the middle mouse button below the TrackPoint can be used as a
+        scroll modifier for the trackpoint or a middle-click/MOUSE3 button, but not both at
+        the same time. TPMiddle.exe is a brilliant program by Gerhard Wiesinger that allows both functions at once by detecting whether or not the mouse is moved between press and release.</p>
+        <h2>Downloads</h2>
+        <p>
+            <strong><a href="tpmiddle-0.6.exe">tpmiddle-0.6.exe</a></strong> - <strong>Recommended, especially for Windows 10 users</strong>, 10.5kb
+            <br><a href="tpmiddle-0.6.exe">sdx1.net</a>, <a href="https://www.dropbox.com/s/s0t0saa8biullbz/tpmiddle-0.6.exe">Dropbox mirror 1</a>, <a href="https://www.dropbox.com/s/lyfozdfnsn112zm/tpmiddle-0.6.exe?dl=0">Dropbox mirror 2</a>
+        </p>
+        <p>
+            <a href="tpmiddle-0.7.exe">tpmiddle-0.7.exe</a> - Incompatible with some newer systems, 11kb
+            <br><a href="tpmiddle-0.7.exe">sdx1.net</a>, <a href="https://www.wiesinger.com/opensource/TPMiddle/V0.7/Release/tpmiddle.exe">author's site</a>
+        </p>
+        <p><a href="http://forum.notebookreview.com/threads/ultranav-middle-click-button-scroll.423415/">A poor AutoHotKey-based substitute</a></p>
+        <h2>Installation</h2>
+        <h3>Manual Installation</h3>
+        <ol>
+            <li>Make sure you have <a href="https://www.microsoft.com/en-in/download/details.aspx?id=5555" target="_blank">Microsoft Visual C++ 2010 Redistributables</a> installed</li>
+            <li>Ensure your middle button is set to "Use for scrolling" under Control Panel > Mouse > ThinkPad</li>
+            <li>Download the file</li>
+            <li>Drop it into <code class="inline">%appdata%\Microsoft\Windows\Start Menu\Programs\Startup</code></li>
+            <li>Log out and back in to start it</li>
+        </ol>
+        <h3>Slightly Easier Method</h3>
+        <p>Follow steps 1 & 2 above. Press Win+R, paste this command, and press enter.</p>
+        <code class="block">cmd /c pushd "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" & powershell -command "(New-Object System.Net.WebClient).DownloadFile('http://sdx1.net/tools/tpmiddle/tpmiddle-0.6.exe','tpmiddle-0.6.exe')" & start tpmiddle-0.6.exe</code>
+		<h2>Source Code & Licensing</h2>
+		<p>The author of this software has not made the license clear beyond 'open source'. The source code is available on <a href="https://www.wiesinger.com/opensource/TPMiddle/">his website</a>, but it's only for the less compatible 0.7 version. It would be best to contact him <a href="https://www.wiesinger.com/">here</a> if you intend to make modifications, or if you would like the source code for version 0.6.</p>
+    </div>
+</body>

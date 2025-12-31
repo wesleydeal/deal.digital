@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<head>
+	<title>Arcade - sdx1.net</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+        body{
+            font-family: sans-serif;
+            touch-action: manipulation;
+        }
+    
+		#game {
+			position: fixed;
+			top: 0;
+            right: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 100;
+			border: none;
+			padding: none;
+			margin: none;
+			text-align: center;
+		}
+		
+		.logo{
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+			max-width: 50vw;
+			max-height: 40vh;
+		}
+		
+		.arrow{
+			position: absolute;
+			top: 60px;
+			left: 30px;
+			animation: float 3s ease-in-out infinite;
+		}
+		
+		iframe {
+			position: fixed;
+			background: #000;
+			top: 0;
+			left: 0;
+			z-index: 101;
+			border: none;
+			padding: none;
+			margin: none;
+		}
+		
+		body {
+			background-color: #000;
+			color: #fff;
+			font-family: sans-serif;
+		}
+		
+		#nav {
+			position: fixed;
+			top: 0;
+			left: 0;
+			opacity: 0.5;
+			background-color: #000;
+			background-color: transparent;
+			z-index: 500;
+			color: #0094ff;
+		}
+		
+		#nav:hover{
+			opacity: 1;
+		}
+		
+		a{
+			color: #0094ff;
+			text-decoration: none;
+			
+		}
+		
+		#smscheck{
+			position: absolute;
+			z-index: 300;
+			top:0;
+			right:0;
+			opacity: .2;
+		}
+		
+		#smscheck:checked{
+			opacity: 1;
+		}
+		
+		#checkerboard_container {
+		  height: 50vh;
+		  background: transparent;
+		  overflow: hidden;
+			perspective: 500px;
+			position: absolute;
+			width: 100vw;
+			bottom: 0;
+			z-index: -50;
+		}
+
+		#smscheck:checked ~ #checkerboard_container > #checkerboard{
+		  position: absolute;
+		  bottom: -30%;
+		  right: -60%;
+		  height: 150%;
+		  width: 200%;
+			transform: rotateX(75deg);
+			transform-origin: center center;
+			transform-style: preserve-3d;
+		  background-color: #44aa44;
+		  background-size: 300px 300px;
+		  background-position: 0 0, 150px 150px;
+		  background-image: linear-gradient(45deg, rgba(12, 2, 14, .6) 25%, transparent 25%, transparent 75%, rgba(12, 2, 14, .6) 75%, rgba(12, 2, 14, .6)), linear-gradient(45deg, rgba(12, 2, 14, .6) 25%, transparent 25%, transparent 75%, rgba(12, 2, 14, .6) 75%, rgba(12, 2, 14, .6));
+			animation: move-background .25s linear infinite, change-color 240s linear infinite;
+		}
+		
+		#smscheck:checked ~ #checkerboard_container > #checkerboard:after {
+		  content: "";
+		  display: block;
+		  height: 15%;
+		  width: 100%;
+		  background-image: linear-gradient(#000, transparent);
+		}
+		
+		#smscheck:checked ~ a > .logo{
+			top: -35%;
+		}
+
+		@keyframes move-background {
+		  to {
+			background-position: 0 300px, 150px 450px;
+		  }
+		}
+
+		@keyframes change-color{
+			10%{background-color: #44aa44;}
+			20%{background-color: #439EA8;}
+			30%{background-color: #4444aa;}
+			40%{background-color: #aa4444;}
+			50%{background-color: #9D42A5;}
+			60%{background-color: #A34141;}
+			70%{background-color: #3D997E;}
+			80%{background-color: #A09840;}
+			90%{background-color: #3F9E50;}
+			100%{background-color: #7E993D;}
+		}
+		
+		@keyframes float {
+			0%{transform: translatey(0px);}
+			50%{transform: translatey(-30px);}
+			100%{transform: translatey(0px);}
+		}
+	</style>
+	<script>
+		var continueStarfield = false;
+	
+		var games = {
+			Home:              {name: "== sdx1.net Arcade ==", type: "home",                                 width: "100%",  height: "100%"},
+            HTML5Games:        {name: " --- HTML5 GAMES --- ", type: "label"                                                               },
+            nohtd:             {name: "no-one has to die.",    type: "html",  url: "./nohtd-mod/nohtd.html", width: "100%",  height: "100%"},
+            hextris:           {name: "Hextris",               type: "html",
+                url: "./hextris-gh-pages/index.html", width: "100%",
+                                                      height: "100%"         },
+            FlashGames:        {name: " --- FLASH GAMES --- ", type: "label"                                                               },
+			FrogFractions:     {name: "Frog Fractions",        type: "swf",   url: "FrogFractions.swf",      width: "100%",  height: "100%"},
+			DesertHikeEX:      {name: "Desert Hike EX",        type: "swf",   url: "deserthikeex.swf",       width: "100%",  height: "100%"},
+			Futilitris:        {name: "Futilitris",            type: "swf",   url: "futilitris.swf",         width: "100%",  height: "100%"},
+			HedgehogLaunch2:   {name: "Hedgehog Launch 2",     type: "swf",   url: "hedgehoglaunch2.swf",    width: "100%",  height: "100%"},
+			InteractiveBuddy:  {name: "Interactive Buddy",     type: "swf",   url: "interactivebuddy.swf",   width: "100%",  height: "100%"},
+			Pandemic2:         {name: "Pandemic 2",            type: "swf",   url: "pandemic2.swf",          width: "100%",  height: "100%"},
+			RaidenX:           {name: "Raiden X",              type: "swf",   url: "raidenx.swf",            width: "100%",  height: "100%"},
+			Rebuild2:          {name: "Rebuild 2",             type: "swf",   url: "rebuild2.swf",           width: "100%",  height: "100%"},
+			RedRemover:        {name: "Red Remover",           type: "swf",   url: "redremover.swf",         width: "100%",  height: "100%"},
+			DontShitYourPants: {name: "Don't Shit Your Pants", type: "swf",   url: "dontshityourpants.swf",  width: "100%",  height: "100%"},
+			AsteroidsRevenge3: {name: "Asteroids Revenge 3",   type: "swf",   url: "AsteroidsRevenge3.swf",  width: "650px", height: "500px"},
+            BallRevamped2:     {name: "Ball Revamped 2",       type: "swf",   url: "ballrevamped2.swf",      width: "100%",  height: "100%"},
+            BallRevamped3A:    {name: "Ball Revamped 3A",      type: "swf",   url: "ballrevamped3a.swf",     width: "100%",  height: "100%"},
+            BallRevamped3G:    {name: "Ball Revamped 3G",      type: "swf",   url: "ballrevamped3g.swf",     width: "100%",  height: "100%"},
+            BallRevamped4:     {name: "Ball Revamped 4",       type: "swf",   url: "ballrevamped4.swf",      width: "100%",  height: "100%"},
+            BallRevamped5:     {name: "Ball Revamped 5",       type: "swf",   url: "ballrevamped5.swf",      width: "100%",  height: "100%"},
+            VectorTD:          {name: "Vector TD",             type: "swf",   url: "vectortd-patched.swf",   width: "100%",  height: "100%"},
+            VectorTD2:         {name: "Vector TD2",            type: "swf",   url: "vectortd2-patched.swf",  width: "100%",  height: "100%"},
+		};
+	
+		function loadGame(gameID){
+			if (gameID === undefined){
+				var gameID = window.location.search.substring(1);
+				if (!gameID) {gameID = "Home";}
+			}
+		
+			if (window.location.search.substring(1) != gameID){
+				try{window.history.replaceState(null, null, "./?" + gameID);}
+				catch(e){window.location.href = ("./?" + gameID);}
+			}
+            
+            if (games[gameID].type != "home"){document.title = games[gameID].name + " - Arcade - sdx1.net";}
+            else{document.title = "Arcade - sdx1.net"}
+		
+            if (games[gameID].type == "home"){
+                document.getElementById("game").innerHTML='<input type="checkbox" id="smscheck"></input><img class="arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF0AAAB2AQMAAACQ1A11AAAABlBMVEUAAAD///+l2Z/dAAAAAXRSTlMAQObYZgAAAMxJREFUOMvs0bFNBEEQBVGWNTAJgVAIjQltQpkQMDHQPoQQVyNdCtdWl/WM/3R/z3u87PE6tnibW7yvLT4+t/DVf/guTtfGsDGMGGYMK4Yggg6CTlwxiMGIYcawYoIIOgg6wRWDGIwYZgzrnwki6CDoBFwxiMGIYcaw/pgggg6CTm5QDDEYMcwY1i8ThKB9hUf8bChz6AcQ1vf/s2P8f/i//H8yOQf4G+wYPzA/YPxADgds2h+gac1kcxj4+8GmkcmB+Mf+J9A/ZHJQAADcky9tWycP+QAAAABJRU5ErkJggg=="><a href="/archive/sdx1/"><img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABHQAAAIIAgMAAAByUlGlAAAADFBMVEUAAAD/SgAAlP////8+xkTLAAAAAXRSTlMAQObYZgAAA2xJREFUeNrt2sGugjAQQFF+0p/kJ31xoy+GNjO0A0LOXcrE0uOudllera2Wd4GRr7n+Z9Gnn57vAg+e3XJzdOjQoUOHDh06dOjQoUOHDh06dOjQoUPn39zaLaATkAhQpnSaO6RDhw4dOnTo0KFDhw4dOnTo0KFDhw4dOgfq9N8tL5HXTul8thkV23GoT4cOHTp06NChQ4cOHTp06NChQ4cOHTp0qnXyWx/RSZ3E06FDhw4dOnTo0KFDhw4dOnTo0KFDhw6dqTr93aR0ht0Dr7/zljYdOnTo0KFDhw4dOnTo0KFDhw4dOnTo0BnTiRL9nM4WAh06dOjQoUOHDh06dOjQoUOHDh06dOjQOUZn5wn7Wbe5U2xLMDp06NChQ4cOHTp06NChQ4cOHTp06NChc4rO2o0OHTp06NChQ4cOHTp06NChQ4cOHTp06FxdJ7qb/Fx0/1tPUxtO3eZuitGhQ4cOHTp06NChQ4cOHTp06NChQ4cOnTGd5h6ic3To0KFDhw4dOnTo0KFDhw4dOnTo0KFD5446kiRJkiRJkiRJkiRJkiRJknROj7tHhw4dOnTo0KFDhw4dOnTo0KFDhw4dOnTm69z5zJwOHTp06NChQ4cOHTp06NChQ4cOHTp06FTq9M+to0fbwyNzFqJDhw4dOnTo0KFDhw4dOnTo0KFDhw4dOpU6gUvRVxyhQ4cOHTp06NChQ4cOHTp06NChQ4cOHTrlOlun2pcdoUOHDh06dOjQoUOHDh06dOjQoUOHDh06RTrNp8MvHX0NOnTo0KFDhw4dOnTo0KFDhw4dOnTo0KFzOZ3oDephnYkLHXKbmw4dOnTo0KFDhw4dOnTo0KFDhw4dOnTofOtEl8vvKwozRyf6jwIdOnTo0KFDhw4dOnTo0KFDhw4dOnTo0JmlM/xGUZ3U2f3On4EOHTp06NChQ4cOHTp06NChQ4cOHTp06PyCzhZW8dZ3jtChQ4cOHTp06NChQ4cOHTp06NChQ4cOnXKdkkvWZ43QoUOHDh06dOjQoUOHDh06dOjQoUOHDp0ineaaTYnAZ1tPUwsNfwsdOnTo0KFDhw4dOnTo0KFDhw4dOnTo0KnUuVV06NChQ4cOHTp06NChQ4cOHTp06NChQ6dI587RoUOHDh06dOjQoUOHDh06dOjQoUOHDp2czh/ZYpEu2ncvwgAAAABJRU5ErkJggg==" title="" style=""></a><div id="checkerboard_container"><div id="checkerboard"></div></div><div style="position: fixed; width: 100%; height: 100%; overflow: hidden; z-index: -100; top: 0; left: 0"><canvas style="z-index: -100" id="starfieldCanvas"></canvas></div>';
+				stars();
+			} else if (games[gameID].type == "html"){
+				document.getElementById("game").innerHTML='<iframe style="width: ' + games[gameID].width + '; height: ' + games[gameID].height + '" src="' + games[gameID].url + '" onload="this.contentWindow.focus()"></iframe>';
+				continueStarfield = false;
+			} else if (games[gameID].type = "swf"){
+				document.getElementById("game").innerHTML='<object type="application/x-shockwave-flash" style="position: absolute; margin: auto; top: 0; right: 0; bottom: 0; left: 0; width: ' + games[gameID].width + '; height:' + games[gameID].height + '" width="' + games[gameID].width + '" height="' + games[gameID].height + '"><param name="movie" value="' + games[gameID].url + '"><param name="quality" value="high"><param name="bgcolor" value="#000000"><param name="wmode" value="opaque"><embed src="' + games[gameID].url + '" width="' + games[gameID].width + '" height="' + games[gameID].height + '">';
+				continueStarfield = false;
+			}
+		}
+		
+		function loadPage(){
+			var gameOptions = [];
+		
+			for (var game in games){
+				var opt = document.createElement('option');
+				opt.value = game;
+				opt.innerHTML = games[game].name;
+				if (window.location.search.substring(1) == game) {opt.selected = true;}
+                if (games[game].type == "label") {opt.disabled = true;}
+				
+				gameOptions.push(opt);
+			}
+			
+			for (var gameOption in gameOptions){
+				document.getElementById('selector').appendChild(gameOptions[gameOption]);
+			}
+			
+			loadGame();
+		}
+				
+		function stars() {
+			/*
+			 * Starfield effect done in HTML 5
+			 *
+			 * The MIT License (MIT)
+			 *
+			 * Copyright (c) 2015 TimeWaster - sebi@timewaster.de
+			 *
+			 * Permission is hereby granted, free of charge, to any person obtaining a copy
+			 * of this software and associated documentation files (the "Software"), to deal
+			 * in the Software without restriction, including without limitation the rights
+			 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+			 * copies of the Software, and to permit persons to whom the Software is
+			 * furnished to do so, subject to the following conditions:
+			 *
+			 * The above copyright notice and this permission notice shall be included in all
+			 * copies or substantial portions of the Software.
+			 *
+			 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+			 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+			 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+			 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+			 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+			 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+			 * SOFTWARE.
+			 */
+
+            /* --- config start --- */
+
+            const starfieldCanvasId     = "starfieldCanvas", // id of the canvas to use
+                  numberOfStarsModifier = .1,                // Number of stars, higher numbers have performance impact
+                  flightSpeed           = .02;               // speed of the flight, the higher this number the faster
+
+            /* ---- config end ---- */
+			
+            let canvas        = document.getElementById(starfieldCanvasId),
+                context       = canvas.getContext("2d"),
+                width         = window.innerWidth,
+                height        = window.innerHeight,
+                numberOfStars = Math.round(((width * height) / 1000) * numberOfStarsModifier),
+                dirX          = width / 2,
+                dirY          = height / 2,
+                stars         = []
+				
+			// resize canvas
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+
+            // initialize starfield
+            for(let x = 0; x < numberOfStars; x++) {
+                stars[x] = {
+                    x: range(0, width),
+                    y: range(0, height),
+                    size: 0
+                };
+            }
+            
+            window.onmousemove = function(event) {
+                dirX = event.clientX,
+                dirY = event.clientY;
+            }
+			
+			try{
+				window.addEventListener('resize', function(event){
+					canvas.width = window.innerWidth;
+					canvas.height = window.innerHeight;
+					width = canvas.width;
+					height = canvas.height;
+					dirX = width / 2;
+					dirY = height / 2;
+				});
+			} catch(e){}
+
+            (function animloop(){
+              tick();
+              window.requestAnimationFrame(animloop);
+            })();
+
+            // main routine
+            function tick() {
+                context.clearRect(0, 0, width, height);
+
+                stars.forEach(function(star) {
+                    // save old status
+                    let oldX = star.x;
+                    let oldY = star.y;
+
+                    // calculate changes to star
+                    star.x += (star.x - dirX) * star.size * flightSpeed;
+                    star.y += (star.y - dirY) * star.size * flightSpeed;
+                    star.size += flightSpeed;
+
+                    // if star is out of bounds, reset
+                    if(star.x < 0 || star.x > width || star.y < 0 || star.y > height) {
+                        star.x = range(0, width);
+                        star.y = range(0, height);
+                        star.size = 0;
+                        return star;
+                    }
+
+                    // draw star
+                    context.strokeStyle = "rgb(255, 255, 255, " + Math.min(star.size, 1) + ")";
+                    context.lineWidth = Math.max(star.size,1);
+                    context.beginPath();
+                    context.moveTo(oldX, oldY);
+                    context.lineTo(star.x, star.y);
+                    context.stroke();
+                    
+                    return star;
+                });
+            }
+
+            // get a random number inside a range
+            function range(start, end) {
+                return Math.random() * (end - start) + start;
+            }
+        };
+	</script>
+	<meta name="description" content="a collection of good Flash and HTML5-based games with a minimal interface">
+</head>
+<body onload="loadPage()">
+	<div id="nav">
+	<select id="selector" onchange="loadGame(this.value)">
+	</select>
+	</div>
+	<div id="game">
+	</div>
+</body>
