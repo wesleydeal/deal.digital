@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample Page - Wesley Deal</title>
+<style>
+*, *:before, *:after {box-sizing: border-box;}
+:root {
+  color-scheme: light dark;
+}
+body {
+	font: 100%/1.6 sans-serif;
+	margin: 0;
+	width: 100%;
+	overflow-wrap: break-word;
+	scroll-margin-top: 20px;
+	background: light-dark(oklch(from var(--color-primary, #056) 0.96 0.01 h), #000);
+	color: light-dark(#000, #fff);
+}
+body>* {
+	padding: 16px;
+	max-width: 100%;
+}
+header nav, .content>*, footer>*, #toc>div, #search-container {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+header,article,section,nav,footer { display: block }
+header {
+	background: #056;
+	font-size: 110%;
+	line-height: 1.8;
+	display: block;
+	background: oklch(from var(--color-primary, #056) 0.4 c h);
+}
+header a:link, header a:visited {
+	color: #fff;
+	white-space: nowrap;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 33%;
+}
+.topnav-links {
+	list-style: none;
+	display: inline;
+	padding: 0;
+}
+nav#topnav li{
+	padding: 0;
+	margin-right: 16px;
+	display: inline;
+}
+#homelink {
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180));
+	font-weight: 700;
+}
+#toc {
+	background: #023;
+	background: oklch(from var(--color-primary, #056) 0.2 c h);
+	color: #fff;
+	display: block;
+}
+#toc a:link, #toc a:visited {
+	color: #fff;
+}
+.content {
+	min-height: 100vh;
+	transform-origin: 50vw 50vh;
+}
+ul, ol {padding-left: 24px}
+h1 {
+	font-size: xx-large;
+	font-size: clamp(32px, 4vw, 60px);
+	font-weight: 500;
+	line-height: 1.1;
+	color: color-mix(in oklch, var(--color-primary), light-dark(#000,#fff));
+	margin: 32px auto 24px;
+	text-shadow: 2px 2px 0 #7773;
+}
+h2 { margin: 20px auto 8px; font-size: 150%; font-weight: 400; }
+h3 { margin: 16px auto 6px; font-size: 135%; font-weight: 400; }
+h4 { margin: 14px auto 4px; font-size: 120%; }
+h5 { margin: 12px auto   0; font-size: 120%; font-weight: 400; }
+h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic; }
+h1 small {
+	display: block;
+	font-style: italic;
+	font-size: 20px;
+	padding-top: 10px;
+	text-shadow: none;
+}
+body>footer,pre,code,samp {
+	overflow: auto;
+	font-family: ui-monospace, Consolas, monospace;
+	line-height: 1.2;
+}
+body>footer {
+	border-top: 2px solid;
+	margin: 100px 0 800px;
+}
+.z-code {
+	background: #0562;
+	padding: 0.5em 0.7em;
+	border: 1px solid;
+}
+#ui-tools {display: none;}
+a:link, a:visited {
+	color: #056;
+	color: oklch(from var(--color-primary, #056) light-dark(0.4,0.95) light-dark(c, 0.05) h);
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
+}
+:is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
+img { max-width: 100%; }
+table {border-collapse: collapse;}
+th,td {border: 1px solid; padding: 5px;}
+th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
+.zola-anchor {display: none; visibility: hidden;}
+#search-container { padding: 20px; overflow: hidden; }
+#search-box { width: 100%;}
+#search-keyword-list samp { padding: 0 10px; }
+[id] {
+	scroll-margin-top: 100px;
+}
+footer hr{ display: none }
+
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: 0.3s }
+</style>
+<!--[if !IE]><!-->
+<link rel="preload" href="/concourse.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+<!--<![endif]-->
+<body id="sample">
+<header>
+	<nav id="topnav">
+		<ul class="topnav-links">
+			<li><a href="/" id="homelink">deal.digital</a>
+			<li><a href="/tools/">🛠️ Tools</a>
+			<li><a href="/blog/">📝 Notes</a>
+			<li><a href="/now/">⏳ Now</a>
+			<li><a href="/links/">🔗 Links</a>
+			<li><a href="/uses/">⌨️ Uses</a>
+			<li><a href="/resume/">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+</header>
+
+<nav id="toc">
+	<div>
+		<b>Jump to: </b>
+		<a href="#colors">Colors</a><span>, </span><a href="#unordered-lists">Unordered Lists</a><span>, </span><a href="#ordered-lists">Ordered Lists</a><span>, </span><a href="#images">Images</a><span>, </span><a href="#code-and-pre">Code and &lt;pre&gt;</a><span>, </span><a href="#blockquotes">Blockquotes</a><span>, </span><a href="#description-lists">Description Lists</a><span>, </span><a href="#domain-eukaryota">Domain Eukaryota</a></div>
+</nav>
+
+<section class="content">
+	<h1 class="title">
+	Sample Page
+	</h1>
+<p>This page is here to demonstrate all of the common elements<sup class="footnote-reference" id="fr-foot1-1"><a href="#fn-foot1">1</a></sup> used on this website. This is primarily intended for
+my personal use during stylesheet development. Oh, and by the way, <a href="#">here is a link</a> that goes nowhere.</p>
+<p>This paragraph contains <strong>bold</strong>, <em><strong>bold italic (some of which is <a href="#">linked</a>)</strong></em>, <em>plain italic,</em> and <del>strikethrough</del> text.</p>
+<p>And here is a feature I don’t quite have setup: <a href="#" class="i-ref">inline references</a></p>
+<p>This website is best viewed with any browser.</p>
+<p><img src="/badges/anydamn.gif" class="badge"><img src="/badges/right2repair.png" class="badge"></p>
+<h2 id="colors"><a class="zola-anchor" href="#colors" aria-label="Anchor link for: colors">#</a>Colors</h2>
+<p>Set the <strong>primary color</strong> for this page using this or the field in the table below: <input id="primary-color-picker" type="color"></p>
+<table><thead><tr><th style="text-align: left">Color/Gradient Name</th><th style="text-align: center">… Color Preview …</th><th style="text-align: left">Color String</th></tr></thead><tbody>
+<tr><td style="text-align: left">--color-primary</td><td style="text-align: center">Sample</td><td style="text-align: left"><input id="primary-color-picker-text"></td></tr>
+<tr><td style="text-align: left">--color-primary-sat</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-pop</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-pop-bgcontrast</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-link</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-link-underline</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-h1</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-h2</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-fg</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-fg-hc</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-bg</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-bg-hc</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--color-tinted-shadow</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--bg</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+<tr><td style="text-align: left">--header-bg</td><td style="text-align: center">Sample</td><td style="text-align: left"><code> </code></td></tr>
+</tbody></table>
+<script>
+document.getElementById('primary-color-picker').addEventListener('input', clickColor);
+document.getElementById('primary-color-picker-text').addEventListener('input', typeColor);
+
+function updateColorTable() {
+	let textInput = document.getElementById('primary-color-picker-text');
+	let table = textInput.parentElement.parentElement.parentElement;
+	let demoRows = table.querySelectorAll('tbody tr');
+
+	for (row of demoRows){
+		let nameCell = row.querySelectorAll('td')[0];
+		let previewCell = row.querySelectorAll('td')[1];
+		let valCell = row.querySelectorAll('td')[2];
+		valCell = valCell.querySelector('code') || valCell;
+		let varName = nameCell.innerHTML;
+		let val = getComputedStyle(document.body).getPropertyValue(varName);
+		nameCell.style.setProperty('color', val);
+		nameCell.style.setProperty('text-shadow', '1px 1px 0 var(--color-fg)');
+		if(varName == "--color-primary") {
+			if (document.activeElement != textInput) {
+				textInput.value = val;
+			}
+		} else {
+			valCell.innerHTML = val;
+		}
+		previewCell.style.setProperty('background', val);
+	}
+}
+
+function clickColor() {
+	let picker = document.getElementById('primary-color-picker');
+	document.documentElement.style.setProperty('--color-primary',picker.value);
+	updateColorTable();
+}
+
+function typeColor() {
+	let val = document.getElementById('primary-color-picker-text').value
+	if (!CSS.supports('color',val)) {
+		return;
+	}
+	document.documentElement.style.setProperty('--color-primary', val);
+	updateColorTable();
+}
+
+window.setTimeout(updateColorTable, 500);
+</script>
+<style>
+:has(#primary-color-picker) + table tbody tr td:nth-child(2) {
+
+}
+</style>
+<h2 id="unordered-lists"><a class="zola-anchor" href="#unordered-lists" aria-label="Anchor link for: unordered-lists">#</a>Unordered Lists</h2>
+<ul>
+<li>typically comprised of bullet points</li>
+<li>can have multiple levels
+<ul>
+<li>each of which can have more levels
+<ul>
+<li>but more than 3 is inadvisable</li>
+</ul>
+</li>
+<li>which can be ordered
+<ol>
+<li>though this can be a bit confusing</li>
+<li>typically begins with numbers rather than letters</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ordered-lists"><a class="zola-anchor" href="#ordered-lists" aria-label="Anchor link for: ordered-lists">#</a>Ordered Lists</h2>
+<ol>
+<li>Typically numbered</li>
+<li>Can have multiple levels
+<ol>
+<li>which often alternate between letters and capital and lowercase numbers
+<ul>
+<li>in markdown, we still express these with numbers</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Are used for situations such as:
+<ol>
+<li>Requirements, for
+<ol>
+<li>software projects</li>
+<li>budget planning</li>
+</ol>
+</li>
+<li>Lists of instructions that need to be followed from beginning to end, and which the reader may need to refer back to several times during the operation without losing their place.</li>
+</ol>
+</li>
+</ol>
+<h2 id="images"><a class="zola-anchor" href="#images" aria-label="Anchor link for: images">#</a>Images</h2>
+<p>This is an svg:
+<img src="/tools/tpmiddle/diagram.svg" alt="svg diagram" /></p>
+<p>This is a normal image which links to a page:</p>
+<p><a href="/blog/librechat/"><img src="/blog/librechat/librechat-example.png" alt="sample image of librechat" /></a></p>
+<p>This is a reduced resolutiom image which links to a higher resolution version:</p>
+<p><a href="&#x2F;blog&#x2F;librechat&#x2F;credentials.png"><img src="https:&#x2F;&#x2F;deal.digital&#x2F;processed_images&#x2F;credentials.8902dbaa4690bca0.png"></a>
+<h2 id="code-and-pre"><a class="zola-anchor" href="#code-and-pre" aria-label="Anchor link for: code-and-pre">#</a>Code and &lt;pre&gt;</h2>
+<p>There’s two primary ways to write code. You can use inline code by quoting it with <code>`single backticks`</code>
+or a multiline <code>&lt;pre&gt;&lt;code&gt;</code> surrounded by triple backticks, optionally placing a language on the first
+line after the backticks. For example, here’s some HTML.</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic">&lt;!doctype html&gt;
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-structure z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-structure z-any z-html">html</span> <span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">lang</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>en<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-inline z-any z-html">meta</span> <span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">charset</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>utf-8<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-inline z-any z-html">title</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>Hello, world!<span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-inline z-any z-html">title</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">main</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">	<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">h1</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>Hello, world.<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-block z-any z-html">h1</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">	<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">p</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>This is a complete sample HTML document within my sample document. A meta sample, so to speak. And it has a rather ~w~i~d~e~ line of text. A line of text that might compress the size of the left sidebar if you&#39;re on a wide enough screen. Actually, that may be a bit of a bug. The line of text in question, the one you&#39;re currently reading, is so wide that even on a 4k monitor set to 96 DPI, you should still have to scroll just a little bit in order to see the whole thing.
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">main</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></code></pre>
+<p>And here is some preformatted text, specifically a table with ascii box drawing characters, taken from <a href="https://www.mail-archive.com/markdown-discuss@six.pairlist.net/msg01650.html">Suraj Kurapati</a></p>
+<pre>
+                     A more complex table-within-a table.
+               An inner table showing a variety of headings and data items.
+            ┌────────────────────────────────────────────────────────────────┐
+            │                          Inner Table                           │
+            ├───────────────────┬────────────────────────────────────────────┤
+            │                   │                   Head1                    │
+            │      CORNER       ├────────────────────────────┬───────────────┤
+            │                   │                            │     Head3     │
+            ├───────────┬───────┤           Head2            ├──────┬────────┤
+            │   Head4   │ Head5 │                            │Head6 │        │
+   Outer    ├───────────┼───────┼────────────────────────────┼──────┴────────┤
+   Table    │A          │       │  • Lists can be table data │   Two Wide    │
+            │           │       │  • Images can be table data│               │
+            ├───────────┤       ├────────────────────────────┼──────┬────────┤
+            │           │Two    │A Form in a table: Your age:│      │        │
+            │           │Tall   │            [  ]            │  No  │Multiple│
+            │HTML       │       │ What is your favorite ice  │border│line    │
+            │Station    │       │           cream?           │Little│item    │
+            │           │       │    [Chocolate         ]    │Table │        │
+            │           │       │       [OK] [Cancel]        │      │        │
+            └───────────┴───────┴────────────────────────────┴──────┴────────┘
+</pre>
+<p>Sometimes a program has a sample output, which we represent with &lt;samp&gt; usually enclosed in &lt;pre&gt;. Here’s the first few lines of what happens of you press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>?</kbd>:</p>
+<pre><samp>Basic editing functions
+=======================
+Enter            AcceptLine          Accept the input or move to the next line if input is missing a closing token.
+Shift+Enter      AddLine             Move the cursor to the next line without attempting to execute the input
+Backspace        BackwardDeleteChar  Delete the character before the cursor
+Ctrl+h           BackwardDeleteChar  Delete the character before the cursor
+[...output truncated...]
+</samp></pre>
+<h2 id="blockquotes"><a class="zola-anchor" href="#blockquotes" aria-label="Anchor link for: blockquotes">#</a>Blockquotes</h2>
+<p>Sometimes, you want a blockquote that doesn’t quote anyone.</p>
+<blockquote>
+<p>Who wrote this?</p>
+</blockquote>
+<p>But more often, you’ll want to attribute the quote to an author (or even <em>–Anonymous</em>). Here’s what that would look like, with a longer quote.</p>
+<blockquote>
+	<p>Freak the fuck out and panic sell everything right now.</p>
+<p>It’s fucking over.</p>
+
+</blockquote>
+	<div class="quote-signoff">
+		<p class="author">—Warren Buffet
+		
+			<p class="date"><time datetime="2025-06-23">2025-06-23</time>
+		
+		
+	</div><h2 id="description-lists"><a class="zola-anchor" href="#description-lists" aria-label="Anchor link for: description-lists">#</a>Description Lists</h2>
+<dl>
+  <dt>First Term</dt>
+  <dd>This is the definition of the first term.</dd>
+  <dt>Second Term</dt>
+  <dd>This is one definition of the second term. </dd>
+  <dd>This is another definition of the second term.</dd>
+</dl>
+<h1 id="domain-eukaryota"><a class="zola-anchor" href="#domain-eukaryota" aria-label="Anchor link for: domain-eukaryota">#</a>Domain <em>Eukaryota</em></h1>
+<p>Organisms whose cells possess a membrane-bound nucleus.</p>
+<h2 id="kingdom-animalia"><a class="zola-anchor" href="#kingdom-animalia" aria-label="Anchor link for: kingdom-animalia">#</a>Kingdom <em>Animalia</em></h2>
+<p>Multicellular eukaryotes which generally consume organic material, breathe oxygen, move, and reproduce sexually.</p>
+<h3 id="phylum-chordata"><a class="zola-anchor" href="#phylum-chordata" aria-label="Anchor link for: phylum-chordata">#</a>Phylum <em>Chordata</em></h3>
+<p>Animals possessing a notochord at some stage in development.</p>
+<h4 id="class-mammalia"><a class="zola-anchor" href="#class-mammalia" aria-label="Anchor link for: class-mammalia">#</a>Class <em>Mammalia</em></h4>
+<p>Warm-blooded vertebrates with hair/fur and mammary glands.</p>
+<h5 id="order-carnivora"><a class="zola-anchor" href="#order-carnivora" aria-label="Anchor link for: order-carnivora">#</a>Order <em>Carnivora</em></h5>
+<p>Meat-eating mammals with specialized teeth and claws.</p>
+<h6 id="family-felidae"><a class="zola-anchor" href="#family-felidae" aria-label="Anchor link for: family-felidae">#</a>Family <em>Felidae</em></h6>
+<p>The biological family of cats, known for retractable claws and keen predation skills.</p>
+<p><strong>Snow Leopard</strong>, <em>Panthera uncia</em>
+The snow leopard — a solitary, mountain-dwelling big cat native to Central and South Asia.</p>
+<footer class="footnotes">
+<ol class="footnotes-list">
+<li id="fn-foot1">
+<p>This is an example of a footnote <a href="#fr-foot1-1">↩</a></p>
+</li>
+</ol>
+</footer>
+
+<section class="article-signoff">
+</section>
+
+</section>
+<footer>
+	<hr>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<dl>
+		<dt>Build</dt>
+		<dd>2026-01-14 15:50:48 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/sample.md">View source here</a>.</dd>
+
+		<dt>Fonts</dt>
+		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
+
+		<dt>Navigator</dt>
+		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>
+	</dl>
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="/archive/">archive/</a>
+		<br>│ └─<a href="/archive/sdx1/">sdx1</a>
+		<br>├─<a href="/blog/">blog/</a>
+		<br>│ ├─<a href="/blog/design-principles/">design-principles</a>
+		<br>│ ├─<a href="/blog/librechat/">librechat</a>
+		<br>│ ├─<a href="/blog/shorelock/">shorelock</a>
+		<br>│ ├─<a href="/blog/smart-seagate/">smart-seagate</a>
+		<br>│ └─<a href="/blog/wintricks/">wintricks</a>
+		<br>├─<a href="/tools/">tools/</a>
+		<br>│ ├─<a href="/tools/netlibram/">netlibram</a>
+		<br>│ ├─<a href="/tools/prune/">prune</a>
+		<br>│ ├─<a href="/tools/pwgen/">pwgen</a>
+		<br>│ ├─<a href="/tools/tpmiddle/">tpmiddle</a>
+		<br>│ └─<a href="/tools/win11-hta/">win11-hta</a>
+		<br>├─<a href="/contact/">contact</a>
+		<br>├─<a href="/home/">home</a>
+		<br>├─<a href="/links/">links</a>
+		<br>├─<a href="/now/">now</a>
+		<br>├─<a href="/sample/">sample</a>
+		<br>├─<a href="/setup/">setup</a>
+		<br>├─<a href="/todo/">todo</a>
+		<br>└─<a href="/uses/">uses</a>
+		<p>% show :3
+	<pre class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</pre>
+	<p><a href="https://youtu.be/2KVJ2vm_fyw?t=131" style="background: none; color: inherit; box-shadow: none">π</a></p>
+</footer>
+<div id="ui-tools">
+	<button id="btn_top" title="Jump to top">⬆</button>
+	<button id="btn_theme" title="Switch theme">💡</button>
+	<button id="btn_larger" title="Enlarge text">T<b>▲</b></button>
+	<button id="btn_smaller" title="Reduce text">T<b>▼</b></button>
+</div>
+<script defer src="/main.js"></script>
+</body>
+</html>

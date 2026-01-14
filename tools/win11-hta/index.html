@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" style="--color-primary: #09e0fe">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows 11-styled HTA dialogs - Wesley Deal</title>
+<style>
+*, *:before, *:after {box-sizing: border-box;}
+:root {
+  color-scheme: light dark;
+}
+body {
+	font: 100%/1.6 sans-serif;
+	margin: 0;
+	width: 100%;
+	overflow-wrap: break-word;
+	scroll-margin-top: 20px;
+	background: light-dark(oklch(from var(--color-primary, #056) 0.96 0.01 h), #000);
+	color: light-dark(#000, #fff);
+}
+body>* {
+	padding: 16px;
+	max-width: 100%;
+}
+header nav, .content>*, footer>*, #toc>div, #search-container {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+header,article,section,nav,footer { display: block }
+header {
+	background: #056;
+	font-size: 110%;
+	line-height: 1.8;
+	display: block;
+	background: oklch(from var(--color-primary, #056) 0.4 c h);
+}
+header a:link, header a:visited {
+	color: #fff;
+	white-space: nowrap;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 33%;
+}
+.topnav-links {
+	list-style: none;
+	display: inline;
+	padding: 0;
+}
+nav#topnav li{
+	padding: 0;
+	margin-right: 16px;
+	display: inline;
+}
+#homelink {
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180));
+	font-weight: 700;
+}
+#toc {
+	background: #023;
+	background: oklch(from var(--color-primary, #056) 0.2 c h);
+	color: #fff;
+	display: block;
+}
+#toc a:link, #toc a:visited {
+	color: #fff;
+}
+.content {
+	min-height: 100vh;
+	transform-origin: 50vw 50vh;
+}
+ul, ol {padding-left: 24px}
+h1 {
+	font-size: xx-large;
+	font-size: clamp(32px, 4vw, 60px);
+	font-weight: 500;
+	line-height: 1.1;
+	color: color-mix(in oklch, var(--color-primary), light-dark(#000,#fff));
+	margin: 32px auto 24px;
+	text-shadow: 2px 2px 0 #7773;
+}
+h2 { margin: 20px auto 8px; font-size: 150%; font-weight: 400; }
+h3 { margin: 16px auto 6px; font-size: 135%; font-weight: 400; }
+h4 { margin: 14px auto 4px; font-size: 120%; }
+h5 { margin: 12px auto   0; font-size: 120%; font-weight: 400; }
+h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic; }
+h1 small {
+	display: block;
+	font-style: italic;
+	font-size: 20px;
+	padding-top: 10px;
+	text-shadow: none;
+}
+body>footer,pre,code,samp {
+	overflow: auto;
+	font-family: ui-monospace, Consolas, monospace;
+	line-height: 1.2;
+}
+body>footer {
+	border-top: 2px solid;
+	margin: 100px 0 800px;
+}
+.z-code {
+	background: #0562;
+	padding: 0.5em 0.7em;
+	border: 1px solid;
+}
+#ui-tools {display: none;}
+a:link, a:visited {
+	color: #056;
+	color: oklch(from var(--color-primary, #056) light-dark(0.4,0.95) light-dark(c, 0.05) h);
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
+}
+:is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
+img { max-width: 100%; }
+table {border-collapse: collapse;}
+th,td {border: 1px solid; padding: 5px;}
+th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
+.zola-anchor {display: none; visibility: hidden;}
+#search-container { padding: 20px; overflow: hidden; }
+#search-box { width: 100%;}
+#search-keyword-list samp { padding: 0 10px; }
+[id] {
+	scroll-margin-top: 100px;
+}
+footer hr{ display: none }
+
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: 0.3s }
+</style>
+<!--[if !IE]><!-->
+<link rel="preload" href="/concourse.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+<!--<![endif]-->
+<body id="tools-win11-hta">
+<header>
+	<nav id="topnav">
+		<ul class="topnav-links">
+			<li><a href="/" id="homelink">deal.digital</a>
+			<li><a href="/tools/">🛠️ Tools</a>
+			<li><a href="/blog/">📝 Notes</a>
+			<li><a href="/now/">⏳ Now</a>
+			<li><a href="/links/">🔗 Links</a>
+			<li><a href="/uses/">⌨️ Uses</a>
+			<li><a href="/resume/">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+</header>
+
+<section class="content">
+	<h1 class="title">
+	Windows 11-styled HTA dialogs
+	</h1>
+<p>Recently, I had to let some users know that we would be replacing their computers as part of a Windows 11
+upgrade. I wanted to create a modern-looking notification popup, and I want to make sure that it wouldn’t
+display if we accidentally applied it to a Windows 11 user. I don’t have a dark mode implemented or anything of the sort,
+but I got as close as I could with the fonts, button, and button pane. Here’s what I came up with:</p>
+<p><img src="https://deal.digital/tools/win11-hta/screenshot.png" alt="screenshot of a dialog box displaying a notice to move important files to cloud storage" /></p>
+<p>And the code:</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-structure z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-structure z-any z-html">head</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-inline z-any z-html">title</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>Notice from IT<span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-inline z-any z-html">title</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">HTA:APPLICATION</span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html">	<span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">APPLICATIONNAME</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>Notice from IT<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html">	<span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">ICON</span> <span class="z-punctuation z-separator z-key-value z-html">=</span> <span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>mmc.exe<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html">	<span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">SCROLL</span> <span class="z-punctuation z-separator z-key-value z-html">=</span> <span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>no<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html">	<span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">BORDER</span> <span class="z-punctuation z-separator z-key-value z-html">=</span> <span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>thick<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html">	<span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">BORDERSTYLE</span> <span class="z-punctuation z-separator z-key-value z-html">=</span> <span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>normal<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html">	<span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">INNERBORDER</span> <span class="z-punctuation z-separator z-key-value z-html">=</span> <span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>no<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html">	<span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">SELECTION</span> <span class="z-punctuation z-separator z-key-value z-html">=</span> <span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>no<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html">	<span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">CONTEXTMENU</span> <span class="z-punctuation z-separator z-key-value z-html">=</span> <span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>no<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html">	<span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">MAXIMIZEBUTTON</span> <span class="z-punctuation z-separator z-key-value z-html">=</span> <span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>no<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html">	<span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">SINGLEINSTANCE</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>yes<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span>
+</span></span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-end z-html">/&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-inline z-any z-html">meta</span> <span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">http-equiv</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>x-ua-compatible<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span> <span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">content</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>IE=11<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">/&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-style z-begin z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-style z-html">style</span></span><span class="z-meta z-tag z-style z-begin z-html"> <span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">type</span></span></span><span class="z-meta z-tag z-style z-begin z-html"><span class="z-meta z-attribute-with-value z-html"><span class="z-punctuation z-separator z-key-value z-html">=</span></span></span><span class="z-meta z-tag z-style z-begin z-html"><span class="z-meta z-attribute-with-value z-html"></span></span><span class="z-meta z-tag z-style z-begin z-html"><span class="z-meta z-attribute-with-value z-html"><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>text/css<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">	<span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-selector z-css"><span class="z-entity z-name z-tag z-css">body</span></span><span class="z-meta z-property-list z-css"><span class="z-punctuation z-section z-property-list z-css">{</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">font-family</span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-string z-quoted z-single z-css"><span class="z-punctuation z-definition z-string z-begin z-css">&#39;</span>Segoe UI<span class="z-punctuation z-definition z-string z-end z-css">&#39;</span></span></span><span class="z-punctuation z-terminator z-rule z-css">;</span></span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">padding</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">0</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">margin</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">0</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">cursor</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-support z-constant z-property-value z-css">default</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css"></span>	<span class="z-punctuation z-section z-property-list z-css">}</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css">	<span class="z-meta z-selector z-css"><span class="z-entity z-other z-attribute-name z-class z-css"><span class="z-punctuation z-definition z-entity z-css">.</span>toparea</span></span><span class="z-meta z-property-list z-css"><span class="z-punctuation z-section z-property-list z-css">{</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">background</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-other z-color z-rgb-value z-css"><span class="z-punctuation z-definition z-constant z-css">#</span>fff</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">padding</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">10<span class="z-keyword z-other z-unit z-css">px</span></span> <span class="z-constant z-numeric z-integer z-decimal z-css">30<span class="z-keyword z-other z-unit z-css">px</span></span> <span class="z-constant z-numeric z-integer z-decimal z-css">10<span class="z-keyword z-other z-unit z-css">px</span></span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css"></span>	<span class="z-punctuation z-section z-property-list z-css">}</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css">	<span class="z-meta z-selector z-css"><span class="z-entity z-other z-attribute-name z-class z-css"><span class="z-punctuation z-definition z-entity z-css">.</span>buttonarea</span></span><span class="z-meta z-property-list z-css"><span class="z-punctuation z-section z-property-list z-css">{</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">background</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-other z-color z-rgb-value z-css"><span class="z-punctuation z-definition z-constant z-css">#</span>f9f9f9</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">border-top</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">1<span class="z-keyword z-other z-unit z-css">px</span></span> <span class="z-support z-constant z-property-value z-css">solid</span> <span class="z-constant z-other z-color z-rgb-value z-css"><span class="z-punctuation z-definition z-constant z-css">#</span>999</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">padding</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">20<span class="z-keyword z-other z-unit z-css">px</span></span> <span class="z-constant z-numeric z-integer z-decimal z-css">30<span class="z-keyword z-other z-unit z-css">px</span></span> <span class="z-constant z-numeric z-integer z-decimal z-css">23<span class="z-keyword z-other z-unit z-css">px</span></span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">text-align</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-support z-constant z-property-value z-css">right</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css"></span>	<span class="z-punctuation z-section z-property-list z-css">}</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css">	<span class="z-meta z-selector z-css"><span class="z-entity z-other z-attribute-name z-id z-css"><span class="z-punctuation z-definition z-entity z-css">#</span>ok</span> </span><span class="z-meta z-property-list z-css"><span class="z-punctuation z-section z-property-list z-css">{</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">text-align</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-support z-constant z-property-value z-css">center</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">font-family</span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-string z-quoted z-single z-css"><span class="z-punctuation z-definition z-string z-begin z-css">&#39;</span>Segoe UI<span class="z-punctuation z-definition z-string z-end z-css">&#39;</span></span></span><span class="z-punctuation z-terminator z-rule z-css">;</span></span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">font-size</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">1<span class="z-keyword z-other z-unit z-css">em</span></span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">border</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">1<span class="z-keyword z-other z-unit z-css">px</span></span> <span class="z-support z-constant z-property-value z-css">solid</span> <span class="z-constant z-other z-color z-rgb-value z-css"><span class="z-punctuation z-definition z-constant z-css">#</span>999</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">border-bottom</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">1<span class="z-keyword z-other z-unit z-css">px</span></span> <span class="z-support z-constant z-property-value z-css">solid</span> <span class="z-constant z-other z-color z-rgb-value z-css"><span class="z-punctuation z-definition z-constant z-css">#</span>555</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">border-radius</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">3<span class="z-keyword z-other z-unit z-css">px</span></span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">padding</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">6<span class="z-keyword z-other z-unit z-css">px</span></span> <span class="z-constant z-numeric z-integer z-decimal z-css">50<span class="z-keyword z-other z-unit z-css">px</span></span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">font-weight</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">600</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">background</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-other z-color z-rgb-value z-css"><span class="z-punctuation z-definition z-constant z-css">#</span>fff</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">cursor</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-support z-constant z-property-value z-css">pointer</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css"></span>	<span class="z-punctuation z-section z-property-list z-css">}</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css">	<span class="z-meta z-selector z-css"><span class="z-entity z-other z-attribute-name z-id z-css"><span class="z-punctuation z-definition z-entity z-css">#</span>ok</span><span class="z-entity z-other z-pseudo-class z-css"><span class="z-punctuation z-definition z-entity z-css">:</span>hover</span> </span><span class="z-meta z-property-list z-css"><span class="z-punctuation z-section z-property-list z-css">{</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">background</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-other z-color z-rgb-value z-css"><span class="z-punctuation z-definition z-constant z-css">#</span>1588f2</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">color</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-other z-color z-rgb-value z-css"><span class="z-punctuation z-definition z-constant z-css">#</span>fff</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css"></span>	<span class="z-punctuation z-section z-property-list z-css">}</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css">	<span class="z-meta z-selector z-css"><span class="z-entity z-name z-tag z-css">h3</span> </span><span class="z-meta z-property-list z-css"><span class="z-punctuation z-section z-property-list z-css">{</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">margin</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">5<span class="z-keyword z-other z-unit z-css">px</span></span> <span class="z-constant z-numeric z-integer z-decimal z-css">0</span> <span class="z-constant z-numeric z-integer z-decimal z-css">0</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">font-weight</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">600</span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css"></span>	<span class="z-punctuation z-section z-property-list z-css">}</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css">	<span class="z-meta z-selector z-css"><span class="z-entity z-name z-tag z-css">p</span> </span><span class="z-meta z-property-list z-css"><span class="z-punctuation z-section z-property-list z-css">{</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css">		<span class="z-meta z-property-name z-css"><span class="z-support z-type z-property-name z-css">margin</span></span><span class="z-punctuation z-separator z-key-value z-css">:</span><span class="z-meta z-property-value z-css"> </span><span class="z-meta z-property-value z-css"><span class="z-constant z-numeric z-integer z-decimal z-css">12<span class="z-keyword z-other z-unit z-css">px</span></span> <span class="z-constant z-numeric z-integer z-decimal z-css">0</span> <span class="z-constant z-numeric z-integer z-decimal z-css">15<span class="z-keyword z-other z-unit z-css">px</span></span></span><span class="z-punctuation z-terminator z-rule z-css">;</span>
+</span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"><span class="z-meta z-property-list z-css"></span>	<span class="z-punctuation z-section z-property-list z-css">}</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-css z-embedded z-html"><span class="z-source z-css"></span></span><span class="z-meta z-tag z-style z-end z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-style z-html">style</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-script z-begin z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-script z-html">script</span></span><span class="z-meta z-tag z-script z-begin z-html"> <span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">type</span></span></span><span class="z-meta z-tag z-script z-begin z-html"><span class="z-meta z-attribute-with-value z-html"><span class="z-punctuation z-separator z-key-value z-html">=</span></span></span><span class="z-meta z-tag z-script z-begin z-html"><span class="z-meta z-attribute-with-value z-html"></span></span><span class="z-meta z-tag z-script z-begin z-html"><span class="z-meta z-attribute-with-value z-html"><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>text/javascript<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">	<span class="z-source z-js z-embedded z-html"><span class="z-source z-js"><span class="z-storage z-type z-js">var</span> <span class="z-meta z-binding z-name z-js"><span class="z-variable z-other z-readwrite z-js">shell</span></span> <span class="z-keyword z-operator z-assignment z-js">=</span> <span class="z-keyword z-operator z-word z-new z-js">new</span><span class="z-meta z-function-call z-constructor z-js"> <span class="z-variable z-type z-js">ActiveXObject</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-meta z-string z-js"><span class="z-string z-quoted z-double z-js"><span class="z-punctuation z-definition z-string z-begin z-js">&quot;</span>WScript.Shell<span class="z-punctuation z-definition z-string z-end z-js">&quot;</span></span></span><span class="z-punctuation z-section z-group z-end z-js">)</span></span></span><span class="z-punctuation z-terminator z-statement z-js">;</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-js z-embedded z-html"><span class="z-source z-js">	<span class="z-storage z-type z-js">var</span> <span class="z-meta z-binding z-name z-js"><span class="z-variable z-other z-readwrite z-js">strBuild</span></span> <span class="z-keyword z-operator z-assignment z-js">=</span> <span class="z-meta z-function-call z-method z-js"><span class="z-variable z-other z-readwrite z-js">shell</span><span class="z-punctuation z-accessor z-js">.</span><span class="z-variable z-function z-js">RegRead</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-meta z-string z-js"><span class="z-string z-quoted z-double z-js"><span class="z-punctuation z-definition z-string z-begin z-js">&quot;</span>HKLM<span class="z-constant z-character z-escape z-js">\\</span>SOFTWARE<span class="z-constant z-character z-escape z-js">\\</span>Microsoft<span class="z-constant z-character z-escape z-js">\\</span>Windows NT<span class="z-constant z-character z-escape z-js">\\</span>CurrentVersion<span class="z-constant z-character z-escape z-js">\\</span>CurrentBuild<span class="z-punctuation z-definition z-string z-end z-js">&quot;</span></span></span><span class="z-punctuation z-section z-group z-end z-js">)</span></span></span><span class="z-punctuation z-terminator z-statement z-js">;</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-js z-embedded z-html"><span class="z-source z-js">	<span class="z-storage z-type z-js">var</span> <span class="z-meta z-binding z-name z-js"><span class="z-variable z-other z-readwrite z-js">buildNum</span></span> <span class="z-keyword z-operator z-assignment z-js">=</span> <span class="z-meta z-function-call z-js"><span class="z-support z-function z-js">parseInt</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-variable z-other z-readwrite z-js">strBuild</span><span class="z-punctuation z-separator z-comma z-js">,</span> <span class="z-constant z-numeric z-integer z-decimal z-js">10</span><span class="z-punctuation z-section z-group z-end z-js">)</span></span></span><span class="z-punctuation z-terminator z-statement z-js">;</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-js z-embedded z-html"><span class="z-source z-js">	<span class="z-meta z-conditional z-js"><span class="z-keyword z-control z-conditional z-if z-js">if</span> <span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-keyword z-operator z-logical z-js">!</span><span class="z-meta z-function-call z-js"><span class="z-support z-function z-js">isNaN</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-variable z-other z-readwrite z-js">buildNum</span><span class="z-punctuation z-section z-group z-end z-js">)</span></span> </span><span class="z-keyword z-operator z-logical z-js">&amp;&amp;</span> <span class="z-variable z-other z-readwrite z-js">buildNum</span> <span class="z-keyword z-operator z-relational z-js">&gt;=</span> <span class="z-constant z-numeric z-integer z-decimal z-js">322000</span><span class="z-punctuation z-section z-group z-end z-js">)</span></span> <span class="z-meta z-block z-js"><span class="z-punctuation z-section z-block z-begin z-js">{</span>
+</span></span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-js z-embedded z-html"><span class="z-source z-js"><span class="z-meta z-conditional z-js"><span class="z-meta z-block z-js">	  <span class="z-meta z-function-call z-method z-js"><span class="z-support z-type z-object z-dom z-js">window</span><span class="z-punctuation z-accessor z-js">.</span><span class="z-variable z-function z-js">close</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-punctuation z-section z-group z-end z-js">)</span></span></span><span class="z-punctuation z-terminator z-statement z-js">;</span>
+</span></span></span></span></span><span class="z-text z-html z-basic"><span class="z-source z-js z-embedded z-html"><span class="z-source z-js"><span class="z-meta z-conditional z-js"><span class="z-meta z-block z-js">	<span class="z-punctuation z-section z-block z-end z-js">}</span></span></span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-js z-embedded z-html"><span class="z-source z-js">	<span class="z-meta z-function-call z-method z-js"><span class="z-support z-type z-object z-dom z-js">window</span><span class="z-punctuation z-accessor z-js">.</span><span class="z-variable z-function z-js">resizeTo</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-constant z-numeric z-integer z-decimal z-js">500</span><span class="z-punctuation z-separator z-comma z-js">,</span><span class="z-constant z-numeric z-integer z-decimal z-js">245</span><span class="z-punctuation z-section z-group z-end z-js">)</span></span></span><span class="z-punctuation z-terminator z-statement z-js">;</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-js z-embedded z-html"><span class="z-source z-js"></span></span><span class="z-meta z-tag z-script z-end z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-script z-html">script</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-structure z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-structure z-any z-html">head</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-structure z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-structure z-any z-html">body</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">div</span> <span class="z-meta z-attribute-with-value z-class z-html"><span class="z-entity z-other z-attribute-name z-class z-html">class</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span></span><span class="z-string z-quoted z-double z-html"><span class="z-meta z-class-name z-html">toparea</span><span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">	<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">h3</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>Notice from IT<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-block z-any z-html">h3</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">	<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">p</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>Please back up your important files to cloud storage. This computer is slated for replacement as Windows 10 nears end of support.
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-block z-any z-html">div</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">div</span> <span class="z-meta z-attribute-with-value z-class z-html"><span class="z-entity z-other z-attribute-name z-class z-html">class</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span></span><span class="z-string z-quoted z-double z-html"><span class="z-meta z-class-name z-html">buttonarea</span><span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">	<span class="z-meta z-tag z-inline z-a z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-inline z-a z-html">a</span> <span class="z-meta z-attribute-with-value z-event z-html"><span class="z-entity z-other z-attribute-name z-event z-html">onclick</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span></span><span class="z-meta z-attribute-with-value z-event z-html"><span class="z-source z-js"><span class="z-meta z-function-call z-method z-js"><span class="z-support z-type z-object z-dom z-js">window</span><span class="z-punctuation z-accessor z-js">.</span><span class="z-variable z-function z-js">close</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-punctuation z-section z-group z-end z-js">)</span></span></span></span></span><span class="z-string z-quoted z-double"><span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span> </span><span class="z-meta z-attribute-with-value z-id z-html"><span class="z-entity z-other z-attribute-name z-id z-html">id</span><span class="z-punctuation z-separator z-key-value z-html">=</span><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span></span><span class="z-string z-quoted z-double z-html"><span class="z-meta z-toc-list z-id z-html">ok</span><span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>Understood<span class="z-meta z-tag z-inline z-a z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-inline z-a z-html">a</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-block z-any z-html">div</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-script z-begin z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-script z-html">script</span></span><span class="z-meta z-tag z-script z-begin z-html"> <span class="z-meta z-attribute-with-value z-html"><span class="z-entity z-other z-attribute-name z-html">type</span></span></span><span class="z-meta z-tag z-script z-begin z-html"><span class="z-meta z-attribute-with-value z-html"><span class="z-punctuation z-separator z-key-value z-html">=</span></span></span><span class="z-meta z-tag z-script z-begin z-html"><span class="z-meta z-attribute-with-value z-html"></span></span><span class="z-meta z-tag z-script z-begin z-html"><span class="z-meta z-attribute-with-value z-html"><span class="z-string z-quoted z-double z-html"><span class="z-punctuation z-definition z-string z-begin z-html">&quot;</span>text/javascript<span class="z-punctuation z-definition z-string z-end z-html">&quot;</span></span></span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">    <span class="z-source z-js z-embedded z-html"><span class="z-source z-js"><span class="z-meta z-function-call z-method z-js"><span class="z-support z-type z-object z-dom z-js">window</span><span class="z-punctuation z-accessor z-js">.</span><span class="z-variable z-function z-js">resizeTo</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-constant z-numeric z-integer z-decimal z-js">500</span><span class="z-punctuation z-separator z-comma z-js">,</span><span class="z-constant z-numeric z-integer z-decimal z-js">245</span><span class="z-punctuation z-section z-group z-end z-js">)</span></span></span><span class="z-punctuation z-terminator z-statement z-js">;</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-js z-embedded z-html"><span class="z-source z-js">    <span class="z-meta z-function-call z-method z-js"><span class="z-support z-type z-object z-dom z-js">window</span><span class="z-punctuation z-accessor z-js">.</span><span class="z-variable z-function z-js">focus</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-punctuation z-section z-group z-end z-js">)</span></span></span><span class="z-punctuation z-terminator z-statement z-js">;</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-js z-embedded z-html"><span class="z-source z-js">    <span class="z-meta z-function-call z-method z-js"><span class="z-support z-type z-object z-dom z-js">document</span><span class="z-punctuation z-accessor z-js">.</span><span class="z-variable z-function z-js">getElementById</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-meta z-string z-js"><span class="z-string z-quoted z-double z-js"><span class="z-punctuation z-definition z-string z-begin z-js">&quot;</span>ok<span class="z-punctuation z-definition z-string z-end z-js">&quot;</span></span></span><span class="z-punctuation z-section z-group z-end z-js">)</span></span></span><span class="z-punctuation z-accessor z-js">.</span><span class="z-meta z-function-call z-method z-js"><span class="z-variable z-function z-js">focus</span><span class="z-meta z-group z-js"><span class="z-punctuation z-section z-group z-begin z-js">(</span><span class="z-punctuation z-section z-group z-end z-js">)</span></span></span><span class="z-punctuation z-terminator z-statement z-js">;</span>
+</span></span></span><span class="z-text z-html z-basic"><span class="z-source z-js z-embedded z-html"><span class="z-source z-js"></span></span><span class="z-meta z-tag z-script z-end z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-script z-html">script</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-structure z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-structure z-any z-html">body</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></code></pre>
+<p>If you want the icon to display, you’ll need to switch the meta tag to IE=9, but this causes the
+dialog to briefly flicker at a larger window size on load which I found not to be worth the trade-off.</p>
+<p>And of course you can remove the first script block if you want a notice that displays on any
+Windows version.</p>
+
+<section class="article-signoff">
+<p class="updated-at">updated <time>2025-07-17</time>
+</section>
+
+</section>
+<footer>
+	<hr>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<dl>
+		<dt>Build</dt>
+		<dd>2026-01-14 15:50:48 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/tools&#x2F;win11-hta&#x2F;index.md">View source here</a>.</dd>
+
+		<dt>Fonts</dt>
+		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
+
+		<dt>Navigator</dt>
+		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>
+	</dl>
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="/archive/">archive/</a>
+		<br>│ └─<a href="/archive/sdx1/">sdx1</a>
+		<br>├─<a href="/blog/">blog/</a>
+		<br>│ ├─<a href="/blog/design-principles/">design-principles</a>
+		<br>│ ├─<a href="/blog/librechat/">librechat</a>
+		<br>│ ├─<a href="/blog/shorelock/">shorelock</a>
+		<br>│ ├─<a href="/blog/smart-seagate/">smart-seagate</a>
+		<br>│ └─<a href="/blog/wintricks/">wintricks</a>
+		<br>├─<a href="/tools/">tools/</a>
+		<br>│ ├─<a href="/tools/netlibram/">netlibram</a>
+		<br>│ ├─<a href="/tools/prune/">prune</a>
+		<br>│ ├─<a href="/tools/pwgen/">pwgen</a>
+		<br>│ ├─<a href="/tools/tpmiddle/">tpmiddle</a>
+		<br>│ └─<a href="/tools/win11-hta/">win11-hta</a>
+		<br>├─<a href="/contact/">contact</a>
+		<br>├─<a href="/home/">home</a>
+		<br>├─<a href="/links/">links</a>
+		<br>├─<a href="/now/">now</a>
+		<br>├─<a href="/sample/">sample</a>
+		<br>├─<a href="/setup/">setup</a>
+		<br>├─<a href="/todo/">todo</a>
+		<br>└─<a href="/uses/">uses</a>
+		<p>% show :3
+	<pre class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</pre>
+	<p><a href="https://youtu.be/2KVJ2vm_fyw?t=131" style="background: none; color: inherit; box-shadow: none">π</a></p>
+</footer>
+<div id="ui-tools">
+	<button id="btn_top" title="Jump to top">⬆</button>
+	<button id="btn_theme" title="Switch theme">💡</button>
+	<button id="btn_larger" title="Enlarge text">T<b>▲</b></button>
+	<button id="btn_smaller" title="Reduce text">T<b>▼</b></button>
+</div>
+<script defer src="/main.js"></script>
+</body>
+</html>

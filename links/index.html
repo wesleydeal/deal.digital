@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" style="--color-primary: #00aec9">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Links - Wesley Deal</title>
+<style>
+*, *:before, *:after {box-sizing: border-box;}
+:root {
+  color-scheme: light dark;
+}
+body {
+	font: 100%/1.6 sans-serif;
+	margin: 0;
+	width: 100%;
+	overflow-wrap: break-word;
+	scroll-margin-top: 20px;
+	background: light-dark(oklch(from var(--color-primary, #056) 0.96 0.01 h), #000);
+	color: light-dark(#000, #fff);
+}
+body>* {
+	padding: 16px;
+	max-width: 100%;
+}
+header nav, .content>*, footer>*, #toc>div, #search-container {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+header,article,section,nav,footer { display: block }
+header {
+	background: #056;
+	font-size: 110%;
+	line-height: 1.8;
+	display: block;
+	background: oklch(from var(--color-primary, #056) 0.4 c h);
+}
+header a:link, header a:visited {
+	color: #fff;
+	white-space: nowrap;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 33%;
+}
+.topnav-links {
+	list-style: none;
+	display: inline;
+	padding: 0;
+}
+nav#topnav li{
+	padding: 0;
+	margin-right: 16px;
+	display: inline;
+}
+#homelink {
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180));
+	font-weight: 700;
+}
+#toc {
+	background: #023;
+	background: oklch(from var(--color-primary, #056) 0.2 c h);
+	color: #fff;
+	display: block;
+}
+#toc a:link, #toc a:visited {
+	color: #fff;
+}
+.content {
+	min-height: 100vh;
+	transform-origin: 50vw 50vh;
+}
+ul, ol {padding-left: 24px}
+h1 {
+	font-size: xx-large;
+	font-size: clamp(32px, 4vw, 60px);
+	font-weight: 500;
+	line-height: 1.1;
+	color: color-mix(in oklch, var(--color-primary), light-dark(#000,#fff));
+	margin: 32px auto 24px;
+	text-shadow: 2px 2px 0 #7773;
+}
+h2 { margin: 20px auto 8px; font-size: 150%; font-weight: 400; }
+h3 { margin: 16px auto 6px; font-size: 135%; font-weight: 400; }
+h4 { margin: 14px auto 4px; font-size: 120%; }
+h5 { margin: 12px auto   0; font-size: 120%; font-weight: 400; }
+h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic; }
+h1 small {
+	display: block;
+	font-style: italic;
+	font-size: 20px;
+	padding-top: 10px;
+	text-shadow: none;
+}
+body>footer,pre,code,samp {
+	overflow: auto;
+	font-family: ui-monospace, Consolas, monospace;
+	line-height: 1.2;
+}
+body>footer {
+	border-top: 2px solid;
+	margin: 100px 0 800px;
+}
+.z-code {
+	background: #0562;
+	padding: 0.5em 0.7em;
+	border: 1px solid;
+}
+#ui-tools {display: none;}
+a:link, a:visited {
+	color: #056;
+	color: oklch(from var(--color-primary, #056) light-dark(0.4,0.95) light-dark(c, 0.05) h);
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
+}
+:is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
+img { max-width: 100%; }
+table {border-collapse: collapse;}
+th,td {border: 1px solid; padding: 5px;}
+th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
+.zola-anchor {display: none; visibility: hidden;}
+#search-container { padding: 20px; overflow: hidden; }
+#search-box { width: 100%;}
+#search-keyword-list samp { padding: 0 10px; }
+[id] {
+	scroll-margin-top: 100px;
+}
+footer hr{ display: none }
+
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: 0.3s }
+</style>
+<!--[if !IE]><!-->
+<link rel="preload" href="/concourse.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+<!--<![endif]-->
+<body id="links">
+<header>
+	<nav id="topnav">
+		<ul class="topnav-links">
+			<li><a href="/" id="homelink">deal.digital</a>
+			<li><a href="/tools/">🛠️ Tools</a>
+			<li><a href="/blog/">📝 Notes</a>
+			<li><a href="/now/">⏳ Now</a>
+			<li><a href="/links/">🔗 Links</a>
+			<li><a href="/uses/">⌨️ Uses</a>
+			<li><a href="/resume/">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+</header>
+
+<nav id="toc">
+	<div>
+		<b>Jump to: </b>
+		<a href="#neat-blogs-personal-sites">Neat Blogs &amp; Personal Sites</a><span>, </span><a href="#live">Live</a><span>, </span><a href="#black-flag-skull-crossbones-sharing-parrot">🏴‍☠️ Sharing 🦜</a><span>, </span><a href="#development">Development</a><span>, </span><a href="#it-sysops">IT &amp; SysOps</a><span>, </span><a href="#typography">Typography</a><span>, </span><a href="#ui-ux">UI&#x2F;UX</a><span>, </span><a href="#themes">Themes</a><span>, </span><a href="#emulation">Emulation</a><span>, </span><a href="#unsorted-items">Unsorted Items</a><span>, </span><a href="#encoding-compression-file-formats">Encoding, Compression, &amp; File Formats</a><span>, </span><a href="#lists-of-lists">Lists of Lists</a></div>
+</nav>
+
+<section class="content">
+	<h1 class="title">
+	Links of interest
+	<small>the most useful page on this website</small>
+	</h1>
+<style> /* future use */
+	section.content.columnar {
+		div.group {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(800px, 1fr));
+		}
+	}
+</style>
+<h2 id="neat-blogs-personal-sites"><a class="zola-anchor" href="#neat-blogs-personal-sites" aria-label="Anchor link for: neat-blogs-personal-sites">#</a>Neat Blogs &amp; Personal Sites</h2>
+<h3 id="lists-of-sites"><a class="zola-anchor" href="#lists-of-sites" aria-label="Anchor link for: lists-of-sites">#</a>Lists of sites</h3>
+<ul>
+<li><a href="https://250kb.club/">The 250KB club</a>, <a href="https://512kb.club/">512KB Club</a> and <a href="https://1mb.club/">1MB Club</a></li>
+<li><a href="https://nownownow.com/">/now pages</a>, <a href="https://uses.tech/">/uses pages</a></li>
+<li><a href="https://aboutideasnow.com/">/about, /ideas, OR /now pages</a></li>
+<li><a href="https://personalsit.es/">PersonalSit.es</a></li>
+<li><a href="https://simone.computer/#/webdesktops">Web Desktops</a> known to the software engineer <em>Simone</em></li>
+</ul>
+<h3 id="web-technologies-design-development"><a class="zola-anchor" href="#web-technologies-design-development" aria-label="Anchor link for: web-technologies-design-development">#</a>Web (technologies, design &amp; development)</h3>
+<ul>
+<li><a href="https://taylor.town/">taylor.town</a></li>
+<li><a href="https://rachelandrew.co.uk/">Rachel Andrew</a>, Google technical writer</li>
+<li><a href="https://markboulton.co.uk/">Mark Boulton</a>, product designer</li>
+<li><a href="https://www.aleksandrhovhannisyan.com/">Aleksandr Hovhannisyan</a> (note his article on <a href="https://www.aleksandrhovhannisyan.com/blog/perfect-font-fallbacks/">font fallbacks without layout shift</a>)</li>
+<li><a href="https://rsapkf.org/">rsapkf</a></li>
+<li><a href="https://wattenberger.com/">Amelia Wattenberger</a> (check out: <a href="https://wattenberger.com/thoughts/fish-eye">fish eyes</a>)</li>
+<li><a href="https://neil.computer/">Neil Panchal</a></li>
+<li><a href="https://www.joshwcomeau.com">Josh W. Comeau</a> (check out: <a href="https://www.joshwcomeau.com/svg/friendly-introduction-to-svg/">hand-written SVGs</a>)</li>
+</ul>
+<h3 id="nix"><a class="zola-anchor" href="#nix" aria-label="Anchor link for: nix">#</a>*nix</h3>
+<ul>
+<li><a href="https://0xda.de/blog/">dade</a></li>
+<li><a href="https://vinc.cc/">Vinc</a></li>
+</ul>
+<h3 id="retro-computing"><a class="zola-anchor" href="#retro-computing" aria-label="Anchor link for: retro-computing">#</a>Retro Computing</h3>
+<ul>
+<li><a href="https://toastytech.com/">Nathan Linebacks Toasty Technology</a></li>
+<li><a href="https://casadevall.pro/">Ncommander’s Tech Corner</a> (see also, his <a href="https://www.youtube.com/@NCommander/">YouTube channel</a>)</li>
+</ul>
+<h3 id="humor"><a class="zola-anchor" href="#humor" aria-label="Anchor link for: humor">#</a>Humor</h3>
+<ul>
+<li><a href="https://27bslash6.com/index.html">David Thorne’s 27B/6</a></li>
+</ul>
+<h3 id="aesthetic-music"><a class="zola-anchor" href="#aesthetic-music" aria-label="Anchor link for: aesthetic-music">#</a>Aesthetic &amp; Music</h3>
+<ul>
+<li><a href="https://poolsuite.net/">Poolsuite / Poolside FM</a></li>
+<li><a href="https://www.windows93.net/">Windows 93</a></li>
+<li><a href="https://coolmodfiles.com/">CoolModFiles</a> and <a href="https://drsnuggles.github.io/chiptune/demo.html">chiptune3.js demo</a></li>
+<li><a href="https://www.cameronsworld.net/">Cameron’s World</a>, a love letter to GeoCities</li>
+</ul>
+<h3 id="i-just-think-they-re-neat"><a class="zola-anchor" href="#i-just-think-they-re-neat" aria-label="Anchor link for: i-just-think-they-re-neat">#</a>I just think they’re neat</h3>
+<ul>
+<li><a href="https://adryd.com/">adryd</a></li>
+<li><a href="https://dimden.dev/">DIMDEN</a></li>
+<li><a href="https://syslbnth.neocities.org/">SYSTEM/LABYRINTH</a></li>
+<li><a href="https://xpvm.net/">neptune’s save room</a></li>
+<li><a href="https://corru.observer/">corru observer</a></li>
+</ul>
+<h2 id="live"><a class="zola-anchor" href="#live" aria-label="Anchor link for: live">#</a>Live</h2>
+<h3 id="animal-cams"><a class="zola-anchor" href="#animal-cams" aria-label="Anchor link for: animal-cams">#</a>Animal Cams</h3>
+<ul>
+<li>Aquariums: <a href="https://www.georgiaaquarium.org/webcam/">Georgia</a>, <a href="https://www.montereybayaquarium.org/animals/live-cams">Monterey Bay</a>, <a href="https://www.aquariumofpacific.org/exhibits/webcams">of the Pacific</a>, <a href="https://www.sheddaquarium.org/">Shedd</a>, <a href="https://www.youtube.com/@seattleaquarium/streams">Seattle</a></li>
+<li>Cats: <a href="https://kittentanz.com/live-webcam">Kittentaz Siamese</a></li>
+<li>Zoos: <a href="https://chattzoo.org/explore/video-stream">Chattanooga</a></li>
+</ul>
+<h3 id="radio"><a class="zola-anchor" href="#radio" aria-label="Anchor link for: radio">#</a>Radio</h3>
+<ul>
+<li><a href="http://79.120.11.40:8000/">Krelez’s Chiptune and VaporFunk</a></li>
+<li><a href="https://plaza.one/">Nightwave Plaza</a></li>
+<li><a href="https://somafm.com/">soma fm</a></li>
+<li><a href="https://www.kohina.com/">Kohina (chiptune)</a></li>
+</ul>
+<h2 id="black-flag-skull-crossbones-sharing-parrot"><a class="zola-anchor" href="#black-flag-skull-crossbones-sharing-parrot" aria-label="Anchor link for: black-flag-skull-crossbones-sharing-parrot">#</a>🏴‍☠️ Sharing 🦜</h2>
+<p>Consult your local laws before using the following websites to retrieve copyright-protected content.</p>
+<ul>
+<li><a href="https://annas-archive.org">📚 Anna’s Archive</a> - present-day library of Alexandria</li>
+<li><a href="https://mapple.tv">🍁 Mapple.TV</a>, paired with an ad blocker, has a lot of TV and movies (see also: <a href="https://fmovies0.cc/">fmovies0</a>)</li>
+<li><a href="https://hianime.gs">❗ h!anime</a> [<a href="https://hianime.tv">alts</a>] is likewise comprehensive and easy to use</li>
+<li><a href="https://groovesharks.org/">🦈 Grooveshark (no relation)</a> is an ad-free YouTube Music proxy</li>
+<li>🔗 Meta: <a href="https://yarrlist.com/">Yarrlist</a>, <a href="https://shakil-shahadat.github.io/awesome-piracy/">awesome-piracy</a>, <a href="https://old.reddit.com/r/Piracy/wiki/megathread">megathread</a>, <a href="https://old.reddit.com/r/FREEMEDIAHECKYEAH/wiki/index">/u/nbatman wiki</a></li>
+</ul>
+<h2 id="development"><a class="zola-anchor" href="#development" aria-label="Anchor link for: development">#</a>Development</h2>
+<ul>
+<li><a href="https://grugbrain.dev/">The Grug Brained Developer</a>, a layman’s guide to thinking like the self-aware smol brained</li>
+<li><a href="https://clig.dev/">Command-Line Interface Guidelines</a></li>
+<li><a href="https://free-for.dev/">Free for Developers</a> - a list of tools &amp; platforms with a free tier</li>
+<li><a href="https://buttondown.com/cascade/archive/015-context-aware-colors/">CSS Context-Aware Colors</a></li>
+<li><a href="https://smudge.ai/blog/ratelimit-algorithms">Visualizing algorithms for rate limiting</a></li>
+</ul>
+<h2 id="it-sysops"><a class="zola-anchor" href="#it-sysops" aria-label="Anchor link for: it-sysops">#</a>IT &amp; SysOps</h2>
+<ul>
+<li><a href="https://thmsmlr.com/cheap-infra">Glory is only 11MB/sec away</a></li>
+</ul>
+<h3 id="vps-hosting"><a class="zola-anchor" href="#vps-hosting" aria-label="Anchor link for: vps-hosting">#</a>VPS &amp; Hosting</h3>
+<ul>
+<li><a href="https://lowendbox.com/">LowEndBox</a> has a bunch of promotions for cheap VPS, dedicated, and shared web hosting</li>
+</ul>
+<h3 id="stories-humor"><a class="zola-anchor" href="#stories-humor" aria-label="Anchor link for: stories-humor">#</a>Stories &amp; Humor</h3>
+<ul>
+<li><a href="https://bombeck.io/projects/bastard-operator-from-hell-generator">BOFH API</a> and the <a href="https://it-excuse.bombeck.io/">excuse generator</a> using it</li>
+<li><a href="https://www.ibiblio.org/harris/500milemail.html">The case of the 500-mile email</a></li>
+</ul>
+<h2 id="typography"><a class="zola-anchor" href="#typography" aria-label="Anchor link for: typography">#</a>Typography</h2>
+<ul>
+<li><a href="https://modernfontstacks.com/">Modern Font Stacks</a> for the web, without any downloads</li>
+<li><a href="https://practicaltypography.com/">Matthew Butterick’s Practical Typography</a>, a good online book about the subject (though he is wrong about underlines)</li>
+</ul>
+<h3 id="collections"><a class="zola-anchor" href="#collections" aria-label="Anchor link for: collections">#</a>Collections</h3>
+<ul>
+<li><a href="https://uncut.wtf/">UNCUT</a></li>
+<li><a href="https://fontesk.com/">Fontesk</a></li>
+<li><a href="https://int10h.org/oldschool-pc-fonts/">The Ultimate Oldschool PC Font Pack</a></li>
+</ul>
+<h3 id="sans-serif-typefaces"><a class="zola-anchor" href="#sans-serif-typefaces" aria-label="Anchor link for: sans-serif-typefaces">#</a>Sans-serif Typefaces</h3>
+<ul>
+<li><a href="https://fonts.google.com/specimen/Alegreya+Sans">Alegraya Sans</a> feels a bit older and more hand-etched than most sans-serifs</li>
+<li><a href="https://fonts.google.com/specimen/Marcellus">Marcellus</a>, a Trajan-esque title font with lowercase that feels a bit like Optima</li>
+<li><a href="https://fonts.google.com/specimen/Averia+Sans+Libre">Averia Sans</a>, the averages of every sans-serif on Dan Sayer’s computer</li>
+<li><a href="https://nationalparktypeface.com/">National Park</a> looks like router-cut signs with perfectly rounded ends</li>
+<li><a href="https://fonts.google.com/specimen/Rubik">Rubik</a> has rounded ends that feel more squircle than circle</li>
+<li><a href="https://fonts2u.com/wolf-sans-regular.font">Wolf Sans</a> bears a striking resemblance to the legends on the IBM Model M keyboard</li>
+<li><a href="https://fonts.google.com/specimen/Nunito">Nunito</a> is a nicely balanced rounded sans-serif as is its derivative <a href="https://supernotes.app/open-source/sn-pro/">SN Pro</a></li>
+<li><a href="https://fonts.google.com/specimen/Nunito+Sans">Nunito Sans</a> lacks the aforementioned rounding</li>
+<li><a href="https://fonts.google.com/specimen/Red+Hat+Display">Red Hat Display</a> and <a href="https://fonts.google.com/specimen/Red+Hat+Text">Text</a> are lovely readable sans-serifs formerly used on this very site</li>
+<li><a href="https://rsms.me/inter/">Inter</a> is variable and pleasant, if a bit vanilla. Helvetica-esque</li>
+<li><a href="https://github.com/marcologous/Open-Sauce-Fonts">Open Sauce</a> (<a href="https://www.behance.net/gallery/94876543/Open-Sauce-Sans-Typeface">demo</a>) is another Helvetica-esque with distinctive inktraps</li>
+<li><a href="https://fontesk.com/metropolis-typeface/">Metropolis</a> (used for Mozilla Firefox titling) and VMware’s version <a href="https://fontesk.com/clarity-city-typeface/">Clarity City</a> are nice. The author seems to have gotten in some sort of spat with Jonathan Hoefler about its resemblance to Gotham</li>
+<li><a href="https://www.ibm.com/plex/">IBM Plex Sans</a> has a bit of personality. Corporate, computery, and very safely playful. On-brand.</li>
+</ul>
+<h3 id="serif-typefaces"><a class="zola-anchor" href="#serif-typefaces" aria-label="Anchor link for: serif-typefaces">#</a>Serif Typefaces</h3>
+<ul>
+<li><a href="https://fonts.google.com/specimen/STIX+Two+Text">STIX Two Text</a> is a true rarity: a Times-based font that I don’t find ugly. Designed for scientific journals, but looks nice most anywhere.</li>
+<li><a href="https://fonts.google.com/specimen/Averia+Libre">Averia</a> &amp; <a href="https://fonts.google.com/specimen/Averia+Serif+Libre">Averia Serif</a> are the averages of every font on Dan Sayers’ computer</li>
+<li><a href="https://fonts.google.com/specimen/Vollkorn">Vollkorn</a> is beefy &amp; homegrown, like a stew</li>
+<li><a href="https://fontesk.com/xcharter-typeface/">XCharter</a> nicely extend’s Matthew Carter’s simple screen font, <a href="https://practicaltypography.com/charter.html">Charter</a></li>
+<li><a href="https://fonts.google.com/specimen/Source+Serif+4">Source Serif</a> is in a very similar vein to Charter, but with more characters and weights. I love its distinctive ‘?’ glyph</li>
+<li><a href="https://github.com/ertekinno/libre-caslon-condensed">Libre Caslon Condensed</a> invokes memories of old Apple print ads</li>
+<li><a href="https://fonts.google.com/specimen/Instrument+Serif">Instrument Serif</a> is likewise a vintage-feeling condensed display type</li>
+</ul>
+<h3 id="monospace-typefaces"><a class="zola-anchor" href="#monospace-typefaces" aria-label="Anchor link for: monospace-typefaces">#</a>Monospace Typefaces</h3>
+<ul>
+<li><a href="https://github.com/microsoft/cascadia-code">Cascadia Code</a>. Yeah, I know it’s M$ and it’s now a default font, but it’s pretty and readable.</li>
+<li><a href="https://blockmonofont.com/">Block Mono</a></li>
+</ul>
+<h3 id="display-typefaces"><a class="zola-anchor" href="#display-typefaces" aria-label="Anchor link for: display-typefaces">#</a>Display Typefaces</h3>
+<ul>
+<li><a href="https://www.dafont.com/alagard.font">alagard</a> - a readable bitmap gothic font</li>
+</ul>
+<h3 id="tools"><a class="zola-anchor" href="#tools" aria-label="Anchor link for: tools">#</a>Tools</h3>
+<ul>
+<li><a href="https://variable-font-helper.web.app/">Variable font helper</a> to select, compress, and host variable fonts from Google fonts</li>
+</ul>
+<h2 id="ui-ux"><a class="zola-anchor" href="#ui-ux" aria-label="Anchor link for: ui-ux">#</a>UI/UX</h2>
+<ul>
+<li><a href="https://www.qualtrics.com/blog/ux-design-glossary/">Barry Kehoe’s Glossary</a> (thanks Harper!)</li>
+</ul>
+<h2 id="themes"><a class="zola-anchor" href="#themes" aria-label="Anchor link for: themes">#</a>Themes</h2>
+<h3 id="syntax-highlighting"><a class="zola-anchor" href="#syntax-highlighting" aria-label="Anchor link for: syntax-highlighting">#</a>Syntax highlighting</h3>
+<ul>
+<li><a href="https://github.com/jan-warchol/selenized">Selenized</a></li>
+<li><a href="https://github.com/protesilaos/tempus-themes">Tempus</a></li>
+</ul>
+<h3 id="tools-1"><a class="zola-anchor" href="#tools-1" aria-label="Anchor link for: tools-1">#</a>Tools</h3>
+<ul>
+<li><a href="https://oklch.com/">OKLCH</a></li>
+</ul>
+<h2 id="emulation"><a class="zola-anchor" href="#emulation" aria-label="Anchor link for: emulation">#</a>Emulation</h2>
+<h3 id="in-browser"><a class="zola-anchor" href="#in-browser" aria-label="Anchor link for: in-browser">#</a>In-browser</h3>
+<ul>
+<li><a href="https://copy.sh/v86/">v86 by Fabian (copy.sh)</a> lets you run a variety of OSes in an emulated P4 class machine, in browser</li>
+<li><a href="https://bellard.org/jslinux/">JSLinux by Fabrice Bellard</a> is quite similar, emulates Windows 2000 impressively in addition to RISC-V Linux</li>
+<li><a href="https://infinitemac.org/">Infinite Mac</a> emulates Mac up to OS X Tiger</li>
+<li><a href="https://infinitemac.org/">PCE.js by James Friend</a> emulates a Mac Plus, Atari ST, or IBM PC</li>
+<li><a href="https://martypc.net">MartyPC</a> is a cycle-accurate IBM PC 5150 emulator for your browser</li>
+</ul>
+<h2 id="unsorted-items"><a class="zola-anchor" href="#unsorted-items" aria-label="Anchor link for: unsorted-items">#</a>Unsorted Items</h2>
+<ul>
+<li><a href="https://sadservers.com/">Sad Servers</a></li>
+<li><a href="https://www.getzola.org/documentation">Zola</a> &amp; <a href="https://keats.github.io/tera/docs/">Tera</a> docs</li>
+<li><a href="https://ffmpegbyexample.com/">ffmpeg by example</a></li>
+</ul>
+<h2 id="encoding-compression-file-formats"><a class="zola-anchor" href="#encoding-compression-file-formats" aria-label="Anchor link for: encoding-compression-file-formats">#</a>Encoding, Compression, &amp; File Formats</h2>
+<h3 id="ffmpeg"><a class="zola-anchor" href="#ffmpeg" aria-label="Anchor link for: ffmpeg">#</a>ffmpeg</h3>
+<ul>
+<li><a href="https://github.com/BtbN/FFmpeg-Builds/releases">Windows builds</a></li>
+<li><a href="https://andy-preston.github.io/ffmpeg-recipes/">Recipes</a></li>
+</ul>
+<h2 id="lists-of-lists"><a class="zola-anchor" href="#lists-of-lists" aria-label="Anchor link for: lists-of-lists">#</a>Lists of Lists</h2>
+<ul>
+<li><a href="https://github.com/sindresorhus/awesome#readme">awesome-* on GitHub</a></li>
+</ul>
+<script>
+function columnify() { // future use
+	contentSection = document.querySelector('section.content');
+	separator = document.createElement('span');
+	separator.innerHTML = ", ";
+	for (let li of document.querySelectorAll('section.content li')) {
+		for (let node of li.childNodes) {
+			if (node.nodeName != "A") {
+				if (node.textContent.includes(':') && !node.textContent.includes('(')) continue;
+				if (node.textContent == ', ') continue;
+				if (node.nextSibling?.nodeName == "A") {
+					node.replaceWith(", ");
+				} else {
+					node.replaceWith("");
+				}
+			}
+		}
+	}
+	document.querySelector('section.content').classList.add('columnar');
+}
+</script>
+
+<section class="article-signoff">
+<p class="updated-at">updated <time>2025-09-14</time>
+</section>
+
+</section>
+<footer>
+	<hr>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<dl>
+		<dt>Build</dt>
+		<dd>2026-01-14 15:50:48 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/links.md">View source here</a>.</dd>
+
+		<dt>Fonts</dt>
+		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
+
+		<dt>Navigator</dt>
+		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>
+	</dl>
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="/archive/">archive/</a>
+		<br>│ └─<a href="/archive/sdx1/">sdx1</a>
+		<br>├─<a href="/blog/">blog/</a>
+		<br>│ ├─<a href="/blog/design-principles/">design-principles</a>
+		<br>│ ├─<a href="/blog/librechat/">librechat</a>
+		<br>│ ├─<a href="/blog/shorelock/">shorelock</a>
+		<br>│ ├─<a href="/blog/smart-seagate/">smart-seagate</a>
+		<br>│ └─<a href="/blog/wintricks/">wintricks</a>
+		<br>├─<a href="/tools/">tools/</a>
+		<br>│ ├─<a href="/tools/netlibram/">netlibram</a>
+		<br>│ ├─<a href="/tools/prune/">prune</a>
+		<br>│ ├─<a href="/tools/pwgen/">pwgen</a>
+		<br>│ ├─<a href="/tools/tpmiddle/">tpmiddle</a>
+		<br>│ └─<a href="/tools/win11-hta/">win11-hta</a>
+		<br>├─<a href="/contact/">contact</a>
+		<br>├─<a href="/home/">home</a>
+		<br>├─<a href="/links/">links</a>
+		<br>├─<a href="/now/">now</a>
+		<br>├─<a href="/sample/">sample</a>
+		<br>├─<a href="/setup/">setup</a>
+		<br>├─<a href="/todo/">todo</a>
+		<br>└─<a href="/uses/">uses</a>
+		<p>% show :3
+	<pre class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</pre>
+	<p><a href="https://youtu.be/2KVJ2vm_fyw?t=131" style="background: none; color: inherit; box-shadow: none">π</a></p>
+</footer>
+<div id="ui-tools">
+	<button id="btn_top" title="Jump to top">⬆</button>
+	<button id="btn_theme" title="Switch theme">💡</button>
+	<button id="btn_larger" title="Enlarge text">T<b>▲</b></button>
+	<button id="btn_smaller" title="Reduce text">T<b>▼</b></button>
+</div>
+<script defer src="/main.js"></script>
+</body>
+</html>

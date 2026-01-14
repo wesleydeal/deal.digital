@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" style="--color-primary: #83abe8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What I’m doing now - Wesley Deal</title>
+<style>
+*, *:before, *:after {box-sizing: border-box;}
+:root {
+  color-scheme: light dark;
+}
+body {
+	font: 100%/1.6 sans-serif;
+	margin: 0;
+	width: 100%;
+	overflow-wrap: break-word;
+	scroll-margin-top: 20px;
+	background: light-dark(oklch(from var(--color-primary, #056) 0.96 0.01 h), #000);
+	color: light-dark(#000, #fff);
+}
+body>* {
+	padding: 16px;
+	max-width: 100%;
+}
+header nav, .content>*, footer>*, #toc>div, #search-container {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+header,article,section,nav,footer { display: block }
+header {
+	background: #056;
+	font-size: 110%;
+	line-height: 1.8;
+	display: block;
+	background: oklch(from var(--color-primary, #056) 0.4 c h);
+}
+header a:link, header a:visited {
+	color: #fff;
+	white-space: nowrap;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 33%;
+}
+.topnav-links {
+	list-style: none;
+	display: inline;
+	padding: 0;
+}
+nav#topnav li{
+	padding: 0;
+	margin-right: 16px;
+	display: inline;
+}
+#homelink {
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180));
+	font-weight: 700;
+}
+#toc {
+	background: #023;
+	background: oklch(from var(--color-primary, #056) 0.2 c h);
+	color: #fff;
+	display: block;
+}
+#toc a:link, #toc a:visited {
+	color: #fff;
+}
+.content {
+	min-height: 100vh;
+	transform-origin: 50vw 50vh;
+}
+ul, ol {padding-left: 24px}
+h1 {
+	font-size: xx-large;
+	font-size: clamp(32px, 4vw, 60px);
+	font-weight: 500;
+	line-height: 1.1;
+	color: color-mix(in oklch, var(--color-primary), light-dark(#000,#fff));
+	margin: 32px auto 24px;
+	text-shadow: 2px 2px 0 #7773;
+}
+h2 { margin: 20px auto 8px; font-size: 150%; font-weight: 400; }
+h3 { margin: 16px auto 6px; font-size: 135%; font-weight: 400; }
+h4 { margin: 14px auto 4px; font-size: 120%; }
+h5 { margin: 12px auto   0; font-size: 120%; font-weight: 400; }
+h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic; }
+h1 small {
+	display: block;
+	font-style: italic;
+	font-size: 20px;
+	padding-top: 10px;
+	text-shadow: none;
+}
+body>footer,pre,code,samp {
+	overflow: auto;
+	font-family: ui-monospace, Consolas, monospace;
+	line-height: 1.2;
+}
+body>footer {
+	border-top: 2px solid;
+	margin: 100px 0 800px;
+}
+.z-code {
+	background: #0562;
+	padding: 0.5em 0.7em;
+	border: 1px solid;
+}
+#ui-tools {display: none;}
+a:link, a:visited {
+	color: #056;
+	color: oklch(from var(--color-primary, #056) light-dark(0.4,0.95) light-dark(c, 0.05) h);
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
+}
+:is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
+img { max-width: 100%; }
+table {border-collapse: collapse;}
+th,td {border: 1px solid; padding: 5px;}
+th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
+.zola-anchor {display: none; visibility: hidden;}
+#search-container { padding: 20px; overflow: hidden; }
+#search-box { width: 100%;}
+#search-keyword-list samp { padding: 0 10px; }
+[id] {
+	scroll-margin-top: 100px;
+}
+footer hr{ display: none }
+
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: 0.3s }
+</style>
+<!--[if !IE]><!-->
+<link rel="preload" href="/concourse.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+<!--<![endif]-->
+<body id="now">
+<header>
+	<nav id="topnav">
+		<ul class="topnav-links">
+			<li><a href="/" id="homelink">deal.digital</a>
+			<li><a href="/tools/">🛠️ Tools</a>
+			<li><a href="/blog/">📝 Notes</a>
+			<li><a href="/now/">⏳ Now</a>
+			<li><a href="/links/">🔗 Links</a>
+			<li><a href="/uses/">⌨️ Uses</a>
+			<li><a href="/resume/">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+</header>
+
+<section class="content">
+	<h1 class="title">
+	What I’m doing now
+	</h1>
+<blockquote>
+	<p>a website with a link that says “now” goes to a page that tells you what this person is focused on at this point in their life. For short, we call it a “now page”.</p>
+
+</blockquote>
+	<div class="quote-signoff">
+		<p class="author"><a href="https://nownownow.com/about">—Derek Silvers</a>
+		
+		
+	</div><h2 id="hoarding-tech"><a class="zola-anchor" href="#hoarding-tech" aria-label="Anchor link for: hoarding-tech">#</a>Hoarding tech</h2>
+<p>As 2025 comes to a close, we seem to be in the midst of a DRAM affordability crisis that promises only to get worse over the next year. As I found myself with a dying ThinkPad, I overcompensated a bit for the possibility that I won’t be able to afford a desktop for the next 5 years. I’ve spent the last month acquiring and assembling used hardware such that my family and I are set for a while, even as I begin deploying a homelab:</p>
+<ul>
+<li><strong>Deepslate</strong>: an Intel 265 / 64GB / RX 6900 XT build running Nobara Linux. I’ve found the experience with Nobara to be quite pleasant and speedy–I haven’t had to edit a single config file by hand, and the system has been rock steady without even a hang. The bad: no idea how to turn off the lighting on my ASRock GPU without installing Windows; MSI’s newfound penchant for proprietary Wi-Fi antenna cables</li>
+<li><strong>Ace</strong>: A deeply discounted refurb Acer Predator Orion PO5-650: i7-13700F / 16GB / RTX 3070. It’s currently on its stock Windows 11 setup with a bit of bloatware removed. It certainly does its job, but it does it with 4400MHz memory and a screaming extruded aluminum CPU cooler. In the corner I’ve got a new cooler, a contact frame, and some 5600 RAM that will hopefully remove the cap things when I get around to installing them.</li>
+<li><strong>Redwood</strong>: Ryzen 5800X / 64GB / RX 580 4GB. Not exactly a top of the line gaming machine, but a perfectly serviceable spare built with components pulled from my deceased ASRock 3700X ITX build “mini”. It’s also my testbed for CachyOS.</li>
+<li><strong>Bernoulli I</strong> and <strong>II</strong>: a pair of former Dell T5820 CAD workstations picked up at a bargain price. Xeon W-2145 / 64GB / Quadro P5000. I don’t have a plan for them yet, but they could make good homelab servers as well as daily drivers. Annoyingly, their POST time is about as long as a typical server. But I was pleasantly surprised to discover that their front base are set up for U.2 drives, which I can get for a fair price.</li>
+</ul>
+<h2 id="building-out-this-website"><a class="zola-anchor" href="#building-out-this-website" aria-label="Anchor link for: building-out-this-website">#</a>Building out this website</h2>
+<p>I’d like to touch up my <a href="/resume">resume</a> a bit, then resume writing content for the site. Here’s some things I’d like to write about this year:</p>
+<ul>
+<li>cool user interface designs from the past and present</li>
+<li>the remaining blockers before the fabled <em>Year of the Linux Desktop</em> (although <a href="https://yearofthelinuxdesktop.net">Mike may have this covered</a> in a more comprehensive way than I could hope to)</li>
+<li>Android apps that don’t suck</li>
+<li>How I lost 110lb (a question I need to explore a little myself)</li>
+</ul>
+<h2 id="fitness"><a class="zola-anchor" href="#fitness" aria-label="Anchor link for: fitness">#</a>Fitness</h2>
+<p>At the moment, I’m around 160lb at a bit over 15% body fat. I’d like to be around 12% (smart scale reported) body fat.
+I lift weights 4-7 days a week and target ≥10,000 steps per day. I used to run, and I’d like to get back to it. But for now, hiking and the stairmill are my friend.</p>
+<h2 id="listening-to"><a class="zola-anchor" href="#listening-to" aria-label="Anchor link for: listening-to">#</a>Listening to…</h2>
+<ul>
+<li>Rush – The Enemy Within</li>
+<li>Kavinsky – Zenith</li>
+<li>Tears for Fears – Raoul and the Kings of Spain</li>
+<li>YOUTH 83 &amp; Hypixi !!! – Decades On Line</li>
+<li>Jethro Tull – Farm on the Freeway</li>
+<li>Trash / Oxygen, ENiGMA – Wintersweet</li>
+<li>OVERLOAD – BLACK OUT</li>
+<li>Yes – Starship Trooper</li>
+<li>alyzea – crystal settings</li>
+<li>Rush – Digital Man</li>
+<li>Steely Dan – Doctor Wu</li>
+<li>KNOWER – Window Shop</li>
+<li>Daft Punk – Human After All</li>
+</ul>
+<h2 id="trying-to-find-an-optimal-rhythm"><a class="zola-anchor" href="#trying-to-find-an-optimal-rhythm" aria-label="Anchor link for: trying-to-find-an-optimal-rhythm">#</a>Trying to find an optimal rhythm</h2>
+<p>It’s hard to find time to sleep, cook, eat, work, exercise, learn, and play all in a day. It feels as if I’ve never quite got the balance right, and if I have, I’d still rather eat out at a restaurant or skip the gym on a day I should be going. One surprise can through off everything, especially sleep, which makes everything else more difficult. In the coming months, I’ll be exploring ideas and patterns to make these tasks easier (or more rewarding) and my routines more resilient.</p>
+<h1 id="previously"><a class="zola-anchor" href="#previously" aria-label="Anchor link for: previously">#</a>Previously…</h1>
+<p>View the history of this page <a href="https://github.com/wesleydeal/deal.digital/commits/master/content/now.md">on GitHub</a> if you’d like to see what I <em>was</em> doing.</p>
+
+<section class="article-signoff">
+<p class="updated-at">updated <time>2025-12-31</time>
+</section>
+
+</section>
+<footer>
+	<hr>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<dl>
+		<dt>Build</dt>
+		<dd>2026-01-14 15:50:48 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/now.md">View source here</a>.</dd>
+
+		<dt>Fonts</dt>
+		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
+
+		<dt>Navigator</dt>
+		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>
+	</dl>
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="/archive/">archive/</a>
+		<br>│ └─<a href="/archive/sdx1/">sdx1</a>
+		<br>├─<a href="/blog/">blog/</a>
+		<br>│ ├─<a href="/blog/design-principles/">design-principles</a>
+		<br>│ ├─<a href="/blog/librechat/">librechat</a>
+		<br>│ ├─<a href="/blog/shorelock/">shorelock</a>
+		<br>│ ├─<a href="/blog/smart-seagate/">smart-seagate</a>
+		<br>│ └─<a href="/blog/wintricks/">wintricks</a>
+		<br>├─<a href="/tools/">tools/</a>
+		<br>│ ├─<a href="/tools/netlibram/">netlibram</a>
+		<br>│ ├─<a href="/tools/prune/">prune</a>
+		<br>│ ├─<a href="/tools/pwgen/">pwgen</a>
+		<br>│ ├─<a href="/tools/tpmiddle/">tpmiddle</a>
+		<br>│ └─<a href="/tools/win11-hta/">win11-hta</a>
+		<br>├─<a href="/contact/">contact</a>
+		<br>├─<a href="/home/">home</a>
+		<br>├─<a href="/links/">links</a>
+		<br>├─<a href="/now/">now</a>
+		<br>├─<a href="/sample/">sample</a>
+		<br>├─<a href="/setup/">setup</a>
+		<br>├─<a href="/todo/">todo</a>
+		<br>└─<a href="/uses/">uses</a>
+		<p>% show :3
+	<pre class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</pre>
+	<p><a href="https://youtu.be/2KVJ2vm_fyw?t=131" style="background: none; color: inherit; box-shadow: none">π</a></p>
+</footer>
+<div id="ui-tools">
+	<button id="btn_top" title="Jump to top">⬆</button>
+	<button id="btn_theme" title="Switch theme">💡</button>
+	<button id="btn_larger" title="Enlarge text">T<b>▲</b></button>
+	<button id="btn_smaller" title="Reduce text">T<b>▼</b></button>
+</div>
+<script defer src="/main.js"></script>
+</body>
+</html>

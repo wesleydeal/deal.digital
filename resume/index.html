@@ -1,0 +1,1537 @@
+<!doctype html>
+<html lang="en" class="roundbullets">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+	<title>Wesley Deal - Resume</title>
+	<style>
+		@import url('https://cdn.staticdelivr.com/gfonts/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Martian+Mono:wght@100..800&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&family=Rubik:ital,wght@0,300..900;1,300..900&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Spectral+SC:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Vollkorn:ital,wght@0,400..900;1,400..900&family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&display=swap');
+
+		:root {
+			--lightmode-color-fg: #000;
+			--lightmode-color-bg: #fff4f3;
+			--lightmode-color-soft: #794a4a;
+			--lightmode-image-bg: radial-gradient(at 50% 40%, #fff4, transparent) 0/cover fixed, repeating-linear-gradient(32deg, #33113308, #0000 5px) fixed, repeating-linear-gradient(-32deg, #33333308, #0000 4px) fixed, #fff4f3;
+			--lightmode-code-bg: #f8d2abaa;
+			--darkmode-color-fg: #fff;
+			--darkmode-color-bg: #131111;
+			--darkmode-color-soft: #dfa6a6;
+			--darkmode-image-bg: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), radial-gradient(250vw 170vh at top left in oklch, #0f0605, #1e151b, #0f0605) #0f0605;
+			--darkmode-code-bg: #582626aa;
+
+			--color-fg: var(--lightmode-color-fg);
+			--color-bg: var(--lightmode-color-bg);
+			--color-soft: var(--lightmode-color-soft);
+			--color-code-bg: var(--lightmode-code-bg);
+			--bg: var(--lightmode-image-bg);
+			--base-size: 11pt;
+			--base-line-height: 1.4;
+			--base-font: 'Spectral';
+			--base-weight: 400;
+			--bold-weight: 700;
+			--dates-font-style: italic;
+			--ligatures: normal; /* use normal or none */
+			--bullet-margin: 0.1em;
+			--p-margin: 0.3em;
+			--h1-size: 1.25em;
+			--h1-weight: 500;
+			--h1-spacing: .04em;
+			--h1-typeface: 'Spectral SC';
+			--h1-transform: inherit;
+			--name-pad-top: 10px;
+			--name-gap: 0px;
+			--name-pad-bottom: 10px;
+			--name-typeface: inherit;
+			--ui-typeface: 'Atkinson Hyperlegible Next', sans-serif;
+			--zoom: 1.0;
+			
+			box-sizing: border-box;
+		}
+
+		*, *:before, *:after{
+			box-sizing: inherit;
+		}
+
+		body {
+			font: var(--base-weight) var(--base-size)/var(--base-line-height) var(--base-font);
+			background: var(--color-bg);
+			background: var(--bg);
+			color: var(--color-fg);
+			font-variant-ligatures: var(--ligatures);
+			overflow-y: scroll;
+			min-height: 100vh;
+			margin: 25px 0;
+		}
+		
+		main#resume{
+			width: 8.5in;
+			height: 11in;
+			padding: 0.25in 0.5in;
+			margin: 0 auto;
+			display: flex;
+			flex-direction: column;
+			zoom: var(--zoom);
+			:has(#editable:checked) & {
+				background: var(--color-bg);
+				box-shadow: 0 0 0 1px #fff inset, 2px 2px 5px 0 #000;
+			}
+		}
+
+		p {
+			margin: var(--p-margin) 0;
+			
+			&:has(+ p.withabove){
+				margin-bottom: 0;
+			}
+
+			&.withabove{
+				margin-top: 0;
+				padding-left: 1.2em;
+			}
+		}
+
+		b,strong {
+			font-weight: var(--bold-weight);
+		}
+
+		header{
+			margin: 0;
+			display: flex;
+			justify-content: flex-start;
+			flex-direction: row-reverse;
+			gap: 10px 20px;
+			flex-wrap: wrap-reverse;
+			
+			& #contact {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				text-align: right;
+			
+				& p {
+					margin: 2px 0;
+				}
+			}
+			
+			& #namebox {
+				text-align: center;
+				padding: var(--name-pad-top) 20px var(--name-pad-bottom);
+				line-height: 1;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				white-space: nowrap;
+				gap: var(--name-gap);
+				font-family: var(--name-typeface);
+				
+				header:not(.simple) & {
+					background: #000;
+					color: #fff;
+				}
+				
+				& .name {
+					font-weight: bold;
+					font-size: 2.5em;
+					margin: 0;
+				}
+				
+				& .jobtitle {
+					font-size: 1.6em;
+					margin: 0;
+				}
+			}
+		}
+
+		header.simple{
+			flex-direction: column;
+			gap: var(--name-gap);
+			align-content: center;
+			padding: var(--name-pad-top) 0 var(--name-pad-bottom);
+			
+			& #namebox {
+				padding: 0;
+			}
+			
+			& .jobtitle {
+				display: none;
+			}
+			
+			& #contact {
+				flex-direction: row;
+				text-align: center;
+				gap: 2em;
+			}
+			
+			& #namebox .name {
+				font-size: 2em;
+				text-transform: uppercase;
+			}
+		}
+
+		:link, :visited {
+			color: inherit;
+			text-decoration-color: var(--color-soft);
+			
+			&:hover, &:active{
+				background: var(--color-fg);
+				box-shadow: 0 0 0 3px var(--color-fg);
+				color: var(--color-bg);
+			}
+			
+			&:link[href^="mailto:"], &:link[href^="tel:"] {
+				text-decoration: none;
+			}
+		}
+
+		section {
+			margin: 0;
+		}
+
+		#resume:not(:has(+ header.simple)) section:nth-child(2) {
+			margin-top: -10px;
+		}
+
+		footer {
+			margin: 0;
+			flex: 1 0;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			text-align: right;
+			font: italic 0.8em/1 var(--base-font);
+			
+			& p {
+				margin: 10px 0 0;
+			}
+		}
+
+		h1 {
+			font-size: var(--h1-size);
+			margin: .4em 0;
+			border-bottom: 1pt solid var(--color-soft);
+			font-family: var(--h1-typeface);
+			line-height: 1.1;
+			font-weight: var(--h1-weight);
+			letter-spacing: var(--h1-spacing);
+			text-transform: var(--h1-transform);
+		}
+
+		h2{
+			width: 100%;
+			font-size: 1.1em;
+			margin: var(--p-margin) 0 0;
+			font-weight: inherit;
+
+			&:has(span.dates) {
+				display: flex;
+				gap: 0 0.5ch;
+				flex-wrap: wrap-reverse;
+				justify-content: space-between;
+			}
+		}
+
+		#education-certs p:has(.dates){
+			display: flex;
+			justify-content: space-between;
+			gap: 0 0.5ch;
+
+		}
+
+		span.dates {
+			text-align: right;
+			font-style: var(--dates-font-style);
+			flex: 0 0 fit-content;
+			color: var(--color-soft);
+		}
+
+		ul{
+			margin: 0 0 0 0.1em;
+			padding-left: 1.2em;
+			
+			& li {
+				margin: var(--bullet-margin) 0;
+			}
+			
+			& li::marker{
+				content: '⬥  ';
+				font-size: 0.9em;
+			}
+			
+			.roundbullets & {
+				margin: 0;
+				
+				& li::marker {
+					content: '•  ';
+					font-size: inherit;
+				}
+			}
+		}
+
+		article#about {
+			margin: 1in auto;
+			padding: .25in .5in;
+			border-top: 1px solid;
+			font: 350 1rem/1.6 var(--ui-typeface);
+			zoom: var(--zoom);
+			position: relative;
+			background: linear-gradient(176deg, #ea4d00 -600%, transparent 50%) 0 0 / 100% 1500px no-repeat;
+			
+			& h1 {
+				font: 600 2em/1 var(--ui-typeface);
+				text-transform: uppercase;
+				position: relative;
+				width: fit-content;
+				max-width: 8.5in;
+				margin: 0.25em auto 0.75em;
+				margin-left: max(0px, calc(50% - 4.25in));
+				border: 0;
+			}
+			
+			& h2 {
+				font: 500 1.2em/1 var(--ui-typeface);
+				text-transform: uppercase;
+				position: relative;
+				width: fit-content;
+				padding-bottom: 2px;
+				border-bottom: 1px solid var(--color-soft);
+				max-width: 8.5in;
+				margin: 1em auto;
+				margin-left: max(0px, calc(50% - 4.25in));
+			}
+			
+			& p, & ul, & ol {
+				max-width: 8.5in;
+				margin: 1em auto;
+				ul &, ol & {
+					margin: 0 auto;
+				}
+			}
+			
+			& li {
+				margin: 0.4em 0;
+
+				&::marker{
+					color: var(--color-soft);
+				}
+			}
+			
+			& b {
+				font-weight: 600;
+			}
+			
+			& :link {
+				font-weight: 450;
+			}
+
+			& pre {
+				font-family: "Atkinson Hyperlegible Mono", monospace;
+			}
+
+			& code {
+				background: var(--color-code-bg);
+				font-family: "Atkinson Hyperlegible Mono", monospace;
+				font-size: 0.9em;
+				padding: 0 0.3em;
+				margin: 0 0.1ch;
+				display: inline-block;
+
+				&.codeblock{
+					font-size: 0.85em;
+					width: 100%;
+					overflow-x: auto;
+				}
+			}
+
+			& ul {
+				padding-left: 1.15em;
+			}
+
+			& ol{
+				padding-left: 1.6em;
+
+				& li {
+					padding-left: 0.2em;
+				}
+				& ::marker {
+					font-weight: 500;
+				}
+			}
+
+			& label:has(#print-toggle) {
+				border: 1px solid;
+				padding: 0.5em 1em;
+				color: var(--color-soft);
+				accent-color: var(--color-soft);
+				font-size: 1em;
+				display: inline flex;
+				width: fit-content;
+				gap: 1em;
+				margin-left: max(0px, calc(50% - 4.25in));
+				border-radius: 0.5em;
+				&:has(:checked){
+					color: var(--color-bg);
+					background: radial-gradient(120% 70% at center, #fff4, transparent), var(--color-soft);
+					border-color: var(--color-soft);
+					box-shadow: 0 0 0.5em var(--color-soft);
+				}
+				@media screen and (width >= 800px) {
+					position: absolute;
+					right: calc(max(0.5in, calc(50% - 4.25in)));
+					top: 0.25in;
+				}
+				transition: 150ms box-shadow, 100ms filter;
+				user-select: none;
+				&:hover, &:active {
+					filter: saturate(2);
+				}
+			}
+		}
+
+		#tools{
+			user-select: none;
+			position: fixed;
+			bottom: 7px;
+			right: 74px;
+			background: #000a;
+			color: #fff;
+			display: none;
+			padding: 4px;
+			flex-direction: column;
+			gap: 4px;
+			font: 300 14px/1 var(--ui-typeface);
+			max-height: calc(100vh - 40px);
+			overflow-y: auto;
+			border-radius: 5px;
+			flex-wrap: wrap;
+			box-shadow: 0 0 6px 0 #444a;
+			
+			& label, & button{
+				display: flex;
+				padding: 3px 6px 3px 3px;
+				flex: 1 0 auto;
+				color: #fff;
+				
+				&:has(> input){
+					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(230deg, #a00, #500 60px);
+					padding: 0 4px;
+					display: flex;
+					flex-direction: row-reverse;
+					justify-content: space-between;
+					align-items: center;
+					border-bottom: 1px solid #912929;
+					text-shadow: 1px 1px black;
+				}
+				
+				&:has(> input:checked){
+					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(to left, #195, #053 60px);
+					border-bottom: 1px solid #398b62;
+				}
+				
+				&:has(> input:hover){
+					filter: brightness(120%);
+				}
+			}
+
+			& button {
+				background: linear-gradient(to bottom, #fff1, #fff2 50%, transparent 50%), linear-gradient(270deg in oklch, #20397c, #1b1b60);
+				border: 0;
+				border-bottom: 1px solid #6161ea;
+				text-shadow: 1px 1px black;
+				padding: 2px 4px 1px;
+				font: inherit;
+
+				&:hover{
+					filter: brightness(120%);
+				}
+			}
+			
+			& form {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				border-bottom: 1px solid #543;
+				
+				&:hover {
+					background: linear-gradient(to right, #003, #008);
+					border-bottom-color: orange;
+				}
+			}
+			
+			& .optiongroup {
+				border: 1px solid #fc3;
+				background: #0009;
+				display: flex;
+				flex-direction: column;
+			}
+			
+			& input {
+				color: #fc3;
+				background: #002;
+				box-shadow: inset 1px 1px 3px #000, inset -1px -1px 1px #ffffff6e;
+				appearance: none;
+				border: 1px solid #fffa;
+				font: 350 13px / 1 var(--ui-typeface);
+				padding: 0 2px;
+				
+				&[type="number"] {
+					flex: 0 1 54px;
+					min-width: 40px;
+					max-width: 54px;
+				}
+				
+				&[type="checkbox"] {
+					margin: 2px 0;
+					padding: 0;
+					
+					&:after {
+						content: '';
+						width: 14px;
+						height: 14px;
+						display: block;
+					}
+					&:checked:after{
+						background: radial-gradient(at 10% 10%, #ffefbe, #c19718) center / 75% 75% no-repeat;
+					}
+				}
+			}
+			
+			& select{
+				flex: 1 1 100px;
+				min-width: 60px;
+				color: #fc3;
+				background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), linear-gradient(270deg, #fc3 4px, transparent 4px), #112;
+				border: 1px solid #fffa;
+				appearance: none;
+				box-shadow: inset 1px 1px 3px #fff4, inset -1px -1px 4px #0005;
+				padding: 2px 6px 2px 2px;
+				text-shadow: 1px 1px #000;
+				font: 500 13px / 1 var(--ui-typeface);
+			}
+		}
+
+		#editor-toolbar {
+			display: none;
+			body:has(#editable:checked) & {
+				display: flex;
+			}
+			user-select: none;
+			flex-direction: column;
+			padding: 3px;
+			gap: 2px;
+			position: absolute;
+			top: 50px;
+			left: 0;
+			background: #000a;
+			font: 600 20px/1 var(--ui-typeface);
+			opacity: 80%;
+
+			& label:has(input[type="checkbox"]), & button {
+				background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), #17a;
+				color: #fff;
+				border: 1px solid;
+				display: block;
+				width: 24px;
+				height: 24px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 0;
+				border-radius: 2px;
+				font: inherit;
+
+				&:has(input) {
+					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), #900;
+				}
+				&:has(:checked) {
+					background: linear-gradient(to bottom, #fff1,#fff2 50%, transparent 50%), #195;
+				}
+				& input{
+					display: none;
+				}
+				&:hover:not(:has(input[disabled])) {
+					filter: brightness(120%);
+				}
+				&:active {
+					filter: saturate(5);
+				}
+				&:has(input[disabled]) {
+					background: #333;
+					color: #ccc;
+				}
+			}
+		}
+
+		.homelink{
+			text-decoration: none;
+			position: absolute;
+			top: 3px;
+			left: 3px;
+			background: #000;
+			background: linear-gradient(#ffff, transparent 2px), radial-gradient(ellipse 130% 50% at top in oklab,#fff3,transparent), radial-gradient(ellipse 130% 50% at bottom in oklab, #040, #000);
+			color: #fff;
+			padding: 4px 8px 5px;
+			border: 1px solid #777;
+			border-radius: 5px;
+			font: 600 16px/1.4 var(--ui-typeface);
+			
+			&:before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 50%;
+				width: 100%;
+				background: linear-gradient(#fff6,transparent 80%);
+				border-radius: 5px 5px 20px 20px;
+			}
+			
+			&:after {
+				position: absolute;
+				bottom: 4px;
+				left: 5px;
+				width: calc(100% - 10px);
+				height: 1px;
+				content: '';
+				background: #7fa;
+			}
+		}
+		
+		.buttonbar{
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+			
+			& button {
+				opacity: 0.7;
+				width: 60px;
+				height: 32px;
+				background: radial-gradient(in oklab, #000, #222), #000;
+				color: #fff;
+				border: 1px solid #777;
+				border-radius: 5px;
+				box-shadow: 0 0 6px 0 #444a;
+				font: 350 16px/1.3 var(--ui-typeface);
+				position: relative;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				
+				&:after{
+					content: '';
+					position: absolute;
+					top: 0;
+					left: 0;
+					height: 24px;
+					width: 100%;
+					background: linear-gradient(#fff6,transparent 80%);
+					border-radius: 5px 5px 25px 25px;
+				}
+				
+				&:hover{
+					color: #7fa;
+					background: radial-gradient(in oklch, #000, #275);
+				}
+				
+				&:active {
+					color: #000;
+					background: #7fa;
+				}
+				
+				&#zoominbtn, &#zoomoutbtn {
+					height: 60px;
+					font-size: 36px;
+					padding-bottom: 4px;
+				}
+			}
+		}
+
+		body:has(#editable:checked) .hasEditorFocus {
+			background: linear-gradient(120deg, var(--color-soft) -1200%, transparent 200%);
+			outline: 2px dotted var(--color-soft);
+		}
+
+		@media only screen and (max-width: 9in){
+			:root {
+				--darkmode-image-bg: #110c12;
+				--lightmode-image-bg: #fff4f3;
+			}
+			body{
+				margin: 0;
+				padding: 0;
+			}
+			main#resume{
+				border: 0;
+				width: auto;
+				height: auto;
+				margin: 0;
+				padding: 40px 20px;
+				
+				&:not(:has(+ header.simple)) section:nth-child(2){
+					margin-top: 20px;
+				}
+			}
+			header {
+				flex-direction: row;
+				justify-content: center;
+				
+				& #contact {
+					text-align: center;
+				}
+			}
+			.buttonbar button{
+				height: 32px;
+				width: 50px;
+			}
+			#zoominbtn, #zoomoutbtn{
+				display: none;
+			}
+		}
+
+		@media(prefers-color-scheme: dark){
+			:root:has(body:not(.light)){
+				--color-bg: var(--darkmode-color-bg);
+				--color-fg: var(--darkmode-color-fg);
+				--bg: var(--darkmode-image-bg);
+				--color-soft: var(--darkmode-color-soft);
+				--color-code-bg: var(--darkmode-code-bg);
+
+				& header:not(.simple) #namebox{
+					box-shadow: 0 0 0 1px var(--color-soft);
+				}
+			}
+		}
+		@media only screen{
+			:root:has(body.dark){
+				--color-bg: var(--darkmode-color-bg);
+				--color-fg: var(--darkmode-color-fg);
+				--bg: var(--darkmode-image-bg);
+				--color-soft: var(--darkmode-color-soft);
+				--color-code-bg: var(--darkmode-code-bg);
+
+				& header:not(.simple) #namebox{
+					box-shadow: 0 0 0 1px var(--color-soft);
+				}
+			}
+		}
+
+		@media print{
+			:root{
+				--color-fg: #000 !important;
+				--color-bg: #fff !important;
+				--gradient-bg-light: #fff !important;
+				--gradient-bg-dark: #fff !important;
+				--color-soft: #000 !important;
+			}
+			@page{
+				size: 8.5in 11in;
+				margin: 0.25in 0.5in;
+			}
+			body{
+				margin: 0;
+				padding: 0;
+				print-color-adjust: exact;
+				-webkit-print-color-adjust: exact;
+				background: none;
+			}
+			main#resume{
+				margin: 0;
+				border: 0;
+				padding: 0;
+				width: auto;
+				height: auto;
+				zoom: inherit !important;
+				box-shadow: none !important;
+			}
+			header, section, footer{
+				margin: 0;
+			}
+			footer{
+				position: absolute;
+				margin: 0;
+				bottom: .05in;
+				right: 0;
+			}
+			#tools, .buttonbar, .homelink, #about, #editor-toolbar {
+				display: none !important;
+			}
+			.hasEditorFocus {
+				outline: none !important;
+				background: none !important;
+			}
+			#about:has(:checked) {
+				display: inherit !important;
+				zoom: inherit !important;
+				border-top: none;
+				padding: 0;
+				font-size: 10.5pt;
+				background: none;
+				& label:has(#print-toggle) {
+					display: none;
+				}
+				& code {
+					background: none;
+					box-shadow: 1px 1px 0 inset, -1px -1px 0 inset;
+				}
+			}
+		}
+	</style>
+	<a class="homelink" href="https://deal.digital/">◤ Home</a>
+	<main id="resume">
+		<header>
+			<div id="namebox">
+				<p class="name">Wesley Deal
+				<p class="jobtitle">IT Systems Engineer
+			</div>
+			<div id="contact">
+				<!--<p><a href="tel:xxx">PHONE</a>-->
+				<p><a href="mailto:resume@deal.digital">resume@deal.digital</a>
+				<p>Sandy Springs, Georgia
+			</div>
+		</header>
+		<section id="experience">
+			<h1>Work Experience</h1>
+			<h2><span><b>IT Systems Engineer</b> at Fellowship Christian School</span> <span class="dates">May 2017 &ndash; Present</span></h2>
+			<ul>
+				<li>Spearheaded campus network modernization, strategically deploying refurbished hardware and implementing VLAN segmentation, spanning tree, link redundancy, Wi-Fi 6, 802.1x RADIUS auth
+				<li>Codified institutional knowledge into standardized procedures and extensive documentation
+				<li>Cut server hardware footprint by 45% while expanding capabilities, improving reliability and performance
+				<li>Monitored, managed, serviced campus network/server infrastructure proactively and in response to tickets
+				<li>Planned, deployed, and supported solutions for server &amp; appliance backups, network monitoring, <!--MDM, endpoint &amp; mail security, MFA single sign-on,--> software deployment, asset tracking, video conferencing, team chat, intranet portal, <!--ID badge management, livestreaming,--> surveillance VMS, etc.
+				<li>Implemented a low-cost, open-source multi-model LLM chat solution, empowering internal teams with AI<!-- tools including image generation, thinking, and document-based assistants-->
+				<li>Led cybersecurity posture improvement taskforce, evaluating and reducing risk exposure through means such as patch management, endpoint security, log monitoring, MFA, zero-trust/microsegmentation
+				<li>Administered ~<b>1400</b> end-user devices including Chromebooks, iPads, Macs, Windows workstations
+				<li>Directed hybrid migration from on-premises Exchange 2010 to Exchange Online for over 160 mailboxes, from initial planning to successful cut-over and follow-through
+				<li>Automated account creation/management with PowerShell for over <b>1300</b> users across multiple systems
+				<li>Designed technology lifecycle reports facilitating efficient budgeting and maintaining vendor support
+				<li>Developed a Django-powered web app for door control &amp; student attendance tracking, interfacing with building automation systems
+				<!--<li>Hardened workstations against vulnerabilities, removed distractions, deployed software, printers, network shares, certificates, and menu layouts, configured third-party software with Group Policy and Intune
+				-->
+				<!-- <li>Overhauled Windows server infrastructure by upgrading, replacing, and virtualizing legacy machines -->
+			</ul>
+			<h2><span><b>IT Solutions Architect</b> at Gtex Computers</span> <span class="dates">Dec 2015 &ndash; July 2017</span></h2>
+			<ul>
+				<li>Planned, priced, pitched, &amp; implemented hardware, software, &amp; business process overhauls for clientele
+				<li>Installed and tuned warehouse scale Ubiquiti Wi-Fi deployments for coverage &amp; high performance
+				<li>Automated monthly PC maintenance with PowerShell, reducing tech hands-on time by an estimated <b>80%</b>
+				<li>Developed a client ROI reporting portal with Google Apps Script &amp; WordPress
+				<li>Built modern responsive websites employing HTML5 + CSS3 on WordPress &amp; Bootstrap frameworks
+				<!--<li> Diagnostics and repairs including data recovery, tune-ups, network setup, malware removal, hardware -->
+			</ul>
+		</section>
+		<section id="education-certs">
+			<h1>Education &amp; Certifications</h1>
+			<p><span><b>Bachelor of Science in Information Technology</b> at Kennesaw State University</span> <span class="dates">May 2023</span></p>
+			<p class="withabove">Concentration: <b>Cyber Operations Security</b>, Minor: <b>Computer Science</b>, Graduated <i>magna cum laude</i>
+			<p><span><b>CompTIA Security+</b> Certification</span> <span class="dates">April 2024</span>
+			<p><span><b>Cisco Certified Network Associate (CCNA)</b> Routing &amp; Switching</span> <span class="dates">May 2022</span>
+		</section>
+		<section id="skills">
+			<h1>Skills</h1>
+			<p><b>Software</b>: Microsoft 365, Azure/Entra, Active Directory, Group Policy, Intune, Defender, Hyper-V, SCCM/MDT; DNS, DHCP, Google Workspace, VoIP, PaperCut, VEEAM, Duo SSO, Docker, Proxmox/KVM, Debian, Ubuntu, CentOS/RHEL, Oracle Linux, MariaDB/MySQL, PostgreSQL, MS SQL.
+			<p><b>Networks</b>: access points, point-to-point wireless links, switches, routers, firewalls from Cisco, Fortinet, HPE/Aruba, Brocade, Ruckus, Ubiquiti, Avaya, SonicWall, Zyxel; LibreNMS, Graylog, inter-VLAN routing with ACLs, tuning high density Wi-Fi installations, preparing &amp; securing site-to-site and remote access VPNs
+			<p><b>Scripting</b>: Experienced with Python and PowerShell. Some work with C, C#, C++, Go, Java, JS, Google Apps Script, Bash.
+		</section>
+		<footer>
+			<p>Updated <time datetime="2025-06-22">2025-06-22</time>. Latest revision available at <a href="https://deal.digital/resume">deal.digital/resume</a>
+		</footer>
+	</main>
+
+	<article id="about">
+		<h1>About this page</h1>
+		<label>Include in printouts? <input type="checkbox" id="print-toggle"></input></label>
+		<p>This is a hand-written &lt;100kB vanilla HTML page that depends on no external resources beyond fonts. It's
+		designed <b>primarily</b> to look good in print, but also scales to desktop browsers, mobile, and TUI browsers
+		such as <code>lynx</code>.
+		<p>A content and styling editor as well as a selection of preset themes are available from the <b>Tools</b> menu
+		if you happen to have JavaScript enabled. These have been tested to work even in mobile browsers.
+		<p>Hosted as part of my website on GitHub pages, with <a href="https://github.com/wesleydeal/deal.digital/blob/master/static/resume/index.html">source available here</a>.
+
+		<h2>How we got here</h2>
+		<p>There are lots of commonly-cited guidelines for building a resume. For example:
+		<ul>
+			<li><b>Know your audience</b>: Tailor the specific content of your resume to the opportunity at hand.
+			<li><b>Keep the layout simple</b>: Colorful multi-column layouts confuse ATS and peeve hiring managers.
+			<li><b>Stand out</b>: It should be memorable, though not like overzealous marketing copy.
+			<li><b>Expect it to be skimmed</b>: Make sure each line says something significant about you as a prospect. Use action verbs and numbers to draw in the eye and highlight your accomplishments.
+			<li><b>Don't exceed a page</b>, barring &gt;10yr industy expertise or low-volume detail-oriented sectors.
+		</ul>
+		<p>My Google Docs resume met the standards. Friends even asked to borrow my template and some of
+		my phrasing. But I found that to adapt it to different postings, I was using different styles
+		and altering content frequently enough that I had issues keeping multiple copies of the document
+		in sync. (In hindsight, this seems to be somewhat of an invented problem.) Additionally, I wanted a short URL I could
+		hand out linking to my latest resume. This began to look like a problem to be solved with software, and
+		soon enough I fell into the <a href="https://xkcd.com/1319/">power user trap</a>.
+		<p>So we arrive at requirements elicitation:
+		<ol>
+			<li>The resume MUST fit within a single page of US letter. Tools to adjust font size and spacing to keep the contents within the page are RECOMMENDED.
+			<li>The resume MUST be quickly convertible to machine-parseable PDF.
+			<li>The resume's source file MUST be human-readable plaintext for use with git.
+			<li>The resume software MUST support some form of templating, where typesetting parameters can be applied document-wide or to groups of objects rather than line by line.
+			<li>The resume SHOULD use a single column layout that looks good in print and on screen. A professional but non-default typeface is RECOMMENDED.
+			<li>The resume SHOULD be easy to view and link to on the web. A workflow to publish changes automatically is OPTIONAL.
+			<li>The resume SHOULD NOT require a complex toolchain to build.
+			<li>The resume MAY scale down nicely to a mobile device for easy reading, for uses such as QR code business cards.
+			<li>The resume software MAY support inline editing for quick changes.
+		</ol>
+		<p>The most obviously solution would involve <a href="https://pandoc.org/">Pandoc</a>. I could write a basic
+		markdown file, then create a LaTeX template for typesetting to PDF and an HTML template for outputting to a file I
+		could upload to my website. I'd have divergent styles, which could be desirable, but I can already see this adding
+		to my headache when one looks good and the other doesn't. And how long would it take to set up that process to where
+		I like it, considering my lack of experience with TeX? Maybe there is a simpler way.
+		<h2>HTML/CSS for print</h2>
+		<p>Modern web browsers are remarkably capable typesetting engines. Gone are the days of table layouts, web-safe colors,
+		polyfills, and CSS preprocessors (did you know CSS has <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Nesting_selector">
+		native nesting</a> now?). Sure, it isn't commonly used for books, though that <a href="https://pagedjs.org/made-with-paged.js.html">
+		is changing</a> thanks to the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_paged_media">CSS paged media spec</a>.
+		But we only have one page to typeset. I had found my solution, and I set to work laying it out.
+		<p>I added it to my GitHub-hosted site and used <code>@media screen</code> &amp; <code>print</code> queries to adapt it by device:
+		on desktop emulating the look of
+		a PDF viewer; on smaller screens collapsing responsively; in print removing extraneous elements and margins. This is
+		easier than you might expect. CSS is happy to give you a <code>width: 8.5in; height: 11in</code> box with
+		0.25in x 0.5in padding and 11pt type. With variables, you can easily alter aspects
+		like color and text weight across multiple elements and place those common values at the top of your stylesheet.
+		<p>Initially, I figured I would use the browser developer tools to alter styles and content to tailor my resume
+		to specific positions. Perhaps I could swap the stylesheet. One line of CSS could change the spacing across
+		all my bullet points and paragraphs, without futzing about with the format painter.
+
+
+		<h2>contentEditable and the Tools Panel</h2>
+		<p>Shortly after embarking on this project, I discovered a curiosity. Adding <code>contentEditable</code>
+		to an HTML tag lets you edit its contents (including children) live, inline, with no scripts required.
+		<span contentEditable>(Try it here.)</span> It respects
+		your existing styles, it creates new list entries when you press [ENTER], in modern browsers it even uses the spell
+		checker. I decided this would make things easier and added a button with a bit of inline JavaScript to toggle
+		this on and off.
+		<p>I also wanted to be able to toggle light/dark mode, so I created a little control panel and hid it behind a toggle
+		button in the corner. And now that I had the menu, I thought it would be pretty easy to control the base font size
+		with a slider. This seemed rather nifty, so I kept adding.
+		<p>Many iterations later, the tools panel is a consistent cross-platform style editor for my resume.
+		Body text, headings, and my name all have font and space/size controls. Ligatures (like the combined letters <i>ffi</i>
+		in many typefaces) can be disabled for easier
+		parsing of the exported PDFs, bullets can be replaced with diamonds, the header style can be swapped out. Most of
+		the controls make an inline JavaScript call, usually to modify a CSS variable of the <code>:root</code> &lt;html&gt; element.
+		The theme switcher calls a longer function that alters each of the fields and calls their attached
+		onchange/oninput functions. Form elements have entirely custom styling to ensure they look consistent across browsers
+		and platforms (and as exercise making nice-looking UI out of CSS gradients).
+		<p>And since CSS has a <code>zoom</code> attribute and I want the experience to seem like a PDF viewer, I added zoom buttons to the corner as well:
+		<p><code class="codeblock">&lt;button id="zoominbtn" onclick="javascript:document.documentElement.style.setProperty('--zoom', 0.2+1*getComputedStyle(document.documentElement).getPropertyValue('--zoom'))"&gt;<br>+<br>&lt;/button&gt;
+		</code>
+		<p><code class="codeblock">main#resume {zoom: var(--zoom);}<br>
+		#zoominbtn {position: fixed; bottom: 60px; right: 10px;}</code>
+		<p>Of course there's more to be done, but you can see a completed example by viewing the source of this page.
+
+		<h2>Markdown conversion</h2>
+		<p>Markdown is in essence the least common denominator of rich text today. GitHub, LLMs, note-taking platforms like
+		Obsidian use it as their native language. It's common to use Markdown as a source for a website generator, but here,
+		I use the webpage as a markdown generator.
+		<p>Rather than solving the general case, my solution uses assumptions about the types of tags my website uses. Starting
+		at the main resume element, it evaluates each of its child nodes. From there:
+		<ul>
+			<li>If the node is text, add the text.
+			<li>If the node is an HTML tag, call the markdown generator recursively to evaluate its children and add the result as text.
+			<li>If the node is a recognized formatting-relevant HTML tag such as a #heading or **bold**, add markdown tags and call the markdown generator recursively, adding its result as text.
+			<li>If the node is neither text nor an HTML tag, or if it contains nothing but whitespace, do nothing.
+		</ul>
+		<p>There is some additional special handling for tabs and line breaks that you can easily see by <a href="https://github.com/wesleydeal/deal.digital/blob/master/static/resume/index.html">viewing the source for this page</a> and searching for <code>markify</code>.
+
+		<h2>Other hacks involved</h2>
+		<p>Firefox doesn't dither gradient backgrounds, so using it to view this resume on a large monitor used to result in distracting
+		banding in the background. I initially attempted to use a <a href="https://css-tricks.com/grainy-gradients/">noisy SVG texture</a> to alleviate this issue, and while it produced some
+		visually interesting results at different scales, it resulted in poor performance on some devices. Instead, I opted for a set of
+		repeating linear gradients at opposing shallow angles to add a paper-like texture to the background. In dark mode, you can still
+		see banding in Firefox, but it looks better as part of a more complex background pattern.
+		<p><code class="codeblock">background: repeating-linear-gradient(6deg, #3331 3px, #0000 6px), repeating-linear-gradient(-15deg in oklch, #0f0605, #1e151b 100vh, #0f0605 200vh)</code>
+		<p>The zoom buttons use the deprecated CSS <code>zoom</code> attribute. This messes up all sorts of things, such as measuring
+		using viewport units. I also use it to resize the resume on large screens so that on load it takes up most of the screen. This
+		mimics the behavior of a PDF viewer but is certainly not something I'd like most websites to do.
+
+		<h2>What's next?</h2>
+		<p>Here's the TODO list:
+		<ul>
+			<li>Theme selection based on URL parameter
+			<li>Create tailoring profiles, e.g. endpoint administrator, security analyst, network engineer
+				<ul>
+					<li>Group bullet points and paragraphs
+					<li>Share via URL parameter
+				</ul>
+			<li>Add editor features
+				<ul>
+					<li>Move entire H2s and their contents up/down and between sections
+					<li>Move sections up and down
+					<li>Automatically assign new sections an ID based on their H1 text
+					<li>Insert/remove dates
+					<li>Support indented bulleted lists
+				</ul>
+			<li>Support printing with an accent color
+				<ul>
+					<li>Toggle color on/off
+					<li>Toggle accent color for: name(box), date, section separators, bold text
+				</ul>
+			<li>Determine a balance between use of modern CSS and old browser support
+			<li>Swap use of deprecated CSS zoom attribute for <code>transform: scale(var(--zoom))</code>
+			<li>Standardize button UX
+			<li>Standardize and reduce color palatte
+			<li>Release as an open-source solution
+				<ul>
+					<li>Come up with a solution to replace the content with dummy content
+					<li>Provide instructions for the less technically skilled to use it
+					<li>(longshot) offer managed hosting including domain for a small fee
+				</ul>
+		</ul>
+	</article>
+
+
+	<div class="buttonbar">
+		<button id="mdbtn" onclick="javascript:window.open(window.URL.createObjectURL(new Blob([markify()], {type: 'text/markdown;charset=utf-8'})))">.md</button>
+		<button id="printbtn" onclick="javascript:if(window.print) window.print()">Print</button>
+		<button id="toolsbtn" onclick="javascript:fromID('tools').style.display=(fromID('tools').style.display=='flex'?'none':'flex')">Tools</button>
+		<button id="zoominbtn" onclick="javascript:rootVar('--zoom', 0.2+1*rootVar('--zoom'))">+</button>
+		<button id="zoomoutbtn" onclick="javascript:rootVar('--zoom', -0.2+1*rootVar('--zoom'))">-</button>
+	</div>
+
+	<div id="tools">
+		<div class="optiongroup">
+			<label><input type="checkbox" id="darklight" onchange="javascript:document.body.classList=this.checked?'dark':'light'">Dark mode</label>
+			<label><input type="checkbox" id="editable" onchange="javascript:fromID('resume').contentEditable=this.checked">Editor</label>
+			<button id="unhide" onclick="javascript:unhide()">Reveal Hidden Text</button>
+			<form>
+				<label for="theme">Theme</label>
+				<select id="theme" onchange="javascript:setTheme(this.value)" onclick="javascript:setTheme(this.value)">
+					<option value="default" selected>Default</option>
+					<option value="modern">Modern</option>
+					<option value="traditional">Traditional</option>
+					<option value="tight">Tight</option>
+					<option value="compact-sans">minimodern</option>
+				</select>
+			</form>
+		</div>
+		<div class="optiongroup">
+			<form>
+				<label for="text_fonts">Body</label>
+				<select id="text_fonts" onchange="javascript:rootVar('--base-font',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
+					<option value="Spectral">Spectral</option>
+					<option value="serif">serif</option>
+					<option value="sans-serif">sans-serif</option>
+					<option value="monospace">monospace</option>
+					<option value="Arial">Arial</option>
+					<option value="Times New Roman">Times NR</option>
+					<option value="Archivo">Archivo</option>
+					<option value="Martian Mono">Martian Mono</option>
+					<option value="EB Garamond">EB Garamond</option>
+					<option value="Nunito">Nunito</option>
+					<option value="Rubik">Rubik</option>
+					<option value="Red Hat Text">Red Hat Text</option>
+					<option value="Newsreader">Newsreader</option>
+					<option value="DM Sans">DM Sans</option>
+					<option value="Libre Baskerville">L Baskerville</option>
+					<option value="Libre Caslon Text">L Caslon Text</option>
+					<option value="STIX Two Text">STIX Two Text</option>
+					<option value="Vollkorn">Vollkorn</option>
+					<option value="Source Serif 4">Source Serif 4</option>
+					<option value="Inter">Inter</option>
+					<option value="Inter Tight">Inter Tight</option>
+					<option value="Crimson Pro">Crimson Pro</option>
+					<option value="Crimson Text">Crimson Text</option>
+					<option value="Atkinson Hyperlegible Next">Atkinson H.N.</option>
+				</select>
+			</form>
+			<form>
+				<label for="base-size">Size (pt)</label>
+				<input type="number" id="base-size" min="8" max="16" value="11" step=0.05 oninput="javascript:rootVar('--base-size',this.value+'pt')">
+			</form>
+			<form>
+				<label for="base-weight">Weight</label>
+				<input type="number" id="base-weight" min="100" max="1000" value="400" step=25 oninput="javascript:rootVar('--base-weight',this.value);">
+			</form>
+			<form>
+				<label for="bold-weight">Bold Weight</label>
+				<input type="number" id="bold-weight" min="100" max="1000" value="700" step=25 oninput="javascript:rootVar('--bold-weight',this.value);">
+			</form>
+			<label><input type="checkbox" id="ligatures" onchange="javascript:rootVar('--ligatures',this.checked?'normal':'none')" checked>Ligatures</label>
+			<label><input type="checkbox" id="dates-font-style" onchange="javascript:rootVar('--dates-font-style',this.checked?'italic':'normal')" checked><i>Italic Dates</i></label>
+			<form>
+				<label for="line-height">Line Height</label>
+				<input type="number" id="line-height" min="1" max="2" value="1.4" step=0.01 oninput="javascript:rootVar('--base-line-height',this.value);">
+			</form>
+			<label><input type="checkbox" id="custom-bullets" onchange="javascript:document.documentElement.classList=this.checked?'':'roundbullets'">Custom bullets</label>
+			<form>
+				<label for="li-margin">● ↕ (em)</label>
+				<input type="number" id="li-margin" min="0" max="1" value="0.1" step=0.01 oninput="javascript:rootVar('--bullet-margin',this.value+'em');">
+			</form>
+			<form>
+				<label for="p-margin">¶ ↕ (em)</label>
+				<input type="number" id="p-margin" min="0" max="1" value="0.3" step=0.01 oninput="javascript:rootVar('--p-margin',this.value+'em');">
+			</form>
+		</div>
+		<div class="optiongroup">
+			<form>
+				<label for="title_fonts"><u>H1s</u></label>
+				<select id="title_fonts" onchange="javascript:rootVar('--h1-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
+					<option value="Spectral SC">Spectral SC</option>
+					<option value="inherit">inherit</option>
+					<option value="Spectral">Spectral</option>
+					<option value="serif">serif</option>
+					<option value="sans-serif">sans-serif</option>
+					<option value="monospace">monospace</option>
+					<option value="Arial">Arial</option>
+					<option value="Times New Roman">Times NR</option>
+					<option value="Archivo">Archivo</option>
+					<option value="Martian Mono">Martian Mono</option>
+					<option value="EB Garamond">EB Garamond</option>
+					<option value="Nunito">Nunito</option>
+					<option value="Rubik">Rubik</option>
+					<option value="Red Hat Text">Red Hat Text</option>
+					<option value="Newsreader">Newsreader</option>
+					<option value="DM Sans">DM Sans</option>
+					<option value="Libre Baskerville">L Baskerville</option>
+					<option value="Libre Caslon Text">L Caslon Text</option>
+					<option value="STIX Two Text">STIX Two Text</option>
+					<option value="Vollkorn">Vollkorn</option>
+					<option value="Source Serif 4">Source Serif 4</option>
+					<option value="Inter">Inter</option>
+					<option value="Inter Tight">Inter Tight</option>
+					<option value="Crimson Pro">Crimson Pro</option>
+					<option value="Crimson Text">Crimson Text</option>
+					<option value="Atkinson Hyperlegible Next">Atkinson H.N.</option>
+				</select>
+			</form>
+			<label><input type="checkbox" id="h1-uppercase" onchange="javascript:rootVar('--h1-transform',this.checked?'uppercase':'none');">ALL CAPS</label>
+			<form>
+				<label for="h1-size">Size (em)</label>
+				<input type="number" id="h1-size" min="1" max="2" value="1.25" step="0.01" oninput="javascript:rootVar('--h1-size',this.value+'em');">
+			</form>
+			<form>
+				<label for="h1-weight">Weight</label>
+				<input type="number" id="h1-weight" min="100" max="1000" value="500" step="25" oninput="javascript:rootVar('--h1-weight',this.value)">
+			</form>
+			<form>
+				<label for="h1-space">A↔a (em)</label>
+				<input type="number" id="h1-space" min="-1.0" max="2.0" value="0.04" step="0.01" oninput="javascript:rootVar('--h1-spacing',this.value+'em')">
+			</form>
+		</div>
+		<div class="optiongroup">
+			<label><input type="checkbox" id="simple-header" onchange="javascript:document.querySelector('header').classList[this.checked?'add':'remove']('simple');">Simple Header</label>
+			<form>
+				<label for="name_fonts">Name</label>
+				<select id="name_fonts" onchange="javascript:rootVar('--name-typeface',this.value.indexOf(' ')>=0 ? '\''+this.value+'\'' : this.value);">
+					<option value="inherit" selected>inherit</option>
+					<option value="Spectral">Spectral</option>
+					<option value="serif">serif</option>
+					<option value="sans-serif">sans-serif</option>
+					<option value="monospace">monospace</option>
+					<option value="Arial">Arial</option>
+					<option value="Times New Roman">Times NR</option>
+					<option value="Archivo">Archivo</option>
+					<option value="Martian Mono">Martian Mono</option>
+					<option value="EB Garamond">EB Garamond</option>
+					<option value="Nunito">Nunito</option>
+					<option value="Rubik">Rubik</option>
+					<option value="Red Hat Text">Red Hat Text</option>
+					<option value="Newsreader">Newsreader</option>
+					<option value="DM Sans">DM Sans</option>
+					<option value="Libre Baskerville">L Baskerville</option>
+					<option value="Libre Caslon Text">L Caslon Text</option>
+					<option value="STIX Two Text">STIX Two Text</option>
+					<option value="Vollkorn">Vollkorn</option>
+					<option value="Source Serif 4">Source Serif 4</option>
+					<option value="Inter">Inter</option>
+					<option value="Inter Tight">Inter Tight</option>
+					<option value="Crimson Pro">Crimson Pro</option>
+					<option value="Crimson Text">Crimson Text</option>
+					<option value="Atkinson Hyperlegible Next">Atkinson H.N.</option>
+				</select>
+			</form>
+			<form>
+				<label for="name-pad-top">Space ↥ (px)</label>
+				<input type="number" id="name-pad-top" min="0" max="20" value="10" step="1" oninput="javascript:rootVar('--name-pad-top',this.value+'px')">
+			</form>
+			<form>
+				<label for="name-gap">Space ↕ (px)</label>
+				<input type="number" id="name-gap" min="0" max="20" value="0" step="1" oninput="javascript:rootVar('--name-gap',this.value+'px')">
+			</form>
+			<form>
+				<label for="name-pad-bottom">Space ↧ (px)</label>
+				<input type="number" id="name-pad-bottom" min="0" max="20" value="10" step="1" oninput="javascript:rootVar('--name-pad-bottom',this.value+'px')">
+			</form>
+		</div>
+	</div>
+	<div id="editor-toolbar">
+		<button id="editor-b">B</button>
+		<button id="editor-i">I</button>
+		<label>⇥<input type="checkbox" id="editor-indent"></label>
+		<button id="editor-insert">⤉</button>
+		<button id="editor-append">⤈</button>
+		<button id="editor-moveup">▲</button>
+		<button id="editor-movedown">▼</button>
+		<button id="editor-delete">X</button>
+	</div>
+	<script>
+		let inputScrollDebounce = false;
+
+		( function() { // on load
+
+			// zoom to fit window on large displays
+			resumeBox = document.getElementById('resume').getBoundingClientRect();
+			wheight = window.innerHeight;
+			if (window.innerHeight - resumeBox.height > 100) {
+				zoomFitVert = (window.innerHeight-100) / resumeBox.height;
+				zoomFitHor = (window.innerWidth-100) / resumeBox.width;
+				rootVar('--zoom', Math.max(Math.min(zoomFitVert, zoomFitHor),1));
+			}
+
+			// update dark mode selector
+			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				setField('darklight', true);
+			}
+
+			if (window.matchMedia && window.matchMedia('screen and (max-width: 500px)').matches) {
+				setField('theme', 'compact-sans');
+				setTheme('compact-sans');
+			}
+
+			// scroll to change values
+			for (let input of document.querySelectorAll("#tools input[type='number']")) {
+				input.addEventListener("wheel", (event) => {
+					event.preventDefault();
+					if (inputScrollDebounce) return;
+					let i = event.target;
+					let step = 1;
+					step = i?.step;
+					decimals = step.toString().split(".")[1]?.length;
+					i.value = ((i.value * 1) + (step * Math.sign(-event.deltaY))).toFixed(decimals);
+					i.oninput?.();
+					inputScrollDebounce = true;
+					window.setTimeout(() => {inputScrollDebounce = false}, 15);
+				});
+			}
+
+			for (let select of document.querySelectorAll("#tools select")) {
+				select.addEventListener("wheel", (event) => {
+					event.preventDefault();
+					if (inputScrollDebounce) return;
+					newIndex = event.target.selectedIndex + Math.sign(event.deltaY);
+					if (newIndex < 0 || newIndex >= event.target.length) return;
+					event.target.selectedIndex = newIndex;
+					event.target.onchange?.();
+					inputScrollDebounce = true;
+					window.setTimeout(() => {inputScrollDebounce = false}, 60);
+				})
+			}
+
+			setField('editable', false);
+		})();
+
+		function fromID(id) { return document.getElementById(id); }
+		function setField(id, value) {
+			let el = document.getElementById(id);
+			if (el.type == "checkbox"){
+				el.checked = value;
+			} else {
+				el.value = value;
+			}
+		}
+		function setFields(fieldSet) {
+			for (key in fieldSet) {
+				setField(key, fieldSet[key]);
+			}
+		}
+		function rootVar(name, value=""){
+			if (value != "") document.documentElement.style.setProperty(name, value);
+			return getComputedStyle(document.documentElement).getPropertyValue(name);
+		}
+		
+		function markify(parent = "") {
+			md = "";
+			if (parent == "") parent = document.getElementById("resume");
+			if (parent.childNodes.length < 1 && parent.nodeType != 8) { // has no children and isn't a comment
+				md += parent.textContent.replace(/ {4}|[\t\n\r]/gm,'');
+				if (md == " ") md = "";
+			}
+			else for (child of parent.childNodes){
+				let el = child;
+				let classes = el.classList;
+				switch (el.tagName){
+					case "H1":
+						md += "\n\n# " + el.textContent + "\n";
+						break;
+					case "H2":
+						md += "\n\n## " + markify(el) + "\n";
+						//md += "\n   " + el.childNodes[1].textContent/*.replace(' at ','')*/;
+						break;
+					case "LI":
+						md += "\n   * " + markify(el);
+						break;
+					case "P":
+						let p = el;
+						if (p.nextElementSibling && p.nextElementSibling.classList.contains("withabove")) {
+							md += "\n" + markify(p) + "  ";
+						} else if (p.classList.contains("withabove")) {
+							md += "\n - " + markify(p) + "\n";
+						} else if (p.classList.contains("name")) {
+							md += "# " + markify(p) + "\n";
+						} else if (p.classList.contains("jobtitle")) {
+							md += "  " + markify(p) + "  \n\n";
+						} else if (parent.id == "contact") {
+							md += "  " + markify(p) + "  \n";
+						}
+						else {
+							md += "\n" + markify(p) + "\n";
+						}
+						break;
+					case "I":
+					case "EM":
+						md += "*" + markify(el) + "*";
+						break;
+					case "B":
+					case "STRONG":
+						md += "**" + markify(el) + "**";
+						break;
+					case "HEADER":
+						md += markify(el) + "\n" + " * * * * * * * * * * ";
+						break;
+					case "FOOTER":
+						md += "\n" + " * * * * * * * * * * " + "\n" + markify(el);
+						break;
+					case "A":
+						let href = el.href;
+						if (href != undefined){
+							md += "[" + markify(el) + "](" + href + ")";
+						}
+						break;
+					case "SPAN":
+						if (el.classList.contains("dates")) {
+							md += ", *" + markify(el) + "*";
+						} else {
+							md += markify(el);
+						}
+						break;
+					default:
+						md += markify(el);
+				}
+			}
+			if (parent.id == "resume"){
+				md += "\n";
+				md = md.replace(/\n{3,}/g, '\n\n'); // squash >=3 newlines
+			}
+			return md;
+		}
+		
+		function setTheme(theme){
+			setFields({
+				'text_fonts': 'Spectral',
+				'base-size': 11,
+				'base-weight': 400,
+				'bold-weight': 700,
+				'dates-font-style': true,
+				'line-height': 1.4,
+				'custom-bullets': false,
+				'li-margin': 0.1,
+				'p-margin': 0.3,
+				'title_fonts': 'Spectral SC',
+				'h1-uppercase': false,
+				'h1-size': 1.25,
+				'h1-weight': 500,
+				'h1-space': 0.04,
+				'simple-header': false,
+				'name_fonts': 'inherit',
+				'name-pad-top': 10,
+				'name-gap': 0,
+				'name-pad-bottom': 10,
+			});
+			switch(theme){
+				case 'modern':
+					setFields({
+						'text_fonts': 'Red Hat Text',
+						'dates-font-style': true,
+						'h1-uppercase': true,
+						'title_fonts': 'inherit',
+						'h1-size': 1.15,
+						'h1-space': 0.07,
+						'name_fonts': 'inherit',
+						'name-pad-top': 8,
+						'name-gap': 2,
+						'name-pad-bottom': 10,
+					});
+					break;
+				case 'traditional':
+					setFields({
+						'text_fonts': 'STIX Two Text',
+						'bold-weight': 600,
+						'title_fonts': 'inherit',
+						'name_fonts': 'inherit',
+						'line-height': 1.33,
+						'h1-uppercase': true,
+						'simple-header': true,
+						'name-pad-top': 5,
+						'name-pad-bottom': 0,
+					});
+					break;
+				case 'tight':
+					setFields({
+						'text_fonts': 'Libre Baskerville',
+						'base-size': 9.5,
+						'line-height': 1.5,
+						'li-margin': 0.15,
+						'p-margin': 0.4,
+						'title_fonts': 'inherit',
+						'h1-uppercase': true,
+						'h1-size': 1.15,
+						'h1-space': 0.12,
+						'simple-header': true,
+						'name-pad-top': 5,
+						'name-pad-bottom': 0,
+					});
+					break;
+				case 'compact-sans':
+					setFields({
+						'text_fonts': 'Atkinson Hyperlegible Next',
+						'base-size': 10.5,
+						'base-weight': 350,
+						'bold-weight': 550,
+						'dates-font-style': false,
+						'line-height': 1.32,
+						'li-margin': 0.13,
+						'p-margin': 0.25,
+						'title_fonts': 'inherit',
+						'h1-uppercase': true,
+						'h1-size': 1.1,
+						'h1-weight': 325,
+						'h1-space': 0.06,
+						'name-pad-top': 7,
+						'name-pad-bottom': 9,
+					});
+					break;
+			}
+			for (let el of document.querySelectorAll("#tools input, #tools select")){
+				if (el.id == 'theme') continue;
+				el.onchange?.();
+				el.oninput?.();
+			}
+		}
+
+		let editorSel = null;
+		let editorParent = null;
+		let editorToolbarTop = 0;
+		let editorToolbarLeft = 0;
+		const selParentTypes = ['P', 'LI', 'H1', 'H2', 'DIV'];
+		document.addEventListener('selectionchange', () => {
+			const sel = window.getSelection();
+			const resume = document.getElementById('resume');
+
+			if (window.innerWidth < 500 && getComputedStyle(document.getElementById('tools')).display != 'none' && !document.getElementById("tools").contains(sel.focusNode) && sel.focusNode != null) {
+				console.log(sel.focusNode);
+				document.getElementById("toolsbtn").onclick();
+			}
+
+			if (document.getElementById('editable').checked != true) return;
+			if (!sel.rangeCount) return;
+			if (!(resume.contains(sel.anchorNode) && resume.contains(sel.focusNode))) return;
+			editorSel = sel;
+			if (sel.anchorNode.isSameNode(sel.focusNode)) {
+				let parent = sel.anchorNode;
+				while (!(selParentTypes.includes(parent.nodeName))){
+					parent = parent.parentNode;
+					if(!(resume.contains(parent))) {
+						console.log("Failed to find valid parent. Found:", parent);
+						return
+					}
+				}
+
+				if (editorParent != null && !parent.isSameNode(editorParent)) {
+					editorParent.classList.remove('hasEditorFocus');
+				} else {
+					editorParent = parent;
+					parent.classList.add('hasEditorFocus');
+				}
+				editorParent = parent;
+				parent.classList.add('hasEditorFocus');
+
+				if (parent.nodeName != "P") {
+					fromID('editor-indent').disabled = true;
+				} else {
+					fromID('editor-indent').disabled = false;
+					fromID('editor-indent').checked = parent.classList.contains("withabove");
+				}
+
+				let parentRect = parent.getBoundingClientRect();
+				let editorToolbar = document.getElementById('editor-toolbar')
+				//editorToolbarTop = Math.max(parentRect.top - (0.5 * document.getElementById('editor-toolbar').offsetHeight) - 10,0);
+				//editorToolbarLeft = parentRect.left - document.getElementById('editor-toolbar').offsetWidth;
+				if (parentRect.right + window.scrollX > window.innerWidth - editorToolbar.offsetWidth) {
+					editorToolbarTop = Math.max(parentRect.top + window.scrollY - editorToolbar.offsetHeight, 0);
+					editorToolbarLeft = window.innerWidth - editorToolbar.offsetWidth;
+				} else {
+					editorToolbarTop = parentRect.top + window.scrollY;
+					editorToolbarLeft = parentRect.right + window.scrollX + 2;
+				}
+				editorToolbar.style.top = Math.floor(editorToolbarTop) + "px";
+				editorToolbar.style.left = Math.ceil(editorToolbarLeft) + "px";
+			}
+		});
+		fromID('editor-b').addEventListener('click', () => {
+			document.execCommand('bold');
+		});
+		fromID('editor-i').addEventListener('click', () => {
+			document.execCommand('italic');
+		});
+		fromID('editor-indent').addEventListener('change', () => {
+			if (fromID('editor-indent').checked) {
+				editorParent.classList.add("withabove");
+			} else {
+				editorParent.classList.remove("withabove");
+			}
+		});
+		fromID('editor-insert').addEventListener('click', () => {
+			switch(editorParent.nodeName) {
+				case 'LI':
+					editorParent.insertAdjacentHTML('beforebegin', '<li>&NoBreak;');
+					break;
+				case 'H2':
+					editorParent.insertAdjacentHTML('beforebegin', '<h2><b>Position</b> at Company <span class="dates">Date</span></h2>')
+					break;
+				case 'H1':
+					editorParent.parentElement.insertAdjacentHTML('beforebegin', '<section><h1>Section</h1><p>&NoBreak;</section>')
+					break;
+				default:
+					editorParent.insertAdjacentHTML('beforebegin', '<p>&NoBreak;')
+			}
+		});
+		fromID('editor-append').addEventListener('click', () => {
+			switch(editorParent.nodeName) {
+				case 'LI':
+					editorParent.insertAdjacentHTML('afterend', '<li>&NoBreak;');
+					break;
+				default:
+					editorParent.insertAdjacentHTML('afterend', '<p>&NoBreak;')
+			}
+		});
+		fromID('editor-moveup').addEventListener('click', () => {
+			switch(editorParent.nodeName) {
+				case editorParent.previousElementSibling.nodeName:
+					editorParent.parentNode.insertBefore(editorParent, editorParent.previousElementSibling);
+					break;
+			}
+		});
+		fromID('editor-movedown').addEventListener('click', () => {
+			switch(editorParent.nodeName) {
+				case editorParent.nextElementSibling.nodeName:
+					editorParent.parentNode.insertBefore(editorParent.nextElementSibling, editorParent);
+					break;
+
+			}
+		});
+		fromID('editor-delete').addEventListener('click', () => {
+			editorParent.parentNode.removeChild(editorParent);
+			editorParent = null;
+			editorSel = null;
+		});
+
+		function unhide() {
+			resume = document.getElementById('resume');
+			resume.innerHTML = resume.innerHTML.replaceAll('<!--', '').replaceAll('-->', '');
+		}
+	</script>
+</html>

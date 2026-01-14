@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" style="--color-primary: #a5bc84">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deploy LibreChat for cheap LLM queries - Wesley Deal</title>
+<style>
+*, *:before, *:after {box-sizing: border-box;}
+:root {
+  color-scheme: light dark;
+}
+body {
+	font: 100%/1.6 sans-serif;
+	margin: 0;
+	width: 100%;
+	overflow-wrap: break-word;
+	scroll-margin-top: 20px;
+	background: light-dark(oklch(from var(--color-primary, #056) 0.96 0.01 h), #000);
+	color: light-dark(#000, #fff);
+}
+body>* {
+	padding: 16px;
+	max-width: 100%;
+}
+header nav, .content>*, footer>*, #toc>div, #search-container {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+header,article,section,nav,footer { display: block }
+header {
+	background: #056;
+	font-size: 110%;
+	line-height: 1.8;
+	display: block;
+	background: oklch(from var(--color-primary, #056) 0.4 c h);
+}
+header a:link, header a:visited {
+	color: #fff;
+	white-space: nowrap;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 33%;
+}
+.topnav-links {
+	list-style: none;
+	display: inline;
+	padding: 0;
+}
+nav#topnav li{
+	padding: 0;
+	margin-right: 16px;
+	display: inline;
+}
+#homelink {
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180));
+	font-weight: 700;
+}
+#toc {
+	background: #023;
+	background: oklch(from var(--color-primary, #056) 0.2 c h);
+	color: #fff;
+	display: block;
+}
+#toc a:link, #toc a:visited {
+	color: #fff;
+}
+.content {
+	min-height: 100vh;
+	transform-origin: 50vw 50vh;
+}
+ul, ol {padding-left: 24px}
+h1 {
+	font-size: xx-large;
+	font-size: clamp(32px, 4vw, 60px);
+	font-weight: 500;
+	line-height: 1.1;
+	color: color-mix(in oklch, var(--color-primary), light-dark(#000,#fff));
+	margin: 32px auto 24px;
+	text-shadow: 2px 2px 0 #7773;
+}
+h2 { margin: 20px auto 8px; font-size: 150%; font-weight: 400; }
+h3 { margin: 16px auto 6px; font-size: 135%; font-weight: 400; }
+h4 { margin: 14px auto 4px; font-size: 120%; }
+h5 { margin: 12px auto   0; font-size: 120%; font-weight: 400; }
+h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic; }
+h1 small {
+	display: block;
+	font-style: italic;
+	font-size: 20px;
+	padding-top: 10px;
+	text-shadow: none;
+}
+body>footer,pre,code,samp {
+	overflow: auto;
+	font-family: ui-monospace, Consolas, monospace;
+	line-height: 1.2;
+}
+body>footer {
+	border-top: 2px solid;
+	margin: 100px 0 800px;
+}
+.z-code {
+	background: #0562;
+	padding: 0.5em 0.7em;
+	border: 1px solid;
+}
+#ui-tools {display: none;}
+a:link, a:visited {
+	color: #056;
+	color: oklch(from var(--color-primary, #056) light-dark(0.4,0.95) light-dark(c, 0.05) h);
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
+}
+:is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
+img { max-width: 100%; }
+table {border-collapse: collapse;}
+th,td {border: 1px solid; padding: 5px;}
+th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
+.zola-anchor {display: none; visibility: hidden;}
+#search-container { padding: 20px; overflow: hidden; }
+#search-box { width: 100%;}
+#search-keyword-list samp { padding: 0 10px; }
+[id] {
+	scroll-margin-top: 100px;
+}
+footer hr{ display: none }
+
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: 0.3s }
+</style>
+<!--[if !IE]><!-->
+<link rel="preload" href="/concourse.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+<!--<![endif]-->
+<body id="blog-librechat">
+<header>
+	<nav id="topnav">
+		<ul class="topnav-links">
+			<li><a href="/" id="homelink">deal.digital</a>
+			<li><a href="/tools/">🛠️ Tools</a>
+			<li><a href="/blog/">📝 Notes</a>
+			<li><a href="/now/">⏳ Now</a>
+			<li><a href="/links/">🔗 Links</a>
+			<li><a href="/uses/">⌨️ Uses</a>
+			<li><a href="/resume/">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+</header>
+
+<nav id="toc">
+	<div>
+		<b>Jump to: </b>
+		<a href="#prerequisites">Prerequisites</a><span>, </span><a href="#prepare-your-server">Prepare your server</a><span>, </span><a href="#deploy-librechat-and-caddy">Deploy LibreChat and Caddy</a><span>, </span><a href="#setting-up-sso-through-google-workspace">Setting up SSO through Google Workspace</a><span>, </span><a href="#left-as-an-exercise-for-the-reader">Left as an exercise for the reader</a></div>
+</nav>
+
+<section class="content">
+	<h1 class="title">
+	Hosting LibreChat, a FOSS LLM chat tool, with Caddy reverse proxy and Google SSO
+	</h1>
+<p>Do you want to deploy an inexpensive ChatGPT-like web app for your school, business, or friends?</p>
+<p><img src="https://deal.digital/blog/librechat/librechat-example.png" alt="LibreChat screenshot" /></p>
+<p>LibreChat has a vast array of features and can utilize multiple LLM backends, but today we’ll cover setting it up as a way to pay for OpenAI tokens rather than ChatGPT’s flat fee. The official docs are available at <a href="https://docs.librechat.ai">https://docs.librechat.ai</a></p>
+<h2 id="prerequisites"><a class="zola-anchor" href="#prerequisites" aria-label="Anchor link for: prerequisites">#</a>Prerequisites</h2>
+<ol>
+<li>At least one API key from a supported service such as OpenAI, Anthropic, Google Gemini
+<ol>
+<li>this document assumes you have an OpenAI key with at least a couple bucks worth of credit</li>
+<li>alternatively, consider a custom endpoint using OpenRouter and one of their free models</li>
+</ol>
+</li>
+<li>A spare, preferably unused server with Linux, open to inbound internet traffic on ports 80 and 443
+<ol>
+<li>a virtual machine or Raspberry Pi with Debian, Ubuntu, Red Hat, Oracle, or Rocky Linux</li>
+<li>Don’t care for on-prem? Inexpensive Virtual Private Servers can be found at <a href="https://lowendbox.com/">lowendbox.com</a> or on Oracle Cloud’s <a href="https://www.oracle.com/cloud/free/">free tier</a>, or use your cloud compute flavor of choice.</li>
+</ol>
+</li>
+<li>A subdomain with an A record pointed at your server
+<ol>
+<li>The subdomain makes it easy for us to set up secure access and single sign-on.</li>
+</ol>
+</li>
+<li>A Google Workspace domain to use for single sign-on</li>
+</ol>
+<p>(The last three are optional; if you are so inclined, LibreChat can run locally on your Windows computer for testing.)</p>
+<h2 id="prepare-your-server"><a class="zola-anchor" href="#prepare-your-server" aria-label="Anchor link for: prepare-your-server">#</a>Prepare your server</h2>
+<p>You’ll need to first install the latest official versions of <a href="https://docs.docker.com/engine/install/#supported-platforms">Docker Engine</a> (for managing the LibreChat container) and <a href="https://caddyserver.com/docs/install">Caddy</a> (to provide a reverse web proxy for security and performance, and enable automatic TLS certificate setup).</p>
+<p>Create a service account and directory for LibreChat:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sudo</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> if you are not logged in as root</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">useradd</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>U</span> librechat</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">groupadd</span></span><span class="z-meta z-function-call z-arguments z-shell"> docker</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">usermod</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>aG</span> docker librechat</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">install</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span> 0755<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> librechat<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>g</span> librechat /opt/librechat</span>
+</span></code></pre>
+<h2 id="deploy-librechat-and-caddy"><a class="zola-anchor" href="#deploy-librechat-and-caddy" aria-label="Anchor link for: deploy-librechat-and-caddy">#</a>Deploy LibreChat and Caddy</h2>
+<p>Log in as the service account and set up LibreChat</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sudo</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> librechat</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-cd z-shell">cd</span></span><span class="z-meta z-function-call z-arguments z-shell"> /opt/librechat</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">git</span></span><span class="z-meta z-function-call z-arguments z-shell"> clone https://github.com/danny-avila/LibreChat .</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">touch</span></span><span class="z-meta z-function-call z-arguments z-shell"> librechat.yaml <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> don’t need to configure these options yet</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cp</span></span><span class="z-meta z-function-call z-arguments z-shell"> .env.example .env</span>
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Generate secure keys for plugins</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">k32</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">hexdump</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>vn32</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span><span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>8/4 &quot;%08x&quot; 1 &quot;\n&quot;<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span> /dev/urandom</span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">i16</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">hexdump</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>vn16</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span><span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>4/4 &quot;%08x&quot; 1 &quot;\n&quot;<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span> /dev/urandom</span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sed</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>s/^CREDS_KEY=.*/CREDS_KEY=<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">k32</span></span>/g<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> .env</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sed</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>s/^CREDS_IV=.*/CREDS_IV=<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">i16</span></span>/g<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> .env</span>
+</span></code></pre>
+<p>Edit your .env with your preferred terminal editor, for example:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nano</span></span><span class="z-meta z-function-call z-arguments z-shell"> .env</span>
+</span></code></pre>
+<p>You’ll want to modify these lines at least:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">DOMAIN_CLIENT</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">https://subdomain.yourdomain.com</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">DOMAIN_SERVER</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">https://subdomain.yourdomain.com</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">ENDPOINTS</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">openAI,assistants,gptPlugins</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">OPENAI_API_KEY</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">your_openAI_key</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">OPENAI_MODELS</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">gpt-4-turbo,gpt-3.5-turbo</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">ASSISTANTS_API_KEY</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">same_key_as_above</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">ASSISTANTS_MODELS</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">gpt-4-turbo,gpt-3.5-turbo</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">PLUGINS_MODELS</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">gpt-4-turbo,gpt-3.5-turbo</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">DALLE_API_KEY</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">same_key_as_above</span>
+</span></code></pre>
+<p>Start LibreChat and drop back into a root shell</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker</span></span><span class="z-meta z-function-call z-arguments z-shell"> compose up<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span></span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-exit z-shell">exit</span></span>
+</span></code></pre>
+<p>Configure Caddy to serve LibreChat. Open <code>/etc/caddy/Caddyfile</code> with an editor</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nano</span></span><span class="z-meta z-function-call z-arguments z-shell"> /etc/caddy/Caddyfile</span>
+</span></code></pre>
+<p>Replace the entire contents of the file with:</p>
+<pre data-lang="caddyfile" class="language-caddyfile z-code"><code class="language-caddyfile" data-lang="caddyfile"><span class="z-text z-plain">subdomain.yourdomain.com {
+</span><span class="z-text z-plain">	reverse_proxy localhost:3080
+</span><span class="z-text z-plain">}
+</span></code></pre>
+<p>Now start Caddy</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">systemctl</span></span><span class="z-meta z-function-call z-arguments z-shell"> enable caddy<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>now</span></span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">systemctl</span></span><span class="z-meta z-function-call z-arguments z-shell"> reload caddy</span>
+</span></code></pre>
+<p>It should automatically retrieve a certificate and start serving as a reverse proxy for LibreChat.</p>
+<p>You should now visit your subdomain, create an account with your email address and a new password, and test out the service. (The developers of the platform state that the first account created is automatically registered as an administrator, though there is not yet an administrative web interface.)</p>
+<p>Issues? You may need to check your port forwarding, firewall settings, DNS on the client, server, and your nameservers, the caddy logs (<code>journalctl -u caddy --since today</code>), the LibreChat console output (<code>docker attach</code>).</p>
+<h2 id="setting-up-sso-through-google-workspace"><a class="zola-anchor" href="#setting-up-sso-through-google-workspace" aria-label="Anchor link for: setting-up-sso-through-google-workspace">#</a>Setting up SSO through Google Workspace</h2>
+<p>Sign in to the Google Cloud Console and visit the <a href="https://console.cloud.google.com/projectcreate">New Project</a> page. Set an appropriate project name and attach the project to your organization.</p>
+<p><img src="https://deal.digital/blog/librechat/newproject.png" alt="Google Cloud New Project Page" /></p>
+<p>Go to APIs and Services &gt; Credentials and click to <strong>CONFIGURE CONSENT SCREEN</strong></p>
+<p><img src="https://deal.digital/blog/librechat/credentials.png" alt="Google Cloud Credentials Screen" /></p>
+<p><strong>App information</strong></p>
+<p>You’ll want to select Internal to only allow accounts in your Google Cloud domain to authenticate. Provide a name (suggested: LibreChat) and logo (<a href="https://github.com/danny-avila/LibreChat/blob/main/docs/assets/favicon_package/android-chrome-192x192.png">suggested</a>)</p>
+<p><strong>App domain</strong></p>
+<p>Ensure the <strong>application home page</strong> and <strong>Authorized domains</strong> are set to the subdomain you have pointed at LibreChat. Add your administrative email address as the <strong>Developer contact information</strong>.</p>
+<p><strong>Scopes</strong></p>
+<p>Add the following:</p>
+<ul>
+<li><code>.../auth/userinfo.email</code></li>
+<li><code>.../auth/userinfo.profile</code></li>
+<li><code>openid</code></li>
+</ul>
+<p>After saving and completing the consent screen setup, return to the <strong>Credentials</strong> page, click <strong>CREATE CREDENTIALS</strong>, and create an Oauth client ID. You’ll want to set it as a Web application named LibreChat with authorized origin <code>https://subdomain.yourdomain.com</code> and authorized redirect URI <code>https://subdomain.yourdomain.com/oauth/google/callback</code>. Once you click CREATE, you will receive a client ID and client secret. You’ll then add them to your <code>.env</code> file:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nano</span></span><span class="z-meta z-function-call z-arguments z-shell"> /etc/librechat/.env</span>
+</span></code></pre>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">GOOGLE_CLIENT_ID</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">WHATEVER_GOOGLE_GAVE_YOU.apps.googleusercontent.com</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">GOOGLE_CLIENT_SECRET</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">LONG_RANDOM_STRING</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">GOOGLE_CALLBACK_URL</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">/oauth/google/callback</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">ALLOW_EMAIL_LOGIN</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">false</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">ALLOW_REGISTRATION</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">false</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">ALLOW_SOCIAL_LOGIN</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">true</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">ALLOW_SOCIAL_REGISTRATION</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">true</span>
+</span></code></pre>
+<p>And you’ll need to add the app you created to Google Admin under the <a href="https://admin.google.com/ac/owl/list?tab=configuredApps">Configured apps</a> section</p>
+<p><img src="https://deal.digital/blog/librechat/add-oauth.png" alt="A dropdown menu labeled “Add app” with “Oauth App Name Or Client ID” highlighted" /></p>
+<p>Search for the Client ID provided by Google, select a scope of users allowed to access the application, and approve it. Now you can restart the service and, if all is well, will be able to sign in.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sudo</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> librechat</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-cd z-shell">cd</span></span><span class="z-meta z-function-call z-arguments z-shell"> /opt/librechat</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker</span></span><span class="z-meta z-function-call z-arguments z-shell"> compose restart</span>
+</span></code></pre>
+<p><img src="https://deal.digital/blog/librechat/librechat-login.png" alt="LibreChat’s Login page" /></p>
+<p><img src="https://deal.digital/blog/librechat/google-sso.png" alt="Google SSO example" /></p>
+<h2 id="left-as-an-exercise-for-the-reader"><a class="zola-anchor" href="#left-as-an-exercise-for-the-reader" aria-label="Anchor link for: left-as-an-exercise-for-the-reader">#</a>Left as an exercise for the reader</h2>
+<p>The instructions above will get you up and running, but if you want a stable, secure, and correctly configured system, you’ll at least want to consider some of the following:</p>
+<ol>
+<li>Review the full documentation for LibreChat and configured desired options</li>
+<li>Create a <a href="https://askubuntu.com/questions/1459175/how-to-run-a-docker-compose-as-a-systemd-service">systemd unit file</a> to automatically start LibreChat’s docker containers as the librechat user</li>
+<li>Set up your distribution’s preferred firewall to disallow inbound connections to ports other than 80 and 443 (and SSH 22 from trusted addresses)</li>
+<li>Install and configure fail2ban to protect your SSH logins if you publicly expose port 22</li>
+<li>Configure some form of backups</li>
+</ol>
+
+<section class="article-signoff">
+<p class="created-at">written <time>2024-04-25</time>
+<p class="updated-at">updated <time>2024-04-26</time>
+</section>
+
+
+</section>
+<footer>
+	<hr>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<dl>
+		<dt>Build</dt>
+		<dd>2026-01-14 15:50:48 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/blog&#x2F;librechat&#x2F;index.md">View source here</a>.</dd>
+
+		<dt>Fonts</dt>
+		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
+
+		<dt>Navigator</dt>
+		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>
+	</dl>
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="/archive/">archive/</a>
+		<br>│ └─<a href="/archive/sdx1/">sdx1</a>
+		<br>├─<a href="/blog/">blog/</a>
+		<br>│ ├─<a href="/blog/design-principles/">design-principles</a>
+		<br>│ ├─<a href="/blog/librechat/">librechat</a>
+		<br>│ ├─<a href="/blog/shorelock/">shorelock</a>
+		<br>│ ├─<a href="/blog/smart-seagate/">smart-seagate</a>
+		<br>│ └─<a href="/blog/wintricks/">wintricks</a>
+		<br>├─<a href="/tools/">tools/</a>
+		<br>│ ├─<a href="/tools/netlibram/">netlibram</a>
+		<br>│ ├─<a href="/tools/prune/">prune</a>
+		<br>│ ├─<a href="/tools/pwgen/">pwgen</a>
+		<br>│ ├─<a href="/tools/tpmiddle/">tpmiddle</a>
+		<br>│ └─<a href="/tools/win11-hta/">win11-hta</a>
+		<br>├─<a href="/contact/">contact</a>
+		<br>├─<a href="/home/">home</a>
+		<br>├─<a href="/links/">links</a>
+		<br>├─<a href="/now/">now</a>
+		<br>├─<a href="/sample/">sample</a>
+		<br>├─<a href="/setup/">setup</a>
+		<br>├─<a href="/todo/">todo</a>
+		<br>└─<a href="/uses/">uses</a>
+		<p>% show :3
+	<pre class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</pre>
+	<p><a href="https://youtu.be/2KVJ2vm_fyw?t=131" style="background: none; color: inherit; box-shadow: none">π</a></p>
+</footer>
+<div id="ui-tools">
+	<button id="btn_top" title="Jump to top">⬆</button>
+	<button id="btn_theme" title="Switch theme">💡</button>
+	<button id="btn_larger" title="Enlarge text">T<b>▲</b></button>
+	<button id="btn_smaller" title="Reduce text">T<b>▼</b></button>
+</div>
+<script defer src="/main.js"></script>
+</body>
+</html>

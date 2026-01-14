@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" style="--color-primary: #f2b762">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Principles for my Website - Wesley Deal</title>
+<style>
+*, *:before, *:after {box-sizing: border-box;}
+:root {
+  color-scheme: light dark;
+}
+body {
+	font: 100%/1.6 sans-serif;
+	margin: 0;
+	width: 100%;
+	overflow-wrap: break-word;
+	scroll-margin-top: 20px;
+	background: light-dark(oklch(from var(--color-primary, #056) 0.96 0.01 h), #000);
+	color: light-dark(#000, #fff);
+}
+body>* {
+	padding: 16px;
+	max-width: 100%;
+}
+header nav, .content>*, footer>*, #toc>div, #search-container {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+header,article,section,nav,footer { display: block }
+header {
+	background: #056;
+	font-size: 110%;
+	line-height: 1.8;
+	display: block;
+	background: oklch(from var(--color-primary, #056) 0.4 c h);
+}
+header a:link, header a:visited {
+	color: #fff;
+	white-space: nowrap;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 33%;
+}
+.topnav-links {
+	list-style: none;
+	display: inline;
+	padding: 0;
+}
+nav#topnav li{
+	padding: 0;
+	margin-right: 16px;
+	display: inline;
+}
+#homelink {
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180));
+	font-weight: 700;
+}
+#toc {
+	background: #023;
+	background: oklch(from var(--color-primary, #056) 0.2 c h);
+	color: #fff;
+	display: block;
+}
+#toc a:link, #toc a:visited {
+	color: #fff;
+}
+.content {
+	min-height: 100vh;
+	transform-origin: 50vw 50vh;
+}
+ul, ol {padding-left: 24px}
+h1 {
+	font-size: xx-large;
+	font-size: clamp(32px, 4vw, 60px);
+	font-weight: 500;
+	line-height: 1.1;
+	color: color-mix(in oklch, var(--color-primary), light-dark(#000,#fff));
+	margin: 32px auto 24px;
+	text-shadow: 2px 2px 0 #7773;
+}
+h2 { margin: 20px auto 8px; font-size: 150%; font-weight: 400; }
+h3 { margin: 16px auto 6px; font-size: 135%; font-weight: 400; }
+h4 { margin: 14px auto 4px; font-size: 120%; }
+h5 { margin: 12px auto   0; font-size: 120%; font-weight: 400; }
+h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic; }
+h1 small {
+	display: block;
+	font-style: italic;
+	font-size: 20px;
+	padding-top: 10px;
+	text-shadow: none;
+}
+body>footer,pre,code,samp {
+	overflow: auto;
+	font-family: ui-monospace, Consolas, monospace;
+	line-height: 1.2;
+}
+body>footer {
+	border-top: 2px solid;
+	margin: 100px 0 800px;
+}
+.z-code {
+	background: #0562;
+	padding: 0.5em 0.7em;
+	border: 1px solid;
+}
+#ui-tools {display: none;}
+a:link, a:visited {
+	color: #056;
+	color: oklch(from var(--color-primary, #056) light-dark(0.4,0.95) light-dark(c, 0.05) h);
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
+}
+:is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
+img { max-width: 100%; }
+table {border-collapse: collapse;}
+th,td {border: 1px solid; padding: 5px;}
+th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
+.zola-anchor {display: none; visibility: hidden;}
+#search-container { padding: 20px; overflow: hidden; }
+#search-box { width: 100%;}
+#search-keyword-list samp { padding: 0 10px; }
+[id] {
+	scroll-margin-top: 100px;
+}
+footer hr{ display: none }
+
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: 0.3s }
+</style>
+<!--[if !IE]><!-->
+<link rel="preload" href="/concourse.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+<!--<![endif]-->
+<body id="blog-design-principles">
+<header>
+	<nav id="topnav">
+		<ul class="topnav-links">
+			<li><a href="/" id="homelink">deal.digital</a>
+			<li><a href="/tools/">🛠️ Tools</a>
+			<li><a href="/blog/">📝 Notes</a>
+			<li><a href="/now/">⏳ Now</a>
+			<li><a href="/links/">🔗 Links</a>
+			<li><a href="/uses/">⌨️ Uses</a>
+			<li><a href="/resume/">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+</header>
+
+<section class="content">
+	<h1 class="title">
+	Design Principles for my Website
+	<small>OR: codifying and post-hoc rationalizing the choices I’ve made thus far</small>
+	</h1>
+<p>I’m a tech guy, and as a general rule, tech guys don’t make great UIs. Nonetheless,
+I enjoy tinkering with websites and graphic design as a bit of a hobby. This site
+has become something of a playground for me to exercise my CSS skills, and I’ve
+decided it’s time to put in writing some of the ideas that have been in my head
+while I mess with it.</p>
+<h2 id="a-technical"><a class="zola-anchor" href="#a-technical" aria-label="Anchor link for: a-technical">#</a>A. Technical</h2>
+<ol>
+<li>Do much with little: a standard text-only blog page should require &lt;512KB of resources on first load.</li>
+<li>If it’s needed to render the page, load it all at once, as quickly as possible. No import chains.</li>
+<li>But if it’s not, load it later. Prefer hiding the asynchronous nature, silently degrading until the resource is loaded.</li>
+<li>The page should gracefully degrade for older/simpler browsers. Specifically, the inline stylesheet should allow for
+a pleasant reading experience in even Firefox 3 and the structure should do the same for lynx.</li>
+<li>Avoid loading images where possible.</li>
+</ol>
+<h2 id="b-aesthetic"><a class="zola-anchor" href="#b-aesthetic" aria-label="Anchor link for: b-aesthetic">#</a>B. Aesthetic</h2>
+<ol>
+<li>Eschew corporate “flat design” and reflexive minimalism.</li>
+<li>Borrow elements from different eras of computing history, including 1980s terminals and graphical desktop environments from 1993-2009.
+<ol>
+<li>IBM AS/400</li>
+<li>*nixen</li>
+<li>MS-DOS and compatibles</li>
+<li>Windows 3, 95, 98, 2000, XP MCE, Longhorn, Vista</li>
+<li>OS/2 Warp</li>
+<li>Apple II series</li>
+<li>Mac OS System 7, 8, 9, Rhapsody, Jaguar, Panther, Tiger, Leopard</li>
+<li>Apple print advertisements</li>
+<li>KDE 3.5</li>
+<li>GNOME 2 from Ubuntu 8.04–10.10</li>
+<li>Winamp <a href="https://skins.webamp.org/">Skins 🦙</a></li>
+<li>Mac OS <a href="https://macthemes.garden/">Themes</a></li>
+<li>XP <a href="https://www.deviantart.com/jamush/art/Watercolor-Emico-Black-89206761">Themes</a></li>
+</ol>
+</li>
+<li>Gradients are underrated.</li>
+<li>Not everything needs rounded corners.</li>
+<li>Depth adds interest and helps the user feel grounded, if it is coherent.</li>
+<li>Use relative colors, such that the page looks good with ANY selected primary color.</li>
+<li>This isn’t Neocities: keep styles coherent such that most of the site is obviously in the same design language.</li>
+<li>This isn’t Serious Business: a little bit of whimsy doesn’t hurt</li>
+</ol>
+<h2 id="c-usability-accessibility"><a class="zola-anchor" href="#c-usability-accessibility" aria-label="Anchor link for: c-usability-accessibility">#</a>C. Usability &amp; Accessibility</h2>
+<ol>
+<li>Interactable elements should be obvious, and their function telegraphed by their appearance.</li>
+<li>Headings and body text should be readable with a sane size and line width. The font size should follow the user’s browser defaults.</li>
+<li>Images need alt tags.</li>
+<li>Semantic HTML elements are preferred to <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code></li>
+<li>Consider screen sizes from 350x350 to 4K at standard DPI.</li>
+<li>Contrast matters.</li>
+<li>Neither light mode nor dark mode receives preferential treatment.</li>
+</ol>
+
+<section class="article-signoff">
+<p class="created-at">written <time>2025-07-14</time>
+<p class="updated-at">updated <time>2025-07-14</time>
+</section>
+
+
+</section>
+<footer>
+	<hr>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<dl>
+		<dt>Build</dt>
+		<dd>2026-01-14 15:50:48 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/blog&#x2F;design-principles.md">View source here</a>.</dd>
+
+		<dt>Fonts</dt>
+		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
+
+		<dt>Navigator</dt>
+		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>
+	</dl>
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="/archive/">archive/</a>
+		<br>│ └─<a href="/archive/sdx1/">sdx1</a>
+		<br>├─<a href="/blog/">blog/</a>
+		<br>│ ├─<a href="/blog/design-principles/">design-principles</a>
+		<br>│ ├─<a href="/blog/librechat/">librechat</a>
+		<br>│ ├─<a href="/blog/shorelock/">shorelock</a>
+		<br>│ ├─<a href="/blog/smart-seagate/">smart-seagate</a>
+		<br>│ └─<a href="/blog/wintricks/">wintricks</a>
+		<br>├─<a href="/tools/">tools/</a>
+		<br>│ ├─<a href="/tools/netlibram/">netlibram</a>
+		<br>│ ├─<a href="/tools/prune/">prune</a>
+		<br>│ ├─<a href="/tools/pwgen/">pwgen</a>
+		<br>│ ├─<a href="/tools/tpmiddle/">tpmiddle</a>
+		<br>│ └─<a href="/tools/win11-hta/">win11-hta</a>
+		<br>├─<a href="/contact/">contact</a>
+		<br>├─<a href="/home/">home</a>
+		<br>├─<a href="/links/">links</a>
+		<br>├─<a href="/now/">now</a>
+		<br>├─<a href="/sample/">sample</a>
+		<br>├─<a href="/setup/">setup</a>
+		<br>├─<a href="/todo/">todo</a>
+		<br>└─<a href="/uses/">uses</a>
+		<p>% show :3
+	<pre class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</pre>
+	<p><a href="https://youtu.be/2KVJ2vm_fyw?t=131" style="background: none; color: inherit; box-shadow: none">π</a></p>
+</footer>
+<div id="ui-tools">
+	<button id="btn_top" title="Jump to top">⬆</button>
+	<button id="btn_theme" title="Switch theme">💡</button>
+	<button id="btn_larger" title="Enlarge text">T<b>▲</b></button>
+	<button id="btn_smaller" title="Reduce text">T<b>▼</b></button>
+</div>
+<script defer src="/main.js"></script>
+</body>
+</html>

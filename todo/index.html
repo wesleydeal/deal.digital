@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" style="--color-primary: #CCA957">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>To-Do List - Wesley Deal</title>
+<style>
+*, *:before, *:after {box-sizing: border-box;}
+:root {
+  color-scheme: light dark;
+}
+body {
+	font: 100%/1.6 sans-serif;
+	margin: 0;
+	width: 100%;
+	overflow-wrap: break-word;
+	scroll-margin-top: 20px;
+	background: light-dark(oklch(from var(--color-primary, #056) 0.96 0.01 h), #000);
+	color: light-dark(#000, #fff);
+}
+body>* {
+	padding: 16px;
+	max-width: 100%;
+}
+header nav, .content>*, footer>*, #toc>div, #search-container {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+header,article,section,nav,footer { display: block }
+header {
+	background: #056;
+	font-size: 110%;
+	line-height: 1.8;
+	display: block;
+	background: oklch(from var(--color-primary, #056) 0.4 c h);
+}
+header a:link, header a:visited {
+	color: #fff;
+	white-space: nowrap;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 33%;
+}
+.topnav-links {
+	list-style: none;
+	display: inline;
+	padding: 0;
+}
+nav#topnav li{
+	padding: 0;
+	margin-right: 16px;
+	display: inline;
+}
+#homelink {
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c calc(h + 180));
+	font-weight: 700;
+}
+#toc {
+	background: #023;
+	background: oklch(from var(--color-primary, #056) 0.2 c h);
+	color: #fff;
+	display: block;
+}
+#toc a:link, #toc a:visited {
+	color: #fff;
+}
+.content {
+	min-height: 100vh;
+	transform-origin: 50vw 50vh;
+}
+ul, ol {padding-left: 24px}
+h1 {
+	font-size: xx-large;
+	font-size: clamp(32px, 4vw, 60px);
+	font-weight: 500;
+	line-height: 1.1;
+	color: color-mix(in oklch, var(--color-primary), light-dark(#000,#fff));
+	margin: 32px auto 24px;
+	text-shadow: 2px 2px 0 #7773;
+}
+h2 { margin: 20px auto 8px; font-size: 150%; font-weight: 400; }
+h3 { margin: 16px auto 6px; font-size: 135%; font-weight: 400; }
+h4 { margin: 14px auto 4px; font-size: 120%; }
+h5 { margin: 12px auto   0; font-size: 120%; font-weight: 400; }
+h6 { margin: 12px auto 4px; font-size: 100%; font-style: italic; }
+h1 small {
+	display: block;
+	font-style: italic;
+	font-size: 20px;
+	padding-top: 10px;
+	text-shadow: none;
+}
+body>footer,pre,code,samp {
+	overflow: auto;
+	font-family: ui-monospace, Consolas, monospace;
+	line-height: 1.2;
+}
+body>footer {
+	border-top: 2px solid;
+	margin: 100px 0 800px;
+}
+.z-code {
+	background: #0562;
+	padding: 0.5em 0.7em;
+	border: 1px solid;
+}
+#ui-tools {display: none;}
+a:link, a:visited {
+	color: #056;
+	color: oklch(from var(--color-primary, #056) light-dark(0.4,0.95) light-dark(c, 0.05) h);
+	text-decoration-color: oklch(from var(--color-primary, #056) 0.8 c h);
+}
+:is(h2,h3,h4,h5,h6) ~ :is(p,ul,ol) { margin-top: 0; }
+img { max-width: 100%; }
+table {border-collapse: collapse;}
+th,td {border: 1px solid; padding: 5px;}
+th {background-color: oklch(from var(--color-primary, #056) 0.5 c h / 30%);}
+.zola-anchor {display: none; visibility: hidden;}
+#search-container { padding: 20px; overflow: hidden; }
+#search-box { width: 100%;}
+#search-keyword-list samp { padding: 0 10px; }
+[id] {
+	scroll-margin-top: 100px;
+}
+footer hr{ display: none }
+
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: 0.3s }
+</style>
+<!--[if !IE]><!-->
+<link rel="preload" href="/concourse.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+<!--<![endif]-->
+<body id="todo">
+<header>
+	<nav id="topnav">
+		<ul class="topnav-links">
+			<li><a href="/" id="homelink">deal.digital</a>
+			<li><a href="/tools/">🛠️ Tools</a>
+			<li><a href="/blog/">📝 Notes</a>
+			<li><a href="/now/">⏳ Now</a>
+			<li><a href="/links/">🔗 Links</a>
+			<li><a href="/uses/">⌨️ Uses</a>
+			<li><a href="/resume/">📄 Resume</a>
+			<li><a href="#" id="search-link">🧭 Navigator</a></li>
+		</ul>
+	</nav>
+</header>
+
+<section class="content">
+	<h1 class="title">
+	To-Do List
+	</h1>
+<p>Pardon the mess, I’m just sort of dumping things to check out here</p>
+<ul>
+<li>Website
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+center the page</li>
+<li><input disabled="" type="checkbox"/>
+add variable width for text, images, and pre</li>
+<li><input disabled="" type="checkbox"/>
+language name and click to copy for code</li>
+<li><input disabled="" type="checkbox"/>
+test line numbers in code</li>
+<li><input disabled="" type="checkbox"/>
+Bring my featureset closer to <a href="https://duckquill.daudix.one/ru/demo/">Duckquill</a>
+<ul>
+<li><input disabled="" type="checkbox"/>
+footnotes</li>
+<li><input disabled="" type="checkbox" checked=""/>
+easily differentiable headings to H6</li>
+<li><input disabled="" type="checkbox"/>
+a native-looking style for form elements including checkbox lists and color picker</li>
+<li><input disabled="" type="checkbox"/>
+sortable tables</li>
+<li><input disabled="" type="checkbox" checked=""/>
+full-bleed images</li>
+<li><input disabled="" type="checkbox"/>
+click to zoom images (PhotoSwipe? Medium-Zoom? Zoom.ts? Basiclightbox? bigpicture?)</li>
+<li><input disabled="" type="checkbox"/>
+embed YouTube</li>
+<li><input disabled="" type="checkbox"/>
+embed Vimeo</li>
+<li><input disabled="" type="checkbox"/>
+embed PeerTube</li>
+<li><input disabled="" type="checkbox"/>
+dinkus</li>
+<li><input disabled="" type="checkbox"/>
+alerts</li>
+<li><input disabled="" type="checkbox"/>
+xwitter poasts</li>
+<li><input disabled="" type="checkbox"/>
+&lt;dl&gt; description list</li>
+<li><input disabled="" type="checkbox"/>
+styled and animated &lt;details&gt;</li>
+<li><input disabled="" type="checkbox"/>
+abbr tags</li>
+<li><input disabled="" type="checkbox"/>
+aside (float: right)</li>
+<li><input disabled="" type="checkbox"/>
+mark text (pop color)</li>
+<li><input disabled="" type="checkbox"/>
+key combos annotated with &lt;kbd&gt;</li>
+<li><input disabled="" type="checkbox"/>
+add article banner with width and height parameters</li>
+<li><input disabled="" type="checkbox" checked=""/>
+&lt;kbd&gt; keys</li>
+<li><input disabled="" type="checkbox" checked=""/>
+&lt;samp&gt;le output</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"/>
+remember dark/light preference IF it diverges from browser preference</li>
+<li><input disabled="" type="checkbox"/>
+remember color preference for 1 day</li>
+<li><input disabled="" type="checkbox"/>
+remember stylesheet preference for 1 day</li>
+<li><input disabled="" type="checkbox"/>
+stylesheet, color: offer dropdown presets</li>
+<li><input disabled="" type="checkbox"/>
+add texture option for bg and buttons (default, textile, mechanical, metallic, gloss)</li>
+<li><input disabled="" type="checkbox"/>
+Navigator α2
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+position:fixed in a view that resembles spotlight somewhat</li>
+<li><input disabled="" type="checkbox"/>
+(optionally, as a draggable, resizable window on desktops)</li>
+<li><input disabled="" type="checkbox"/>
+do math from the search bar</li>
+<li><input disabled="" type="checkbox"/>
+display colors and gradients from the search bar</li>
+<li><input disabled="" type="checkbox"/>
+search internally by default, but go ahead and provide search suggestions while we wait</li>
+<li><input disabled="" type="checkbox"/>
+search suggestions which provide no new information should collapse to a (wrapped) row of names which don’t show the query</li>
+<li><input disabled="" type="checkbox"/>
+replace content inner HTML with first result and jump to / highlight matched text</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"/>
+Writeup regarding new stylesheet, including inspiration from <a href="https://www.deviantart.com/jamush/art/Novus-130953904">Jamush</a></li>
+<li><input disabled="" type="checkbox"/>
+Publish /about /ideas /now</li>
+<li><input disabled="" type="checkbox"/>
+Publish to <a href="https://nownownow.com">nownownow.com</a> and <a href="https://aboutideasnow.com">aboutideasnow.com</a></li>
+<li><input disabled="" type="checkbox" checked=""/>
+Multiple columns for front page links</li>
+<li><input disabled="" type="checkbox"/>
+Create a tagging system</li>
+<li><input disabled="" type="checkbox"/>
+Add a picture of me to the front page (perhaps as a monochrone background using Atkinson or Bayer dithering)</li>
+<li><input disabled="" type="checkbox"/>
+evaluate usability of a different style of table of contents:
+<ul>
+<li>an inline list of H1 links, sticky at the top of the screen</li>
+<li>automatically highlight the first one on the screen if JS is enabled</li>
+<li>@media (pointer: course) - allow horizontal scrolling with scroll snapping if this list rather than wrapping, see <a href="https://iamsteve.me/blog/horizontal-scrolling-responsive-menu">example</a></li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"/>
+examine other websites and make notes:
+<ul>
+<li><input disabled="" type="checkbox"/>
+https://thedataquarry.com/blog/static-site-zola/</li>
+<li><input disabled="" type="checkbox"/>
+https://colinkiama.com/blog/my-experience-with-zola/</li>
+<li><input disabled="" type="checkbox"/>
+https://mattotousa.dev/blog/why-zola/</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Online Profiles
+<ul>
+<li><input disabled="" type="checkbox"/>
+Update LinkedIn descriptions</li>
+<li><input disabled="" type="checkbox"/>
+Update GitHub profile</li>
+</ul>
+</li>
+</ul>
+<h2 id="archived-items"><a class="zola-anchor" href="#archived-items" aria-label="Anchor link for: archived-items">#</a>Archived items</h2>
+<p>You’ll note that not all were achieved.</p>
+<ul>
+<li>Website
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Multiple columns for front page links</li>
+<li><input disabled="" type="checkbox"/>
+Write at least 3 more reasonably insightful blog posts in 2024</li>
+</ul>
+</li>
+<li>Resume
+<ul>
+<li><input disabled="" type="checkbox"/>
+Share button (nobody uses these; waste of space)</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Link to main site</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Zoom buttons</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Writeup on how it was built</li>
+</ul>
+</li>
+<li>Home Lab <em>(cancelled due to move to smallish apartment)</em>
+<ul>
+<li><input disabled="" type="checkbox"/>
+Retrieve a new motherboard/PCU/RAM for the desktop formerly known as <code>mini</code> and provision it as <code>pve01</code></li>
+<li><input disabled="" type="checkbox"/>
+Select an environment for OCI containers and deploy it</li>
+<li><input disabled="" type="checkbox"/>
+Add caddy (possibly containerized) as a reverse proxy</li>
+<li><input disabled="" type="checkbox"/>
+Deploy VaultWarden</li>
+<li><input disabled="" type="checkbox"/>
+Deploy a status page</li>
+</ul>
+</li>
+</ul>
+
+<section class="article-signoff">
+</section>
+
+</section>
+<footer>
+	<hr>
+	<p>deal.digital v2025 (concourse) // UNDER ACTIVE DEVELOPMENT
+	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>% show system-information
+	<dl>
+		<dt>Build</dt>
+		<dd>2026-01-14 15:50:48 UTC with <a href="https://www.getzola.org/">Zola</a> on GitHub <a href="https://github.com/wesleydeal/deal.digital/actions">Actions</a>, hosted on GitHub Pages. <a href="https://github.com/wesleydeal/deal.digital/blob/master/content/todo.md">View source here</a>.</dd>
+
+		<dt>Fonts</dt>
+		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
+
+		<dt>Navigator</dt>
+		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>
+	</dl>
+	<p>% tree deal.digital
+	<p class="sitetree">
+	<a href="/">deal.digital/</a>
+	<br>├─<a href="/archive/">archive/</a>
+		<br>│ └─<a href="/archive/sdx1/">sdx1</a>
+		<br>├─<a href="/blog/">blog/</a>
+		<br>│ ├─<a href="/blog/design-principles/">design-principles</a>
+		<br>│ ├─<a href="/blog/librechat/">librechat</a>
+		<br>│ ├─<a href="/blog/shorelock/">shorelock</a>
+		<br>│ ├─<a href="/blog/smart-seagate/">smart-seagate</a>
+		<br>│ └─<a href="/blog/wintricks/">wintricks</a>
+		<br>├─<a href="/tools/">tools/</a>
+		<br>│ ├─<a href="/tools/netlibram/">netlibram</a>
+		<br>│ ├─<a href="/tools/prune/">prune</a>
+		<br>│ ├─<a href="/tools/pwgen/">pwgen</a>
+		<br>│ ├─<a href="/tools/tpmiddle/">tpmiddle</a>
+		<br>│ └─<a href="/tools/win11-hta/">win11-hta</a>
+		<br>├─<a href="/contact/">contact</a>
+		<br>├─<a href="/home/">home</a>
+		<br>├─<a href="/links/">links</a>
+		<br>├─<a href="/now/">now</a>
+		<br>├─<a href="/sample/">sample</a>
+		<br>├─<a href="/setup/">setup</a>
+		<br>├─<a href="/todo/">todo</a>
+		<br>└─<a href="/uses/">uses</a>
+		<p>% show :3
+	<pre class="ascii-art">
+                      __,,,,_
+       _ __..-;''`--/'/ /.',-`-.
+   (`/' ` |  \ \ \\ / / / / .-'/`,_
+  /'`\ \   |  \ | \| // // / -.,/_,'-,
+ /&lt;7' ;  \ \  | ; ||/ /| | \/    |`-/,/-.,_,/')
+/  _.-, `,-\,__|  _-| / \ \/|_/  |    '-/.;.\'
+`-`  f/ ;      / __/ \__ `/ |__/ |
+     `-'      |  -| =|\_  \  |-' |
+           __/   /_..-' `  ),'  //
+       fL ((__.-'((___..-'' \__.'
+
+	</pre>
+	<p><a href="https://youtu.be/2KVJ2vm_fyw?t=131" style="background: none; color: inherit; box-shadow: none">π</a></p>
+</footer>
+<div id="ui-tools">
+	<button id="btn_top" title="Jump to top">⬆</button>
+	<button id="btn_theme" title="Switch theme">💡</button>
+	<button id="btn_larger" title="Enlarge text">T<b>▲</b></button>
+	<button id="btn_smaller" title="Reduce text">T<b>▼</b></button>
+</div>
+<script defer src="/main.js"></script>
+</body>
+</html>
