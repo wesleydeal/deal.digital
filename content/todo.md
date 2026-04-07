@@ -1,6 +1,5 @@
 +++
 title = "To-Do List"
-[extra]
 color = "#CCA957"
 +++
 

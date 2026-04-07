@@ -3,7 +3,6 @@ title = "Dice Roller for Orrex's Net Libram of Random Magical Effects"
 authors = ["Orrex"]
 date = 2018-05-29
 updated = 2025-06-24
-[extra]
 shorttitle = "Roll for Net Libram Effects"
 color = "#010f11"
 +++

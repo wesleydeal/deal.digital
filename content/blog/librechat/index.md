@@ -2,12 +2,11 @@
 title = "Hosting LibreChat, a FOSS LLM chat tool, with Caddy reverse proxy and Google SSO"
 date = 2024-04-25
 updated = 2024-04-26
-[taxonomies]
-tags = ["software", "IT", "cloud", "AI"]
-[extra]
 shorttitle = "Deploy LibreChat for cheap LLM queries"
 toc = true
 color = "#a5bc84"
+[taxonomies]
+tags = ["software", "IT", "cloud", "AI"]
 +++
 
 Do you want to deploy an inexpensive ChatGPT-like web app for your school, business, or friends?

@@ -3,11 +3,10 @@ author = "Wesley Deal"
 title = "Scroll & middle-click with the TrackPoint"
 date = 2017-08-06
 updated = 2025-06-24
-[taxonomies]
-tags = ["software", "thinkpad"]
-[extra]
 shorttitle = "Scroll & middle-click with a TrackPoint"
 color = "#E10020"
+[taxonomies]
+tags = ["software", "thinkpad"]
 +++
 
 ![Diagram showing trackpoint middle mouse button mapped to a normal mouse scroll wheel](diagram.svg)

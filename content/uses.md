@@ -1,7 +1,6 @@
 +++
 title = "Things I use and like"
 updated = 2025-07-17
-[extra]
 color = "#ea7299"
 subtitle = '(my [uses](https://uses.tech) page)'
 +++

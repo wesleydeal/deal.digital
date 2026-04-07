@@ -2,7 +2,6 @@
 title = "I rewrote my stylesheet"
 date = 2099-01-01
 draft = true
-[extra]
 shorttitle = "New Stylesheet"
 color = "teal"
 +++

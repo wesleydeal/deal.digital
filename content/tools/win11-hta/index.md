@@ -2,7 +2,6 @@
 title = "Windows 11-styled HTA dialogs"
 date = 2025-07-17
 updated = 2025-07-17
-[extra]
 color = "#09e0fe"
 +++
 

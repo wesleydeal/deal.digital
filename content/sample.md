@@ -1,6 +1,5 @@
 +++
 title = "Sample Page"
-[extra]
 toc = true
 +++
 

@@ -1,7 +1,6 @@
 +++
 updated = 2025-06-24
 title = "Contact Me"
-[extra]
 color = "#caced2"
 +++
 

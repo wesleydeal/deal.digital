@@ -4,11 +4,10 @@ title = "Local Password Generator"
 date = 2025-02-21
 updated = 2025-07-18
 raw = true
-[taxonomies]
-tags = ["software", "security"]
-[extra]
 shorttitle = "Password Generator"
 color = "#00ba89"
+[taxonomies]
+tags = ["software", "security"]
 +++
 
 <style type="text/css">

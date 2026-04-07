@@ -3,7 +3,6 @@ date = 2024-04-26
 updated = 2025-12-31
 title = "What I’m doing now"
 draft = false
-[extra]
 color = "#83abe8"
 +++
 

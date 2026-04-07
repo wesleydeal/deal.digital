@@ -1,7 +1,6 @@
 +++
 title = "Links of interest"
 updated = 2025-09-14
-[extra]
 shorttitle = "Links"
 subtitle = "the most useful page on this website"
 toc = true

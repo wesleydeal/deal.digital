@@ -2,7 +2,6 @@
 title = "Design Principles for my Website"
 date = 2025-07-14
 updated = 2025-07-14
-[extra]
 color = "#f2b762"
 subtitle = "OR: codifying and post-hoc rationalizing the choices I've made thus far"
 +++

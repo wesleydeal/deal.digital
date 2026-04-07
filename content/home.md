@@ -1,6 +1,5 @@
 +++
 title = "Wesley's Homepage"
-[extra]
 color = "#219f7c"
 +++
 

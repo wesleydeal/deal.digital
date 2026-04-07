@@ -2,7 +2,6 @@
 title = "PC Setup Resources"
 date = 2025-02-12
 updated = 2025-02-12
-[extra]
 color = "#eba834"
 +++
 

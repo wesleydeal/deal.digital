@@ -3,7 +3,6 @@ date = 2025-03-04
 updated = 2025-06-27
 title = "Sick Tricks for making Windows 11 Usable"
 draft = false
-[extra]
 shorttitle = "Sick Windows 11 Tricks"
 color = "#08a1f7"
 +++

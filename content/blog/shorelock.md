@@ -3,11 +3,10 @@ title = "Fix a locked Shoretel/Mitel Director"
 date = 2020-09-15
 updated = 2025-03-04
 author = "Wesley Deal"
-[taxonomies]
-tags = ["software", "IT"]
-[extra]
 shorttitle = "Unlock a [Shore/Mi]Tel Director"
 color = "#00A1F4"
+[taxonomies]
+tags = ["software", "IT"]
 +++
 
 Let's say, for the sake of argument, that you're a very busy systems administrator. A while ago, something popped up on the top of your Shoretel management page. You noticed it when you were hastily onboarding a new employee:
