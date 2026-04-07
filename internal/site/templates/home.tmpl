@@ -1,0 +1,36 @@
+{{define "home"}}
+{{template "chrome_start" .}}
+<main class="content">
+  <article class="landing">
+    <h1>Hello!</h1>
+    <p>I’m Wesley Deal, a technology enthusiast and sysadmin. This build is now produced by a Go-native content pipeline that still uses markdown as source.</p>
+    <div class="landing-link-container">
+      <section class="sitebuttons">
+        <h2>Quick Links</h2>
+        <ul>
+          <li><a href="/resume/">Resume</a></li>
+          <li><a href="https://github.com/wesleydeal">GitHub</a></li>
+          <li><a href="https://linkedin.com/in/wesley-deal">LinkedIn</a></li>
+          <li><a href="/now/">What I’m doing now</a></li>
+          <li><a href="/links/">Links of interest</a></li>
+          <li><a href="/uses/">Things I use</a></li>
+        </ul>
+      </section>
+      <section>
+        <h2>Recent Notes &amp; Web Tools</h2>
+        <ul class="blog-listing">
+          {{range $index, $page := .Site.RecentPages}}{{if lt $index 12}}
+          <li><a href="{{$page.Route}}">{{pageTitle $page}}</a>{{with $page.Date}}<span class="article-separator"> • </span><time>{{date .}}</time>{{end}}</li>
+          {{end}}{{end}}
+        </ul>
+      </section>
+    </div>
+    {{with .Section}}{{if .HTML}}
+    <section>
+      {{.HTML}}
+    </section>
+    {{end}}{{end}}
+  </article>
+</main>
+{{template "chrome_end" .}}
+{{end}}

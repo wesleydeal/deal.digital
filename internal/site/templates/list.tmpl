@@ -1,0 +1,36 @@
+{{define "list"}}
+{{template "chrome_start" .}}
+<main class="content">
+  <article>
+    <h1>{{.Section.Title}}</h1>
+    {{if .Section.HTML}}{{.Section.HTML}}{{end}}
+    <section class="sitebuttons">
+      <ul>
+        {{range .Section.Pages}}
+        <li><a href="{{.Route}}">{{pageTitle .}}</a></li>
+        {{end}}
+        {{range .Section.Subsections}}
+        <li><a href="{{.Route}}">{{.Title}}</a></li>
+        {{end}}
+      </ul>
+    </section>
+  </article>
+</main>
+{{template "chrome_end" .}}
+{{end}}
+
+{{define "blog_list"}}
+{{template "chrome_start" .}}
+<main class="content">
+  <article>
+    <h1>{{.Section.Title}}</h1>
+    {{if .Section.HTML}}{{.Section.HTML}}{{end}}
+    <ul class="blog-listing">
+      {{range .Section.Pages}}
+      <li><a href="{{.Route}}">{{pageTitle .}}</a>{{with .Date}}<span class="article-separator"> • </span><time>{{date .}}</time>{{end}}</li>
+      {{end}}
+    </ul>
+  </article>
+</main>
+{{template "chrome_end" .}}
+{{end}}

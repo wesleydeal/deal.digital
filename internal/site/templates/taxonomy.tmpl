@@ -1,0 +1,15 @@
+{{define "taxonomy"}}
+{{template "chrome_start" .}}
+<main class="content">
+  <article>
+    <h1>{{.Term.Name}}</h1>
+    <p>Taxonomy archive.</p>
+    <ul class="blog-listing">
+      {{range .Term.Pages}}
+      <li><a href="{{.Route}}">{{pageTitle .}}</a>{{with .Date}}<span class="article-separator"> • </span><time>{{date .}}</time>{{end}}</li>
+      {{end}}
+    </ul>
+  </article>
+</main>
+{{template "chrome_end" .}}
+{{end}}
