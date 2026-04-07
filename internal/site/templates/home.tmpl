@@ -2,18 +2,18 @@
 {{template "chrome_start" .}}
 <main class="content">
   <article class="landing">
-    <h1>Hello!</h1>
-    <p>I’m Wesley Deal, a technology enthusiast and sysadmin. This build is now produced by a Go-native content pipeline that still uses markdown as source.</p>
+    <h1 class="title" id="title">Hello!</h1>
+    <p>I’m Wesley Deal, a technology enthusiast and sysadmin.
     <div class="landing-link-container">
       <section class="sitebuttons">
         <h2>Quick Links</h2>
         <ul>
-          <li><a href="/resume/">Resume</a></li>
-          <li><a href="https://github.com/wesleydeal">GitHub</a></li>
-          <li><a href="https://linkedin.com/in/wesley-deal">LinkedIn</a></li>
-          <li><a href="/now/">What I’m doing now</a></li>
-          <li><a href="/links/">Links of interest</a></li>
-          <li><a href="/uses/">Things I use</a></li>
+          <li><a href="/resume/"><span class="emoji">📄 </span><span>Resume</span></a></li>
+          <li><a href="https://github.com/wesleydeal"><span class="emoji">👨🏻‍💻 </span><span>GitHub</span></a></li>
+          <li><a href="https://linkedin.com/in/wesley-deal"><span class="emoji">🏢 </span><span>LinkedIn</span></a></li>
+          <li><a href="/now/"><span class="emoji">⏳ </span><span>What I'm doing now</span></a></li>
+          <li><a href="/links/"><span class="emoji">🔗 </span><span>Links of interest</span></a></li>
+          <li><a href="/uses/"><span class="emoji">⌨️ </span><span>Things I use</span></a></li>
         </ul>
       </section>
       <section>
@@ -25,12 +25,26 @@
         </ul>
       </section>
     </div>
-    {{with .Section}}{{if .HTML}}
-    <section>
-      {{.HTML}}
+    <section id="about">
+      <h2>About this site</h2>
+      <p>This is a small collection of things I want to archive, reference, or show others. It's also constantly 🚧 <b>under construction</b> 🚧 as a playground for Zola, HTML/CSS, design principles, and CI/CD with GitHub Actions. As of July, my stylesheet has just been rebuilt from scratch. <a href="/todo">Here's what's next.</a></p>
+      <p>Much of the content here once resided in rougher form on <a href="/archive/sdx1/">sdx1.net</a>.</p>
     </section>
-    {{end}}{{end}}
   </article>
 </main>
+<script>
+	const hour = (new Date()).getHours();
+	function setProps(msg, color) {document.getElementById('title').innerText = 'Good ' + msg + '!'; document.documentElement.style.setProperty('--color-primary', color);}
+
+	if (hour > 22 || hour < 6) {
+		setProps("night", '#5b00d2');
+	} else if (hour < 12) {
+		setProps("morning", '#52b5c5');
+	} else if (hour < 18) {
+		setProps("afternoon", '#e57a0c');
+	} else {
+		setProps("evening", '#d78989');
+	}
+</script>
 {{template "chrome_end" .}}
 {{end}}

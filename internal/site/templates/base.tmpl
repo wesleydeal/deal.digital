@@ -127,11 +127,9 @@ footer hr{ display: none }
 @view-transition { navigation: auto; }
 ::view-transition-group(root) { animation-duration: 0.3s }
 </style>
-<!--[if !IE]><!-->
-<link rel="preload" href="/{{or (extraString .Site.Config.Extra "stylesheet") "style"}}.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
+<link rel="preload" href="/{{or (extraString .Site.Config.Extra "stylesheet") "style"}}.css" as="style" onload="if (CSS.supports('selector(&)')) this.rel='stylesheet'">
 <link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
-<!--<![endif]-->
 <body id="{{bodyID .CurrentRoute}}">
 <header>
 	<nav id="topnav">
@@ -173,7 +171,7 @@ footer hr{ display: none }
 	<p>% show system-information
 	<dl>
 		<dt>Build</dt>
-		<dd>{{.BuildTime.Format "2006-01-02 15:04:05 UTC"}} with the bespoke Go CMS cache pipeline, ready for Caddy static serving. <a href="{{sourceURL .Page .Section}}">View source here</a>.</dd>
+		<dd>Rendered {{.BuildTime.Format "2006-01-02 15:04:05 MST"}} with my own Go-based CMS, served through Caddy. <a href="{{sourceURL .Page .Section}}">View source here</a>.</dd>
 
 		<dt>Fonts</dt>
 		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
