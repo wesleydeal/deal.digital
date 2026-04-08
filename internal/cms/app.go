@@ -119,9 +119,6 @@ func (a *App) writeOutput(site *content.Site) (buildTiming, error) {
 	if err := a.renderer.RenderSite(site); err != nil {
 		return buildTiming{}, err
 	}
-	if err := os.RemoveAll(a.opts.OutputDir); err != nil {
-		return buildTiming{}, err
-	}
 	if err := os.MkdirAll(a.opts.OutputDir, 0o755); err != nil {
 		return buildTiming{}, err
 	}
@@ -173,6 +170,7 @@ func (a *App) writeOutput(site *content.Site) (buildTiming, error) {
 	if err := writeNotFound(filepath.Join(a.opts.OutputDir, "404.html")); err != nil {
 		return buildTiming{}, err
 	}
+
 	timings := buildTiming{render: time.Since(start)}
 	if a.opts.CompressOutput {
 		compressStart := time.Now()
@@ -185,7 +183,6 @@ func (a *App) writeOutput(site *content.Site) (buildTiming, error) {
 	}
 	return timings, nil
 }
-
 func writeRouteDocument(root, route string, doc []byte) error {
 	if route == "/" {
 		return os.WriteFile(filepath.Join(root, "index.html"), doc, 0o644)
@@ -222,6 +219,15 @@ func copyTree(srcRoot, dstRoot string, include func(rel string) bool) error {
 }
 
 func copyFile(src, dst string) error {
+	srcInfo, err := os.Stat(src)
+	if err != nil {
+		return err
+	}
+	dstInfo, err := os.Stat(dst)
+	if err == nil && dstInfo.Size() == srcInfo.Size() && dstInfo.ModTime().Equal(srcInfo.ModTime()) {
+		return nil
+	}
+
 	in, err := os.Open(src)
 	if err != nil {
 		return err
@@ -237,7 +243,10 @@ func copyFile(src, dst string) error {
 		_ = out.Close()
 		return err
 	}
-	return out.Close()
+	if err := out.Close(); err != nil {
+		return err
+	}
+	return os.Chtimes(dst, srcInfo.ModTime(), srcInfo.ModTime())
 }
 
 func writeNotFound(path string) error {

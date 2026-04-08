@@ -153,7 +153,6 @@ func (r *Renderer) loadTemplates() error {
 	r.templates = parsed
 	return nil
 }
-
 func (r *Renderer) renderMarkdown(input string, depth int) (string, []content.Heading, string, error) {
 	input = strings.TrimSpace(input)
 	if input == "" {

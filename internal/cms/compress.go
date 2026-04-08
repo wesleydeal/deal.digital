@@ -204,13 +204,43 @@ func compressionJobs(root string) ([]compressionJob, error) {
 		if !ok {
 			return nil
 		}
+		info, statErr := entry.Info()
+		if statErr != nil {
+			jobs = append(jobs, compressionJob{path: path, plan: plan})
+			return nil
+		}
+		if compressedVariantsCurrent(path, plan, info.ModTime()) {
+			return nil
+		}
+
 		jobs = append(jobs, compressionJob{path: path, plan: plan})
 		return nil
 	})
 	return jobs, err
 }
 
+func compressedVariantsCurrent(path string, plan compressionPlan, srcMod time.Time) bool {
+	exts := []string{".gz", ".zst"}
+	if plan.brotli {
+		exts = append(exts, ".br")
+	}
+	for _, ext := range exts {
+		compressedPath := path + ext
+		info, err := os.Stat(compressedPath)
+		if err != nil {
+			return false
+		}
+		if info.ModTime().Before(srcMod) {
+			return false
+		}
+	}
+	return true
+}
+
 func compressionPlanFor(path string) (compressionPlan, bool) {
+	if strings.HasSuffix(path, ".skip") {
+		return compressionPlan{}, false
+	}
 	ext := strings.ToLower(filepath.Ext(path))
 	if _, blacklisted := compressionBlacklist[ext]; blacklisted {
 		return compressionPlan{}, false
