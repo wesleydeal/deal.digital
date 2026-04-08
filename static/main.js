@@ -1,5 +1,4 @@
 // GLOBAL VARIABLES --------------------------------
-const content = document.getElementsByClassName('content')[0];
 const root = document.documentElement;
 const imageExtensions = ["svg", "png", "jpg", "jfif", "gif", "webp", "avif"];
 let ddIndex = null;
@@ -10,11 +9,13 @@ let searchWindowPos;
 let searchDrag = [];
 let savedPage;
 let soundPlayers = {};
+let globalEventsBound = false;
 
 // UTILITY FUNCTIONS -------------------------------
 const elid = (id) => document.getElementById(id);
 const inrange = (x, start, end) => (x >= start) && (x <= end);
 const tru = () => true;
+const currentContent = () => document.querySelector('.content');
 function uniq(a) {
     var seen = {};
     return a.filter((item) => seen.hasOwnProperty(item) ? false : (seen[item] = true));
@@ -33,6 +34,76 @@ function playSound(url, volume = 1) {
 	} else {
 		soundPlayers[url].addEventListener("canplaythrough", playIt, { once: true });
 	}
+}
+
+function initializeMu() {
+	if (window.mu && typeof window.mu.init === "function") {
+		window.mu.init();
+	}
+}
+
+function replaceOptional(selector, doc) {
+	const current = document.querySelector(selector);
+	const incoming = doc.querySelector(selector);
+	if (current && incoming) {
+		current.replaceWith(incoming);
+		return;
+	}
+	if (!current && incoming) {
+		const contentNode = document.querySelector('.content');
+		contentNode?.insertAdjacentElement('beforebegin', incoming);
+		return;
+	}
+	if (current && !incoming) {
+		current.remove();
+	}
+}
+
+function applyDocumentChrome(doc, url, historyMode = "push") {
+	const nextContent = doc.querySelector('.content');
+	if (nextContent) {
+		currentContent()?.replaceWith(nextContent);
+	}
+	replaceOptional('#toc', doc);
+	replaceOptional('#breadcrumbs', doc);
+
+	const nextStyle = doc.documentElement.getAttribute('style');
+	if (nextStyle) {
+		root.setAttribute('style', nextStyle);
+	} else {
+		root.removeAttribute('style');
+	}
+
+	document.body.id = doc.body?.id || "";
+	if (doc.body?.dataset?.route) {
+		document.body.dataset.route = doc.body.dataset.route;
+	} else {
+		delete document.body.dataset.route;
+	}
+	if (doc.body?.dataset?.pageColor) {
+		document.body.dataset.pageColor = doc.body.dataset.pageColor;
+	} else {
+		delete document.body.dataset.pageColor;
+	}
+
+	document.title = doc.title;
+	if (historyMode === "push") {
+		window.history.pushState(null, "", url);
+	} else if (historyMode === "replace") {
+		window.history.replaceState(null, "", url);
+	}
+
+	if (window.location.hash) {
+		const target = document.querySelector(window.location.hash);
+		if (target) {
+			window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY, behavior: 'smooth' });
+		}
+	} else {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
+
+	initializePageContent();
+	initializeMu();
 }
 
 // SEARCH ------------------------------------------
@@ -215,28 +286,21 @@ for (providerName in providers) {
 	}
 }
 
-async function replacePage(path) {
+async function replacePage(path, historyMode = "push") {
 	if (path instanceof Event) {
 		path = elid("search-box").value.replaceAll(" !load", "").split(" ").at(-1);
 	}
-	const response = await fetch(path);
+	const url = new URL(path, window.location.href);
+	const response = await fetch(url, {
+		headers: {
+			"X-Requested-With": "deal.digital-shell",
+		},
+	});
 	if (!response.ok) return;
 
 	const html = await response.text();
 	const doc = (new DOMParser()).parseFromString(html, 'text/html');
-	document.querySelector('section.content').replaceWith(doc.querySelector('section.content'));
-	if (doc.documentElement.style) {
-		root.setAttribute('style', doc.documentElement.getAttribute('style'));
-	}
-
-	document.title = doc.title;
-	window.history.replaceState(null, null, response.url);
-
-	if (window.location.hash) {
-		window.scrollTo({top: document.querySelector(window.location.hash).getBoundingClientRect().top, behavior: 'smooth'});
-	} else {
-		window.scrollTo({top: 0, behavior: 'smooth'});
-	}
+	applyDocumentChrome(doc, response.url || url.toString(), historyMode);
 }
 
 function toggleSearch(query="") {
@@ -545,66 +609,43 @@ async function updateSearch(event=null) {
 
 
 // ON LOAD -----------------------------------------
-function load() {
-	//if (performance.navigation.type === PerformanceNavigation.TYPE_NAVIGATE) playSound('/sounds/Woosh2.opus', .4);
-	if (elid("toc")) {
-		document.addEventListener('scrollend', () => {
-			const links = document.querySelectorAll('#toc a[href^="#"]');
-			const tocDiv = document.querySelector('#toc div:first-child');
-			let current;
+function updateTOCState() {
+	const links = document.querySelectorAll('#toc a[href^="#"]');
+	const tocDiv = document.querySelector('#toc div:first-child');
+	let current;
 
-			for (link of links) {
-				const target = document.querySelector(link.getAttribute('href'));
-				if (target?.getBoundingClientRect().bottom <= window.innerHeight / 4) {
-					current = link;
-				}
-			}
-			for (link of links) {
-				if (link !== current && link.classList.contains('scroll-current')) {
-					link.classList.remove('scroll-current');
-				}
-			}
-
-			if (!(current?.classList.contains('scroll-current'))) {
-				current?.classList.add('scroll-current');
-			}
-
-			if (tocDiv.scrollWidth > tocDiv.clientWidth && current) {
-				tocDiv.scrollTo({ top: 0, left: current.offsetLeft - 16, behavior: 'smooth' });
-			}
-		});
+	for (link of links) {
+		const target = document.querySelector(link.getAttribute('href'));
+		if (target?.getBoundingClientRect().bottom <= window.innerHeight / 4) {
+			current = link;
+		}
+	}
+	for (link of links) {
+		if (link !== current && link.classList.contains('scroll-current')) {
+			link.classList.remove('scroll-current');
+		}
 	}
 
-	elid("btn_larger")?.addEventListener("click", () => {
-		currentSize = getComputedStyle(content).fontSize;
-		content.style.fontSize = 'calc(' + currentSize + ' * 1.0667)';
-	});
-	elid("btn_smaller")?.addEventListener("click", () => {
-		currentSize = getComputedStyle(content).fontSize;
-		content.style.fontSize = 'calc(' + currentSize + ' * 0.937)';
-	});
-	elid("btn_theme")?.addEventListener("click", () => {
-		let currentDarkMode = getComputedStyle(document.body).getPropertyValue('color') == 'rgb(255, 255, 255)';
-		root.classList.add(currentDarkMode ? 'light' : 'dark');
-		root.classList.remove(currentDarkMode ? 'dark' : 'light');
-		playSound('/sounds/KDE_Click_2.ogg', 1);
-	});
-	elid("btn_toc")?.addEventListener("click", () => {
-		tocdetails = document.querySelector('#toc details');
-		tocdetails.open = (tocdetails.open) ? false : true;
-	});
-	elid("btn_top")?.addEventListener("click", () => {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	});
-	elid("btn_search")?.addEventListener("click", toggleSearch);
-	elid("search-link")?.addEventListener("click", toggleSearch);
+	if (!(current?.classList.contains('scroll-current'))) {
+		current?.classList.add('scroll-current');
+	}
 
-	for (a of document.querySelectorAll("section.content a:has(img)")) {
+	if (tocDiv?.scrollWidth > tocDiv?.clientWidth && current) {
+		tocDiv.scrollTo({ top: 0, left: current.offsetLeft - 16, behavior: 'smooth' });
+	}
+}
+
+function initializePageContent() {
+	for (a of document.querySelectorAll(".content a:has(img)")) {
+		if (a.dataset.zoomBound === "true") continue;
 		if (imageExtensions.includes(a.href.split(".").pop())) {
+			a.dataset.zoomBound = "true";
 			a.addEventListener("click", (e) => e.preventDefault());
 		}
 	}
-	for (img of document.querySelectorAll("section.content :not(a):not(.no-zoom) img:not(.no-zoom)")) {
+	for (img of document.querySelectorAll(".content :not(a):not(.no-zoom) img:not(.no-zoom)")) {
+		if (img.dataset.zoomBound === "true") continue;
+		img.dataset.zoomBound = "true";
 		img.addEventListener("click", (e) => {
 			if (e.target?.parentElement?.href) {
 				if (imageExtensions.includes(e.target.parentElement.href.split(".").pop())) {
@@ -653,6 +694,64 @@ function load() {
 			}
 		});
 	}
+}
+
+function shouldInterceptLink(link, event) {
+	if (!link || event.defaultPrevented) return false;
+	if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return false;
+	if (link.target && link.target !== "_self") return false;
+	if (link.hasAttribute("download")) return false;
+	if (link.getAttribute("href")?.startsWith("#")) return false;
+	if (link.closest("#search-results")) return false;
+
+	const url = new URL(link.href, window.location.href);
+	if (url.origin !== window.location.origin) return false;
+	if (url.pathname.startsWith("/_/")) return false;
+	if (url.pathname === window.location.pathname && url.hash) return false;
+	return true;
+}
+
+function bindGlobalEvents() {
+	if (globalEventsBound) return;
+	globalEventsBound = true;
+
+	document.addEventListener('scrollend', updateTOCState);
+	window.addEventListener('popstate', () => replacePage(window.location.href, "skip"));
+
+	document.addEventListener('click', (event) => {
+		const link = event.target.closest('a[href]');
+		if (!shouldInterceptLink(link, event)) return;
+		event.preventDefault();
+		replacePage(link.href, "push");
+	});
+
+	elid("btn_larger")?.addEventListener("click", () => {
+		const content = currentContent();
+		if (!content) return;
+		const currentSize = getComputedStyle(content).fontSize;
+		content.style.fontSize = 'calc(' + currentSize + ' * 1.0667)';
+	});
+	elid("btn_smaller")?.addEventListener("click", () => {
+		const content = currentContent();
+		if (!content) return;
+		const currentSize = getComputedStyle(content).fontSize;
+		content.style.fontSize = 'calc(' + currentSize + ' * 0.937)';
+	});
+	elid("btn_theme")?.addEventListener("click", () => {
+		let currentDarkMode = getComputedStyle(document.body).getPropertyValue('color') == 'rgb(255, 255, 255)';
+		root.classList.add(currentDarkMode ? 'light' : 'dark');
+		root.classList.remove(currentDarkMode ? 'dark' : 'light');
+		playSound('/sounds/KDE_Click_2.ogg', 1);
+	});
+	elid("btn_toc")?.addEventListener("click", () => {
+		tocdetails = document.querySelector('#toc details');
+		tocdetails.open = (tocdetails.open) ? false : true;
+	});
+	elid("btn_top")?.addEventListener("click", () => {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	});
+	elid("btn_search")?.addEventListener("click", toggleSearch);
+	elid("search-link")?.addEventListener("click", toggleSearch);
 
 	document.addEventListener("keyup", (e) => {
 		if (e.key === 'Escape') {
@@ -694,6 +793,13 @@ function load() {
 			document.querySelectorAll("a.search-link.instant")?.[0]?.click?.();
 		}
 	}
+}
+
+function load() {
+	bindGlobalEvents();
+	initializePageContent();
+	initializeMu();
+	updateTOCState();
 }
 
 load();

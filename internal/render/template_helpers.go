@@ -1,4 +1,4 @@
-package site
+package render
 
 import (
 	"fmt"
@@ -6,16 +6,18 @@ import (
 	"html/template"
 	"sort"
 	"strings"
+
+	"deal.digital/internal/content"
 )
 
-func colorFor(page *Page, section *Section) string {
+func colorFor(page *content.Page, section *content.Section) string {
 	if page != nil {
-		if s, ok := stringValue(page.Extra["color"]); ok && s != "" {
+		if s, ok := content.StringValue(page.Extra["color"]); ok && s != "" {
 			return s
 		}
 	}
 	if section != nil {
-		if s, ok := stringValue(section.Extra["color"]); ok && s != "" {
+		if s, ok := content.StringValue(section.Extra["color"]); ok && s != "" {
 			return s
 		}
 	}
@@ -25,7 +27,7 @@ func colorFor(page *Page, section *Section) string {
 func documentTitle(data templateData) string {
 	switch {
 	case data.Page != nil:
-		return displayTitle(data.Page) + " - Wesley Deal"
+		return content.DisplayTitle(data.Page) + " - Wesley Deal"
 	case data.Section != nil && data.Section.Route != "/" && data.Section.Title != "":
 		return data.Section.Title + " - Wesley Deal"
 	case data.Term != nil && data.Term.Name != "":
@@ -55,7 +57,7 @@ func extraBool(m map[string]any, key string) bool {
 	return b
 }
 
-func showBreadcrumbs(site *Site, page *Page) bool {
+func showBreadcrumbs(site *content.Site, page *content.Page) bool {
 	if site == nil || page == nil {
 		return false
 	}
@@ -68,7 +70,7 @@ func showBreadcrumbs(site *Site, page *Page) bool {
 	return true
 }
 
-func breadcrumbsHTML(site *Site, page *Page) template.HTML {
+func breadcrumbsHTML(site *content.Site, page *content.Page) template.HTML {
 	if !showBreadcrumbs(site, page) {
 		return ""
 	}
@@ -90,7 +92,7 @@ func breadcrumbsHTML(site *Site, page *Page) template.HTML {
 	return template.HTML(strings.Join(parts, "\n"))
 }
 
-func ancestorRoutes(site *Site, route string) []string {
+func ancestorRoutes(site *content.Site, route string) []string {
 	var routes []string
 	for route != "" && route != "/" {
 		section := site.SectionByRoute[route]
@@ -109,7 +111,7 @@ func ancestorRoutes(site *Site, route string) []string {
 	return routes
 }
 
-func sourceURL(page *Page, section *Section) string {
+func sourceURL(page *content.Page, section *content.Section) string {
 	base := "https://github.com/wesleydeal/deal.digital"
 	switch {
 	case page != nil && page.RelativePath != "":
@@ -121,7 +123,7 @@ func sourceURL(page *Page, section *Section) string {
 	}
 }
 
-func siteTreeHTML(site *Site) template.HTML {
+func siteTreeHTML(site *content.Site) template.HTML {
 	if site == nil {
 		return ""
 	}
@@ -140,11 +142,11 @@ func siteTreeHTML(site *Site) template.HTML {
 
 type treeNode struct {
 	isSection bool
-	section   *Section
-	page      *Page
+	section   *content.Section
+	page      *content.Page
 }
 
-func treeChildren(sections []*Section, pages []*Page) []treeNode {
+func treeChildren(sections []*content.Section, pages []*content.Page) []treeNode {
 	out := make([]treeNode, 0, len(sections)+len(pages))
 	sort.SliceStable(sections, func(i, j int) bool { return sections[i].Route < sections[j].Route })
 	sort.SliceStable(pages, func(i, j int) bool { return pages[i].Route < pages[j].Route })
@@ -177,11 +179,11 @@ func renderTreeChildren(lines *[]string, prefix string, nodes []treeNode) {
 	}
 }
 
-func treeSectionLink(section *Section) string {
+func treeSectionLink(section *content.Section) string {
 	return fmt.Sprintf(`<a href="%s">%s/</a>`, html.EscapeString(section.Route), html.EscapeString(lastRouteSegment(section.Route)))
 }
 
-func treePageLink(page *Page) string {
+func treePageLink(page *content.Page) string {
 	return fmt.Sprintf(`<a href="%s">%s</a>`, html.EscapeString(page.Route), html.EscapeString(lastRouteSegment(page.Route)))
 }
 

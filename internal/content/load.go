@@ -1,4 +1,4 @@
-package site
+package content
 
 import (
 	"bytes"
@@ -142,7 +142,7 @@ func LoadSite(cfg Config, opts Options) (*Site, error) {
 			page.PageTemplate = normalizePageTemplate(parent.PageTemplate)
 		}
 		if page.Template == "" {
-			page.Template = defaultPageTemplate(parent.Route)
+			page.Template = DefaultPageTemplate(parent.Route)
 		}
 	}
 
@@ -280,6 +280,10 @@ func stringValue(v any) (string, bool) {
 	default:
 		return "", false
 	}
+}
+
+func StringValue(v any) (string, bool) {
+	return stringValue(v)
 }
 
 func lookupBool(input map[string]any, key string) bool {
@@ -455,7 +459,7 @@ func defaultSectionTemplate(templateName, route string) string {
 	return "list"
 }
 
-func defaultPageTemplate(route string) string {
+func DefaultPageTemplate(route string) string {
 	if strings.HasPrefix(route, "/blog/") {
 		return "blog_page"
 	}
@@ -532,7 +536,7 @@ func firstNonEmpty(items ...string) string {
 	return ""
 }
 
-func collapseWhitespace(v string) string {
+func CollapseWhitespace(v string) string {
 	return strings.Join(strings.Fields(strings.TrimSpace(v)), " ")
 }
 

@@ -1,6 +1,6 @@
 {{define "chrome_start"}}
 <!doctype html>
-<html lang="{{.Site.Config.DefaultLanguage}}"{{with colorFor .Page .Section}} style="--color-primary: {{.}}"{{end}}>
+<html lang="{{.Site.Config.DefaultLanguage}}" data-page-color="{{colorFor .Page .Section}}"{{with colorFor .Page .Section}} style="--color-primary: {{.}}"{{end}}>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{documentTitle .}}</title>
@@ -149,7 +149,7 @@ footer hr{ display: none }
 <link rel="preload" href="/{{or (extraString .Site.Config.Extra "stylesheet") "style"}}.css" as="style" onload="if (CSS.supports('selector(&)')) this.rel='stylesheet'">
 <link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
-<body id="{{bodyID .CurrentRoute}}">
+<body id="{{bodyID .CurrentRoute}}" data-route="{{.CurrentRoute}}" data-page-color="{{colorFor .Page .Section}}">
 <header>
 	<nav id="topnav">
 		<ul class="topnav-links">
@@ -222,6 +222,7 @@ footer hr{ display: none }
 	<button id="btn_larger" title="Enlarge text">T<b>▲</b></button>
 	<button id="btn_smaller" title="Reduce text">T<b>▼</b></button>
 </div>
+<script defer src="/vendor/mu.min.js"></script>
 <script defer src="/main.js"></script>
 </body>
 </html>

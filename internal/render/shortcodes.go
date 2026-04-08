@@ -1,4 +1,4 @@
-package site
+package render
 
 import (
 	"fmt"
@@ -26,10 +26,10 @@ func newShortcodeState() *shortcodeState {
 	return &shortcodeState{values: map[string]string{}}
 }
 
-func (s *shortcodeState) token(html string) string {
+func (s *shortcodeState) token(fragment string) string {
 	token := fmt.Sprintf("%%SHORTCODE_%d%%", s.nextID)
 	s.nextID++
-	s.values[token] = html
+	s.values[token] = fragment
 	return token
 }
 
@@ -116,8 +116,8 @@ func (r *Renderer) preprocessShortcodes(input string, depth int) string {
 		if len(styleParts) > 0 {
 			style = ` style="` + strings.Join(styleParts, ";") + `"`
 		}
-		html := `<p><a href="` + html.EscapeString(pathValue) + `"><img src="` + html.EscapeString(pathValue) + `"` + style + ` loading="lazy"></a></p>`
-		return state.token(html)
+		fragment := `<p><a href="` + html.EscapeString(pathValue) + `"><img src="` + html.EscapeString(pathValue) + `"` + style + ` loading="lazy"></a></p>`
+		return state.token(fragment)
 	})
 
 	input = inlineWavePattern.ReplaceAllStringFunc(input, func(match string) string {
@@ -130,8 +130,8 @@ func (r *Renderer) preprocessShortcodes(input string, depth int) string {
 		if color == "" {
 			color = "var(--color-fg)"
 		}
-		html := `<svg width="1200" height="4" xmlns="http://www.w3.org/2000/svg" style="width:` + html.EscapeString(width) + `"><defs><pattern id="wave-1" x="0" y="0" width="15" height="4" patternUnits="userSpaceOnUse"><path d="M0 1C3.80745 1 3.80745 3 7.6149 3C11.4223 3 11.4223 1 15.2298 1C19.0372 1 19.0372 3 22.8447" stroke-width="1" fill="none" style="stroke:` + html.EscapeString(color) + `;"></path></pattern></defs><rect x="0" y="0" width="1200" height="4" fill="url(#wave-1)"></rect></svg>`
-		return state.token(html)
+		fragment := `<svg width="1200" height="4" xmlns="http://www.w3.org/2000/svg" style="width:` + html.EscapeString(width) + `"><defs><pattern id="wave-1" x="0" y="0" width="15" height="4" patternUnits="userSpaceOnUse"><path d="M0 1C3.80745 1 3.80745 3 7.6149 3C11.4223 3 11.4223 1 15.2298 1C19.0372 1 19.0372 3 22.8447" stroke-width="1" fill="none" style="stroke:` + html.EscapeString(color) + `;"></path></pattern></defs><rect x="0" y="0" width="1200" height="4" fill="url(#wave-1)"></rect></svg>`
+		return state.token(fragment)
 	})
 
 	return state.restore(input)

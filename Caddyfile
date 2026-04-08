@@ -1,7 +1,7 @@
 :8081 {
 	root * {$SITE_ROOT:build/site}
 
-	@cms path /__cms/*
+	@cms path /_/*
 	handle @cms {
 		reverse_proxy {$CMS_UPSTREAM:127.0.0.1:8080}
 	}

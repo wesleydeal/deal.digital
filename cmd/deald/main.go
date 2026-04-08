@@ -9,7 +9,8 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"deal.digital/internal/site"
+	"deal.digital/internal/cms"
+	"deal.digital/internal/content"
 )
 
 func main() {
@@ -19,6 +20,7 @@ func main() {
 	configPath := flag.String("config", "config.toml", "path to site config")
 	contentDir := flag.String("content", "content", "content directory")
 	staticDir := flag.String("static", "static", "static directory")
+	templateDir := flag.String("templates", "templates", "template directory")
 	outputDir := flag.String("output", filepath.Join("build", "site"), "rendered site output directory")
 	dataDir := flag.String("data", filepath.Join("build", "data"), "runtime data directory")
 	includeDrafts := flag.Bool("drafts", false, "include draft content")
@@ -29,14 +31,20 @@ func main() {
 		command = flag.Arg(0)
 	}
 
-	app, err := site.NewApp(site.Options{
+	opts := content.Options{
 		ConfigPath:    *configPath,
 		ContentDir:    *contentDir,
 		StaticDir:     *staticDir,
+		TemplateDir:   *templateDir,
 		OutputDir:     *outputDir,
 		DataDir:       *dataDir,
 		IncludeDrafts: *includeDrafts,
-	})
+	}
+	if command == "build" {
+		opts.CompressOutput = true
+	}
+
+	app, err := cms.NewApp(opts)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,6 +60,7 @@ func main() {
 		if err := app.Rebuild(ctx); err != nil {
 			log.Fatal(err)
 		}
+		app.Watch(ctx)
 		log.Printf("serving %s on %s", app.Options().OutputDir, *addr)
 		if err := app.ListenAndServe(ctx, *addr); err != nil {
 			log.Fatal(err)

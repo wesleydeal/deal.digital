@@ -1,4 +1,4 @@
-package site
+package content
 
 import (
 	"os"
@@ -8,12 +8,14 @@ import (
 )
 
 type Options struct {
-	ConfigPath    string
-	ContentDir    string
-	StaticDir     string
-	OutputDir     string
-	DataDir       string
-	IncludeDrafts bool
+	ConfigPath     string
+	ContentDir     string
+	StaticDir      string
+	TemplateDir    string
+	OutputDir      string
+	DataDir        string
+	IncludeDrafts  bool
+	CompressOutput bool
 }
 
 type Config struct {

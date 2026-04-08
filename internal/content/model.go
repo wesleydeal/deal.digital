@@ -1,4 +1,4 @@
-package site
+package content
 
 import (
 	"crypto/sha256"
@@ -186,7 +186,7 @@ func slugify(v string) string {
 	return out
 }
 
-func displayTitle(p *Page) string {
+func DisplayTitle(p *Page) string {
 	if short, ok := stringValue(p.Extra["shorttitle"]); ok && short != "" {
 		return short
 	}
@@ -198,7 +198,7 @@ func sortPages(pages []*Page, sortBy string) {
 		a, b := pages[i], pages[j]
 		switch sortBy {
 		case "title":
-			return strings.ToLower(displayTitle(a)) < strings.ToLower(displayTitle(b))
+			return strings.ToLower(DisplayTitle(a)) < strings.ToLower(DisplayTitle(b))
 		case "date":
 			if a.Date == nil && b.Date == nil {
 				return a.Route < b.Route
@@ -219,7 +219,7 @@ func sortPages(pages []*Page, sortBy string) {
 	})
 }
 
-func pageDateString(page *Page) string {
+func PageDateString(page *Page) string {
 	switch {
 	case page.Date != nil:
 		return page.Date.Format("2006-01-02")
@@ -237,13 +237,13 @@ func requireString(m map[string]any, key string, fallback string) string {
 	return fallback
 }
 
-func searchDocuments(site *Site) []searchDocument {
+func SearchDocuments(site *Site) []searchDocument {
 	docs := make([]searchDocument, 0, len(site.Pages))
 	for _, page := range site.Pages {
 		docs = append(docs, searchDocument{
-			Title:       displayTitle(page),
+			Title:       DisplayTitle(page),
 			URL:         page.Route,
-			Body:        collapseWhitespace(page.Plain),
+			Body:        CollapseWhitespace(page.Plain),
 			Description: requireString(page.Extra, "subtitle", ""),
 		})
 	}

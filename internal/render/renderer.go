@@ -1,18 +1,20 @@
-package site
+package render
 
 import (
 	"bytes"
-	"embed"
 	"encoding/json"
 	"html"
 	"html/template"
 	"os"
+	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"deal.digital/internal/content"
 
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/yuin/goldmark"
@@ -23,19 +25,17 @@ import (
 	"github.com/yuin/goldmark/text"
 )
 
-//go:embed templates/*.tmpl
-var templateFS embed.FS
-
 type Renderer struct {
-	md        goldmark.Markdown
-	templates *template.Template
+	md          goldmark.Markdown
+	templateDir string
+	templates   *template.Template
 }
 
 type templateData struct {
-	Site         *Site
-	Page         *Page
-	Section      *Section
-	Term         *TaxonomyTerm
+	Site         *content.Site
+	Page         *content.Page
+	Section      *content.Section
+	Term         *content.TaxonomyTerm
 	Title        string
 	CurrentRoute string
 	BuildTime    time.Time
@@ -51,8 +51,8 @@ var (
 	inlineMarkdownMD   goldmark.Markdown
 )
 
-func NewRenderer() (*Renderer, error) {
-	funcs := template.FuncMap{
+func templateFuncs() template.FuncMap {
+	return template.FuncMap{
 		"html":           func(v string) template.HTML { return template.HTML(v) },
 		"inlineMarkdown": inlineMarkdown,
 		"date": func(v *time.Time) string {
@@ -61,9 +61,9 @@ func NewRenderer() (*Renderer, error) {
 			}
 			return v.Format("2006-01-02")
 		},
-		"pageTitle": displayTitle,
+		"pageTitle": content.DisplayTitle,
 		"extraString": func(m map[string]any, key string) string {
-			if s, ok := stringValue(m[key]); ok {
+			if s, ok := content.StringValue(m[key]); ok {
 				return s
 			}
 			return ""
@@ -76,21 +76,10 @@ func NewRenderer() (*Renderer, error) {
 		"breadcrumbsHTML": breadcrumbsHTML,
 		"siteTreeHTML":    siteTreeHTML,
 		"sourceURL":       sourceURL,
-		"shouldRenderTaxonomy": func(site *Site, name string) bool {
-			for _, tax := range site.Config.Taxonomies {
-				if tax.Name == name {
-					return tax.ShouldRender()
-				}
-			}
-			return true
-		},
 	}
+}
 
-	tmpl, err := template.New("site").Funcs(funcs).ParseFS(templateFS, "templates/*.tmpl")
-	if err != nil {
-		return nil, err
-	}
-
+func NewRenderer(templateDir string) (*Renderer, error) {
 	md := goldmark.New(
 		goldmark.WithExtensions(
 			extension.GFM,
@@ -111,10 +100,20 @@ func NewRenderer() (*Renderer, error) {
 		),
 	)
 
-	return &Renderer{md: md, templates: tmpl}, nil
+	r := &Renderer{
+		md:          md,
+		templateDir: templateDir,
+	}
+	if err := r.loadTemplates(); err != nil {
+		return nil, err
+	}
+	return r, nil
 }
 
-func (r *Renderer) RenderSite(site *Site) error {
+func (r *Renderer) RenderSite(site *content.Site) error {
+	if err := r.loadTemplates(); err != nil {
+		return err
+	}
 	for _, section := range site.Sections {
 		htmlBody, _, _, err := r.renderMarkdown(section.Body, 0)
 		if err != nil {
@@ -125,15 +124,12 @@ func (r *Renderer) RenderSite(site *Site) error {
 
 	for _, page := range site.Pages {
 		var htmlBody, plain string
-		var headings []Heading
+		var headings []content.Heading
 		var err error
 
-		if strings.EqualFold(strings.TrimSuffix(page.Template, ".html"), "raw") {
+		if strings.EqualFold(strings.TrimSuffix(page.Template, ".html"), "raw") || page.Raw {
 			htmlBody = r.preprocessShortcodes(page.Body, 0)
-			plain = collapseWhitespace(stripTags(htmlBody))
-		} else if page.Raw {
-			htmlBody = r.preprocessShortcodes(page.Body, 0)
-			plain = collapseWhitespace(stripTags(htmlBody))
+			plain = content.CollapseWhitespace(stripTags(htmlBody))
 		} else {
 			htmlBody, headings, plain, err = r.renderMarkdown(page.Body, 0)
 			if err != nil {
@@ -148,7 +144,17 @@ func (r *Renderer) RenderSite(site *Site) error {
 	return nil
 }
 
-func (r *Renderer) renderMarkdown(input string, depth int) (string, []Heading, string, error) {
+func (r *Renderer) loadTemplates() error {
+	tmpl := template.New("site").Funcs(templateFuncs())
+	parsed, err := tmpl.ParseGlob(filepath.Join(r.templateDir, "*.tmpl"))
+	if err != nil {
+		return err
+	}
+	r.templates = parsed
+	return nil
+}
+
+func (r *Renderer) renderMarkdown(input string, depth int) (string, []content.Heading, string, error) {
 	input = strings.TrimSpace(input)
 	if input == "" {
 		return "", nil, "", nil
@@ -163,30 +169,30 @@ func (r *Renderer) renderMarkdown(input string, depth int) (string, []Heading, s
 		return "", nil, "", err
 	}
 
-	html := buf.String()
-	html = addHeadingAnchors(html)
-	headings := extractHeadingsFromHTML(html)
-	plain := collapseWhitespace(stripTags(html))
-	return html, headings, plain, nil
+	out := buf.String()
+	out = addHeadingAnchors(out)
+	headings := extractHeadingsFromHTML(out)
+	plain := content.CollapseWhitespace(stripTags(out))
+	return out, headings, plain, nil
 }
 
 func addHeadingAnchors(input string) string {
 	return headingHTMLR.ReplaceAllString(input, `<h$1 id="$2"><a class="anchor" href="#$2" aria-label="Anchor link for: $2">#</a>$3</h$1>`)
 }
 
-func extractHeadingsFromHTML(input string) []Heading {
-	headings := []Heading{}
+func extractHeadingsFromHTML(input string) []content.Heading {
+	headings := []content.Heading{}
 	for _, match := range headingHTMLR.FindAllStringSubmatch(input, -1) {
 		level, err := strconv.Atoi(match[1])
 		if err != nil || level != 2 {
 			continue
 		}
-		title := collapseWhitespace(stripTags(match[3]))
+		title := content.CollapseWhitespace(stripTags(match[3]))
 		if title == "" {
 			continue
 		}
 		title = strings.TrimPrefix(title, "# ")
-		headings = append(headings, Heading{
+		headings = append(headings, content.Heading{
 			Level: level,
 			ID:    match[2],
 			Title: title,
@@ -231,13 +237,13 @@ func inlineMarkdown(input string) template.HTML {
 	return template.HTML(out)
 }
 
-func (r *Renderer) RenderPageDocument(site *Site, page *Page) ([]byte, error) {
+func (r *Renderer) RenderPageDocument(site *content.Site, page *content.Page) ([]byte, error) {
 	if strings.EqualFold(strings.TrimSuffix(page.Template, ".html"), "raw") {
 		return []byte(string(page.HTML)), nil
 	}
 	name := page.PageTemplate
 	if name == "" {
-		name = defaultPageTemplate(page.Route)
+		name = content.DefaultPageTemplate(page.Route)
 	}
 	data := templateData{
 		Site:         site,
@@ -253,7 +259,7 @@ func (r *Renderer) RenderPageDocument(site *Site, page *Page) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (r *Renderer) RenderSectionDocument(site *Site, section *Section) ([]byte, error) {
+func (r *Renderer) RenderSectionDocument(site *content.Site, section *content.Section) ([]byte, error) {
 	name := section.Template
 	if name == "" {
 		name = "list"
@@ -272,7 +278,7 @@ func (r *Renderer) RenderSectionDocument(site *Site, section *Section) ([]byte, 
 	return buf.Bytes(), nil
 }
 
-func (r *Renderer) RenderTaxonomyDocument(site *Site, name string, term *TaxonomyTerm) ([]byte, error) {
+func (r *Renderer) RenderTaxonomyDocument(site *content.Site, _ string, term *content.TaxonomyTerm) ([]byte, error) {
 	data := templateData{
 		Site:         site,
 		Term:         term,
@@ -287,7 +293,7 @@ func (r *Renderer) RenderTaxonomyDocument(site *Site, name string, term *Taxonom
 	return buf.Bytes(), nil
 }
 
-func writeJSON(path string, value any) error {
+func WriteJSON(path string, value any) error {
 	data, err := json.MarshalIndent(value, "", "  ")
 	if err != nil {
 		return err
@@ -296,8 +302,8 @@ func writeJSON(path string, value any) error {
 	return os.WriteFile(path, data, 0o644)
 }
 
-func taxonomyTermsSorted(terms map[string]*TaxonomyTerm) []*TaxonomyTerm {
-	out := make([]*TaxonomyTerm, 0, len(terms))
+func taxonomyTermsSorted(terms map[string]*content.TaxonomyTerm) []*content.TaxonomyTerm {
+	out := make([]*content.TaxonomyTerm, 0, len(terms))
 	for _, term := range terms {
 		out = append(out, term)
 	}
