@@ -10,6 +10,8 @@ import (
 	"runtime"
 	"strings"
 	"sync"
+	"sync/atomic"
+	"time"
 
 	"github.com/andybalholm/brotli"
 	"github.com/klauspost/compress/zstd"
@@ -83,18 +85,55 @@ var brotliWhitelist = map[string]struct{}{
 	".yaml":        {},
 }
 
-func compressTree(root string) error {
+func compressTree(root string, progress func(done, total int)) error {
+	jobList, err := compressionJobs(root)
+	if err != nil {
+		return err
+	}
+	if len(jobList) == 0 {
+		return nil
+	}
+
 	workers := runtime.GOMAXPROCS(0)
 	if workers < 1 {
 		workers = 1
 	}
 
-	jobs := make(chan compressionJob, workers*2)
+	jobCh := make(chan compressionJob, workers*2)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	errCh := make(chan error, 1)
 	var errOnce sync.Once
+	var done atomic.Int32
+	var progressDone chan struct{}
+	if progress != nil {
+		progressDone = make(chan struct{})
+		go func(total int) {
+			timer := time.NewTimer(time.Second)
+			defer timer.Stop()
+
+			select {
+			case <-timer.C:
+			case <-progressDone:
+				return
+			}
+
+			progress(int(done.Load()), total)
+
+			ticker := time.NewTicker(time.Second)
+			defer ticker.Stop()
+
+			for {
+				select {
+				case <-ticker.C:
+					progress(int(done.Load()), total)
+				case <-progressDone:
+					return
+				}
+			}
+		}(len(jobList))
+	}
 	recordErr := func(err error) {
 		if err == nil {
 			return
@@ -114,7 +153,7 @@ func compressTree(root string) error {
 				select {
 				case <-ctx.Done():
 					return
-				case job, ok := <-jobs:
+				case job, ok := <-jobCh:
 					if !ok {
 						return
 					}
@@ -122,12 +161,38 @@ func compressTree(root string) error {
 						recordErr(err)
 						return
 					}
+					done.Add(1)
 				}
 			}
 		}()
 	}
 
-	walkErr := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
+dispatch:
+	for _, job := range jobList {
+		select {
+		case <-ctx.Done():
+			break dispatch
+		case jobCh <- job:
+		}
+	}
+
+	close(jobCh)
+	wg.Wait()
+	if progressDone != nil {
+		close(progressDone)
+	}
+
+	select {
+	case err := <-errCh:
+		return err
+	default:
+		return ctx.Err()
+	}
+}
+
+func compressionJobs(root string) ([]compressionJob, error) {
+	var jobs []compressionJob
+	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -139,24 +204,10 @@ func compressTree(root string) error {
 		if !ok {
 			return nil
 		}
-
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case jobs <- compressionJob{path: path, plan: plan}:
-			return nil
-		}
+		jobs = append(jobs, compressionJob{path: path, plan: plan})
+		return nil
 	})
-
-	close(jobs)
-	wg.Wait()
-
-	select {
-	case err := <-errCh:
-		return err
-	default:
-		return walkErr
-	}
+	return jobs, err
 }
 
 func compressionPlanFor(path string) (compressionPlan, bool) {

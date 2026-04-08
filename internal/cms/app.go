@@ -26,6 +26,11 @@ type App struct {
 	site     *content.Site
 }
 
+type buildTiming struct {
+	render   time.Duration
+	compress time.Duration
+}
+
 func NewApp(opts content.Options) (*App, error) {
 	cfg, err := content.LoadConfig(opts.ConfigPath)
 	if err != nil {
@@ -78,10 +83,8 @@ func (a *App) Rebuild(ctx context.Context) error {
 		return err
 	}
 	siteModel.RootOutputDir = a.opts.OutputDir
-	if err := a.renderer.RenderSite(siteModel); err != nil {
-		return err
-	}
-	if err := a.writeOutput(siteModel); err != nil {
+	timings, err := a.writeOutput(siteModel)
+	if err != nil {
 		return err
 	}
 	if err := a.store.PersistSite(ctx, siteModel); err != nil {
@@ -92,7 +95,13 @@ func (a *App) Rebuild(ctx context.Context) error {
 	a.cfg = cfg
 	a.site = siteModel
 	a.mu.Unlock()
-	log.Printf("rebuilt site in %s (%s)", time.Since(start).Round(time.Millisecond), siteModel)
+	total := time.Since(start).Round(time.Millisecond)
+	renderDur := timings.render.Round(time.Millisecond)
+	if a.opts.CompressOutput {
+		log.Printf("rebuilt site in %s (render=%s, compress=%s, %s)", total, renderDur, timings.compress.Round(time.Millisecond), siteModel)
+		return nil
+	}
+	log.Printf("rebuilt site in %s (render=%s, %s)", total, renderDur, siteModel)
 	return nil
 }
 
@@ -105,38 +114,42 @@ func (a *App) Watch(ctx context.Context) {
 	}), a.Rebuild)
 }
 
-func (a *App) writeOutput(site *content.Site) error {
+func (a *App) writeOutput(site *content.Site) (buildTiming, error) {
+	start := time.Now()
+	if err := a.renderer.RenderSite(site); err != nil {
+		return buildTiming{}, err
+	}
 	if err := os.RemoveAll(a.opts.OutputDir); err != nil {
-		return err
+		return buildTiming{}, err
 	}
 	if err := os.MkdirAll(a.opts.OutputDir, 0o755); err != nil {
-		return err
+		return buildTiming{}, err
 	}
 	if err := copyTree(a.opts.StaticDir, a.opts.OutputDir, func(string) bool { return true }); err != nil {
-		return err
+		return buildTiming{}, err
 	}
 	if err := copyTree(a.opts.ContentDir, a.opts.OutputDir, func(rel string) bool {
 		return filepath.Ext(rel) != ".md"
 	}); err != nil {
-		return err
+		return buildTiming{}, err
 	}
 
 	for _, section := range site.Sections {
 		doc, err := a.renderer.RenderSectionDocument(site, section)
 		if err != nil {
-			return err
+			return buildTiming{}, err
 		}
 		if err := writeRouteDocument(a.opts.OutputDir, section.Route, doc); err != nil {
-			return err
+			return buildTiming{}, err
 		}
 	}
 	for _, page := range site.Pages {
 		doc, err := a.renderer.RenderPageDocument(site, page)
 		if err != nil {
-			return err
+			return buildTiming{}, err
 		}
 		if err := writeRouteDocument(a.opts.OutputDir, page.Route, doc); err != nil {
-			return err
+			return buildTiming{}, err
 		}
 	}
 	for name, terms := range site.Taxonomies {
@@ -146,26 +159,31 @@ func (a *App) writeOutput(site *content.Site) error {
 			}
 			doc, err := a.renderer.RenderTaxonomyDocument(site, name, term)
 			if err != nil {
-				return err
+				return buildTiming{}, err
 			}
 			if err := writeRouteDocument(a.opts.OutputDir, term.Route, doc); err != nil {
-				return err
+				return buildTiming{}, err
 			}
 		}
 	}
 
 	if err := render.WriteJSON(filepath.Join(a.opts.OutputDir, site.SearchIndexName), content.SearchDocuments(site)); err != nil {
-		return err
+		return buildTiming{}, err
 	}
 	if err := writeNotFound(filepath.Join(a.opts.OutputDir, "404.html")); err != nil {
-		return err
+		return buildTiming{}, err
 	}
+	timings := buildTiming{render: time.Since(start)}
 	if a.opts.CompressOutput {
-		if err := compressTree(a.opts.OutputDir); err != nil {
-			return err
+		compressStart := time.Now()
+		if err := compressTree(a.opts.OutputDir, func(done, total int) {
+			log.Printf("compressing output: %d/%d files", done, total)
+		}); err != nil {
+			return buildTiming{}, err
 		}
+		timings.compress = time.Since(compressStart)
 	}
-	return nil
+	return timings, nil
 }
 
 func writeRouteDocument(root, route string, doc []byte) error {
