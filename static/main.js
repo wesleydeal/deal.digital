@@ -1,805 +1,964 @@
-// GLOBAL VARIABLES --------------------------------
+// STATE -------------------------------------------
 const root = document.documentElement;
-const imageExtensions = ["svg", "png", "jpg", "jfif", "gif", "webp", "avif"];
-let ddIndex = null;
-let Fuse = null;
-let fuse = Object;
-fuse.search = async (...args) => {await initFuse(); return fuse.search(...args)}
-let searchWindowPos;
-let searchDrag = [];
-let savedPage;
-let soundPlayers = {};
-let globalEventsBound = false;
+const imageExtensions = new Set(["svg", "png", "jpg", "jfif", "gif", "webp", "avif"]);
 
-// UTILITY FUNCTIONS -------------------------------
-const elid = (id) => document.getElementById(id);
-const inrange = (x, start, end) => (x >= start) && (x <= end);
-const tru = () => true;
-const currentContent = () => document.querySelector('.content');
-function uniq(a) {
-    var seen = {};
-    return a.filter((item) => seen.hasOwnProperty(item) ? false : (seen[item] = true));
+const state = {
+	fuse: null,
+	fusePromise: null,
+	searchWindowPos: null,
+	searchDrag: [],
+	soundPlayers: {},
+	searchShortcutRegistry: Object.create(null),
+	globalEventsBound: false,
+	muInitialized: false,
+	pendingMuDocument: null,
+};
+
+// HELPERS -----------------------------------------
+const byId = (id) => document.getElementById(id);
+const currentContent = () => document.querySelector(".content");
+const currentURL = () => new URL(window.location.href);
+const parseHTML = (html) => new DOMParser().parseFromString(html, "text/html");
+const plusQuery = (query) => encodeURIComponent(query).replaceAll("%20", "+");
+const SEARCH_RESULT_LIMIT = 11;
+const SEARCH_SHELL_HTML = `
+	<div id="search-container">
+		<div id="search-titlebar">
+			<label for="search-box"><b>Navigator</b> <i>alpha one</i></label>
+			<div class="window-buttons">
+				<button id="search-min" aria-label="Minimize Navigator"></button>
+				<button id="search-max" aria-label="Maximize Navigator"></button>
+				<button id="search-close" aria-label="Close Navigator"></button>
+			</div>
+		</div>
+		<div id="search-inner">
+			<input id="search-box" type="text" placeholder="Type to search 🧭" autocomplete="off">
+		</div>
+	</div>
+`;
+const SEARCH_HELP_HTML = `
+	<menu id="search-results"></menu>
+	<div id="search-help">
+		<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to clear or close.
+		<h2>!keywords</h2>
+		<ul id="search-keyword-list"></ul>
+		<h2>Examples</h2>
+		<ul>
+			<li><a href="#" onclick="document.documentElement.style.setProperty('--color-primary', 'aquamarine')">color aquamarine</a>
+			<li><a href="https://www.ebay.com/sch/i.html?_nkw=+ibm+model+m+(bolt%2Cscrew)+(mod%2Cmodded)">eb ibm model m (bolt,screw) (mod,modded)</a>
+			<li><a href="https://youtube.com/results?search_query=+moments+with+heavy+french+toast">yt moments with heavy french toast</a>
+			<li><a href="https://chatgpt.com/?q=where+can+I+get+a+good+asada+burrito+nearby+">where can I get a good asada burrito nearby !gpt</a>
+			<li><a href="https://annas-archive.org/search?q=mike+ma">mike ma !an</a>
+		</ul>
+	</div>
+`;
+
+function isInternalURL(url) {
+	return url.origin === window.location.origin;
 }
-function playSound(url, volume = 1) {
-	const start = new Date();
-	if (!soundPlayers?.[url]) soundPlayers[url] = new Audio(url);
-	soundPlayers[url].volume = volume;
-	const playIt = () => {
-		if ((new Date() - start) > 300) return;
-		soundPlayers[url].currentTime = 0;
-		soundPlayers[url].play();
-	};
-	if (soundPlayers[url].readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-		playIt();
+
+function setURLQuery(key, value) {
+	const url = currentURL();
+	if (value === null) {
+		url.searchParams.delete(key);
 	} else {
-		soundPlayers[url].addEventListener("canplaythrough", playIt, { once: true });
+		url.searchParams.set(key, value);
 	}
+	window.history.replaceState(window.history.state, "", url);
 }
 
-function initializeMu() {
-	if (window.mu && typeof window.mu.init === "function") {
-		window.mu.init();
-	}
-}
+function syncDocumentChrome(doc) {
+	const nextRoot = doc.documentElement;
+	const nextBody = doc.body;
+	const nextStyle = nextRoot.getAttribute("style");
+	const nextPageColor = nextRoot.dataset.pageColor ?? "";
 
-function replaceOptional(selector, doc) {
-	const current = document.querySelector(selector);
-	const incoming = doc.querySelector(selector);
-	if (current && incoming) {
-		current.replaceWith(incoming);
-		return;
-	}
-	if (!current && incoming) {
-		const contentNode = document.querySelector('.content');
-		contentNode?.insertAdjacentElement('beforebegin', incoming);
-		return;
-	}
-	if (current && !incoming) {
-		current.remove();
-	}
-}
-
-function applyDocumentChrome(doc, url, historyMode = "push") {
-	const nextContent = doc.querySelector('.content');
-	if (nextContent) {
-		currentContent()?.replaceWith(nextContent);
-	}
-	replaceOptional('#toc', doc);
-	replaceOptional('#breadcrumbs', doc);
-
-	const nextStyle = doc.documentElement.getAttribute('style');
 	if (nextStyle) {
-		root.setAttribute('style', nextStyle);
+		root.setAttribute("style", nextStyle);
 	} else {
-		root.removeAttribute('style');
+		root.removeAttribute("style");
 	}
 
-	document.body.id = doc.body?.id || "";
-	if (doc.body?.dataset?.route) {
-		document.body.dataset.route = doc.body.dataset.route;
+	if (nextPageColor) {
+		root.dataset.pageColor = nextPageColor;
+	} else {
+		delete root.dataset.pageColor;
+	}
+
+	document.body.id = nextBody?.id || "";
+
+	if (nextBody?.dataset?.route) {
+		document.body.dataset.route = nextBody.dataset.route;
 	} else {
 		delete document.body.dataset.route;
 	}
-	if (doc.body?.dataset?.pageColor) {
-		document.body.dataset.pageColor = doc.body.dataset.pageColor;
+
+	if (nextBody?.dataset?.pageColor) {
+		document.body.dataset.pageColor = nextBody.dataset.pageColor;
 	} else {
 		delete document.body.dataset.pageColor;
 	}
+}
 
-	document.title = doc.title;
-	if (historyMode === "push") {
-		window.history.pushState(null, "", url);
-	} else if (historyMode === "replace") {
-		window.history.replaceState(null, "", url);
+function playSound(url, volume = 1) {
+	const start = Date.now();
+	if (!state.soundPlayers[url]) {
+		state.soundPlayers[url] = new Audio(url);
 	}
 
-	if (window.location.hash) {
-		const target = document.querySelector(window.location.hash);
-		if (target) {
-			window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY, behavior: 'smooth' });
+	const player = state.soundPlayers[url];
+	player.volume = volume;
+
+	const playIt = () => {
+		if ((Date.now() - start) > 300) {
+			return;
 		}
-	} else {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
+		player.currentTime = 0;
+		player.play();
+	};
+
+	if (player.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+		playIt();
+		return;
 	}
 
-	initializePageContent();
-	initializeMu();
+	player.addEventListener("canplaythrough", playIt, { once: true });
+}
+
+function initializeMu() {
+	if (state.muInitialized || !window.mu || typeof window.mu.init !== "function") {
+		return;
+	}
+
+	window.mu.init({
+		target: "body",
+		source: "body",
+		title: "title",
+	});
+	state.muInitialized = true;
+}
+
+function navigateTo(path) {
+	const url = new URL(path, window.location.href);
+	if (!isInternalURL(url) || !window.mu || typeof window.mu.load !== "function") {
+		window.location.assign(url.toString());
+		return;
+	}
+
+	window.mu.load(url.pathname + url.search + url.hash, {
+		target: "body",
+		source: "body",
+		title: "title",
+	});
+}
+
+function navigateFromSearch(event) {
+	event?.preventDefault?.();
+	const searchBox = byId("search-box");
+	if (!searchBox) {
+		return;
+	}
+
+	const path = searchBox.value.replaceAll(" !load", "").trim().split(/\s+/).at(-1);
+	if (!path) {
+		return;
+	}
+
+	navigateTo(path);
 }
 
 // SEARCH ------------------------------------------
-let searchShortcutRegistry = {};
+async function initFuse() {
+	if (state.fuse) {
+		return state.fuse;
+	}
+
+	if (!state.fusePromise) {
+		state.fusePromise = Promise.all([
+			import("/search_index.en.json", { with: { type: "json" } }),
+			import("/fuse.min.mjs"),
+		]).then(([indexModule, fuseModule]) => new fuseModule.default(indexModule.default, {
+			isCaseSensitive: false,
+			includeScore: true,
+			ignoreDiacritics: true,
+			shouldSort: true,
+			includeMatches: false,
+			findAllMatches: false,
+			minMatchCharLength: 2,
+			location: 0,
+			threshold: 0.2,
+			distance: 100,
+			useExtendedSearch: true,
+			ignoreLocation: true,
+			ignoreFieldNorm: false,
+			fieldNormWeight: 1,
+			keys: [
+				{ name: "title", weight: 1 },
+				{ name: "url", weight: 1 },
+				{ name: "body", weight: 1 },
+				{ name: "description", weight: 1 },
+			],
+		}));
+	}
+
+	state.fuse = await state.fusePromise;
+
+	return state.fuse;
+}
+
+async function searchLocal(query) {
+	const fuse = await initFuse();
+	return fuse.search(query);
+}
+
 const providers = {
-	/*
-	each top-level key represents the internal ID of a provider, with values as follows:
-	- keywords (opt) - array of strings, a list of words which prioritize this query if used as the first word of a query or anywhere prefixed with a !bang
-	- desc (req) - string, the displayed name of the search provider
-	- icon (opt, unused) - string, a path to a square icon representing the search provider
-	- suggestIf (opt) - function(string) returning boolean, determines whether to show as a suggested provider
-	+ ONE of the following
-		- getURL - function(string) returning string, convert the search terms into a search link from this provider
-		- action - function(event), JS function to run on page if the link is clicked (for example, set the page color or dark/light mode)
-		- getURLs - function(string) returning array[array[string, string], ...] where each element is a [name, URL]
-		- TODO NOT IMPLEMENTED - getActions - function(string) returning array[array[string, function(event)], ...] where each element is a [name, action]
-	- TODO prioritizeIf (opt) - function(string) returning boolean, determines whether this is a particularly good suggestion for this query and should be placed near the top
-	- color (opt) - string, valid CSS color associated with this provider
-	- hide (opt) - boolean, if true don't list in !keywords
-	*/
 	Local: {
-		keywords: ['d','dd','deal','deal.digital'],
-		desc: 'deal.digital',
+		keywords: ["d", "dd", "deal", "deal.digital"],
+		desc: "deal.digital",
 		getURLs: async (query) => {
-			r = await fuse.search(query);
-			if (r?.[0]?.score < 0.05 && query.length > 3 && r?.[0].item.url != window.location.href.split('?')[0].split('#')[0]) {
-				await replacePage(r[0].item.url);
+			const results = await searchLocal(query);
+			const bestResult = results[0];
+			const currentURLWithoutQuery = window.location.href.split("?")[0].split("#")[0];
+
+			if (bestResult?.score < 0.05 && query.length > 3 && bestResult.item.url !== currentURLWithoutQuery) {
+				navigateTo(bestResult.item.url);
 			}
-			return r.map((result) => [result.item.title, result.item.url]);
+
+			return results.map((result) => [result.item.title, result.item.url]);
 		},
-		//suggestIf: async (query) => (await fuse.search(query))?.[0]?.score < 0.1,
 	},
 	Brave: {
 		keywords: ["b", "br", "brave"],
-		desc: 'Brave Search',
-		icon: '/icons/search/brave.png',
-		getURL: (query) => 'https://search.brave.com/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: tru,
-		color: '#f50',
+		desc: "Brave Search",
+		icon: "/icons/search/brave.png",
+		getURL: (query) => `https://search.brave.com/search?q=${plusQuery(query)}`,
+		suggestIf: () => true,
+		color: "#f50",
 	},
 	ChatGPT: {
-		keywords: ['gpt', 'chatgpt'],
-		desc: 'ChatGPT Search',
-		icon: '/icons/search/chatgpt.png',
-		getURL: (query) => 'https://chatgpt.com/?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: tru,
-		color: '#74AA9C',
+		keywords: ["gpt", "chatgpt"],
+		desc: "ChatGPT Search",
+		icon: "/icons/search/chatgpt.png",
+		getURL: (query) => `https://chatgpt.com/?q=${plusQuery(query)}`,
+		suggestIf: () => true,
+		color: "#74AA9C",
 	},
 	Google: {
-		keywords: ['g', 'google'],
-		desc: 'Google Search',
-		icon: '/icons/search/google.png',
-		getURL: (query) => "https://google.com/search?q=" + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: tru,
-		color: '#1368F4',
+		keywords: ["g", "google"],
+		desc: "Google Search",
+		icon: "/icons/search/google.png",
+		getURL: (query) => `https://google.com/search?q=${plusQuery(query)}`,
+		suggestIf: () => true,
+		color: "#1368F4",
 	},
 	eBay: {
-		keywords: ['e', 'eb', 'ebay'],
-		desc: 'eBay',
-		icon: '/icons/search/ebay.png',
-		getURL: (query) => "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: tru,
-		color: '#3665f3',
+		keywords: ["e", "eb", "ebay"],
+		desc: "eBay",
+		icon: "/icons/search/ebay.png",
+		getURL: (query) => `https://www.ebay.com/sch/i.html?_nkw=${plusQuery(query)}`,
+		suggestIf: () => true,
+		color: "#3665f3",
 	},
 	YouTube: {
-		keywords: ['y', 'yt', 'youtube'],
-		desc: 'YouTube',
-		icon: '/icons/search/youtube.png',
-		getURL: (query) => 'https://youtube.com/results?search_query=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: tru,
-		color: '#f00',
+		keywords: ["y", "yt", "youtube"],
+		desc: "YouTube",
+		icon: "/icons/search/youtube.png",
+		getURL: (query) => `https://youtube.com/results?search_query=${plusQuery(query)}`,
+		suggestIf: () => true,
+		color: "#f00",
 	},
 	Amazon: {
-		keywords: ['am', 'amazon', 'amzn'],
-		desc: 'Amazon',
-		icon: '/icons/search/amazon.png',
-		getURL: (query) => 'https://www.amazon.com/s?k=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		suggestIf: tru,
-		color: '#f90',
+		keywords: ["am", "amazon", "amzn"],
+		desc: "Amazon",
+		icon: "/icons/search/amazon.png",
+		getURL: (query) => `https://www.amazon.com/s?k=${plusQuery(query)}`,
+		suggestIf: () => true,
+		color: "#f90",
 	},
 	MDN: {
-		keywords: ['mdn'],
-		desc: 'Mozilla Dev',
-		icon: '/icons/search/mdn.png',
-		getURL: (query) => 'https://developer.mozilla.org/en-US/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		color: '#8cb4ff',
+		keywords: ["mdn"],
+		desc: "Mozilla Dev",
+		icon: "/icons/search/mdn.png",
+		getURL: (query) => `https://developer.mozilla.org/en-US/search?q=${plusQuery(query)}`,
+		color: "#8cb4ff",
 	},
 	AnnasArchive: {
-		keywords: ['an','anna','annas','annasarchive','book'],
+		keywords: ["an", "anna", "annas", "annasarchive", "book"],
 		desc: "Anna's Archive",
-		icon: '/icons/search/annas-archive.png',
-		getURL: (query) => 'https://annas-archive.org/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		color: '#0195ff',
+		icon: "/icons/search/annas-archive.png",
+		getURL: (query) => `https://annas-archive.org/search?q=${plusQuery(query)}`,
+		color: "#0195ff",
 	},
 	Zola: {
-		keywords: ['zola'],
-		desc: 'Zola Docs',
-		icon: '/icons/search/zola.png',
-		getURL: (query) => 'https://search.brave.com/search?q=site%3Agetzola.org+' + encodeURIComponent(query).replaceAll("%20", "+"),
-		color: '#191919',
+		keywords: ["zola"],
+		desc: "Zola Docs",
+		icon: "/icons/search/zola.png",
+		getURL: (query) => `https://search.brave.com/search?q=site%3Agetzola.org+${plusQuery(query)}`,
+		color: "#191919",
 	},
 	Tera: {
-		keywords: ['tera'],
-		desc: 'Tera Docs',
-		getURL: (query) => 'https://search.brave.com/search?q=site%3Ahttps%3A%2F%2Fkeats.github.io%2Ftera%2Fdocs%2F+' + encodeURIComponent(query).replaceAll("%20", "+"),
-		color: '#de6262',
+		keywords: ["tera"],
+		desc: "Tera Docs",
+		getURL: (query) => `https://search.brave.com/search?q=site%3Ahttps%3A%2F%2Fkeats.github.io%2Ftera%2Fdocs%2F+${plusQuery(query)}`,
+		color: "#de6262",
 	},
 	mappletv: {
-		keywords: ['tv','mapple','mapple.tv'],
-		desc: 'Mapple.TV',
-		icon: '/icons/search/mapple.png',
-		getURL: (query) => 'https://mapple.tv/search?q=' + encodeURIComponent(query).replaceAll("%20", "+"),
-		color: '#fff',
+		keywords: ["tv", "mapple", "mapple.tv"],
+		desc: "Mapple.TV",
+		icon: "/icons/search/mapple.png",
+		getURL: (query) => `https://mapple.tv/search?q=${plusQuery(query)}`,
+		color: "#fff",
 	},
 	WolframAlpha: {
-		keywords: ['wa','wolfram','wolframalpha'],
-		desc: 'Wolphram|Alpha',
-		getURL: (query) => 'http://www.wolframalpha.com/input/?i=' + encodeURIComponent(query),
-		color: '#ee1f22',
-		suggestIf: (query) => ["+", "-", "*", "/", "convert", "per"].reduce((a, s) => a + query.includes(s), 0),
+		keywords: ["wa", "wolfram", "wolframalpha"],
+		desc: "Wolphram|Alpha",
+		getURL: (query) => `http://www.wolframalpha.com/input/?i=${encodeURIComponent(query)}`,
+		color: "#ee1f22",
+		suggestIf: (query) => ["+", "-", "*", "/", "convert", "per"].some((marker) => query.includes(marker)),
 	},
 	SetColor: {
-		keywords: ['color'],
-		desc: 'Set Site Color',
+		keywords: ["color"],
+		desc: "Set Site Color",
 		suggestIf: (query) => {
-			let s = new Option().style;
-			s.color = query;
-			return s.color !== '' || query.search('rand') > -1;
+			const style = new Option().style;
+			style.color = query;
+			return style.color !== "" || query.includes("rand");
 		},
 		action: (event) => {
-			let color = event.target.title;
-			if (color.search('rand') > -1) {
-				color = "#" + Array.from(crypto.getRandomValues(new Uint8Array(3))).map(b => b.toString(16).padStart(2, '0')).join('');
+			let color = event.currentTarget.title;
+			if (color.includes("rand")) {
+				color = `#${Array.from(crypto.getRandomValues(new Uint8Array(3))).map((byte) => byte.toString(16).padStart(2, "0")).join("")}`;
 				console.log("Randomly selected", color);
 			}
-			root.style.setProperty('--color-primary', color);
+			root.style.setProperty("--color-primary", color);
 			closeSearch();
-		}
+		},
 	},
 	toggleDark: {
-		keywords: ['dark', 'light', 'toggle'],
-		desc: 'Set Dark Mode',
-		suggestIf: (q) => (['dark', 'light', 'toggle'].includes(q.toLowerCase().replaceAll(' ',''))),
-		action: (event) => {
-			let q = elid("search-box").value;
-			if (q.includes('toggle')) {
-				let currentDarkMode = getComputedStyle(root).getPropertyValue('--dark-mode') == 'true';
-				root.style.setProperty('--dark-mode', !currentDarkMode);
-			} else if (q.includes('unset') || q.includes('none')) {
-				root.style.setProperty('--dark-mode', null);
-			} else if (q.includes('light')) {
-				root.style.setProperty('--dark-mode', false);
+		keywords: ["dark", "light", "toggle"],
+		desc: "Set Dark Mode",
+		suggestIf: (query) => ["dark", "light", "toggle"].includes(query.toLowerCase().replaceAll(" ", "")),
+		action: () => {
+			const query = byId("search-box")?.value || "";
+			if (query.includes("toggle")) {
+				const currentDarkMode = getComputedStyle(root).getPropertyValue("--dark-mode") === "true";
+				root.style.setProperty("--dark-mode", !currentDarkMode);
+			} else if (query.includes("unset") || query.includes("none")) {
+				root.style.removeProperty("--dark-mode");
+			} else if (query.includes("light")) {
+				root.style.setProperty("--dark-mode", false);
 			} else {
-				root.style.setProperty('--dark-mode', true);
+				root.style.setProperty("--dark-mode", true);
 			}
 			closeSearch();
 		},
 	},
 	style: {
-		keywords: ['style', 'stylesheet'],
-		desc: 'Set Stylesheet',
+		keywords: ["style", "stylesheet"],
+		desc: "Set Stylesheet",
 		hide: true,
 		action: (event) => {
-			let ssLink = document.querySelector("link[rel='stylesheet'][as='style']");
-			ssLink.href = "/" + event.target.title.replaceAll(" ","") + ".css";
+			const stylesheet = document.querySelector("link[rel='stylesheet'][as='style']");
+			if (!stylesheet) {
+				return;
+			}
+			stylesheet.href = `/${event.currentTarget.title.replaceAll(" ", "")}.css`;
 			closeSearch();
 		},
 	},
 	load: {
-		keywords: ['load'],
-		desc: 'Load Content From Internal Page',
+		keywords: ["load"],
+		desc: "Load Content From Internal Page",
 		hide: true,
-		action: replacePage,
+		action: navigateFromSearch,
 	},
 };
-let keywordMap = {};
-for (providerName in providers) {
-	for (kw of providers[providerName]?.keywords) {
-		keywordMap[kw] = providerName;
-	}
-}
 
-async function replacePage(path, historyMode = "push") {
-	if (path instanceof Event) {
-		path = elid("search-box").value.replaceAll(" !load", "").split(" ").at(-1);
-	}
-	const url = new URL(path, window.location.href);
-	const response = await fetch(url, {
-		headers: {
-			"X-Requested-With": "deal.digital-shell",
-		},
-	});
-	if (!response.ok) return;
+const keywordMap = new Map(
+	Object.entries(providers).flatMap(([providerName, provider]) => (
+		(provider.keywords || []).map((keyword) => [keyword, providerName])
+	)),
+);
 
-	const html = await response.text();
-	const doc = (new DOMParser()).parseFromString(html, 'text/html');
-	applyDocumentChrome(doc, response.url || url.toString(), historyMode);
-}
-
-function toggleSearch(query="") {
-	if (elid("search-container")) {
-		if (elid("search-container").classList.contains('min')) {
-			elid("search-container").classList.remove('min');
-			elid("search-box").focus();
-			//playSound('/sounds/KDE_Window_Shade_Up.ogg');
-		} else {
-			closeSearch();
+function populateSearchKeywordList(keywordList) {
+	for (const provider of Object.values(providers)) {
+		if (!provider.keywords || provider.hide || !keywordList) {
+			continue;
 		}
-	} else {
-		openSearch(query);
-	}
-}
 
-async function initFuse(){
-	ddIndex = (await import("/search_index.en.json", { with: { type: "json" } })).default;
-	Fuse = (await import("/fuse.min.mjs")).default;
+		const keywordEntry = document.createElement("li");
+		const keywordSample = document.createElement("samp");
 
-	const fuseOptions = {
-		isCaseSensitive: false,
-		includeScore: true,
-		ignoreDiacritics: true,
-		shouldSort: true,
-		includeMatches: false,
-		findAllMatches: false,
-		minMatchCharLength: 2,
-		location: 0,
-		threshold: 0.2,
-		distance: 100,
-		useExtendedSearch: true,
-		ignoreLocation: true,
-		ignoreFieldNorm: false,
-		fieldNormWeight: 1,
-		keys: [
-			{ name: "title", weight: 1 },
-			{ name: "url", weight: 1 },
-			{ name: "body", weight: 1 },
-			{ name: "description", weight: 1 },
-		]
-	};
+		keywordEntry.textContent = provider.desc;
+		keywordSample.textContent = provider.keywords[0];
+		keywordEntry.append(keywordSample);
+		keywordEntry.addEventListener("click", () => openSearch(`${keywordSample.textContent} `));
 
-	fuse = new Fuse(ddIndex, fuseOptions);
-}
-
-function openSearch(query=null) {
-	const url = new URL(window.location.href);
-	if (query.type == 'click' || query === null) {
-		query = "";
-	}
-	if (!elid("search-container")) {
-		//playSound('/sounds/KDE_Window_UnHide.ogg');
-		document.body.insertAdjacentHTML('afterbegin', `
-			<div id="search-container">
-				<div id="search-titlebar">
-					<label for="search-box"><b>Navigator</b> <i>alpha one</i></label>
-					<div class="window-buttons">
-						<button id="search-min" aria-label="Minimize Navigator"></button>
-						<button id="search-max" aria-label="Maximize Navigator"></button>
-						<button id="search-close" aria-label="Close Navigator"></button>
-					</div>
-				</div>
-				<div id="search-inner">
-					<input id="search-box" type="text" placeholder="Type to search 🧭" autocomplete="off">
-				</div>
-			</div>
-		`);
-		elid("search-box").focus();
-		elid('search-inner').insertAdjacentHTML('beforeend', `
-			<menu id="search-results">
-			</menu>
-			<div id="search-help">
-				<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to clear or close.
-				<h2>!keywords</h2>
-				<ul id="search-keyword-list">
-				</ul>
-			  <h2>Examples</h2>
-				<ul>
-					<li><a href="#" onclick="document.documentElement.style.setProperty('--color-primary', 'aquamarine')">color aquamarine</a>
-					<li><a href="https://www.ebay.com/sch/i.html?_nkw=+ibm+model+m+(bolt%2Cscrew)+(mod%2Cmodded)">eb ibm model m (bolt,screw) (mod,modded)</a>
-					<li><a href="https://youtube.com/results?search_query=+moments+with+heavy+french+toast">yt moments with heavy french toast</a>
-					<li><a href="https://chatgpt.com/?q=where+can+I+get+a+good+asada+burrito+nearby+">where can I get a good asada burrito nearby !gpt</a>
-					<li><a href="https://annas-archive.org/search?q=mike+ma">mike ma !an</a>
-				</ul>
-			</div>
-		`);
-		const keywordList = elid("search-keyword-list");
-		for (providerName in providers) {
-			if (providers[providerName].keywords && !(providers[providerName]?.hide)) {
-				const keywordEntry = document.createElement("li");
-				keywordEntry.textContent = providers[providerName].desc;
-				const keywordSamp = document.createElement("samp");
-				keywordSamp.textContent = providers[providerName].keywords[0];
-				keywordEntry.insertAdjacentElement("beforeend", keywordSamp);
-				keywordEntry.addEventListener("click", () => openSearch(keywordSamp.textContent + " "));
-				if (providers[providerName]?.color) {
-					keywordEntry.style.setProperty('--c', providers[providerName]?.color);
-				}
-				keywordList.insertAdjacentElement("beforeend", keywordEntry);
-			}
+		if (provider.color) {
+			keywordEntry.style.setProperty("--c", provider.color);
 		}
-		elid("search-close").addEventListener("click", closeSearch);
-		elid("search-min").addEventListener("click", minimizeSearch);
-		elid("search-max").addEventListener("click", toggleMaximizeSearch);
-		elid("search-titlebar").addEventListener("dblclick", toggleMaximizeSearch);
-		elid("search-titlebar").addEventListener("pointerdown", dragSearchStart);
-		elid("search-box").addEventListener('input', updateSearch);
-	} else {
-		elid("search-box").placeholder = elid("search-box").value;
-	}
 
-	elid("search-box").value = query;
-	updateSearch();
-	elid("search-box").focus();
-	url.searchParams.set('q', query);
-	window.history.replaceState(null, null, url);
-}
-
-function closeSearch() {
-	const url = new URL(window.location.href);
-	url.searchParams.delete('q');
-	window.history.replaceState(null, null, url);
-	elid("search-container").classList.add('hidden');
-	setTimeout(() => {elid("search-container").remove()}, 300);
-	//playSound('/sounds/KDE_Window_Close.ogg')
-}
-
-function minimizeSearch() {
-	elid("search-container").classList.add('min');
-	//playSound('/sounds/KDE_Window_Shade_Down.ogg');
-}
-
-function toggleMaximizeSearch() {
-	const sC = elid("search-container");
-	const style = getComputedStyle(sC);
-
-	if (sC.classList.contains('max')) {
-		sC.classList.remove('max');
-		for (pName in searchWindowPos) {
-			sC.style.setProperty(pName, searchWindowPos[pName]);
-		}
-	} else {
-		searchWindowPos = {
-			top: style.top,
-			left: style.left,
-			width: style.width,
-			height: style.height,
-		};
-		sC.style.removeProperty('top');
-		sC.style.removeProperty('left');
-		sC.style.removeProperty('width');
-		sC.style.removeProperty('height');
-		sC.classList.add('max');
+		keywordList.append(keywordEntry);
 	}
 }
 
-function onDragRelease(event) {
-	searchDrag = [];
-	document.removeEventListener('pointermove', dragSearchUpdate, {passive: false});
-	elid("search-container").classList.remove('drag');
-	root.style.removeProperty('touch-action');
-	document.removeEventListener('pointerup', onDragRelease, {passive: false});
-}
-
-function dragSearchStart(event) {
-	const sC = elid("search-container");
-	const style = getComputedStyle(sC);
-	if (document.querySelector("#search-titlebar .window-buttons").contains(event.target)) return;
-	if (event.buttons != 1) return;
-
-	if (sC.classList.contains('max')) { // don't start dragging until we've moved at least 4 pixels, if maximized
-		let originalX = event.clientX;
-		let originalY = event.clientY;
-		const moveListener = (event) => {
-			if (event.buttons != 1) {
-				sC.removeEventListener('pointermove', moveListener);
-				return;
-			}
-			if (((originalX + event.clientX)**2 + (originalY + event.clientY)**2)**0.5 > 4) {
-				sC.style.setProperty('width', searchWindowPos.width);
-				sC.style.setProperty('height', 'auto');
-				sC.style.setProperty('top', 0);
-				sC.style.setProperty('left', (event.clientX / window.innerWidth) * (window.innerWidth - parseFloat(searchWindowPos.width)) + "px");
-				sC.classList.remove('max');
-				dragSearchStart(event);
-				sC.removeEventListener('pointermove', moveListener);
-			}
-		}
-		sC.addEventListener('pointermove', moveListener);
-	} else if (!searchDrag || searchDrag.length < 1) {
-		searchDrag = [event.clientX - sC.offsetLeft, event.clientY - sC.offsetTop];
-		elid("search-container").classList.add('drag');
-		document.addEventListener('pointermove', dragSearchUpdate, {passive: false});
-		document.addEventListener('pointerup', onDragRelease, {passive: false});
-	}
-}
-
-function dragSearchUpdate(event) {
-	const sC = elid("search-container");
-	sC.style.setProperty('right', 'unset');
-	sC.style.setProperty('left', event.clientX - searchDrag[0] + 'px');
-	sC.style.setProperty('top', event.clientY - searchDrag[1] + 'px');
-}
-
-async function updateSearch(event=null) {
-	searchShortcutRegistry = {}
-	let startTime = Date.now();
-	const searchBox = elid("search-box");
-	const searchResults = elid("search-results");
-	const url = new URL(window.location.href);
-
-	let query = searchBox.value;
-	let resultCount = 0;
+async function collectSearchProviderQueries(query) {
+	const providerQueries = new Map();
 	let foundKeyword = false;
 
-	while(query[0] === "/") {
-		query = query.substring(1);
+	for (const word of query.toLowerCase().split(" ").reverse()) {
+		const bangIndex = word.indexOf("!");
+		if (bangIndex < 0) {
+			continue;
+		}
+
+		const providerName = keywordMap.get(word.slice(bangIndex + 1));
+		if (!providerName) {
+			continue;
+		}
+
+		providerQueries.set(providerName, query.replace(/!.*?( |$)/g, ""));
+		foundKeyword = true;
 	}
 
-	let providerQueries = [];
-	searchResults.innerHTML = '';
-
-	url.searchParams.set('q', query);
-	window.history.replaceState(null, null, url);
-
-	if (query.replaceAll(" ","") === "") {
-		return;
+	const firstKeyword = keywordMap.get(query.toLowerCase().split(" ")[0]);
+	if (firstKeyword) {
+		providerQueries.set(firstKeyword, query.includes(" ") ? query.slice(query.indexOf(" ")) : "");
 	}
 
-	// prioritize providers with !bangs
-	for (word of query.toLowerCase().split(" ").reverse()) {
-		if (word.includes("!")) {
-			let possibleKeyword = word.substring(word.search("!") + 1);
-			if (Object.keys(keywordMap).includes(possibleKeyword)) {
-				providerQueries.push({ providerName: keywordMap[possibleKeyword], query: query.replace(/!.*?( |$)/g, '') });
-				foundKeyword = true;
-			}
+	const ignoredProviders = new Set(providerQueries.keys());
+	for (const [providerName, provider] of Object.entries(providers)) {
+		const suggested = await provider.suggestIf?.(query);
+		if (suggested && !ignoredProviders.has(providerName)) {
+			providerQueries.set(providerName, query);
 		}
 	}
 
-	// prioritize providers with a bangless keyword at the beginning
-	if (Object.keys(keywordMap).includes(query.toLowerCase().split(" ")[0])) {
-		providerQueries.push({
-			providerName: keywordMap[query.toLowerCase().split(" ")[0]],
-			query: query.search(" ") > -1 ? query.substring(query.search(" ")) : '',
-		});
-	}
+	return { providerQueries, foundKeyword };
+}
 
-	// add options for all currently nonexistent providers
-	let ignoreProviders = providerQueries.map((p) => p.providerName);
-	for (providerName in providers) {
-		if (((await providers[providerName].suggestIf?.(query)) ?? false) && !(ignoreProviders.includes(providerName))){
-			providerQueries.push({ providerName: providerName, query: query });
-		}
-	}
+async function renderSearchResults(searchResults, providerQueries, foundKeyword, startTime) {
+	let resultCount = 0;
 
-	for (item of providerQueries) {
-		const p = providers[item.providerName];
-		const q = item.query;
-		let urls = await p.getURLs?.(q) ?? [[q, p.getURL?.(q)]];
+	for (const [providerName, providerQuery] of providerQueries.entries()) {
+		const provider = providers[providerName];
+		const urls = await provider.getURLs?.(providerQuery) ?? [[providerQuery, provider.getURL?.(providerQuery)]];
 
-		for ([title, resultUrl] of urls) {
-			let elResult = document.createElement("div");
-			elResult.id = "search-result-" + resultCount;
-			elResult.classList.add("search-result");
-
-			let elQueryLink = document.createElement("a");
-			if (p?.action) {
-				elQueryLink.addEventListener('click', p.action);
-				elQueryLink.title = q;
-				elQueryLink.href = "javascript:;";
-			} else {
-				elQueryLink.href = resultUrl;
-			}
-			elQueryLink.innerHTML = '<b>' + p.desc + '</b>: ' + title;
-			elQueryLink.classList.add("search-link");
-			if (foundKeyword) elQueryLink.classList.add("instant");
-			elResult.insertAdjacentElement("beforeend", elQueryLink);
-
-			elResult.addEventListener("click", () => elQueryLink.click());
-
-			if (resultCount < 11) {
-				let elShortcut = document.createElement("div");
-				elShortcut.classList.add("search-shortcut");
-				if (resultCount === 0) {
-					elShortcut.innerHTML = '<kbd>ENTER</kbd>';
-					searchShortcutRegistry['Enter'] = elQueryLink;
-				} else {
-					elShortcut.innerHTML = '<kbd>Alt</kbd> <kbd>' + resultCount + '</kbd>';
-					searchShortcutRegistry['Alt' + resultCount] = elQueryLink;
-				}
-				elResult.insertAdjacentElement("beforeend", elShortcut);
-			}
-
-			if (p?.color) elResult.style.setProperty('--c', p.color);
-
-			searchResults.insertAdjacentElement("beforeend", elResult);
+		for (const [title, resultURL] of urls) {
+			const { result, link } = buildSearchLink(provider, providerQuery, title, resultURL, foundKeyword);
+			appendSearchShortcut(result, link, resultCount);
+			searchResults.append(result);
 			resultCount++;
 		}
 	}
 
-	elid("search-results").insertAdjacentHTML("beforeend", "<p>Retrieved in " + (Date.now() - startTime) + "ms");
+	const timing = document.createElement("p");
+	timing.textContent = `Retrieved in ${Date.now() - startTime}ms`;
+	searchResults.append(timing);
 }
 
+function toggleSearch(query = "") {
+	const searchContainer = byId("search-container");
+	if (searchContainer) {
+		if (searchContainer.classList.contains("min")) {
+			searchContainer.classList.remove("min");
+			byId("search-box")?.focus();
+		} else {
+			closeSearch();
+		}
+		return;
+	}
 
+	openSearch(query);
+}
 
-// ON LOAD -----------------------------------------
+function openSearch(query = "") {
+	if (query instanceof Event || query === null) {
+		query = "";
+	}
+
+	let searchContainer = byId("search-container");
+	if (!searchContainer) {
+		document.body.insertAdjacentHTML("afterbegin", SEARCH_SHELL_HTML);
+
+		searchContainer = byId("search-container");
+		byId("search-inner")?.insertAdjacentHTML("beforeend", SEARCH_HELP_HTML);
+
+		populateSearchKeywordList(byId("search-keyword-list"));
+
+		byId("search-close")?.addEventListener("click", closeSearch);
+		byId("search-min")?.addEventListener("click", minimizeSearch);
+		byId("search-max")?.addEventListener("click", toggleMaximizeSearch);
+		byId("search-titlebar")?.addEventListener("dblclick", toggleMaximizeSearch);
+		byId("search-titlebar")?.addEventListener("pointerdown", dragSearchStart);
+		byId("search-box")?.addEventListener("input", updateSearch);
+	} else {
+		const searchBox = byId("search-box");
+		if (searchBox) {
+			searchBox.placeholder = searchBox.value;
+		}
+	}
+
+	const searchBox = byId("search-box");
+	if (!searchBox) {
+		return;
+	}
+
+	searchBox.value = String(query);
+	void updateSearch();
+	searchBox.focus();
+	setURLQuery("q", searchBox.value);
+}
+
+function closeSearch() {
+	const searchContainer = byId("search-container");
+	if (!searchContainer) {
+		return;
+	}
+
+	setURLQuery("q", null);
+	searchContainer.classList.add("hidden");
+	window.setTimeout(() => byId("search-container")?.remove(), 300);
+}
+
+function minimizeSearch() {
+	byId("search-container")?.classList.add("min");
+}
+
+function toggleMaximizeSearch() {
+	const searchContainer = byId("search-container");
+	if (!searchContainer) {
+		return;
+	}
+
+	const style = getComputedStyle(searchContainer);
+	if (searchContainer.classList.contains("max")) {
+		searchContainer.classList.remove("max");
+		for (const [propName, value] of Object.entries(state.searchWindowPos || {})) {
+			searchContainer.style.setProperty(propName, value);
+		}
+		return;
+	}
+
+	state.searchWindowPos = {
+		top: style.top,
+		left: style.left,
+		width: style.width,
+		height: style.height,
+	};
+	searchContainer.style.removeProperty("top");
+	searchContainer.style.removeProperty("left");
+	searchContainer.style.removeProperty("width");
+	searchContainer.style.removeProperty("height");
+	searchContainer.classList.add("max");
+}
+
+function onDragRelease() {
+	state.searchDrag = [];
+	document.removeEventListener("pointermove", dragSearchUpdate, { passive: false });
+	byId("search-container")?.classList.remove("drag");
+	root.style.removeProperty("touch-action");
+	document.removeEventListener("pointerup", onDragRelease, { passive: false });
+}
+
+function dragSearchStart(event) {
+	const searchContainer = byId("search-container");
+	const titlebarButtons = document.querySelector("#search-titlebar .window-buttons");
+	if (!searchContainer || !titlebarButtons) {
+		return;
+	}
+	if (titlebarButtons.contains(event.target)) {
+		return;
+	}
+	if (event.buttons !== 1) {
+		return;
+	}
+
+	if (searchContainer.classList.contains("max")) {
+		const originalX = event.clientX;
+		const originalY = event.clientY;
+		const moveListener = (moveEvent) => {
+			if (moveEvent.buttons !== 1) {
+				searchContainer.removeEventListener("pointermove", moveListener);
+				return;
+			}
+
+			const distance = Math.hypot(originalX - moveEvent.clientX, originalY - moveEvent.clientY);
+			if (distance <= 4 || !state.searchWindowPos?.width) {
+				return;
+			}
+
+			searchContainer.style.setProperty("width", state.searchWindowPos.width);
+			searchContainer.style.setProperty("height", "auto");
+			searchContainer.style.setProperty("top", "0");
+			searchContainer.style.setProperty("left", `${(moveEvent.clientX / window.innerWidth) * (window.innerWidth - parseFloat(state.searchWindowPos.width))}px`);
+			searchContainer.classList.remove("max");
+			searchContainer.removeEventListener("pointermove", moveListener);
+			dragSearchStart(moveEvent);
+		};
+
+		searchContainer.addEventListener("pointermove", moveListener);
+		return;
+	}
+
+	if (state.searchDrag.length > 0) {
+		return;
+	}
+
+	state.searchDrag = [event.clientX - searchContainer.offsetLeft, event.clientY - searchContainer.offsetTop];
+	searchContainer.classList.add("drag");
+	root.style.setProperty("touch-action", "none");
+	document.addEventListener("pointermove", dragSearchUpdate, { passive: false });
+	document.addEventListener("pointerup", onDragRelease, { passive: false });
+}
+
+function dragSearchUpdate(event) {
+	const searchContainer = byId("search-container");
+	if (!searchContainer || state.searchDrag.length < 2) {
+		return;
+	}
+
+	searchContainer.style.setProperty("right", "unset");
+	searchContainer.style.setProperty("left", `${event.clientX - state.searchDrag[0]}px`);
+	searchContainer.style.setProperty("top", `${event.clientY - state.searchDrag[1]}px`);
+}
+
+function buildSearchLink(provider, query, title, resultURL, foundKeyword) {
+	const result = document.createElement("div");
+	result.className = "search-result";
+
+	const link = document.createElement("a");
+	link.className = "search-link";
+	if (foundKeyword) {
+		link.classList.add("instant");
+	}
+
+	if (provider.action) {
+		link.href = "javascript:;";
+		link.title = query;
+		link.addEventListener("click", provider.action);
+	} else {
+		link.href = resultURL;
+	}
+
+	const providerLabel = document.createElement("b");
+	providerLabel.textContent = provider.desc;
+	link.append(providerLabel, `: ${title}`);
+	result.append(link);
+
+	result.addEventListener("click", () => link.click());
+	if (provider.color) {
+		result.style.setProperty("--c", provider.color);
+	}
+
+	return { result, link };
+}
+
+function appendSearchShortcut(result, link, resultCount) {
+	if (resultCount >= SEARCH_RESULT_LIMIT) {
+		return;
+	}
+
+	const shortcut = document.createElement("div");
+	shortcut.className = "search-shortcut";
+
+	if (resultCount === 0) {
+		shortcut.innerHTML = "<kbd>ENTER</kbd>";
+		state.searchShortcutRegistry.Enter = link;
+	} else {
+		shortcut.innerHTML = `<kbd>Alt</kbd> <kbd>${resultCount}</kbd>`;
+		state.searchShortcutRegistry[`Alt${resultCount}`] = link;
+	}
+
+	result.append(shortcut);
+}
+
+async function updateSearch() {
+	state.searchShortcutRegistry = Object.create(null);
+
+	const startTime = Date.now();
+	const searchBox = byId("search-box");
+	const searchResults = byId("search-results");
+	if (!searchBox || !searchResults) {
+		return;
+	}
+
+	let query = searchBox.value;
+	while (query.startsWith("/")) {
+		query = query.slice(1);
+	}
+
+	searchResults.replaceChildren();
+	setURLQuery("q", query);
+
+	if (query.replaceAll(" ", "") === "") {
+		return;
+	}
+
+	const { providerQueries, foundKeyword } = await collectSearchProviderQueries(query);
+	await renderSearchResults(searchResults, providerQueries, foundKeyword, startTime);
+}
+
+// PAGE ENHANCEMENTS -------------------------------
 function updateTOCState() {
 	const links = document.querySelectorAll('#toc a[href^="#"]');
-	const tocDiv = document.querySelector('#toc div:first-child');
-	let current;
+	const tocDiv = document.querySelector("#toc div:first-child");
+	let current = null;
 
-	for (link of links) {
-		const target = document.querySelector(link.getAttribute('href'));
+	for (const link of links) {
+		const target = document.querySelector(link.getAttribute("href"));
 		if (target?.getBoundingClientRect().bottom <= window.innerHeight / 4) {
 			current = link;
 		}
 	}
-	for (link of links) {
-		if (link !== current && link.classList.contains('scroll-current')) {
-			link.classList.remove('scroll-current');
-		}
-	}
 
-	if (!(current?.classList.contains('scroll-current'))) {
-		current?.classList.add('scroll-current');
+	for (const link of links) {
+		link.classList.toggle("scroll-current", link === current);
 	}
 
 	if (tocDiv?.scrollWidth > tocDiv?.clientWidth && current) {
-		tocDiv.scrollTo({ top: 0, left: current.offsetLeft - 16, behavior: 'smooth' });
+		tocDiv.scrollTo({ top: 0, left: current.offsetLeft - 16, behavior: "smooth" });
 	}
 }
 
 function initializePageContent() {
-	for (a of document.querySelectorAll(".content a:has(img)")) {
-		if (a.dataset.zoomBound === "true") continue;
-		if (imageExtensions.includes(a.href.split(".").pop())) {
-			a.dataset.zoomBound = "true";
-			a.addEventListener("click", (e) => e.preventDefault());
+	for (const link of document.querySelectorAll(".content a:has(img)")) {
+		if (link.dataset.zoomBound === "true") {
+			continue;
 		}
+		if (!imageExtensions.has(link.href.split(".").pop())) {
+			continue;
+		}
+
+		link.dataset.zoomBound = "true";
+		link.addEventListener("click", (event) => event.preventDefault());
 	}
-	for (img of document.querySelectorAll(".content :not(a):not(.no-zoom) img:not(.no-zoom)")) {
-		if (img.dataset.zoomBound === "true") continue;
-		img.dataset.zoomBound = "true";
-		img.addEventListener("click", (e) => {
-			if (e.target?.parentElement?.href) {
-				if (imageExtensions.includes(e.target.parentElement.href.split(".").pop())) {
-					if (e.target.src != e.target.parentElement.href) {
-						const iStyle = getComputedStyle(e.target);
-						e.target.style.width = iStyle.width;
-						e.target.style.height = iStyle.height;
-						e.target.addEventListener('load', () => e.target.click(), { once: true });
-						e.target.src = e.target.parentElement.href;
-						return;
-					}
-				} else {
+
+	for (const image of document.querySelectorAll(".content :not(a):not(.no-zoom) img:not(.no-zoom)")) {
+		if (image.dataset.zoomBound === "true") {
+			continue;
+		}
+
+		image.dataset.zoomBound = "true";
+		image.addEventListener("click", (event) => {
+			const target = event.currentTarget;
+			const parentHref = target?.parentElement?.href;
+
+			if (parentHref) {
+				const extension = parentHref.split(".").pop();
+				if (!imageExtensions.has(extension)) {
+					return;
+				}
+
+				if (target.src !== parentHref) {
+					const imageStyle = getComputedStyle(target);
+					target.style.width = imageStyle.width;
+					target.style.height = imageStyle.height;
+					target.addEventListener("load", () => target.click(), { once: true });
+					target.src = parentHref;
 					return;
 				}
 			}
-			playSound('/sounds/stone2.ogg');
-			if (e.target.classList.contains("zoomed")) {
-				e.target.classList.remove("zoomed");
-				e.target.style.removeProperty('transform');
-			} else {
-				e.target.classList.add("zoomed");
-				if (!(e.target.classList.contains('pixelated')) && e.target.naturalWidth < (root.clientWidth / 2) && e.target.naturalHeight < (root.clientHeight / 2)) e.target.classList.add('pixelated');
-				let b = e.target.getBoundingClientRect();
-				let targetTranslateX = (root.clientWidth / 2) - (b.x + (b.width / 2));
-				let targetTranslateY = (root.clientHeight / 2) - (b.y + (b.height / 2));
-				let targetScale = Math.min(root.clientWidth / e.target.clientWidth, root.clientHeight / e.target.clientHeight, 20);
-				e.target.style.transform = 'translate(' + targetTranslateX + 'px, ' + targetTranslateY +'px) scale(' + targetScale + ')';
 
-				const unzoom = () => {
-					e.target.classList.remove("zoomed");
-					e.target.style.removeProperty('transform');
-					document.removeEventListener('scroll', unzoomAfterScroll);
-					document.removeEventListener('click', unzoom);
-					playSound('/sounds/stone2.ogg');
-				}
-
-				const unzoomAfterScroll = () => {
-					let b = e.target.getBoundingClientRect();
-					if (b.top <= 0 || b.bottom >= window.innerHeight) {
-						unzoom();
-					}
-				}
-
-				document.addEventListener('scroll', unzoomAfterScroll);
-				window.setTimeout(() => document.addEventListener('click', unzoom), 100);
+			playSound("/sounds/stone2.ogg");
+			if (target.classList.contains("zoomed")) {
+				target.classList.remove("zoomed");
+				target.style.removeProperty("transform");
+				return;
 			}
+
+			target.classList.add("zoomed");
+			if (!target.classList.contains("pixelated") && target.naturalWidth < (root.clientWidth / 2) && target.naturalHeight < (root.clientHeight / 2)) {
+				target.classList.add("pixelated");
+			}
+
+			const bounds = target.getBoundingClientRect();
+			const translateX = (root.clientWidth / 2) - (bounds.x + (bounds.width / 2));
+			const translateY = (root.clientHeight / 2) - (bounds.y + (bounds.height / 2));
+			const scale = Math.min(root.clientWidth / target.clientWidth, root.clientHeight / target.clientHeight, 20);
+			target.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+
+			const unzoom = () => {
+				target.classList.remove("zoomed");
+				target.style.removeProperty("transform");
+				document.removeEventListener("scroll", unzoomAfterScroll);
+				document.removeEventListener("click", unzoom);
+				playSound("/sounds/stone2.ogg");
+			};
+
+			const unzoomAfterScroll = () => {
+				const latestBounds = target.getBoundingClientRect();
+				if (latestBounds.top <= 0 || latestBounds.bottom >= window.innerHeight) {
+					unzoom();
+				}
+			};
+
+			document.addEventListener("scroll", unzoomAfterScroll);
+			window.setTimeout(() => document.addEventListener("click", unzoom), 100);
 		});
 	}
 }
 
-function shouldInterceptLink(link, event) {
-	if (!link || event.defaultPrevented) return false;
-	if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return false;
-	if (link.target && link.target !== "_self") return false;
-	if (link.hasAttribute("download")) return false;
-	if (link.getAttribute("href")?.startsWith("#")) return false;
-	if (link.closest("#search-results")) return false;
+function syncSearchFromLocation({ allowInstant = false } = {}) {
+	const query = currentURL().searchParams.get("q");
+	if (!query) {
+		return;
+	}
 
-	const url = new URL(link.href, window.location.href);
-	if (url.origin !== window.location.origin) return false;
-	if (url.pathname.startsWith("/_/")) return false;
-	if (url.pathname === window.location.pathname && url.hash) return false;
-	return true;
-}
-
-function bindGlobalEvents() {
-	if (globalEventsBound) return;
-	globalEventsBound = true;
-
-	document.addEventListener('scrollend', updateTOCState);
-	window.addEventListener('popstate', () => replacePage(window.location.href, "skip"));
-
-	document.addEventListener('click', (event) => {
-		const link = event.target.closest('a[href]');
-		if (!shouldInterceptLink(link, event)) return;
-		event.preventDefault();
-		replacePage(link.href, "push");
-	});
-
-	elid("btn_larger")?.addEventListener("click", () => {
-		const content = currentContent();
-		if (!content) return;
-		const currentSize = getComputedStyle(content).fontSize;
-		content.style.fontSize = 'calc(' + currentSize + ' * 1.0667)';
-	});
-	elid("btn_smaller")?.addEventListener("click", () => {
-		const content = currentContent();
-		if (!content) return;
-		const currentSize = getComputedStyle(content).fontSize;
-		content.style.fontSize = 'calc(' + currentSize + ' * 0.937)';
-	});
-	elid("btn_theme")?.addEventListener("click", () => {
-		let currentDarkMode = getComputedStyle(document.body).getPropertyValue('color') == 'rgb(255, 255, 255)';
-		root.classList.add(currentDarkMode ? 'light' : 'dark');
-		root.classList.remove(currentDarkMode ? 'dark' : 'light');
-		playSound('/sounds/KDE_Click_2.ogg', 1);
-	});
-	elid("btn_toc")?.addEventListener("click", () => {
-		tocdetails = document.querySelector('#toc details');
-		tocdetails.open = (tocdetails.open) ? false : true;
-	});
-	elid("btn_top")?.addEventListener("click", () => {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	});
-	elid("btn_search")?.addEventListener("click", toggleSearch);
-	elid("search-link")?.addEventListener("click", toggleSearch);
-
-	document.addEventListener("keyup", (e) => {
-		if (e.key === 'Escape') {
-			if (elid("search-box") && elid("search-box")?.value.replaceAll(' ','') === "") {
-				closeSearch();
-			} else if (elid("search-box")) {
-				openSearch("");
-			}
-		}
-	});
-	document.addEventListener("keydown", (e) => {
-		if (e.key === '/' && document.activeElement.tagName != "INPUT") {
-			e.preventDefault();
-			openSearch(window.getSelection().toString().replaceAll('\n',''));
-		}
-		if (document.activeElement === elid("search-box")) {
-			let key = "Alt".repeat(e.altKey) + e.key;
-			if (key in searchShortcutRegistry) {
-				e.preventDefault();
-				const link = searchShortcutRegistry[key];
-				if (e.ctrlKey) { // open in new tab on CTRL
-					const original = link.target;
-					link.target = "_blank";
-					link.click();
-					link.target = original;
-				} else {
-					link.click();
-				}
-			}
-			if (e.key === "ArrowUp") {
-
-			}
-		}
-	});
-
-	if (document.location.search.search("q=") > -1) {
-		openSearch((new URL(window.location.href)).searchParams.get("q"));
-		if (window.performance.getEntriesByType("navigation")[0].type === "navigate") { // only click instant links when not back/forward/reload
-			document.querySelectorAll("a.search-link.instant")?.[0]?.click?.();
-		}
+	openSearch(query);
+	if (allowInstant) {
+		document.querySelector("a.search-link.instant")?.click?.();
 	}
 }
 
+function toggleTheme() {
+	const currentDarkMode = getComputedStyle(document.body).getPropertyValue("color") === "rgb(255, 255, 255)";
+	root.classList.add(currentDarkMode ? "light" : "dark");
+	root.classList.remove(currentDarkMode ? "dark" : "light");
+	playSound("/sounds/KDE_Click_2.ogg", 1);
+}
+
+// EVENTS ------------------------------------------
+function handleDocumentClick(event) {
+	const actionTarget = event.target.closest("#btn_larger, #btn_smaller, #btn_theme, #btn_toc, #btn_top, #btn_search, #search-link");
+	if (!actionTarget) {
+		return;
+	}
+
+	if (actionTarget.id === "search-link") {
+		event.preventDefault();
+	}
+
+	switch (actionTarget.id) {
+		case "btn_larger": {
+			const content = currentContent();
+			if (!content) {
+				return;
+			}
+			const currentSize = getComputedStyle(content).fontSize;
+			content.style.fontSize = `calc(${currentSize} * 1.0667)`;
+			return;
+		}
+		case "btn_smaller": {
+			const content = currentContent();
+			if (!content) {
+				return;
+			}
+			const currentSize = getComputedStyle(content).fontSize;
+			content.style.fontSize = `calc(${currentSize} * 0.937)`;
+			return;
+		}
+		case "btn_theme":
+			toggleTheme();
+			return;
+		case "btn_toc": {
+			const tocDetails = document.querySelector("#toc details");
+			if (tocDetails) {
+				tocDetails.open = !tocDetails.open;
+			}
+			return;
+		}
+		case "btn_top":
+			window.scrollTo({ top: 0, behavior: "smooth" });
+			return;
+		case "btn_search":
+		case "search-link":
+			toggleSearch();
+			return;
+	}
+}
+
+function handleKeyUp(event) {
+	if (event.key !== "Escape") {
+		return;
+	}
+
+	const searchBox = byId("search-box");
+	if (!searchBox) {
+		return;
+	}
+
+	if (searchBox.value.replaceAll(" ", "") === "") {
+		closeSearch();
+		return;
+	}
+
+	openSearch("");
+}
+
+function handleKeyDown(event) {
+	if (event.key === "/" && document.activeElement?.tagName !== "INPUT") {
+		event.preventDefault();
+		openSearch(window.getSelection().toString().replaceAll("\n", ""));
+		return;
+	}
+
+	const searchBox = byId("search-box");
+	if (document.activeElement !== searchBox) {
+		return;
+	}
+
+	const key = event.altKey ? `Alt${event.key}` : event.key;
+	const link = state.searchShortcutRegistry[key];
+	if (!link) {
+		return;
+	}
+
+	event.preventDefault();
+	if (event.ctrlKey) {
+		const originalTarget = link.target;
+		link.target = "_blank";
+		link.click();
+		link.target = originalTarget;
+		return;
+	}
+
+	link.click();
+}
+
+function handleMuBeforeRender(event) {
+	if (!event.detail?.html || event.detail.mode === "patch") {
+		state.pendingMuDocument = null;
+		return;
+	}
+
+	state.pendingMuDocument = parseHTML(event.detail.html);
+}
+
+function handleMuAfterRender() {
+	if (state.pendingMuDocument) {
+		syncDocumentChrome(state.pendingMuDocument);
+		state.pendingMuDocument = null;
+	}
+
+	initializePageContent();
+	updateTOCState();
+	syncSearchFromLocation();
+}
+
+function bindGlobalEvents() {
+	if (state.globalEventsBound) {
+		return;
+	}
+
+	state.globalEventsBound = true;
+	document.addEventListener("scrollend", updateTOCState);
+	document.addEventListener("click", handleDocumentClick);
+	document.addEventListener("keyup", handleKeyUp);
+	document.addEventListener("keydown", handleKeyDown);
+	document.addEventListener("mu:before-render", handleMuBeforeRender);
+	document.addEventListener("mu:after-render", handleMuAfterRender);
+}
+
+// INIT --------------------------------------------
 function load() {
 	bindGlobalEvents();
 	initializePageContent();
 	initializeMu();
 	updateTOCState();
+
+	const navigationType = window.performance.getEntriesByType("navigation")[0]?.type;
+	syncSearchFromLocation({ allowInstant: navigationType === "navigate" });
 }
 
 load();
