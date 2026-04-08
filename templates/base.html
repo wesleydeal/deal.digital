@@ -136,8 +136,8 @@ footer hr{ display: none }
 </style>
 <!--[if !IE]><!-->
 <link rel="preload" href="/{{ config.extra.stylesheet | default(value='style.css') }}.css" as="style" onload="this.onload=null; if (CSS.supports('selector(&)')) this.rel='stylesheet'">
-<link rel="preload" href="/fonts/instrument-serif_5.2.5_latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/instrument-serif_5.1.0_latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif-regular-nohint.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/instrument-serif-italic-nohint.woff2" as="font" type="font/woff2" crossorigin>
 <!--<![endif]-->
 {%- if section is defined -%}
 	{%- set bodyid = section.path | trim_end_matches(pat='/') | trim_start_matches(pat='/') | replace(from='/', to='-') -%}
