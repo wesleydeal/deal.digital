@@ -748,12 +748,91 @@ pre:has(>samp) {
 	background: oklch(from var(--color-bg-hc) l c h / 50%);
 }
 
-.z-code {
+pre.chroma, .chroma {
 	box-shadow: 1px 1px 5px inset #0003;
 	border: 1px solid var(--color-primary);
-	&:has(>code>.z-text:only-child), &:has(>code>.z-source:only-child) {
-		box-shadow: 1px 1px 3px inset #0003;
-	}
+}
+
+pre.chroma {
+	padding: 0.5em 0.7em;
+}
+
+.chroma {
+	color: light-dark(#5c6773, #d9d7ce);
+	background: light-dark(#fafafa, #212733);
+}
+
+.chroma .c, .chroma .ch, .chroma .cm, .chroma .c1, .chroma .cs, .chroma .cp {
+	color: light-dark(#abb0b6, #5c6773);
+	font-style: italic;
+}
+
+.chroma .p, .chroma .x, .chroma .n, .chroma .w {
+	color: light-dark(#5c6773, #d9d7ce);
+}
+
+.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .dl, .chroma .sd, .chroma .s2, .chroma .sh, .chroma .si, .chroma .sx, .chroma .s1, .chroma .ss {
+	color: light-dark(#86b300, #bbe67e);
+}
+
+.chroma .sr, .chroma .se {
+	color: light-dark(#4cbf99, #95e6cb);
+}
+
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo, .chroma .no {
+	color: light-dark(#a37acc, #d4bfff);
+}
+
+.chroma .k, .chroma .kc, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr, .chroma .kt {
+	color: light-dark(#ff7733, #ffae57);
+}
+
+.chroma .o, .chroma .ow {
+	color: light-dark(#e7c547, #80d4ff);
+}
+
+.chroma .na, .chroma .nf, .chroma .fm {
+	color: light-dark(#f29718, #ffd57f);
+}
+
+.chroma .nc, .chroma .ne, .chroma .nl, .chroma .nn, .chroma .nx, .chroma .py, .chroma .nt, .chroma .bp, .chroma .nv, .chroma .vc, .chroma .vg, .chroma .vi {
+	color: light-dark(#36a3d9, #5ccfe6);
+}
+
+.chroma .nd {
+	color: light-dark(#e6b673, #ffc44c);
+}
+
+.chroma .vm {
+	color: light-dark(#f07178, #f07178);
+}
+
+.chroma .err {
+	color: light-dark(#ff3333, #ff3333);
+}
+
+.chroma .gd {
+	color: light-dark(#a37acc, #d4bfff);
+}
+
+.chroma .gi {
+	color: light-dark(#86b300, #bbe67e);
+}
+
+.chroma .gh, .chroma .gu {
+	color: light-dark(#e6b673, #ffc44c);
+}
+
+.chroma .ge {
+	font-style: italic;
+}
+
+.chroma .gs {
+	font-weight: bold;
+}
+
+.chroma .ln, .chroma .lnt {
+	color: light-dark(#d9d8d7, #607080);
 }
 
 table {
@@ -1202,183 +1281,4 @@ kbd {
 	#ui-tools {
 		display: none;
 	}
-}
-
-/* ayu light & mirage */
-.z-code {
-	color: light-dark(#61676c,#ccc9c2);
-	background: light-dark( #fafafa,#212733);
-}
-.z-comment, .z-punctuation.z-definition.z-comment {
-	color: light-dark(#abb0b6, #5c6773);
-	font-style: italic;
-}
-.z-variable, .z-punctuation.z-separator, .z-punctuation.z-terminator, .z-punctuation.z-section, .z-punctuation.z-definition.z-annotation {
-	color: light-dark(#61676c,#ccc9c2);
-}
-.z-string, .z-constant.z-other.z-symbol {
-	color: light-dark(#86b300,#bae67e);
-}
-.z-constant.z-numeric, .z-constant.z-language, .z-constant.z-character, .z-constant.z-other, .z-variable.z-parameter {
-	color: light-dark(#ff8f40,#ffcc66);
-}
-.z-string.z-regexp, .z-constant.z-character.z-escape {
-	color: light-dark(#4cbf99,#95e6cb);
-}
-.z-variable.z-member {
-	color: light-dark(#ec5f67,#ec5f67);
-}
-.z-keyword, .z-keyword.z-operator.z-word, .z-storage, .z-storage.z-type {
-	color: light-dark(#fa6e32,#ffa759);
-}
-.z-keyword.z-operator, .z-punctuation.z-accessor {
-	color: light-dark(#ed9366,#f29e74);
-}
-.z-variable.z-other.z-dollar.z-only.z-js, .z-variable.z-other.z-object.z-dollar.z-only.z-js, .z-variable.z-type.z-dollar.z-only.z-js, .z-support.z-class.z-dollar.z-only.z-js {
-	color: light-dark(#e6b673,#ffc44c);
-}
-.z-entity.z-name.z-function {
-	color: light-dark(#f29718,#ffd580);
-}
-.z-entity.z-name, .z-entity.z-name.z-tag, .z-entity.z-name.z-label {
-	color: light-dark(#399ee6,#73d0ff);
-}
-.z-entity.z-other.z-inherited-class {
-	color: light-dark(#399ee6,#73d0ff);
-	text-decoration: underline;
-}
-.z-variable.z-language {
-	color: light-dark(#55b4d4,#5ccfe6);
-	font-style: italic;
-}
-.z-entity.z-name.z-tag, .z-meta.z-tag.z-sgml, .z-punctuation.z-definition.z-tag.z-end, .z-punctuation.z-definition.z-tag.z-begin, .z-punctuation.z-definition.z-tag {
-	 color: light-dark(#55b4d4,#5ccfe6);
-}
-.z-entity.z-other.z-attribute-name, .z-variable.z-function, .z-variable.z-annotation {
-	color: light-dark(#f29718,#ffd580);
-}
-.z-support.z-function, .z-support.z-macro {
-	color: light-dark(#f07171,#f28779);
-}
-.z-support.z-constant {
-	color: light-dark(#ed9366,#f29e74);
-	font-style: italic;
-}
-.z-support.z-type, .z-support.z-class {
-	color: light-dark(#55b4d4,#5ccfe6);
-	font-style: italic;
-}
-.z-invalid, .z-message.z-error {
-	color: light-dark(#f51818,#f33);
-}
-.z-invalid.z-deprecated {
-	color: #fff;
-	background: light-dark(#fa6e32,#ffa759);
-}
-.z-meta.z-diff, .z-meta.z-diff.z-header {
-	color: light-dark(#c594c5,#c594c5);
-}
-.z-source.z-ruby .z-variable.z-other.z-readwrite, .z-punctuation.z-definition.z-image {
-	color: light-dark(#f29718,#ffd580);
-}
-.z-source.z-css .z-entity.z-name.z-tag, .z-source.z-sass .z-entity.z-name.z-tag, .z-source.z-scss .z-entity.z-name.z-tag, .z-source.z-less .z-entity.z-name.z-tag, .z-source.z-stylus .z-entity.z-name.z-tag {
-	color: light-dark(#399ee6,#73d0ff);
-}
-.z-source.z-css .z-support.z-type, .z-source.z-sass .z-support.z-type, .z-source.z-scss .z-support.z-type, .z-source.z-less .z-support.z-type, .z-source.z-stylus .z-support.z-type, .z-constant.z-numeric.z-line-number.z-find-in-files {
-	color: light-dark(#abb0b6,#5c6773);
-}
-.z-support.z-type.z-property-name {
-	color: light-dark(#55b4d4,#5ccfe6);
-}
-.z-constant.z-numeric.z-line-number.z-match {
-	color: light-dark(#fa6e32,#ffa759);
-}
-.z-entity.z-name.z-filename.z-find-in-files {
-	color: light-dark(#86b300,#bae67e);
-}
-.z-source.z-json .z-meta.z-structure.z-dictionary.z-json .z-string.z-quoted.z-double.z-json, .z-source.z-json .z-meta.z-structure.z-dictionary.z-json .z-punctuation.z-definition.z-string {
-	color: light-dark(#55b4d4,#5ccfe6);
-}
-.z-markup.z-heading {
-	color: light-dark(#fa6e32,#ffa759);
-	font-weight: bold;
-}
-.z-string.z-other.z-link, .z-markup.z-underline.z-link {
-	color: light-dark(#4cbf99,#95e6cb);
-	text-decoration: underline;
-	font-style: italic;
-}
-.z-markup.z-italic {
-	color: light-dark(#f07171,#f28779);
-	font-style: italic;
-}
-.z-markup.z-bold {
-	color: light-dark(#f07171,#f28779);
-	font-weight: bold;
-}
-.z-markup.z-raw, .z-markup.z-raw.z-inline {
-	background: light-dark(#61676c,#ccc9c2);
-}
-.z-meta.z-separator {
-	color: light-dark(#abb0b6,#5c6773);
-	background: light-dark(#61676c,#ccc9c2);
-	font-weight: bold;
-}
-.z-markup.z-quote {
-	color: light-dark(#ff8f40,#ffcc66);
-	font-style: italic;
-}
-.z-markup.z-list.z-numbered.z-bullet, .z-markup.z-list .z-punctuation.z-definition.z-list_item {
-	color: light-dark(#4cbf99,#95e6cb);
-}
-.z-markup.z-inserted {
-	color: light-dark(#86b300,#bae67e);
-}
-.z-markup.z-changed {
-	color: light-dark(#55b4d4,#5ccfe6);
-}
-.z-markup.z-deleted {
-	color: light-dark(#f07171,#f28779);
-}
-.z-markup.z-strike {
-	color: light-dark(#e6b673,#ffc44c);
-}
-.z-markup.z-table {
-	color: light-dark(#55b4d4,#5ccfe6);
-	background: light-dark(#61676c,#ccc9c2);
-}
-.z-text.z-html.z-markdown .z-markup.z-raw.z-inline {
-	color: light-dark(#ed9366,#f29e74);
-}
-.z-text.z-html.z-markdown .z-meta.z-dummy.z-line-break, .z-variable.z-language.z-fenced.z-markdown {
-	color: light-dark(#abb0b6,#5c6773);
-}
-.z-markup.z-raw.z-block.z-fenced.z-markdown {
-	color: light-dark(#61676c,#ccc9c2);
-	background-color: light-dark(#61676c,#ccc9c2);
-}
-.z-punctuation.z-definition.z-fenced.z-markdown, .z-variable.z-language.z-fenced.z-markdown {
-	color: (#abb0b6,#5c6733);
-	background-color: light-dark(#61676c,#ccc9c2);
-}
-.z-markup.z-inserted.z-git_gutter, .z-acejump.z-label.z-green {
-	color: light-dark(#86b300,#bae67e);
-}
-.z-markup.z-changed.z-git_gutter, .z-sublimelinter.z-mark.z-warning, .z-acejump.z-label.z-blue {
-	color: light-dark(#55b4d4,#5ccfe6);
-}
-.z-markup.z-deleted.z-git_gutter, .z-sublimelinter.z-mark.z-error {
-	color: light-dark(#f51818,#f33);
-}
-.z-markup.z-ignored.z-git_gutter, .z-markup.z-untracked.z-git_gutter {
-	color: light-dark(#dee0e1,#363e4a);
-}
-.z-gutter_color, .z-sublimelinter.z-gutter-mark,.z-acejump.z-label {
-	color: #fff;
-}
-.z-acejump.z-label.z-orange {
-	color: light-dark(#fa6e32,#ffa759);
-}
-.z-acejump.z-label.z-purple {
-	color: light-dark(#f07171,#f28779);
 }
