@@ -238,7 +238,7 @@ func inlineMarkdown(input string) template.HTML {
 
 func (r *Renderer) RenderPageDocument(site *content.Site, page *content.Page) ([]byte, error) {
 	if strings.EqualFold(strings.TrimSuffix(page.Template, ".html"), "raw") {
-		return []byte(string(page.HTML)), nil
+		return trimDocument([]byte(page.HTML)), nil
 	}
 	name := page.PageTemplate
 	if name == "" {
@@ -255,7 +255,7 @@ func (r *Renderer) RenderPageDocument(site *content.Site, page *content.Page) ([
 	if err := r.templates.ExecuteTemplate(&buf, name, data); err != nil {
 		return nil, err
 	}
-	return buf.Bytes(), nil
+	return trimDocument(buf.Bytes()), nil
 }
 
 func (r *Renderer) RenderSectionDocument(site *content.Site, section *content.Section) ([]byte, error) {
@@ -274,7 +274,7 @@ func (r *Renderer) RenderSectionDocument(site *content.Site, section *content.Se
 	if err := r.templates.ExecuteTemplate(&buf, name, data); err != nil {
 		return nil, err
 	}
-	return buf.Bytes(), nil
+	return trimDocument(buf.Bytes()), nil
 }
 
 func (r *Renderer) RenderTaxonomyDocument(site *content.Site, _ string, term *content.TaxonomyTerm) ([]byte, error) {
@@ -289,7 +289,7 @@ func (r *Renderer) RenderTaxonomyDocument(site *content.Site, _ string, term *co
 	if err := r.templates.ExecuteTemplate(&buf, "taxonomy", data); err != nil {
 		return nil, err
 	}
-	return buf.Bytes(), nil
+	return trimDocument(buf.Bytes()), nil
 }
 
 func WriteJSON(path string, value any) error {
@@ -299,6 +299,10 @@ func WriteJSON(path string, value any) error {
 	}
 	data = append(data, '\n')
 	return os.WriteFile(path, data, 0o644)
+}
+
+func trimDocument(data []byte) []byte {
+	return bytes.TrimSpace(data)
 }
 
 func taxonomyTermsSorted(terms map[string]*content.TaxonomyTerm) []*content.TaxonomyTerm {
