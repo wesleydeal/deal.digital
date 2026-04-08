@@ -3,44 +3,10 @@ package cms
 import (
 	"context"
 	"fmt"
-	"io/fs"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 )
-
-func compressTree(root string) error {
-	files := []string{}
-	if err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if entry.IsDir() {
-			return nil
-		}
-		switch filepath.Ext(path) {
-		case ".gz", ".br", ".zst":
-			return nil
-		}
-		files = append(files, path)
-		return nil
-	}); err != nil {
-		return err
-	}
-
-	for _, path := range files {
-		plain, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-		if err := writeCompressedVariants(path, plain); err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 func (a *App) ListenAndServe(ctx context.Context, addr string) error {
 	mux := http.NewServeMux()

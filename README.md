@@ -21,7 +21,7 @@ It currently does the following:
 - normalizes pages, sections, and taxonomies into a Go-native site graph
 - supports the current shortcode set: `blockquote`, `fitimg`, `wave`, and `raw`
 - renders HTML into [`build/site`](/home/wesley/deal.digital/build/site)
-- writes `.gz`, `.br`, and `.zst` sidecar files for generated output assets during `build`, skipping any compressed variant that would be larger than the source
+- writes `.gz`, `.br`, and `.zst` sidecar files for generated output assets during `build`, using parallel workers, skipping any compressed variant that would be larger than the source, blacklisting obviously unhelpful formats like SWF/media/archive assets, and only brotli-compressing web-text formats
 - copies static assets and page-bundle assets into the Caddy-served tree
 - stores build metadata in SQLite at [`build/data/site.db`](/home/wesley/deal.digital/build/data/site.db) with WAL mode enabled
 - exposes a public dynamic route namespace under `/_/` for server-side interactivity

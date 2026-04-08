@@ -1,8 +1,6 @@
 package cms
 
 import (
-	"bytes"
-	"compress/gzip"
 	"context"
 	"io"
 	"io/fs"
@@ -17,9 +15,6 @@ import (
 	"deal.digital/internal/render"
 	cmsruntime "deal.digital/internal/runtime"
 	"deal.digital/internal/store"
-
-	"github.com/andybalholm/brotli"
-	"github.com/klauspost/compress/zstd"
 )
 
 type App struct {
@@ -185,75 +180,6 @@ func writeRouteDocument(root, route string, doc []byte) error {
 	return os.WriteFile(output, doc, 0o644)
 }
 
-func writeCompressedVariants(basePath string, plain []byte) error {
-	if err := writeIfSmaller(basePath+".gz", plain, gzipBytes); err != nil {
-		return err
-	}
-	if err := writeIfSmaller(basePath+".br", plain, brotliBytes); err != nil {
-		return err
-	}
-	if err := writeIfSmaller(basePath+".zst", plain, zstdBytes); err != nil {
-		return err
-	}
-	return nil
-}
-
-func writeIfSmaller(path string, plain []byte, encode func([]byte) ([]byte, error)) error {
-	compressed, err := encode(plain)
-	if err != nil {
-		return err
-	}
-	if len(compressed) >= len(plain) {
-		if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
-			return err
-		}
-		return nil
-	}
-	return os.WriteFile(path, compressed, 0o644)
-}
-
-func gzipBytes(plain []byte) ([]byte, error) {
-	var buf bytes.Buffer
-	zw, err := gzip.NewWriterLevel(&buf, gzip.BestCompression)
-	if err != nil {
-		return nil, err
-	}
-	if _, err := zw.Write(plain); err != nil {
-		return nil, err
-	}
-	if err := zw.Close(); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-
-func brotliBytes(plain []byte) ([]byte, error) {
-	var buf bytes.Buffer
-	zw := brotli.NewWriterLevel(&buf, brotli.BestCompression)
-	if _, err := zw.Write(plain); err != nil {
-		return nil, err
-	}
-	if err := zw.Close(); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-
-func zstdBytes(plain []byte) ([]byte, error) {
-	var buf bytes.Buffer
-	zw, err := zstd.NewWriter(&buf, zstd.WithEncoderLevel(zstd.SpeedBestCompression))
-	if err != nil {
-		return nil, err
-	}
-	if _, err := zw.Write(plain); err != nil {
-		return nil, err
-	}
-	if err := zw.Close(); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-
 func copyTree(srcRoot, dstRoot string, include func(rel string) bool) error {
 	return filepath.WalkDir(srcRoot, func(src string, entry fs.DirEntry, err error) error {
 		if err != nil {
@@ -288,9 +214,9 @@ func copyFile(src, dst string) error {
 	if err != nil {
 		return err
 	}
-	defer out.Close()
 
 	if _, err := io.Copy(out, in); err != nil {
+		_ = out.Close()
 		return err
 	}
 	return out.Close()
