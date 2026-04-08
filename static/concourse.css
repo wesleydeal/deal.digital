@@ -588,7 +588,7 @@ code, pre {
 	font: 400 1em/1.15 var(--typeface-mono);
 }
 
-.zola-anchor:any-link {
+.anchor:any-link {
 	position: absolute;
 	left: -0.9em;
 	opacity: 0;

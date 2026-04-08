@@ -1,36 +1,36 @@
 {{define "home"}}
 {{template "chrome_start" .}}
 <main class="content">
-  <article class="landing">
-    <h1 class="title" id="title">Hello!</h1>
-    <p>I’m Wesley Deal, a technology enthusiast and sysadmin.
-    <div class="landing-link-container">
-      <section class="sitebuttons">
-        <h2>Quick Links</h2>
-        <ul>
-          <li><a href="/resume/"><span class="emoji">📄 </span><span>Resume</span></a></li>
-          <li><a href="https://github.com/wesleydeal"><span class="emoji">👨🏻‍💻 </span><span>GitHub</span></a></li>
-          <li><a href="https://linkedin.com/in/wesley-deal"><span class="emoji">🏢 </span><span>LinkedIn</span></a></li>
-          <li><a href="/now/"><span class="emoji">⏳ </span><span>What I'm doing now</span></a></li>
-          <li><a href="/links/"><span class="emoji">🔗 </span><span>Links of interest</span></a></li>
-          <li><a href="/uses/"><span class="emoji">⌨️ </span><span>Things I use</span></a></li>
-        </ul>
-      </section>
-      <section>
-        <h2>Recent Notes &amp; Web Tools</h2>
-        <ul class="blog-listing">
-          {{range $index, $page := .Site.RecentPages}}{{if lt $index 12}}
-          <li><a href="{{$page.Route}}">{{pageTitle $page}}</a>{{with $page.Date}}<span class="article-separator"> • </span><time>{{date .}}</time>{{end}}</li>
-          {{end}}{{end}}
-        </ul>
-      </section>
-    </div>
-    <section id="about">
-      <h2>About this site</h2>
-      <p>This is a small collection of things I want to archive, reference, or show others. It's also constantly 🚧 <b>under construction</b> 🚧 as a playground for Zola, HTML/CSS, design principles, and CI/CD with GitHub Actions. As of July, my stylesheet has just been rebuilt from scratch. <a href="/todo">Here's what's next.</a></p>
-      <p>Much of the content here once resided in rougher form on <a href="/archive/sdx1/">sdx1.net</a>.</p>
-    </section>
-  </article>
+	<article class="landing">
+		<h1 class="title" id="title">Hello!</h1>
+		<p>I’m Wesley Deal, a technology enthusiast and sysadmin.
+		<div class="landing-link-container">
+			<section class="sitebuttons">
+				<h2>Quick Links</h2>
+				<ul>
+					<li><a href="/resume/"><span class="emoji">📄 </span><span>Resume</span></a></li>
+					<li><a href="https://github.com/wesleydeal"><span class="emoji">👨🏻‍💻 </span><span>GitHub</span></a></li>
+					<li><a href="https://linkedin.com/in/wesley-deal"><span class="emoji">🏢 </span><span>LinkedIn</span></a></li>
+					<li><a href="/now/"><span class="emoji">⏳ </span><span>What I'm doing now</span></a></li>
+					<li><a href="/links/"><span class="emoji">🔗 </span><span>Links of interest</span></a></li>
+					<li><a href="/uses/"><span class="emoji">⌨️ </span><span>Things I use</span></a></li>
+				</ul>
+			</section>
+			<section>
+				<h2>Recent Notes &amp; Web Tools</h2>
+				<ul class="blog-listing">
+					{{range $index, $page := .Site.RecentPages}}{{if lt $index 12}}
+					<li><a href="{{$page.Route}}">{{pageTitle $page}}</a>{{with $page.Date}}<span class="article-separator"> • </span><time>{{date .}}</time>{{end}}</li>
+					{{end}}{{end}}
+				</ul>
+			</section>
+		</div>
+		<section id="about">
+			<h2>About this site</h2>
+			<p>This is a small collection of things I want to archive, reference, or show others. It's also constantly 🚧 <b>under construction</b> 🚧 as a playground for Zola, HTML/CSS, design principles, and CI/CD with GitHub Actions. As of July, my stylesheet has just been rebuilt from scratch. <a href="/todo">Here's what's next.</a></p>
+			<p>Much of the content here once resided in rougher form on <a href="/archive/sdx1/">sdx1.net</a>.</p>
+		</section>
+	</article>
 </main>
 <script>
 	const hour = (new Date()).getHours();

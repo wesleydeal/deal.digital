@@ -17,7 +17,6 @@ import (
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting/v2"
-	ast "github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	renderhtml "github.com/yuin/goldmark/renderer/html"
@@ -42,7 +41,10 @@ type templateData struct {
 	BuildTime    time.Time
 }
 
-var tagRE = regexp.MustCompile(`<[^>]+>`)
+var (
+	tagRE        = regexp.MustCompile(`<[^>]+>`)
+	headingHTMLR = regexp.MustCompile(`(?s)<h([2-6]) id="([^"]+)">(.*?)</h[2-6]>`)
+)
 
 var (
 	inlineMarkdownOnce sync.Once
@@ -162,54 +164,35 @@ func (r *Renderer) renderMarkdown(input string, depth int) (string, []Heading, s
 	}
 
 	html := buf.String()
-	headings := extractHeadings(doc, source)
+	html = addHeadingAnchors(html)
+	headings := extractHeadingsFromHTML(html)
 	plain := collapseWhitespace(stripTags(html))
 	return html, headings, plain, nil
 }
 
-func extractHeadings(doc ast.Node, source []byte) []Heading {
-	headings := []Heading{}
-	used := map[string]int{}
-	ast.Walk(doc, func(node ast.Node, entering bool) (ast.WalkStatus, error) {
-		if !entering {
-			return ast.WalkContinue, nil
-		}
-		heading, ok := node.(*ast.Heading)
-		if !ok || heading.Level < 2 || heading.Level > 3 {
-			return ast.WalkContinue, nil
-		}
-
-		title := extractText(node, source)
-		if title == "" {
-			return ast.WalkContinue, nil
-		}
-		id := slugify(title)
-		if used[id] > 0 {
-			id = id + "-" + strconv.Itoa(used[id]+1)
-		}
-		used[id]++
-		headings = append(headings, Heading{
-			Level: heading.Level,
-			ID:    id,
-			Title: title,
-		})
-		return ast.WalkContinue, nil
-	})
-	return headings
+func addHeadingAnchors(input string) string {
+	return headingHTMLR.ReplaceAllString(input, `<h$1 id="$2"><a class="anchor" href="#$2" aria-label="Anchor link for: $2">#</a>$3</h$1>`)
 }
 
-func extractText(node ast.Node, source []byte) string {
-	var parts []string
-	ast.Walk(node, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
-		if !entering {
-			return ast.WalkContinue, nil
+func extractHeadingsFromHTML(input string) []Heading {
+	headings := []Heading{}
+	for _, match := range headingHTMLR.FindAllStringSubmatch(input, -1) {
+		level, err := strconv.Atoi(match[1])
+		if err != nil || level != 2 {
+			continue
 		}
-		if textNode, ok := n.(*ast.Text); ok {
-			parts = append(parts, string(textNode.Segment.Value(source)))
+		title := collapseWhitespace(stripTags(match[3]))
+		if title == "" {
+			continue
 		}
-		return ast.WalkContinue, nil
-	})
-	return collapseWhitespace(strings.Join(parts, " "))
+		title = strings.TrimPrefix(title, "# ")
+		headings = append(headings, Heading{
+			Level: level,
+			ID:    match[2],
+			Title: title,
+		})
+	}
+	return headings
 }
 
 func stripTags(v string) string {

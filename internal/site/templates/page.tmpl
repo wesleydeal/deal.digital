@@ -2,17 +2,17 @@
 {{template "chrome_start" .}}
 {{template "toc" .}}
 <main class="content">
-  <article>
-    <h1>{{.Page.Title}}{{with extraString .Page.Extra "subtitle"}}<small>{{inlineMarkdown .}}</small>{{end}}</h1>
-    {{.Page.HTML}}
-    {{if or .Page.Date .Page.Updated}}
-    <p>
-      {{if .Page.Date}}written <time>{{date .Page.Date}}</time>{{end}}
-      {{if and .Page.Date .Page.Updated}} · {{end}}
-      {{if .Page.Updated}}updated <time>{{date .Page.Updated}}</time>{{end}}
-    </p>
-    {{end}}
-  </article>
+	<article id="content">
+		<h1>{{.Page.Title}}{{with extraString .Page.Extra "subtitle"}}<small>{{inlineMarkdown .}}</small>{{end}}</h1>
+		{{.Page.HTML}}
+		{{if or .Page.Date .Page.Updated}}
+		<p>
+			{{if .Page.Date}}written <time>{{date .Page.Date}}</time>{{end}}
+			{{if and .Page.Date .Page.Updated}} · {{end}}
+			{{if .Page.Updated}}updated <time>{{date .Page.Updated}}</time>{{end}}
+		</p>
+		{{end}}
+	</article>
 </main>
 {{template "chrome_end" .}}
 {{end}}
