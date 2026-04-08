@@ -6,5 +6,7 @@
 		reverse_proxy {$CMS_UPSTREAM:127.0.0.1:8080}
 	}
 
-	file_server precompressed br zstd gzip
+	file_server {
+		precompressed br zstd gzip
+	}
 }
