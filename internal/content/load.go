@@ -189,6 +189,7 @@ func parseMarkdownDocument(fullPath, relative string) (rawDocument, error) {
 	}
 
 	text := strings.ReplaceAll(string(data), "\r\n", "\n")
+	text = strings.TrimPrefix(text, "\uFEFF")
 	body := text
 	front := FrontMatter{Taxonomies: map[string][]string{}, Extra: map[string]any{}}
 	if strings.HasPrefix(text, "+++\n") {
