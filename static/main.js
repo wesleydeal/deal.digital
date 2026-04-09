@@ -1,6 +1,7 @@
 // STATE -------------------------------------------
 const root = document.documentElement;
 const imageExtensions = new Set(["svg", "png", "jpg", "jfif", "gif", "webp", "avif"]);
+const absoluteURLPattern = /^[a-z][a-z\d+.-]*:/i;
 
 const state = {
 	fuse: null,
@@ -12,6 +13,7 @@ const state = {
 	globalEventsBound: false,
 	muInitialized: false,
 	pendingMuDocument: null,
+	pendingMuDocumentURL: null,
 };
 
 // HELPERS -----------------------------------------
@@ -55,6 +57,60 @@ const SEARCH_HELP_HTML = `
 
 function isInternalURL(url) {
 	return url.origin === window.location.origin;
+}
+
+function toSiteURL(path) {
+	return new URL(path, window.location.href);
+}
+
+function toSitePath(url) {
+	return isInternalURL(url) ? `${url.pathname}${url.search}${url.hash}` : url.toString();
+}
+
+function resolveRelativeURL(value, baseURL) {
+	const trimmed = value.trim();
+	if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("/") || trimmed.startsWith("//") || absoluteURLPattern.test(trimmed)) {
+		return value;
+	}
+
+	try {
+		return toSitePath(new URL(trimmed, baseURL));
+	} catch {
+		return value;
+	}
+}
+
+function resolveRelativeSrcset(value, baseURL) {
+	return value.split(",").map((candidate) => {
+		const trimmed = candidate.trim();
+		if (!trimmed) {
+			return trimmed;
+		}
+
+		const [url, ...descriptor] = trimmed.split(/\s+/);
+		const resolvedURL = resolveRelativeURL(url, baseURL);
+		return descriptor.length > 0 ? `${resolvedURL} ${descriptor.join(" ")}` : resolvedURL;
+	}).join(", ");
+}
+
+function normalizeMediaURLs(scope, baseURL) {
+	if (!scope || !baseURL) {
+		return;
+	}
+
+	for (const element of scope.querySelectorAll("img[src], img[srcset], source[src], source[srcset], video[poster]")) {
+		if (element.hasAttribute("src")) {
+			element.setAttribute("src", resolveRelativeURL(element.getAttribute("src"), baseURL));
+		}
+
+		if (element.hasAttribute("srcset")) {
+			element.setAttribute("srcset", resolveRelativeSrcset(element.getAttribute("srcset"), baseURL));
+		}
+
+		if (element.hasAttribute("poster")) {
+			element.setAttribute("poster", resolveRelativeURL(element.getAttribute("poster"), baseURL));
+		}
+	}
 }
 
 function setURLQuery(key, value) {
@@ -139,7 +195,7 @@ function initializeMu() {
 }
 
 function navigateTo(path) {
-	const url = new URL(path, window.location.href);
+	const url = toSiteURL(path);
 	if (!isInternalURL(url) || !window.mu || typeof window.mu.load !== "function") {
 		window.location.assign(url.toString());
 		return;
@@ -919,16 +975,20 @@ function handleKeyDown(event) {
 function handleMuBeforeRender(event) {
 	if (!event.detail?.html || event.detail.mode === "patch") {
 		state.pendingMuDocument = null;
+		state.pendingMuDocumentURL = null;
 		return;
 	}
 
 	state.pendingMuDocument = parseHTML(event.detail.html);
+	state.pendingMuDocumentURL = toSiteURL(event.detail.finalUrl || event.detail.url || window.location.href);
 }
 
 function handleMuAfterRender() {
 	if (state.pendingMuDocument) {
 		syncDocumentChrome(state.pendingMuDocument);
+		normalizeMediaURLs(document.body, state.pendingMuDocumentURL);
 		state.pendingMuDocument = null;
+		state.pendingMuDocumentURL = null;
 	}
 
 	initializePageContent();
