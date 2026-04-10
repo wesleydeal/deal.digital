@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{documentTitle .}}</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <style>
 *, *:before, *:after {box-sizing: border-box;}
 :root {
@@ -185,15 +186,15 @@ footer hr{ display: none }
 {{define "chrome_end"}}
 <footer>
 	<hr>
-	<p>deal.digital v2025 ({{or (extraString .Site.Config.Extra "stylesheet") "concourse"}}) // UNDER ACTIVE DEVELOPMENT
-	<p>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.
+	<p>deal.digital v2026 "mosaic"
+	<p><i>No rights reserved, except by respective authors of imported and referenced materials. Swim at your own risk: this software and information are provided as-is with no warranty or guarantee, express or implied.</i>
 	<p>% show system-information
 	<dl>
 		<dt>Build</dt>
-		<dd>Rendered {{.BuildTime.Format "2006-01-02 15:04:05 MST"}} with my own Go-based CMS, served through Caddy. <a href="{{sourceURL .Page .Section}}">View source here</a>.</dd>
+		<dd>Rendered {{.BuildTime.Format "2006-01-02 15:04:05 MST"}} with my own Go-based CMS, served through Caddy. <a href="{{sourceURL .Page .Section}}">[View source]</a></dd>
 
-		<dt>Fonts</dt>
-		<dd>Headings set in <a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a>.</dd>
+		<dt>Typefaces</dt>
+		<dd><a href="https://github.com/Instrument/instrument-serif">Instrument Serif</a> and your machine's most suitable monospace and sans-serif.</dd>
 
 		<dt>Navigator</dt>
 		<dd>Uses <a href="https://www.fusejs.io/">Fuse.js</a> for fuzzy search.</dd>

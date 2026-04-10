@@ -27,14 +27,17 @@
 		</div>
 		<section id="about">
 			<h2>About this site</h2>
-			<p>This is a small collection of things I want to archive, reference, or show others. It's also constantly 🚧 <b>under construction</b> 🚧 as a playground for Zola, HTML/CSS, design principles, and CI/CD with GitHub Actions. As of July, my stylesheet has just been rebuilt from scratch. <a href="/todo">Here's what's next.</a></p>
-			<p>Much of the content here once resided in rougher form on <a href="/archive/sdx1/">sdx1.net</a>.</p>
+			<p>This is a small collection of things I want to archive, reference, or share. It's frequently 🚧 <b>under construction</b> 🚧 as a playground for web technologies, design principles, and CI/CD. Recently, I've moved from a static site built with Zola to a bespoke flatfile CMS built with Go and Caddy. <a href="/todo">Here's what's next.</a></p>
+			<p>Much of the content here once resided in rougher form on sdx1.net, which is <a href="/archive/sdx1/">archived here</a>.</p>
 		</section>
 	</article>
 </main>
 <script>
-	const hour = (new Date()).getHours();
-	function setProps(msg, color) {document.getElementById('title').innerText = 'Good ' + msg + '!'; document.documentElement.style.setProperty('--color-primary', color);}
+	hour = (new Date()).getHours();
+	function setProps(msg, color) {
+	    document.getElementById('title').innerText = 'Good ' + msg + '!';
+		window.setTimeout(() => document.documentElement.style.setProperty('--color-primary', color), 1);
+	}
 
 	if (hour > 22 || hour < 6) {
 		setProps("night", '#5b00d2');
