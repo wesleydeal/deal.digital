@@ -59,6 +59,12 @@ const SEARCH_HELP_HTML = `
 const isInternalURL = (url) => url.origin === window.location.origin;
 const toSiteURL = (path) => new URL(path, window.location.href);
 const toSitePath = (url) => isInternalURL(url) ? `${url.pathname}${url.search}${url.hash}` : url.toString();
+const isMuExcludedURL = (url) => isInternalURL(url) && (
+	url.pathname === "/resume" ||
+	url.pathname.startsWith("/resume/") ||
+	url.pathname === "/archive" ||
+	url.pathname.startsWith("/archive/")
+);
 
 function resolveRelativeURL(value, baseURL) {
   const t = value.trim();
@@ -99,6 +105,31 @@ function normalizeMediaURLs(scope, baseURL) {
 
 		if (element.hasAttribute("poster")) {
 			element.setAttribute("poster", resolveRelativeURL(element.getAttribute("poster"), baseURL));
+		}
+	}
+}
+
+function syncMuExcludedLinks(scope = document) {
+	if (!scope?.querySelectorAll) {
+		return;
+	}
+
+	for (const link of scope.querySelectorAll("a[href]")) {
+		const href = link.getAttribute("href");
+		if (!href) {
+			continue;
+		}
+
+		let url;
+		try {
+			url = new URL(href, window.location.href);
+		} catch {
+			continue;
+		}
+
+		if (isMuExcludedURL(url)) {
+			link.setAttribute("mu-disabled", "");
+			link.removeAttribute("data-mu");
 		}
 	}
 }
@@ -186,7 +217,7 @@ function initializeMu() {
 
 function navigateTo(path) {
 	const url = toSiteURL(path);
-	if (!isInternalURL(url) || !window.mu || typeof window.mu.load !== "function") {
+	if (!isInternalURL(url) || isMuExcludedURL(url) || !window.mu || typeof window.mu.load !== "function") {
 		window.location.assign(url.toString());
 		return;
 	}
@@ -685,6 +716,11 @@ function buildSearchLink(provider, query, title, resultURL, foundKeyword) {
 		link.addEventListener("click", provider.action);
 	} else {
 		link.href = resultURL;
+		try {
+			if (isMuExcludedURL(new URL(resultURL, window.location.href))) {
+				link.setAttribute("mu-disabled", "");
+			}
+		} catch {}
 	}
 
 	const providerLabel = document.createElement("b");
@@ -981,6 +1017,7 @@ function handleMuAfterRender() {
 		state.pendingMuDocumentURL = null;
 	}
 
+	syncMuExcludedLinks();
 	initializePageContent();
 	updateTOCState();
 	syncSearchFromLocation();
@@ -1003,6 +1040,7 @@ function bindGlobalEvents() {
 // INIT --------------------------------------------
 function load() {
 	bindGlobalEvents();
+	syncMuExcludedLinks();
 	initializePageContent();
 	initializeMu();
 	updateTOCState();

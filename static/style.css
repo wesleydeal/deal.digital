@@ -1164,6 +1164,12 @@ kbd {
 	}
 }
 
+#mu-progress {
+    padding: 0;
+    background: linear-gradient(90deg in oklch, orangered, violet, aqua 50vw, lightgreen 100vw) !important;
+    transition: width 1s var(--ease-snap) !important;
+}
+
 @media screen and (width <= 700px) {
 	nav#topnav {
 		justify-content: center;
