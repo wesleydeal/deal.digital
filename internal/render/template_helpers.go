@@ -72,6 +72,13 @@ func showBreadcrumbs(site *content.Site, page *content.Page) bool {
 	return true
 }
 
+func primaryAuthor(page *content.Page) string {
+	if page == nil || len(page.Authors) == 0 {
+		return ""
+	}
+	return page.Authors[0]
+}
+
 func breadcrumbsHTML(site *content.Site, page *content.Page) template.HTML {
 	if !showBreadcrumbs(site, page) {
 		return ""

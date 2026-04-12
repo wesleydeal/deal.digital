@@ -5,12 +5,11 @@
 	<article id="content">
 		<h1>{{.Page.Title}}{{with extraString .Page.Extra "subtitle"}}<small>{{inlineMarkdown .}}</small>{{end}}</h1>
 		{{.Page.HTML}}
-		{{if or .Page.Date .Page.Updated}}
-		<p>
-			{{if .Page.Date}}written <time>{{date .Page.Date}}</time>{{end}}
-			{{if and .Page.Date .Page.Updated}} · {{end}}
-			{{if .Page.Updated}}updated <time>{{date .Page.Updated}}</time>{{end}}
-		</p>
+		{{if or (primaryAuthor .Page) .Page.Updated}}
+		<section class="article-signoff">
+			{{with primaryAuthor .Page}}<p class="author">—{{.}}</p>{{end}}
+			{{with .Page.Updated}}<p class="updated-at">updated <time>{{date .}}</time></p>{{end}}
+		</section>
 		{{end}}
 	</article>
 </main>
@@ -18,5 +17,20 @@
 {{end}}
 
 {{define "blog_page"}}
-{{template "page" .}}
+{{template "chrome_start" .}}
+{{template "toc" .}}
+<main class="content">
+	<article id="content">
+		<h1>{{.Page.Title}}{{with extraString .Page.Extra "subtitle"}}<small>{{inlineMarkdown .}}</small>{{end}}</h1>
+		{{.Page.HTML}}
+		{{if or (primaryAuthor .Page) .Page.Date .Page.Updated}}
+		<section class="article-signoff">
+			{{with primaryAuthor .Page}}<p class="author">—{{.}}</p>{{end}}
+			{{with .Page.Date}}<p class="created-at">written <time>{{date .}}</time></p>{{end}}
+			{{with .Page.Updated}}<p class="updated-at">updated <time>{{date .}}</time></p>{{end}}
+		</section>
+		{{end}}
+	</article>
+</main>
+{{template "chrome_end" .}}
 {{end}}

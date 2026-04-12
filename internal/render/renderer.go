@@ -73,6 +73,7 @@ func templateFuncs() template.FuncMap {
 		"documentTitle":   documentTitle,
 		"bodyID":          bodyID,
 		"showBreadcrumbs": showBreadcrumbs,
+		"primaryAuthor":   primaryAuthor,
 		"breadcrumbsHTML": breadcrumbsHTML,
 		"siteTreeHTML":    siteTreeHTML,
 		"sourceURL":       sourceURL,
