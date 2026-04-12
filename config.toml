@@ -3,9 +3,9 @@ title = "deal.digital"
 description = "Wesley Deal's Personal Site"
 default_language = "en"
 output_dir = "public"
-compile_sass = false
+#compile_sass = false
 build_search_index = true
-minify_html = false
+#minify_html = false
 
 author = "Wesley Deal"
 
@@ -16,29 +16,29 @@ taxonomies = [
 	{name = "tags", feed = true, render = false},
 ]
 
-[markdown]
-insert_anchor_links = "left"
-highlight_code = true
+#[markdown]
+#insert_anchor_links = "left"
+#highlight_code = true
 #highlight_theme = "ayu-mirage" # unused at thistime
-extra_syntaxes_and_themes = ["highlight_themes", "highlight_themes"]
-highlight_theme = "css"
-highlight_themes_css = [ # manually inlined into concourse.css
-	{ theme = "ayu-mirage", filename = "syntax-dark.css"  },
-	{ theme = "ayu-light",  filename = "syntax-light.css" },
+#extra_syntaxes_and_themes = ["highlight_themes", "highlight_themes"]
+#highlight_theme = "css"
+#highlight_themes_css = [ # manually inlined into concourse.css
+#	{ theme = "ayu-mirage", filename = "syntax-dark.css"  },
+#	{ theme = "ayu-light",  filename = "syntax-light.css" },
 #	{ theme = "Tomorrow",   filename = "syntax-light.css" },
 #	{ theme = "Tomorrow-Night-Blue", filename = "syntax-dark.css"},
 #	{ theme = "halcyon", filename = "syntax-dark.css" },
-]
-bottom_footnotes = true
+#]
+#bottom_footnotes = true
 #lazy_async_image = true (this breaks table of contents for some reason, TODO: investigate later)
-smart_punctuation = true
-definition_list = true
+#smart_punctuation = true
+#definition_list = true
 
-[slugify]
-paths = "on"
-taxonomies = "on"
-anchors = "on"
-paths_keep_dates = false
+#[slugify]
+#paths = "on"
+#taxonomies = "on"
+#anchors = "on"
+#paths_keep_dates = false
 
 [search]
 index_format = "fuse_json"
