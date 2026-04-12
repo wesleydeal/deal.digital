@@ -12,7 +12,7 @@ var (
 	inlineFitImagePattern   = regexp.MustCompile(`\{\{\s*fitimg\((.*?)\)\s*\}\}`)
 	inlineWavePattern       = regexp.MustCompile(`\{\{\s*wave\((.*?)\)\s*\}\}`)
 	blockquotePattern       = regexp.MustCompile(`(?s)\{%\s*blockquote\((.*?)\)\s*%\}(.*?)\{%\s*end\s*%\}`)
-	rawBlockPattern         = regexp.MustCompile(`(?s)\{%\s*raw\s*\(\s*\)\s*%\}(.*?)\{%\s*end\s*%\}`)
+	rawBlockPattern         = regexp.MustCompile(`(?s)\{%\s*raw(?:\s*\(\s*\))?\s*%\}(.*?)\{%\s*(?:end|endraw)\s*%\}`)
 	shortcodeArgument       = regexp.MustCompile(`([A-Za-z0-9_-]+)\s*=\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|[^,]+)`)
 	standalonePlaceholderRE = regexp.MustCompile(`(?m)<p>\s*(%%SHORTCODE_[0-9]+%%)\s*</p>`)
 )
@@ -52,7 +52,7 @@ func (r *Renderer) preprocessShortcodes(input string, depth int) string {
 
 	input = rawBlockPattern.ReplaceAllStringFunc(input, func(match string) string {
 		body := rawBlockPattern.FindStringSubmatch(match)[1]
-		return state.token(strings.TrimSpace(body))
+		return state.token(trimRawBlockBody(body))
 	})
 
 	input = blockquotePattern.ReplaceAllStringFunc(input, func(match string) string {
@@ -163,4 +163,12 @@ func cssDimension(raw string) string {
 
 func templateEscape(v string) string {
 	return "<p>" + html.EscapeString(v) + "</p>"
+}
+
+func trimRawBlockBody(body string) string {
+	body = strings.TrimPrefix(body, "\r\n")
+	body = strings.TrimPrefix(body, "\n")
+	body = strings.TrimSuffix(body, "\r\n")
+	body = strings.TrimSuffix(body, "\n")
+	return body
 }
