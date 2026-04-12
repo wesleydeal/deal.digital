@@ -55,29 +55,19 @@ const SEARCH_HELP_HTML = `
 	</div>
 `;
 
-function isInternalURL(url) {
-	return url.origin === window.location.origin;
-}
 
-function toSiteURL(path) {
-	return new URL(path, window.location.href);
-}
-
-function toSitePath(url) {
-	return isInternalURL(url) ? `${url.pathname}${url.search}${url.hash}` : url.toString();
-}
+const isInternalURL = (url) => url.origin === window.location.origin;
+const toSiteURL = (path) => new URL(path, window.location.href);
+const toSitePath = (url) => isInternalURL(url) ? `${url.pathname}${url.search}${url.hash}` : url.toString();
 
 function resolveRelativeURL(value, baseURL) {
-	const trimmed = value.trim();
-	if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("/") || trimmed.startsWith("//") || absoluteURLPattern.test(trimmed)) {
-		return value;
-	}
+  const t = value.trim();
 
-	try {
-		return toSitePath(new URL(trimmed, baseURL));
-	} catch {
-		return value;
-	}
+  if (t && !/^[#/]/.test(t) && !absoluteURLPattern.test(t)) {
+    try { return toSitePath(new URL(t, baseURL)); } catch {}
+  }
+
+  return value;
 }
 
 function resolveRelativeSrcset(value, baseURL) {
