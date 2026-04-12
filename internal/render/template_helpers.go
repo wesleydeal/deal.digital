@@ -32,6 +32,8 @@ func documentTitle(data templateData) string {
 		return data.Section.Title + " - Wesley Deal"
 	case data.Term != nil && data.Term.Name != "":
 		return data.Term.Name + " - Wesley Deal"
+	case data.Title != "":
+		return data.Title + " - Wesley Deal"
 	default:
 		return "Wesley Deal"
 	}

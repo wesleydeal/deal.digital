@@ -1,11 +1,11 @@
-{% extends "base.html" %}
-{% block content %}
-<style>:root{--color-primary: #ff0030}</style>
-<h1 class="title">
-	404 Not Found
-</h1>
-<p>My, look at the time.
-<pre style="border: none">
+{{define "404"}}
+{{template "chrome_start" .}}
+<main class="content">
+	<article id="content">
+		<style>:root{--color-primary: #ff0030}</style>
+		<h1>404 Not Found</h1>
+		<p>My, look at the time.</p>
+		<pre style="border: none">
         ,--.-----.--.
         |--|-----|--|
         |--|     |--|
@@ -28,5 +28,8 @@
         |--|     |--|
         |--|-----|--|
         `--'-----`--'
-</pre>
-{% endblock content %}
+		</pre>
+	</article>
+</main>
+{{template "chrome_end" .}}
+{{end}}

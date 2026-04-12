@@ -292,6 +292,20 @@ func (r *Renderer) RenderTaxonomyDocument(site *content.Site, _ string, term *co
 	return trimDocument(buf.Bytes()), nil
 }
 
+func (r *Renderer) RenderNotFoundDocument(site *content.Site) ([]byte, error) {
+	data := templateData{
+		Site:         site,
+		Title:        "404 Not Found",
+		CurrentRoute: "/404.html",
+		BuildTime:    site.BuildTime,
+	}
+	var buf bytes.Buffer
+	if err := r.templates.ExecuteTemplate(&buf, "404", data); err != nil {
+		return nil, err
+	}
+	return trimDocument(buf.Bytes()), nil
+}
+
 func WriteJSON(path string, value any) error {
 	data, err := json.MarshalIndent(value, "", "  ")
 	if err != nil {

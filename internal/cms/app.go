@@ -167,7 +167,11 @@ func (a *App) writeOutput(site *content.Site) (buildTiming, error) {
 	if err := render.WriteJSON(filepath.Join(a.opts.OutputDir, site.SearchIndexName), content.SearchDocuments(site)); err != nil {
 		return buildTiming{}, err
 	}
-	if err := writeNotFound(filepath.Join(a.opts.OutputDir, "404.html")); err != nil {
+	notFound, err := a.renderer.RenderNotFoundDocument(site)
+	if err != nil {
+		return buildTiming{}, err
+	}
+	if err := os.WriteFile(filepath.Join(a.opts.OutputDir, "404.html"), notFound, 0o644); err != nil {
 		return buildTiming{}, err
 	}
 
@@ -247,9 +251,4 @@ func copyFile(src, dst string) error {
 		return err
 	}
 	return os.Chtimes(dst, srcInfo.ModTime(), srcInfo.ModTime())
-}
-
-func writeNotFound(path string) error {
-	html := `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Not Found</title><style>body{font:16px/1.6 sans-serif;max-width:60rem;margin:4rem auto;padding:0 1rem}a{color:#056}</style><h1>404</h1><p>The page you asked for is not here.</p><p><a href="/">Return home</a></p></html>`
-	return os.WriteFile(path, []byte(html), 0o644)
 }
