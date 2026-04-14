@@ -37,19 +37,19 @@
 	--color-pop: oklch(from var(--color-primary) clamp(.77, l, .85) clamp(0.11, calc(c + .05), .27) calc(h - 180));
 	--color-pop-bgcontrast: light-dark(oklch(from var(--color-pop) 0.4 c h), var(--color-pop));
 	--bg: linear-gradient(90deg, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 80%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
-			repeating-linear-gradient(90deg in oklch, oklch(from var(--color-h1) l c h / 5%), #0000 5vw),
-			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l min(0.15,c) h / 15%), #0000 6vw),
+			repeating-linear-gradient(90deg in oklch, oklch(from var(--color-h1) l c h / 5%), #0000 48px),
+			repeating-linear-gradient(135deg in oklch, oklch(from var(--color-link-underline) l min(0.15,c) h / 15%), #0000 42px),
 			var(--color-bg);
 	--dark-bg: linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 85%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
 		conic-gradient(var(--color-bg) atan(2), #0000 0 calc(180deg - atan(2)), var(--color-bg) 0 180deg, #0000 0 calc(180deg + atan(2)), var(--color-bg) 0 calc(360deg - atan(2)), #0000 0) 0 0 / calc(2*var(--s)) var(--s),
 		linear-gradient(to right, color-mix(in oklch, oklch(from var(--color-primary) max(.75, l) c h), var(--color-bg) 65%), var(--color-bg)) 0 / var(--s);
-	--header-bg: linear-gradient(to bottom in oklch, #fff3, #fff1 50%, #0000 50%, #0001), linear-gradient(125deg in oklch, oklch(from var(--c) min(calc(l - .1), 0.6) c calc(h - (l * 10))), oklch(from var(--c) clamp(0, calc(l - .25), .3) c calc(h + (l * 10))));
+	--header-bg: linear-gradient(180deg, #fff3, #fff1 50%, #0000 50%, #0001), linear-gradient(125deg in oklab, oklch(from var(--c) min(calc(l - .1), 0.6) c calc(h - (l * 10))), 20%, oklch(from var(--c) clamp(0, calc(l - .25), .3) c calc(h + (l * 10))));
 	--button-shadow: inset 1px 1px 0 oklch(from var(--color-primary) 0.85 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.75 calc(c * .8) h);
 	--button-shadow-hover: inset 1px 1px 0 oklch(from var(--color-primary) 0.45 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.55 calc(c * .8) h);
 	--button-border: 1px solid oklch(from var(--color-pop) 0.2 0.1 h);
-	--button-overlay: linear-gradient(to bottom in oklch, #fff1, #fff2 50%, #0002 50%, transparent);
+	--button-overlay: linear-gradient(180deg, #fff1, #fff2 50%, #0002 50%, transparent);
 	--button-highlight-overlay:
-		linear-gradient(to right in oklch, #0000 -100%, #fff3, #0000 200%),
+		linear-gradient(90deg, #0000 -100%, #fff3, #0000 200%),
 		linear-gradient( #fff1, #fff2 50%, #0002 50%, #0000),
 		repeating-linear-gradient(135deg, #ffffff03 0 4px, #00000003 0 8px) 0 / calc(8px/sin(135deg)) 100%;
 
@@ -296,7 +296,7 @@ nav#toc {
 		border-radius: 0;
 		box-shadow: none;
 		border: none;
-		background: transparent;
+		background: linear-gradient(#0000,#0000), transparent;
 		border-bottom: 1px solid #fff9;
 		padding: 0.1em 0.15em;
 		transition: background 100ms ease-out;
@@ -309,7 +309,7 @@ nav#toc {
 			margin: 0 -0.15em;
 		}
 		&#btn_smaller b {
-			color: oklch(0.8024 0.1549 58.1);
+			color: oklch(0.8 0.16 58);
 			font-size: 0.9rem;
 			margin: 0 -0.15em;
 		}
@@ -351,7 +351,7 @@ nav#toc {
 		transform: scale(1);
 		transform-origin: center;
 		transform-style: preserve-3d;
-		transition: transform 200ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+		transition: transform 300ms var(--ease-snap);
 		&:hover:not(.zoomed) {
 			transform: perspective(200px) translateZ(5px);
 			outline: 2px solid var(--color-pop);
@@ -429,10 +429,6 @@ body>footer {
 		margin-left: auto;
 		margin-right: auto;
 	}
-	& .sitetree {
-		width: 100%;
-		display: block;
-	}
 	& a:any-link {
 	    color: inherit;
 		text-shadow: inherit;
@@ -453,15 +449,20 @@ body>footer {
 	}
 	& dd {
 		text-align: left;
-		margin-left: 1ch;
+		margin-left: 2ch;
+		margin-top: 0.25em;
 	}
 	& dt {
-		font-weight: bold;
+		font-weight: normal;
 		&::after {
 			content: ':';
 			font-weight: normal;
 		}
 		margin-top: 1em;
+	}
+	& ::selection{
+	    color: #000;
+		background: var(--c);
 	}
 }
 
