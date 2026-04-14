@@ -43,7 +43,7 @@
 	--dark-bg: linear-gradient(to right, #0000 min(0%, calc(50% - 500px)), oklch(from var(--color-bg) l c h / 85%) max(calc(50% - (var(--text-width) / 2)), 10vw) min(calc(50% + (var(--text-width) / 2)), 90vw), #0000 max(calc(50% + 500px), 100%)),
 		conic-gradient(var(--color-bg) atan(2), #0000 0 calc(180deg - atan(2)), var(--color-bg) 0 180deg, #0000 0 calc(180deg + atan(2)), var(--color-bg) 0 calc(360deg - atan(2)), #0000 0) 0 0 / calc(2*var(--s)) var(--s),
 		linear-gradient(to right, color-mix(in oklch, oklch(from var(--color-primary) max(.75, l) c h), var(--color-bg) 65%), var(--color-bg)) 0 / var(--s);
-	--header-bg: linear-gradient(180deg, #fff3, #fff1 50%, #0000 50%, #0001), linear-gradient(125deg in oklab, oklch(from var(--c) min(calc(l - .1), 0.6) c calc(h - (l * 10))), 20%, oklch(from var(--c) clamp(0, calc(l - .25), .3) c calc(h + (l * 10))));
+	--header-bg: linear-gradient(180deg, #fff3, #fff1 50%, #0000 50%, #0001), linear-gradient(125deg in oklab, oklch(from var(--c) min(calc(l - .1), 0.6) c calc(h - (l * 10))), 40%, oklch(from var(--c) clamp(0, calc(l - .25), .3) c calc(h + (l * 10))));
 	--button-shadow: inset 1px 1px 0 oklch(from var(--color-primary) 0.85 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.75 calc(c * .8) h);
 	--button-shadow-hover: inset 1px 1px 0 oklch(from var(--color-primary) 0.45 calc(c * .8) h), inset -1px -1px 0 oklch(from var(--color-primary) 0.55 calc(c * .8) h);
 	--button-border: 1px solid oklch(from var(--color-pop) 0.2 0.1 h);
@@ -333,11 +333,6 @@ nav#toc {
 		margin-left: auto;
 		margin-right: auto;
 	}
-	& h1 {
-		max-width: 1200px;
-		text-align: center;
-		text-wrap: balance;
-	}
 	& img {
 		max-width: 100%;
 		height: auto;
@@ -504,6 +499,11 @@ h1 {
 	max-width: 24ch;
 	margin: 0.5em 0 0.25em;
 	text-shadow: 2px 2px 0 oklch(from var(--color-tinted-shadow) l c h / 15%);
+	&:first-child {
+	    text-wrap: balance;
+		max-width: 1200px;
+		text-align: center;
+	}
 	& small {
 		display: block;
 		font: italic normal 1.5rem/1.2 var(--typeface-display);
@@ -869,7 +869,7 @@ kbd {
 	gap: 6px;
 	flex-wrap: wrap;
 	max-width: var(--text-width);
-	font-size: 1.33em;
+	font-size: 1.4em;
 	li {
 		display: flex;
 		flex: 1 1 max-content;
@@ -1188,7 +1188,7 @@ kbd {
 	body>footer {
 		font-size: 1em !important;
 	}
-	section#content>h1 {
+	section.content>h1 {
 		letter-spacing: -0.02em;
 		& small {
 			padding-top: 0.1em;

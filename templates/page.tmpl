@@ -2,16 +2,14 @@
 {{template "chrome_start" .}}
 {{template "toc" .}}
 <main class="content">
-	<article id="content">
-		<h1>{{.Page.Title}}{{with extraString .Page.Extra "subtitle"}}<small>{{inlineMarkdown .}}</small>{{end}}</h1>
-		{{.Page.HTML}}
-		{{if or (primaryAuthor .Page) .Page.Updated}}
-		<section class="article-signoff">
-			{{with primaryAuthor .Page}}<p class="author">—{{.}}</p>{{end}}
-			{{with .Page.Updated}}<p class="updated-at">updated <time>{{date .}}</time></p>{{end}}
-		</section>
-		{{end}}
-	</article>
+	<h1>{{.Page.Title}}{{with extraString .Page.Extra "subtitle"}}<small>{{inlineMarkdown .}}</small>{{end}}</h1>
+	{{.Page.HTML}}
+	{{if or (primaryAuthor .Page) .Page.Updated}}
+	<section class="article-signoff">
+		{{with primaryAuthor .Page}}<p class="author">—{{.}}</p>{{end}}
+		{{with .Page.Updated}}<p class="updated-at">updated <time>{{date .}}</time></p>{{end}}
+	</section>
+	{{end}}
 </main>
 {{template "chrome_end" .}}
 {{end}}
