@@ -996,18 +996,6 @@ function initializePageContent() {
 	}
 }
 
-function syncSearchFromLocation({ allowInstant = false } = {}) {
-	const query = currentURL().searchParams.get("q");
-	if (!query) {
-		return;
-	}
-
-	openSearch(query);
-	if (allowInstant) {
-		document.querySelector("a.search-link.instant")?.click?.();
-	}
-}
-
 function toggleTheme() {
 	const currentDarkMode = getComputedStyle(document.body).getPropertyValue("color") === "rgb(255, 255, 255)";
 	root.classList.add(currentDarkMode ? "light" : "dark");
