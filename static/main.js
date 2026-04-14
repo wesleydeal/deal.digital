@@ -1,19 +1,13 @@
 // STATE -------------------------------------------
 const root = document.documentElement;
 const imageExtensions = new Set(["svg", "png", "jpg", "jfif", "gif", "webp", "avif"]);
-const absoluteURLPattern = /^[a-z][a-z\d+.-]*:/i;
 
 const state = {
-	fuse: null,
-	fusePromise: null,
-	searchWindowPos: null,
-	searchDrag: [],
 	soundPlayers: {},
-	searchShortcutRegistry: Object.create(null),
+	searchUI: null,
+	searchPromise: null,
 	globalEventsBound: false,
-	muInitialized: false,
-	pendingMuDocument: null,
-	pendingMuDocumentURL: null,
+	pendingMu: null,
 };
 
 // HELPERS -----------------------------------------
@@ -21,93 +15,758 @@ const byId = (id) => document.getElementById(id);
 const currentContent = () => document.querySelector(".content");
 const currentURL = () => new URL(window.location.href);
 const parseHTML = (html) => new DOMParser().parseFromString(html, "text/html");
-const plusQuery = (query) => encodeURIComponent(query).replaceAll("%20", "+");
-const SEARCH_RESULT_LIMIT = 11;
-const SEARCH_SHELL_HTML = `
-	<div id="search-container">
-		<div id="search-titlebar">
-			<label for="search-box"><b>Navigator</b> <i>alpha one</i></label>
-			<div class="window-buttons">
-				<button id="search-min" aria-label="Minimize Navigator"></button>
-				<button id="search-max" aria-label="Maximize Navigator"></button>
-				<button id="search-close" aria-label="Close Navigator"></button>
-			</div>
-		</div>
-		<div id="search-inner">
-			<input id="search-box" type="text" placeholder="Type to search 🧭" autocomplete="off">
-		</div>
-	</div>
-`;
-const SEARCH_HELP_HTML = `
-	<menu id="search-results"></menu>
-	<div id="search-help">
-		<p>Press <kbd>/</kbd> to open and <kbd>Esc</kbd> to clear or close.
-		<h2>!keywords</h2>
-		<ul id="search-keyword-list"></ul>
-		<h2>Examples</h2>
-		<ul>
-			<li><a href="#" onclick="document.documentElement.style.setProperty('--color-primary', 'aquamarine')">color aquamarine</a>
-			<li><a href="https://www.ebay.com/sch/i.html?_nkw=+ibm+model+m+(bolt%2Cscrew)+(mod%2Cmodded)">eb ibm model m (bolt,screw) (mod,modded)</a>
-			<li><a href="https://youtube.com/results?search_query=+moments+with+heavy+french+toast">yt moments with heavy french toast</a>
-			<li><a href="https://chatgpt.com/?q=where+can+I+get+a+good+asada+burrito+nearby+">where can I get a good asada burrito nearby !gpt</a>
-			<li><a href="https://annas-archive.org/search?q=mike+ma">mike ma !an</a>
-		</ul>
-	</div>
-`;
 
+// NAVIGATION --------------------------------------
+var mu = window.mu || new function() {
+	this._lastUrl = null;
+	this._prevUrl = null;
+	this._abortCtrl = null;
+	this._bar = null;
+	this._prefetch = new Map();
+	this._hoverTimer = null;
+	this._prefetchTtl = 3000;
+	this._confirmQuit = false;
+	this._leaveText = "Are you sure you want to leave this page?";
+	this._jsIncludes = {};
+	this._morph = null;
+	this._initialized = false;
+
+	this._newCfg = function() {
+		return ({
+			history: true,
+			mode: "replace",
+			target: "body",
+			source: "body",
+			scroll: null,
+		});
+	};
+	this.init = function() {
+		if (!mu._morph && typeof window.Idiomorph !== "undefined" && typeof window.Idiomorph.morph === "function") {
+			mu._morph = function(target, html, opts) {
+				window.Idiomorph.morph(target, html, opts);
+			};
+		}
+		var existingScripts = document.querySelectorAll("script[src]");
+		for (var i = 0; i < existingScripts.length; i++)
+			mu._jsIncludes[existingScripts[i].getAttribute("src")] = true;
+		if (!mu._initialized) {
+			document.addEventListener("click", mu._onClick);
+			document.addEventListener("submit", mu._onSubmit);
+			document.addEventListener("mouseover", mu._onMouseOver);
+			document.addEventListener("mouseout", mu._onMouseOut);
+			document.addEventListener("input", mu._onInput);
+			window.addEventListener("popstate", mu._onPopState);
+			window.addEventListener("beforeunload", mu._onBeforeUnload);
+			mu._initialized = true;
+		}
+		window.history.replaceState({ mu: true, url: location.pathname + location.search }, "", location.pathname + location.search);
+		mu._initTriggers(document.body);
+		mu._emit("mu:init", { url: location.pathname + location.search });
+	};
+
+	this.load = function(url) {
+		mu._loadExec(mu._resolveUrl(url) || url, mu._newCfg());
+	};
+	this._attr = function(el, name) {
+		return (el.getAttribute("mu-" + name));
+	};
+	this._attrBool = function(el, name, fallback) {
+		var v = mu._attr(el, name);
+		if (v === null)
+			return (fallback);
+		if (v === "" || v === "true")
+			return (true);
+		if (v === "false")
+			return (false);
+		return (fallback);
+	};
+
+	this._resolveTarget = function(selector, sourceEl) {
+		if (!selector || selector.indexOf("&") === -1 || !sourceEl)
+			return (selector);
+		if (!sourceEl.id)
+			sourceEl.id = "mu-" + Math.random().toString(36).slice(2);
+		return (selector.replace(/&/g, "#" + sourceEl.id));
+	};
+
+	this._resolveUrl = function(url) {
+		if (!url || url.charAt(0) === "#")
+			return (null);
+		if (url.charAt(0) === "/" && url.charAt(1) !== "/")
+			return (url);
+		try {
+			var parsed = new URL(url, document.baseURI);
+			if (parsed.origin === window.location.origin)
+				return (parsed.pathname + parsed.search + parsed.hash);
+		} catch(e) {}
+		return (null);
+	};
+	this._isHtmlUrl = function(url) {
+		var path = url.split("#")[0].split("?")[0];
+		var leaf = path.substring(path.lastIndexOf("/") + 1);
+		var dot = leaf.lastIndexOf(".");
+		return (dot === -1 || /html?$/i.test(leaf.substring(dot + 1)));
+	};
+	this._resolveMediaUrl = function(value, baseURL) {
+		var t = value.trim();
+		if (t && !/^[#/]/.test(t) && !/^[a-z][a-z\d+.-]*:/i.test(t)) {
+			try {
+				var resolved = new URL(t, baseURL);
+				return (resolved.origin === window.location.origin ? resolved.pathname + resolved.search + resolved.hash : resolved.toString());
+			} catch {}
+		}
+		return (value);
+	};
+	this._resolveMediaSrcset = function(value, baseURL) {
+		return (value.split(",").map(function(candidate) {
+			var trimmed = candidate.trim();
+			if (!trimmed)
+				return (trimmed);
+			var parts = trimmed.split(/\s+/);
+			var resolved = mu._resolveMediaUrl(parts[0], baseURL);
+			return (parts.length > 1 ? resolved + " " + parts.slice(1).join(" ") : resolved);
+		}).join(", "));
+	};
+	this._normalizeMedia = function(scope, baseURL) {
+		if (!scope || !baseURL)
+			return;
+		var els = scope.querySelectorAll("img[src], img[srcset], source[src], source[srcset], video[poster]");
+		for (var i = 0; i < els.length; i++) {
+			if (els[i].hasAttribute("src"))
+				els[i].setAttribute("src", mu._resolveMediaUrl(els[i].getAttribute("src"), baseURL));
+			if (els[i].hasAttribute("srcset"))
+				els[i].setAttribute("srcset", mu._resolveMediaSrcset(els[i].getAttribute("srcset"), baseURL));
+			if (els[i].hasAttribute("poster"))
+				els[i].setAttribute("poster", mu._resolveMediaUrl(els[i].getAttribute("poster"), baseURL));
+		}
+	};
+
+	this._shouldProcess = function(el) {
+		if (mu._attr(el, "disabled") === "true" || mu._attr(el, "disabled") === "")
+			return (false);
+		if (el.hasAttribute("target") || el.hasAttribute("download"))
+			return (false);
+		if ((el.tagName === "A" && el.hasAttribute("onclick")) || (el.tagName === "FORM" && el.hasAttribute("onsubmit")))
+			return (false);
+		var url = mu._resolveUrl(mu._attr(el, "url") || el.getAttribute("href") || el.getAttribute("action") || "");
+		return (url !== null && (el.tagName !== "A" || mu._isHtmlUrl(url)));
+	};
+
+	this._elemCfg = function(el) {
+		var cfg = mu._newCfg();
+		var v;
+		if ((v = mu._attr(el, "mode")) !== null)
+			cfg.mode = v;
+		if ((v = mu._attr(el, "target")) !== null)
+			cfg.target = v;
+		if ((v = mu._attr(el, "source")) !== null)
+			cfg.source = v;
+		if ((v = mu._attr(el, "url")) !== null)
+			cfg._url = v;
+		cfg.history = mu._attrBool(el, "history", cfg.history);
+		cfg.scroll = mu._attrBool(el, "scroll", cfg.scroll);
+		if ((v = mu._attr(el, "method")) !== null)
+			cfg.method = v.toLowerCase();
+		cfg.confirm = mu._attr(el, "confirm");
+		cfg.patchHistory = mu._attrBool(el, "patch-history", false);
+		if (cfg.mode !== "replace" && cfg.mode !== "update" && cfg.mode !== "patch") {
+			if (mu._attr(el, "history") === null)
+				cfg.history = false;
+			if (mu._attr(el, "scroll") === null && cfg.scroll === null)
+				cfg.scroll = false;
+		}
+		return (cfg);
+	};
+
+	this._copyScript = function(node) {
+		var s = document.createElement("script");
+		for (var j = 0; j < node.attributes.length; j++)
+			s.setAttribute(node.attributes[j].name, node.attributes[j].value);
+		s.textContent = node.textContent;
+		return (s);
+	};
+
+	this._onClick = function(e) {
+		var el = e.target.closest("[mu-url], a");
+		if (!el || !mu._shouldProcess(el))
+			return;
+		if (mu._getTrigger(el) !== "click")
+			return;
+		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)
+			return;
+		e.preventDefault();
+		mu._triggerAction(el, true);
+	};
+	this._onSubmit = function(e) {
+		var form = e.target.closest("form");
+		if (!form || !mu._shouldProcess(form))
+			return;
+		if (mu._getTrigger(form) !== "submit")
+			return;
+		if (!form.reportValidity())
+			return;
+		var validator = mu._attr(form, "validate");
+		if (validator && typeof window[validator] === "function" && !window[validator](form))
+			return;
+		var cfg = mu._elemCfg(form);
+		var method = cfg.method || (form.getAttribute("method") || "get").toLowerCase();
+		cfg.method = method;
+		var url = mu._resolveUrl(cfg._url || form.getAttribute("action"));
+		if (!url)
+			return;
+		cfg._el = form;
+		e.preventDefault();
+		var formData = new FormData(form);
+		var submitter = e.submitter;
+		if (submitter && submitter.form === form && submitter.name)
+			formData.append(submitter.name, submitter.value || "");
+		if (method === "get") {
+			var qs = new URLSearchParams(formData).toString();
+			url = url + "?" + qs;
+		} else {
+			cfg.postData = form.enctype === "multipart/form-data" ? formData : new URLSearchParams(formData);
+			if (mu._attr(form, "history") === null)
+				cfg.history = false;
+			if (cfg.scroll === null && cfg.mode !== "patch")
+				cfg.scroll = true;
+		}
+		mu._confirmQuit = false;
+		mu._loadExec(url, cfg);
+	};
+	this._onInput = function(e) {
+		if (e.target.closest("form[mu-confirm-quit]"))
+			mu._confirmQuit = true;
+	};
+	this._onMouseOver = function(e) {
+		var el = e.target.closest("[mu-url], a");
+		if (!el || !mu._shouldProcess(el))
+			return;
+		if (mu._getTrigger(el) !== "click")
+			return;
+		var method = mu._attr(el, "method");
+		if (method && method.toLowerCase() !== "get")
+			return;
+		if (mu._attrBool(el, "prefetch", true) === false)
+			return;
+		var url = mu._resolveUrl(mu._attr(el, "url") || el.getAttribute("href"));
+		if (!url)
+			return;
+		var existing = mu._prefetch.get(url);
+		if (existing && (Date.now() - existing.ts) < mu._prefetchTtl)
+			return;
+		if (url === location.pathname + location.search)
+			return;
+		clearTimeout(mu._hoverTimer);
+		mu._hoverTimer = setTimeout(function() {
+			mu._hoverTimer = null;
+			var cached = mu._prefetch.get(url);
+			if (cached && (Date.now() - cached.ts) < mu._prefetchTtl)
+				return;
+			var promise = fetch(url, {
+				headers: { "X-Requested-With": "XMLHttpRequest", "X-Mu-Prefetch": "1" }
+			})
+			.then(function(r) { return (r.ok ? r.text() : null); })
+			.catch(function() { return (null); });
+			mu._prefetch.set(url, { promise: promise, ts: Date.now() });
+		}, 50);
+	};
+	this._onMouseOut = function() {
+		if (mu._hoverTimer) {
+			clearTimeout(mu._hoverTimer);
+			mu._hoverTimer = null;
+		}
+	};
+	this._onPopState = function(e) {
+		var state = e.state;
+		if (!state || !state.mu)
+			return;
+		var cfg = mu._newCfg();
+		cfg.history = false;
+		cfg.scroll = false;
+		cfg._popstate = true;
+		cfg._scrollPos = state.scrollX !== undefined ? { x: state.scrollX, y: state.scrollY } : null;
+		mu._loadExec(state.url, cfg);
+	};
+	this._onBeforeUnload = function(e) {
+		if (mu._confirmQuit) {
+			e.preventDefault();
+			e.returnValue = mu._leaveText;
+		}
+	};
+
+	this._getTrigger = function(el) {
+		var t = mu._attr(el, "trigger");
+		if (t)
+			return (t);
+		t = el.tagName;
+		if (t === "FORM")
+			return ("submit");
+		if (t === "INPUT" || t === "TEXTAREA" || t === "SELECT")
+			return ("change");
+		return ("click");
+	};
+	this._debounce = function(fn, delay) {
+		var timer = null;
+		return function() {
+			clearTimeout(timer);
+			timer = setTimeout(fn, delay);
+		};
+	};
+	this._triggerAction = function(el, isClick) {
+		if (!mu._shouldProcess(el))
+			return;
+		var cfg = mu._elemCfg(el);
+		var url = mu._resolveUrl(cfg._url || el.getAttribute("href") || el.getAttribute("action"));
+		if (!url)
+			return;
+		cfg._el = el;
+		if (!cfg.method)
+			cfg.method = "get";
+		if (isClick) {
+			if (cfg.confirm && !window.confirm(cfg.confirm))
+				return;
+			if (mu._confirmQuit) {
+				if (!window.confirm(mu._leaveText))
+					return;
+				mu._confirmQuit = false;
+			}
+			if (cfg.method !== "get" && mu._attr(el, "history") === null)
+				cfg.history = false;
+		} else {
+			cfg._trigger = true;
+			if (mu._attr(el, "history") === null)
+				cfg.history = false;
+			if (mu._attr(el, "scroll") === null && cfg.scroll === null)
+				cfg.scroll = false;
+			var t = el.tagName;
+			if (t === "INPUT" || t === "TEXTAREA" || t === "SELECT") {
+				var form = el.closest("form");
+				if (form) {
+					if (cfg.method === "get") {
+						var formData = new FormData(form);
+						var qs = new URLSearchParams(formData).toString();
+						url = url.split("?")[0] + "?" + qs;
+					} else {
+						cfg.postData = form.enctype === "multipart/form-data" ? new FormData(form) : new URLSearchParams(new FormData(form));
+					}
+				} else if (el.name && cfg.method === "get") {
+					url = url.split("?")[0] + "?" + encodeURIComponent(el.name) + "=" + encodeURIComponent(el.value);
+				}
+			}
+		}
+		if (cfg.method === "sse") {
+			mu._openSSE(url, el, cfg);
+			return;
+		}
+		mu._loadExec(url, cfg);
+	};
+	this._initTriggers = function(container) {
+		var els = container.querySelectorAll("[mu-url], [mu-trigger]");
+		if (container.matches && container.matches("[mu-url], [mu-trigger]")) {
+			var tmp = [container];
+			for (var j = 0; j < els.length; j++)
+				tmp.push(els[j]);
+			els = tmp;
+		}
+		for (var i = 0; i < els.length; i++) {
+			var el = els[i];
+			if (el._mu_bound)
+				continue;
+			var trigger = mu._getTrigger(el);
+			if (trigger === "click" || trigger === "submit")
+				continue;
+			var url = mu._attr(el, "url") || el.getAttribute("href") || el.getAttribute("action");
+			if (!url)
+				continue;
+			el._mu_bound = true;
+			var debounceMs = parseInt(mu._attr(el, "debounce"), 10) || 0;
+			var repeatMs = parseInt(mu._attr(el, "repeat"), 10) || 0;
+			var handler = (function(targetEl) {
+				return function() { mu._triggerAction(targetEl); };
+			})(el);
+			if (debounceMs > 0)
+				handler = mu._debounce(handler, debounceMs);
+			if (repeatMs > 0) {
+				handler = (function(targetEl, fn, ms) {
+					var started = false;
+					return function() {
+						fn();
+						if (!started) {
+							started = true;
+							targetEl._mu_interval = setInterval(fn, ms);
+						}
+					};
+				})(el, handler, repeatMs);
+			}
+			if (trigger === "change") {
+				el.addEventListener("input", handler);
+			} else if (trigger === "blur") {
+				var dedupHandler = (function(fn) {
+					var lastFired = 0;
+					return function() {
+						var now = Date.now();
+						if (now - lastFired < 50)
+							return;
+						lastFired = now;
+						fn();
+					};
+				})(handler);
+				el.addEventListener("change", dedupHandler);
+				el.addEventListener("blur", dedupHandler);
+			} else if (trigger === "focus") {
+				el.addEventListener("focus", handler);
+			} else if (trigger === "load") {
+				handler();
+			}
+		}
+	};
+	this._cleanupTriggers = function(container) {
+		var els = container.querySelectorAll ? container.querySelectorAll("*") : [];
+		for (var i = 0; i < els.length; i++) {
+			if (els[i]._mu_interval) {
+				clearInterval(els[i]._mu_interval);
+				els[i]._mu_interval = null;
+			}
+			if (els[i]._mu_sse) {
+				els[i]._mu_sse.close();
+				els[i]._mu_sse = null;
+			}
+			els[i]._mu_bound = false;
+		}
+		if (container._mu_interval) {
+			clearInterval(container._mu_interval);
+			container._mu_interval = null;
+		}
+		if (container._mu_sse) {
+			container._mu_sse.close();
+			container._mu_sse = null;
+		}
+		container._mu_bound = false;
+	};
+	this._openSSE = function(url, el, cfg) {
+		if (el._mu_sse)
+			el._mu_sse.close();
+		var source = new EventSource(url);
+		el._mu_sse = source;
+		source.onmessage = function(e) {
+			var detail = { url: url, html: e.data, config: cfg };
+			if (!mu._emit("mu:before-render", detail))
+				return;
+			if (cfg.mode === "patch") {
+				mu._renderPatch(detail.html, cfg);
+			} else {
+				mu._renderPage(detail.html, cfg);
+			}
+			mu._emit("mu:after-render", { url: url, finalUrl: url, mode: cfg.mode });
+		};
+		source.onerror = function() {
+			mu._emit("mu:fetch-error", { url: url, fetchUrl: url, error: new Error("SSE connection error") });
+		};
+	};
+
+	this._loadExec = async function(url, cfg) {
+		if (!cfg._trigger && !cfg._popstate)
+			mu._saveScroll();
+		if (!mu._emit("mu:before-fetch", { url: url, fetchUrl: url, config: cfg, sourceElement: cfg._el || null }))
+			return;
+		var abortCtrl;
+		if (cfg._trigger) {
+			abortCtrl = new AbortController();
+		} else {
+			if (mu._abortCtrl)
+				mu._abortCtrl.abort();
+			abortCtrl = mu._abortCtrl = new AbortController();
+		}
+		if (!cfg._trigger)
+			mu._showProgress();
+		try {
+			var html = null;
+			var resp = null;
+			var finalUrl = url;
+			var method = cfg.method || "get";
+			var cached = mu._prefetch.get(url);
+			if (method === "get" && cached && cached.promise && (Date.now() - cached.ts) < mu._prefetchTtl) {
+				html = await cached.promise;
+				if (abortCtrl.signal.aborted)
+					return;
+			}
+			if (!html) {
+				var fetchOpts = {
+					signal: abortCtrl.signal,
+					headers: {
+						"X-Requested-With": "XMLHttpRequest",
+						"X-Mu-Mode": cfg.mode,
+					},
+				};
+				if (method !== "get") {
+					fetchOpts.headers["X-Mu-Method"] = fetchOpts.method = method.toUpperCase();
+					if (cfg.postData)
+						fetchOpts.body = cfg.postData;
+				}
+				resp = await fetch(url, fetchOpts);
+				if (!resp.ok) {
+					mu._emit("mu:fetch-error", { url: url, fetchUrl: url, status: resp.status, response: resp });
+					return;
+				}
+				if (resp.redirected) {
+					var redirected = new URL(resp.url);
+					finalUrl = redirected.pathname + redirected.search;
+				}
+				html = await resp.text();
+			}
+			cfg._docUrl = resp && resp.redirected ? resp.url : new URL(finalUrl, window.location.href).toString();
+			if (!cfg._trigger && method === "get")
+				mu._prefetch.set(url, { promise: Promise.resolve(html), ts: Date.now() });
+			var detail = { url: url, finalUrl: finalUrl, html: html, config: cfg };
+			if (!mu._emit("mu:before-render", detail))
+				return;
+			if (cfg.mode === "patch") {
+				cfg._addHistory = cfg.patchHistory;
+			} else {
+				cfg._addHistory = cfg.history;
+				if (resp && resp.redirected)
+					cfg._addHistory = true;
+			}
+			var postRender = function() {
+				mu._prevUrl = mu._lastUrl;
+				mu._lastUrl = finalUrl;
+				if (cfg._addHistory)
+					window.history.pushState({ mu: true, url: finalUrl }, "", finalUrl);
+				if (cfg.mode !== "patch") {
+					if (cfg._scrollPos) {
+						window.scrollTo(cfg._scrollPos.x, cfg._scrollPos.y);
+					} else if (cfg.scroll !== false) {
+						var hashIdx = url.indexOf("#");
+						if (hashIdx !== -1) {
+							var anchor = document.getElementById(url.substring(hashIdx + 1));
+							if (anchor)
+								anchor.scrollIntoView({ behavior: "smooth" });
+						} else {
+							window.scrollTo(0, 0);
+						}
+					}
+				}
+				mu._confirmQuit = false;
+				mu._emit("mu:after-render", { url: url, finalUrl: finalUrl, mode: cfg.mode });
+			};
+			var applyDom = cfg.mode === "patch"
+				? function() { mu._renderPatch(detail.html, cfg); }
+				: function() { mu._renderPage(detail.html, cfg); };
+			if (!cfg._trigger && document.startViewTransition) {
+				document.startViewTransition(applyDom).updateCallbackDone.then(postRender);
+			} else {
+				applyDom();
+				postRender();
+			}
+		} catch (err) {
+			if (err.name !== "AbortError")
+				mu._emit("mu:fetch-error", { url: url, fetchUrl: url, error: err });
+		} finally {
+			if (!cfg._trigger)
+				mu._hideProgress();
+		}
+	};
+
+	this._renderPage = function(html, cfg) {
+		var doc = parseHTML(html);
+		mu._normalizeMedia(doc, cfg._docUrl);
+		var sourceNode = cfg.source ? doc.querySelector(cfg.source) : null;
+		if (!sourceNode)
+			sourceNode = doc.body;
+		var resolvedTarget = mu._resolveTarget(cfg.target, cfg._el);
+		var targetNode = document.querySelector(resolvedTarget);
+		if (!targetNode) {
+			console.warn("[µJS] Target element '" + resolvedTarget + "' not found.");
+			return;
+		}
+		mu._cleanupTriggers(targetNode);
+		mu._applyMode(cfg.mode, targetNode, sourceNode);
+		if (cfg._addHistory)
+			mu._updateTitle(doc);
+		mu._mergeHead(doc);
+		var container = document.querySelector(resolvedTarget) || document.body;
+		mu._runScripts(container);
+		mu._initTriggers(container);
+	};
+
+	this._renderPatch = function(html, cfg) {
+		var doc = parseHTML(html);
+		mu._normalizeMedia(doc, cfg._docUrl);
+		var fragments = doc.querySelectorAll("[mu-patch-target]");
+		var patchedSelectors = [];
+		for (var i = 0; i < fragments.length; i++) {
+			var frag = fragments[i];
+			var targetSel = mu._resolveTarget(frag.getAttribute("mu-patch-target"), cfg._el);
+			var mode = frag.getAttribute("mu-patch-mode") || "replace";
+			var targetNode = document.querySelector(targetSel);
+			if (!targetNode) {
+				console.warn("[µJS] Patch target '" + targetSel + "' not found.");
+				continue;
+			}
+			mu._cleanupTriggers(targetNode);
+			mu._applyMode(mode, targetNode, frag);
+			if (mode !== "remove") {
+				mu._runScripts(frag);
+				patchedSelectors.push(targetSel);
+			}
+		}
+		for (var j = 0; j < patchedSelectors.length; j++) {
+			var patched = document.querySelector(patchedSelectors[j]);
+			if (patched)
+				mu._initTriggers(patched);
+		}
+	};
+
+	this._applyMode = function(mode, targetNode, sourceNode) {
+		var useMorph = mu._morph;
+		switch (mode) {
+			case "update":
+				if (useMorph) {
+					mu._morph(targetNode, sourceNode.innerHTML, { morphStyle: "innerHTML" });
+				} else {
+					targetNode.innerHTML = sourceNode.innerHTML;
+				}
+				break;
+			case "prepend":
+				targetNode.prepend(sourceNode);
+				break;
+			case "append":
+				targetNode.append(sourceNode);
+				break;
+			case "before":
+				targetNode.before(sourceNode);
+				break;
+			case "after":
+				targetNode.after(sourceNode);
+				break;
+			case "remove":
+				targetNode.remove();
+				break;
+			case "none":
+				break;
+			case "replace":
+			default:
+				if (targetNode.tagName === "BODY" && sourceNode.tagName === "BODY") {
+					if (useMorph) {
+						mu._morph(targetNode, sourceNode.innerHTML, { morphStyle: "innerHTML" });
+					} else {
+						targetNode.innerHTML = sourceNode.innerHTML;
+					}
+				} else if (useMorph) {
+					mu._morph(targetNode, sourceNode.outerHTML, { morphStyle: "outerHTML" });
+				} else {
+					targetNode.replaceWith(sourceNode);
+				}
+				break;
+		}
+	};
+
+	this._updateTitle = function(doc) {
+		var el = doc.querySelector("title");
+		if (el)
+			document.title = el.textContent;
+	};
+	this._mergeHead = function(doc) {
+		var selector = "link[rel='stylesheet'], style, script";
+		var oldEls = document.head.querySelectorAll(selector);
+		var newEls = doc.head.querySelectorAll(selector);
+		var oldKeys = new Set();
+		for (var i = 0; i < oldEls.length; i++)
+			oldKeys.add(mu._elKey(oldEls[i]));
+		for (var j = 0; j < newEls.length; j++) {
+			if (oldKeys.has(mu._elKey(newEls[j])))
+				continue;
+			if (newEls[j].tagName.toUpperCase() === "SCRIPT") {
+				var s = mu._copyScript(newEls[j]);
+				if (s.hasAttribute("src"))
+					mu._jsIncludes[s.getAttribute("src")] = true;
+				document.head.appendChild(s);
+			} else {
+				document.head.appendChild(newEls[j].cloneNode(true));
+			}
+		}
+	};
+	this._elKey = function(el) {
+		var tag = el.tagName.toUpperCase();
+		if (tag === "LINK")
+			return ("link:" + el.getAttribute("href"));
+		if (tag === "STYLE")
+			return ("style:" + el.textContent.substring(0, 100));
+		if (tag === "SCRIPT")
+			return ("script:" + (el.getAttribute("src") || el.textContent.substring(0, 100)));
+		return (el.outerHTML);
+	};
+
+	this._runScripts = function(container) {
+		var scripts = container.querySelectorAll("script");
+		for (var i = 0; i < scripts.length; i++) {
+			var old = scripts[i];
+			if (mu._attr(old, "disabled") === "true" || mu._attr(old, "disabled") === "")
+				continue;
+			if (old.hasAttribute("src")) {
+				var src = old.getAttribute("src");
+				if (mu._jsIncludes[src])
+					continue;
+				mu._jsIncludes[src] = true;
+			}
+			old.parentNode.replaceChild(mu._copyScript(old), old);
+		}
+	};
+
+	this._showProgress = function() {
+		if (!mu._bar) {
+			mu._bar = document.createElement("div");
+			mu._bar.id = "mu-progress";
+			mu._bar.style.cssText = "position:fixed;top:0;left:0;height:3px;background:#29d;z-index:99999;transition:width .3s ease;width:0";
+		}
+		document.body.appendChild(mu._bar);
+		mu._bar.offsetWidth;
+		mu._bar.style.width = "70%";
+	};
+	this._hideProgress = function() {
+		if (!mu._bar)
+			return;
+		mu._bar.style.width = "100%";
+		setTimeout(function() {
+			mu._bar.style.transition = "none";
+			mu._bar.style.width = "0";
+			mu._bar.offsetWidth;
+			mu._bar.style.transition = "width .3s ease";
+			mu._bar.remove();
+		}, 200);
+	};
+
+	this._saveScroll = function() {
+		var state = window.history.state;
+		if (state && state.mu) {
+			state.scrollX = window.scrollX;
+			state.scrollY = window.scrollY;
+			window.history.replaceState(state, "", location.pathname + location.search + location.hash);
+		}
+	};
+
+	this._emit = function(name, detail) {
+		detail = detail || {};
+		detail.lastUrl = mu._lastUrl;
+		detail.previousUrl = mu._prevUrl;
+		var ev = new CustomEvent(name, {
+			bubbles: true,
+			cancelable: true,
+			detail: detail,
+		});
+		return (document.dispatchEvent(ev));
+	};
+};
+window.mu = mu;
 
 const isInternalURL = (url) => url.origin === window.location.origin;
 const toSiteURL = (path) => new URL(path, window.location.href);
-const toSitePath = (url) => isInternalURL(url) ? `${url.pathname}${url.search}${url.hash}` : url.toString();
 const isMuExcludedURL = (url) => isInternalURL(url) && (
 	url.pathname === "/resume" ||
 	url.pathname.startsWith("/resume/") ||
 	url.pathname === "/archive" ||
 	url.pathname.startsWith("/archive/")
 );
-
-function resolveRelativeURL(value, baseURL) {
-  const t = value.trim();
-
-  if (t && !/^[#/]/.test(t) && !absoluteURLPattern.test(t)) {
-    try { return toSitePath(new URL(t, baseURL)); } catch {}
-  }
-
-  return value;
-}
-
-function resolveRelativeSrcset(value, baseURL) {
-	return value.split(",").map((candidate) => {
-		const trimmed = candidate.trim();
-		if (!trimmed) {
-			return trimmed;
-		}
-
-		const [url, ...descriptor] = trimmed.split(/\s+/);
-		const resolvedURL = resolveRelativeURL(url, baseURL);
-		return descriptor.length > 0 ? `${resolvedURL} ${descriptor.join(" ")}` : resolvedURL;
-	}).join(", ");
-}
-
-function normalizeMediaURLs(scope, baseURL) {
-	if (!scope || !baseURL) {
-		return;
-	}
-
-	for (const element of scope.querySelectorAll("img[src], img[srcset], source[src], source[srcset], video[poster]")) {
-		if (element.hasAttribute("src")) {
-			element.setAttribute("src", resolveRelativeURL(element.getAttribute("src"), baseURL));
-		}
-
-		if (element.hasAttribute("srcset")) {
-			element.setAttribute("srcset", resolveRelativeSrcset(element.getAttribute("srcset"), baseURL));
-		}
-
-		if (element.hasAttribute("poster")) {
-			element.setAttribute("poster", resolveRelativeURL(element.getAttribute("poster"), baseURL));
-		}
-	}
-}
 
 function syncMuExcludedLinks(scope = document) {
 	if (!scope?.querySelectorAll) {
@@ -129,19 +788,8 @@ function syncMuExcludedLinks(scope = document) {
 
 		if (isMuExcludedURL(url)) {
 			link.setAttribute("mu-disabled", "");
-			link.removeAttribute("data-mu");
 		}
 	}
-}
-
-function setURLQuery(key, value) {
-	const url = currentURL();
-	if (value === null) {
-		url.searchParams.delete(key);
-	} else {
-		url.searchParams.set(key, value);
-	}
-	window.history.replaceState(window.history.state, "", url);
 }
 
 function syncDocumentChrome(doc) {
@@ -202,583 +850,50 @@ function playSound(url, volume = 1) {
 	player.addEventListener("canplaythrough", playIt, { once: true });
 }
 
-function initializeMu() {
-	if (state.muInitialized || !window.mu || typeof window.mu.init !== "function") {
-		return;
-	}
-
-	window.mu.init({
-		target: "body",
-		source: "body",
-		title: "title",
-	});
-	state.muInitialized = true;
-}
-
 function navigateTo(path) {
 	const url = toSiteURL(path);
-	if (!isInternalURL(url) || isMuExcludedURL(url) || !window.mu || typeof window.mu.load !== "function") {
+	if (!isInternalURL(url) || isMuExcludedURL(url)) {
 		window.location.assign(url.toString());
 		return;
 	}
 
-	window.mu.load(url.pathname + url.search + url.hash, {
-		target: "body",
-		source: "body",
-		title: "title",
-	});
+	mu.load(url.pathname + url.search + url.hash);
 }
 
-function navigateFromSearch(event) {
-	event?.preventDefault?.();
-	const searchBox = byId("search-box");
-	if (!searchBox) {
-		return;
+async function loadSearchUI() {
+	if (state.searchUI) {
+		return state.searchUI;
 	}
 
-	const path = searchBox.value.replaceAll(" !load", "").trim().split(/\s+/).at(-1);
-	if (!path) {
-		return;
+	if (!state.searchPromise) {
+		state.searchPromise = import("/search.js")
+			.then(({ createSearch }) => createSearch({ navigateTo, isMuExcludedURL }))
+			.then((searchUI) => {
+				state.searchUI = searchUI;
+				return searchUI;
+			});
 	}
 
-	navigateTo(path);
+	return state.searchPromise;
 }
 
-// SEARCH ------------------------------------------
-async function initFuse() {
-	if (state.fuse) {
-		return state.fuse;
-	}
-
-	if (!state.fusePromise) {
-		state.fusePromise = Promise.all([
-			import("/search_index.en.json", { with: { type: "json" } }),
-			import("/fuse.min.mjs"),
-		]).then(([indexModule, fuseModule]) => new fuseModule.default(indexModule.default, {
-			isCaseSensitive: false,
-			includeScore: true,
-			ignoreDiacritics: true,
-			shouldSort: true,
-			includeMatches: false,
-			findAllMatches: false,
-			minMatchCharLength: 2,
-			location: 0,
-			threshold: 0.2,
-			distance: 100,
-			useExtendedSearch: true,
-			ignoreLocation: true,
-			ignoreFieldNorm: false,
-			fieldNormWeight: 1,
-			keys: [
-				{ name: "title", weight: 1 },
-				{ name: "url", weight: 1 },
-				{ name: "body", weight: 1 },
-				{ name: "description", weight: 1 },
-			],
-		}));
-	}
-
-	state.fuse = await state.fusePromise;
-
-	return state.fuse;
-}
-
-async function searchLocal(query) {
-	const fuse = await initFuse();
-	return fuse.search(query);
-}
-
-const providers = {
-	Local: {
-		keywords: ["d", "dd", "deal", "deal.digital"],
-		desc: "deal.digital",
-		getURLs: async (query) => {
-			const results = await searchLocal(query);
-			const bestResult = results[0];
-			const currentURLWithoutQuery = window.location.href.split("?")[0].split("#")[0];
-
-			if (bestResult?.score < 0.05 && query.length > 3 && bestResult.item.url !== currentURLWithoutQuery) {
-				navigateTo(bestResult.item.url);
-			}
-
-			return results.map((result) => [result.item.title, result.item.url]);
-		},
-	},
-	Brave: {
-		keywords: ["b", "br", "brave"],
-		desc: "Brave Search",
-		icon: "/icons/search/brave.png",
-		getURL: (query) => `https://search.brave.com/search?q=${plusQuery(query)}`,
-		suggestIf: () => true,
-		color: "#f50",
-	},
-	ChatGPT: {
-		keywords: ["gpt", "chatgpt"],
-		desc: "ChatGPT Search",
-		icon: "/icons/search/chatgpt.png",
-		getURL: (query) => `https://chatgpt.com/?q=${plusQuery(query)}`,
-		suggestIf: () => true,
-		color: "#74AA9C",
-	},
-	Google: {
-		keywords: ["g", "google"],
-		desc: "Google Search",
-		icon: "/icons/search/google.png",
-		getURL: (query) => `https://google.com/search?q=${plusQuery(query)}`,
-		suggestIf: () => true,
-		color: "#1368F4",
-	},
-	eBay: {
-		keywords: ["e", "eb", "ebay"],
-		desc: "eBay",
-		icon: "/icons/search/ebay.png",
-		getURL: (query) => `https://www.ebay.com/sch/i.html?_nkw=${plusQuery(query)}`,
-		suggestIf: () => true,
-		color: "#3665f3",
-	},
-	YouTube: {
-		keywords: ["y", "yt", "youtube"],
-		desc: "YouTube",
-		icon: "/icons/search/youtube.png",
-		getURL: (query) => `https://youtube.com/results?search_query=${plusQuery(query)}`,
-		suggestIf: () => true,
-		color: "#f00",
-	},
-	Amazon: {
-		keywords: ["am", "amazon", "amzn"],
-		desc: "Amazon",
-		icon: "/icons/search/amazon.png",
-		getURL: (query) => `https://www.amazon.com/s?k=${plusQuery(query)}`,
-		suggestIf: () => true,
-		color: "#f90",
-	},
-	MDN: {
-		keywords: ["mdn"],
-		desc: "Mozilla Dev",
-		icon: "/icons/search/mdn.png",
-		getURL: (query) => `https://developer.mozilla.org/en-US/search?q=${plusQuery(query)}`,
-		color: "#8cb4ff",
-	},
-	AnnasArchive: {
-		keywords: ["an", "anna", "annas", "annasarchive", "book"],
-		desc: "Anna's Archive",
-		icon: "/icons/search/annas-archive.png",
-		getURL: (query) => `https://annas-archive.org/search?q=${plusQuery(query)}`,
-		color: "#0195ff",
-	},
-	Zola: {
-		keywords: ["zola"],
-		desc: "Zola Docs",
-		icon: "/icons/search/zola.png",
-		getURL: (query) => `https://search.brave.com/search?q=site%3Agetzola.org+${plusQuery(query)}`,
-		color: "#191919",
-	},
-	Tera: {
-		keywords: ["tera"],
-		desc: "Tera Docs",
-		getURL: (query) => `https://search.brave.com/search?q=site%3Ahttps%3A%2F%2Fkeats.github.io%2Ftera%2Fdocs%2F+${plusQuery(query)}`,
-		color: "#de6262",
-	},
-	mappletv: {
-		keywords: ["tv", "mapple", "mapple.tv"],
-		desc: "Mapple.TV",
-		icon: "/icons/search/mapple.png",
-		getURL: (query) => `https://mapple.tv/search?q=${plusQuery(query)}`,
-		color: "#fff",
-	},
-	WolframAlpha: {
-		keywords: ["wa", "wolfram", "wolframalpha"],
-		desc: "Wolphram|Alpha",
-		getURL: (query) => `http://www.wolframalpha.com/input/?i=${encodeURIComponent(query)}`,
-		color: "#ee1f22",
-		suggestIf: (query) => ["+", "-", "*", "/", "convert", "per"].some((marker) => query.includes(marker)),
-	},
-	SetColor: {
-		keywords: ["color"],
-		desc: "Set Site Color",
-		suggestIf: (query) => {
-			const style = new Option().style;
-			style.color = query;
-			return style.color !== "" || query.includes("rand");
-		},
-		action: (event) => {
-			let color = event.currentTarget.title;
-			if (color.includes("rand")) {
-				color = `#${Array.from(crypto.getRandomValues(new Uint8Array(3))).map((byte) => byte.toString(16).padStart(2, "0")).join("")}`;
-				console.log("Randomly selected", color);
-			}
-			root.style.setProperty("--color-primary", color);
-			closeSearch();
-		},
-	},
-	toggleDark: {
-		keywords: ["dark", "light", "toggle"],
-		desc: "Set Dark Mode",
-		suggestIf: (query) => ["dark", "light", "toggle"].includes(query.toLowerCase().replaceAll(" ", "")),
-		action: () => {
-			const query = byId("search-box")?.value || "";
-			if (query.includes("toggle")) {
-				const currentDarkMode = getComputedStyle(root).getPropertyValue("--dark-mode") === "true";
-				root.style.setProperty("--dark-mode", !currentDarkMode);
-			} else if (query.includes("unset") || query.includes("none")) {
-				root.style.removeProperty("--dark-mode");
-			} else if (query.includes("light")) {
-				root.style.setProperty("--dark-mode", false);
-			} else {
-				root.style.setProperty("--dark-mode", true);
-			}
-			closeSearch();
-		},
-	},
-	style: {
-		keywords: ["style", "stylesheet"],
-		desc: "Set Stylesheet",
-		hide: true,
-		action: (event) => {
-			const stylesheet = document.querySelector("link[rel='stylesheet'][as='style']");
-			if (!stylesheet) {
-				return;
-			}
-			stylesheet.href = `/${event.currentTarget.title.replaceAll(" ", "")}.css`;
-			closeSearch();
-		},
-	},
-	load: {
-		keywords: ["load"],
-		desc: "Load Content From Internal Page",
-		hide: true,
-		action: navigateFromSearch,
-	},
-};
-
-const keywordMap = new Map(
-	Object.entries(providers).flatMap(([providerName, provider]) => (
-		(provider.keywords || []).map((keyword) => [keyword, providerName])
-	)),
-);
-
-function populateSearchKeywordList(keywordList) {
-	for (const provider of Object.values(providers)) {
-		if (!provider.keywords || provider.hide || !keywordList) {
-			continue;
-		}
-
-		const keywordEntry = document.createElement("li");
-		const keywordSample = document.createElement("samp");
-
-		keywordEntry.textContent = provider.desc;
-		keywordSample.textContent = provider.keywords[0];
-		keywordEntry.append(keywordSample);
-		keywordEntry.addEventListener("click", () => openSearch(`${keywordSample.textContent} `));
-
-		if (provider.color) {
-			keywordEntry.style.setProperty("--c", provider.color);
-		}
-
-		keywordList.append(keywordEntry);
-	}
-}
-
-async function collectSearchProviderQueries(query) {
-	const providerQueries = new Map();
-	let foundKeyword = false;
-
-	for (const word of query.toLowerCase().split(" ").reverse()) {
-		const bangIndex = word.indexOf("!");
-		if (bangIndex < 0) {
-			continue;
-		}
-
-		const providerName = keywordMap.get(word.slice(bangIndex + 1));
-		if (!providerName) {
-			continue;
-		}
-
-		providerQueries.set(providerName, query.replace(/!.*?( |$)/g, ""));
-		foundKeyword = true;
-	}
-
-	const firstKeyword = keywordMap.get(query.toLowerCase().split(" ")[0]);
-	if (firstKeyword) {
-		providerQueries.set(firstKeyword, query.includes(" ") ? query.slice(query.indexOf(" ")) : "");
-	}
-
-	const ignoredProviders = new Set(providerQueries.keys());
-	for (const [providerName, provider] of Object.entries(providers)) {
-		const suggested = await provider.suggestIf?.(query);
-		if (suggested && !ignoredProviders.has(providerName)) {
-			providerQueries.set(providerName, query);
-		}
-	}
-
-	return { providerQueries, foundKeyword };
-}
-
-async function renderSearchResults(searchResults, providerQueries, foundKeyword, startTime) {
-	let resultCount = 0;
-
-	for (const [providerName, providerQuery] of providerQueries.entries()) {
-		const provider = providers[providerName];
-		const urls = await provider.getURLs?.(providerQuery) ?? [[providerQuery, provider.getURL?.(providerQuery)]];
-
-		for (const [title, resultURL] of urls) {
-			const { result, link } = buildSearchLink(provider, providerQuery, title, resultURL, foundKeyword);
-			appendSearchShortcut(result, link, resultCount);
-			searchResults.append(result);
-			resultCount++;
-		}
-	}
-
-	const timing = document.createElement("p");
-	timing.textContent = `Retrieved in ${Date.now() - startTime}ms`;
-	searchResults.append(timing);
-}
-
-function toggleSearch(query = "") {
-	const searchContainer = byId("search-container");
-	if (searchContainer) {
-		if (searchContainer.classList.contains("min")) {
-			searchContainer.classList.remove("min");
-			byId("search-box")?.focus();
-		} else {
-			closeSearch();
-		}
-		return;
-	}
-
-	openSearch(query);
+function prefetchSearchUI() {
+	void loadSearchUI();
 }
 
 function openSearch(query = "") {
-	if (query instanceof Event || query === null) {
-		query = "";
-	}
-
-	let searchContainer = byId("search-container");
-	if (!searchContainer) {
-		document.body.insertAdjacentHTML("afterbegin", SEARCH_SHELL_HTML);
-
-		searchContainer = byId("search-container");
-		byId("search-inner")?.insertAdjacentHTML("beforeend", SEARCH_HELP_HTML);
-
-		populateSearchKeywordList(byId("search-keyword-list"));
-
-		byId("search-close")?.addEventListener("click", closeSearch);
-		byId("search-min")?.addEventListener("click", minimizeSearch);
-		byId("search-max")?.addEventListener("click", toggleMaximizeSearch);
-		byId("search-titlebar")?.addEventListener("dblclick", toggleMaximizeSearch);
-		byId("search-titlebar")?.addEventListener("pointerdown", dragSearchStart);
-		byId("search-box")?.addEventListener("input", updateSearch);
-	} else {
-		const searchBox = byId("search-box");
-		if (searchBox) {
-			searchBox.placeholder = searchBox.value;
-		}
-	}
-
-	const searchBox = byId("search-box");
-	if (!searchBox) {
-		return;
-	}
-
-	searchBox.value = String(query);
-	void updateSearch();
-	searchBox.focus();
-	setURLQuery("q", searchBox.value);
+	void loadSearchUI().then((searchUI) => searchUI.open(query));
 }
 
-function closeSearch() {
-	const searchContainer = byId("search-container");
-	if (!searchContainer) {
-		return;
-	}
-
-	setURLQuery("q", null);
-	searchContainer.classList.add("hidden");
-	window.setTimeout(() => byId("search-container")?.remove(), 300);
+function toggleSearch(query = "") {
+	void loadSearchUI().then((searchUI) => searchUI.toggle(query));
 }
 
-function minimizeSearch() {
-	byId("search-container")?.classList.add("min");
-}
-
-function toggleMaximizeSearch() {
-	const searchContainer = byId("search-container");
-	if (!searchContainer) {
+function syncSearchFromLocation(options) {
+	if (!currentURL().searchParams.get("q")) {
 		return;
 	}
-
-	const style = getComputedStyle(searchContainer);
-	if (searchContainer.classList.contains("max")) {
-		searchContainer.classList.remove("max");
-		for (const [propName, value] of Object.entries(state.searchWindowPos || {})) {
-			searchContainer.style.setProperty(propName, value);
-		}
-		return;
-	}
-
-	state.searchWindowPos = {
-		top: style.top,
-		left: style.left,
-		width: style.width,
-		height: style.height,
-	};
-	searchContainer.style.removeProperty("top");
-	searchContainer.style.removeProperty("left");
-	searchContainer.style.removeProperty("width");
-	searchContainer.style.removeProperty("height");
-	searchContainer.classList.add("max");
-}
-
-function onDragRelease() {
-	state.searchDrag = [];
-	document.removeEventListener("pointermove", dragSearchUpdate, { passive: false });
-	byId("search-container")?.classList.remove("drag");
-	root.style.removeProperty("touch-action");
-	document.removeEventListener("pointerup", onDragRelease, { passive: false });
-}
-
-function dragSearchStart(event) {
-	const searchContainer = byId("search-container");
-	const titlebarButtons = document.querySelector("#search-titlebar .window-buttons");
-	if (!searchContainer || !titlebarButtons) {
-		return;
-	}
-	if (titlebarButtons.contains(event.target)) {
-		return;
-	}
-	if (event.buttons !== 1) {
-		return;
-	}
-
-	if (searchContainer.classList.contains("max")) {
-		const originalX = event.clientX;
-		const originalY = event.clientY;
-		const moveListener = (moveEvent) => {
-			if (moveEvent.buttons !== 1) {
-				searchContainer.removeEventListener("pointermove", moveListener);
-				return;
-			}
-
-			const distance = Math.hypot(originalX - moveEvent.clientX, originalY - moveEvent.clientY);
-			if (distance <= 4 || !state.searchWindowPos?.width) {
-				return;
-			}
-
-			searchContainer.style.setProperty("width", state.searchWindowPos.width);
-			searchContainer.style.setProperty("height", "auto");
-			searchContainer.style.setProperty("top", "0");
-			searchContainer.style.setProperty("left", `${(moveEvent.clientX / window.innerWidth) * (window.innerWidth - parseFloat(state.searchWindowPos.width))}px`);
-			searchContainer.classList.remove("max");
-			searchContainer.removeEventListener("pointermove", moveListener);
-			dragSearchStart(moveEvent);
-		};
-
-		searchContainer.addEventListener("pointermove", moveListener);
-		return;
-	}
-
-	if (state.searchDrag.length > 0) {
-		return;
-	}
-
-	state.searchDrag = [event.clientX - searchContainer.offsetLeft, event.clientY - searchContainer.offsetTop];
-	searchContainer.classList.add("drag");
-	root.style.setProperty("touch-action", "none");
-	document.addEventListener("pointermove", dragSearchUpdate, { passive: false });
-	document.addEventListener("pointerup", onDragRelease, { passive: false });
-}
-
-function dragSearchUpdate(event) {
-	const searchContainer = byId("search-container");
-	if (!searchContainer || state.searchDrag.length < 2) {
-		return;
-	}
-
-	searchContainer.style.setProperty("right", "unset");
-	searchContainer.style.setProperty("left", `${event.clientX - state.searchDrag[0]}px`);
-	searchContainer.style.setProperty("top", `${event.clientY - state.searchDrag[1]}px`);
-}
-
-function buildSearchLink(provider, query, title, resultURL, foundKeyword) {
-	const result = document.createElement("div");
-	result.className = "search-result";
-
-	const link = document.createElement("a");
-	link.className = "search-link";
-	if (foundKeyword) {
-		link.classList.add("instant");
-	}
-
-	if (provider.action) {
-		link.href = "javascript:;";
-		link.title = query;
-		link.addEventListener("click", provider.action);
-	} else {
-		link.href = resultURL;
-		try {
-			if (isMuExcludedURL(new URL(resultURL, window.location.href))) {
-				link.setAttribute("mu-disabled", "");
-			}
-		} catch {}
-	}
-
-	const providerLabel = document.createElement("b");
-	providerLabel.textContent = provider.desc;
-	link.append(providerLabel, `: ${title}`);
-	result.append(link);
-
-	result.addEventListener("click", () => link.click());
-	if (provider.color) {
-		result.style.setProperty("--c", provider.color);
-	}
-
-	return { result, link };
-}
-
-function appendSearchShortcut(result, link, resultCount) {
-	if (resultCount >= SEARCH_RESULT_LIMIT) {
-		return;
-	}
-
-	const shortcut = document.createElement("div");
-	shortcut.className = "search-shortcut";
-
-	if (resultCount === 0) {
-		shortcut.innerHTML = "<kbd>ENTER</kbd>";
-		state.searchShortcutRegistry.Enter = link;
-	} else {
-		shortcut.innerHTML = `<kbd>Alt</kbd> <kbd>${resultCount}</kbd>`;
-		state.searchShortcutRegistry[`Alt${resultCount}`] = link;
-	}
-
-	result.append(shortcut);
-}
-
-async function updateSearch() {
-	state.searchShortcutRegistry = Object.create(null);
-
-	const startTime = Date.now();
-	const searchBox = byId("search-box");
-	const searchResults = byId("search-results");
-	if (!searchBox || !searchResults) {
-		return;
-	}
-
-	let query = searchBox.value;
-	while (query.startsWith("/")) {
-		query = query.slice(1);
-	}
-
-	searchResults.replaceChildren();
-	setURLQuery("q", query);
-
-	if (query.replaceAll(" ", "") === "") {
-		return;
-	}
-
-	const { providerQueries, foundKeyword } = await collectSearchProviderQueries(query);
-	await renderSearchResults(searchResults, providerQueries, foundKeyword, startTime);
+	void loadSearchUI().then((searchUI) => searchUI.syncFromLocation(options));
 }
 
 // PAGE ENHANCEMENTS -------------------------------
@@ -945,76 +1060,43 @@ function handleDocumentClick(event) {
 			return;
 		case "btn_search":
 		case "search-link":
-			toggleSearch();
+			void toggleSearch();
 			return;
 	}
 }
 
+function handleSearchPrefetch(event) {
+	if (event.target?.closest?.("#btn_search, #search-link")) {
+		prefetchSearchUI();
+	}
+}
+
 function handleKeyUp(event) {
-	if (event.key !== "Escape") {
-		return;
-	}
-
-	const searchBox = byId("search-box");
-	if (!searchBox) {
-		return;
-	}
-
-	if (searchBox.value.replaceAll(" ", "") === "") {
-		closeSearch();
-		return;
-	}
-
-	openSearch("");
+	state.searchUI?.handleKeyUp(event);
 }
 
 function handleKeyDown(event) {
 	if (event.key === "/" && document.activeElement?.tagName !== "INPUT") {
 		event.preventDefault();
-		openSearch(window.getSelection().toString().replaceAll("\n", ""));
+		void openSearch(window.getSelection().toString().replaceAll("\n", ""));
 		return;
 	}
-
-	const searchBox = byId("search-box");
-	if (document.activeElement !== searchBox) {
-		return;
-	}
-
-	const key = event.altKey ? `Alt${event.key}` : event.key;
-	const link = state.searchShortcutRegistry[key];
-	if (!link) {
-		return;
-	}
-
-	event.preventDefault();
-	if (event.ctrlKey) {
-		const originalTarget = link.target;
-		link.target = "_blank";
-		link.click();
-		link.target = originalTarget;
-		return;
-	}
-
-	link.click();
+	state.searchUI?.handleKeyDown(event);
 }
 
 function handleMuBeforeRender(event) {
 	if (!event.detail?.html || event.detail.mode === "patch") {
-		state.pendingMuDocument = null;
-		state.pendingMuDocumentURL = null;
+		state.pendingMu = null;
 		return;
 	}
 
-	state.pendingMuDocument = parseHTML(event.detail.html);
-	state.pendingMuDocumentURL = toSiteURL(event.detail.finalUrl || event.detail.url || window.location.href);
+	state.pendingMu = parseHTML(event.detail.html);
 }
 
 function handleMuAfterRender() {
-	if (state.pendingMuDocument) {
-		syncDocumentChrome(state.pendingMuDocument);
-		normalizeMediaURLs(document.body, state.pendingMuDocumentURL);
-		state.pendingMuDocument = null;
-		state.pendingMuDocumentURL = null;
+	if (state.pendingMu) {
+		syncDocumentChrome(state.pendingMu);
+		state.pendingMu = null;
 	}
 
 	syncMuExcludedLinks();
@@ -1031,6 +1113,8 @@ function bindGlobalEvents() {
 	state.globalEventsBound = true;
 	document.addEventListener("scrollend", updateTOCState);
 	document.addEventListener("click", handleDocumentClick);
+	document.addEventListener("pointerover", handleSearchPrefetch);
+	document.addEventListener("focusin", handleSearchPrefetch);
 	document.addEventListener("keyup", handleKeyUp);
 	document.addEventListener("keydown", handleKeyDown);
 	document.addEventListener("mu:before-render", handleMuBeforeRender);
@@ -1042,7 +1126,7 @@ function load() {
 	bindGlobalEvents();
 	syncMuExcludedLinks();
 	initializePageContent();
-	initializeMu();
+	mu.init();
 	updateTOCState();
 
 	const navigationType = window.performance.getEntriesByType("navigation")[0]?.type;
