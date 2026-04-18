@@ -1,6 +1,6 @@
 +++
 date = 2025-03-04
-updated = 2025-06-27
+updated = 2026-04-18
 title = "Sick Tricks for making Windows 11 Usable"
 draft = false
 shorttitle = "Sick Windows 11 Tricks"
@@ -28,7 +28,7 @@ You'll need a browser that isn't the ad-ridden spyware that is Edge--try [LibreW
 
 [MSEdgeRedirect](https://github.com/rcmaehl/MSEdgeRedirect?tab=readme-ov-file) is a must if you happen to use the built-in Start menu search or weather widgets but don't want them to open links in Edge.
 
-```batch
+```bat
 winget install --id=rcmaehl.MSEdgeRedirect --id=Brave.Brave --id=OO.Software.Shutup10 -e --silent --accept-source-agreements --accept-package-agreements
 ```
 
@@ -37,12 +37,14 @@ winget install --id=rcmaehl.MSEdgeRedirect --id=Brave.Brave --id=OO.Software.Shu
 The quickest way I've found to get most software for Windows these days is using WinGet. I can't make promises as to exactly how well-moderated the package sources are, but I've yet to encounter
 true malware within it. Here's the commands you'll wind up using:
 
-```batch
+```bat
 winget search librewolf
 winget add LibreWolf.LibreWolf
 winget remove LibreWolf.LibreWolf
 winget upgrade LibreWolf.LibreWolf
 winget upgrade --all
+REM for scripting
+winget install --id 7zip.7zip --scope machine --silent --accept-package-agreements --accept-source-agreements
 ```
 
 ## UX Tweaks
