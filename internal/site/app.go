@@ -1,4 +1,4 @@
-package cms
+package site
 
 import (
 	"context"
@@ -13,15 +13,13 @@ import (
 
 	"deal.digital/internal/content"
 	"deal.digital/internal/render"
-	cmsruntime "deal.digital/internal/runtime"
-	"deal.digital/internal/store"
+	siteruntime "deal.digital/internal/runtime"
 )
 
-type App struct {
+type Generator struct {
 	opts     content.Options
 	cfg      content.Config
 	renderer *render.Renderer
-	store    *store.SQLite
 	mu       sync.RWMutex
 	site     *content.Site
 }
@@ -31,7 +29,7 @@ type buildTiming struct {
 	compress time.Duration
 }
 
-func NewApp(opts content.Options) (*App, error) {
+func NewGenerator(opts content.Options) (*Generator, error) {
 	cfg, err := content.LoadConfig(opts.ConfigPath)
 	if err != nil {
 		return nil, err
@@ -39,40 +37,23 @@ func NewApp(opts content.Options) (*App, error) {
 	if err := os.MkdirAll(opts.OutputDir, 0o755); err != nil {
 		return nil, err
 	}
-	if err := os.MkdirAll(opts.DataDir, 0o755); err != nil {
-		return nil, err
-	}
-
-	sqliteStore, err := store.NewSQLite(opts.DataDir)
-	if err != nil {
-		return nil, err
-	}
 	renderer, err := render.NewRenderer(opts.TemplateDir)
 	if err != nil {
-		_ = sqliteStore.Close()
 		return nil, err
 	}
 
-	return &App{
+	return &Generator{
 		opts:     opts,
 		cfg:      cfg,
 		renderer: renderer,
-		store:    sqliteStore,
 	}, nil
 }
 
-func (a *App) Options() content.Options {
+func (a *Generator) Options() content.Options {
 	return a.opts
 }
 
-func (a *App) Close() error {
-	if a.store != nil {
-		return a.store.Close()
-	}
-	return nil
-}
-
-func (a *App) Rebuild(ctx context.Context) error {
+func (a *Generator) Rebuild(ctx context.Context) error {
 	start := time.Now().UTC()
 	cfg, err := content.LoadConfig(a.opts.ConfigPath)
 	if err != nil {
@@ -85,9 +66,6 @@ func (a *App) Rebuild(ctx context.Context) error {
 	siteModel.RootOutputDir = a.opts.OutputDir
 	timings, err := a.writeOutput(siteModel)
 	if err != nil {
-		return err
-	}
-	if err := a.store.PersistSite(ctx, siteModel); err != nil {
 		return err
 	}
 
@@ -105,8 +83,8 @@ func (a *App) Rebuild(ctx context.Context) error {
 	return nil
 }
 
-func (a *App) Watch(ctx context.Context) {
-	cmsruntime.Watch(ctx, cmsruntime.NormalizeRoots([]string{
+func (a *Generator) Watch(ctx context.Context) {
+	siteruntime.Watch(ctx, siteruntime.NormalizeRoots([]string{
 		a.opts.ConfigPath,
 		a.opts.ContentDir,
 		a.opts.StaticDir,
@@ -114,7 +92,7 @@ func (a *App) Watch(ctx context.Context) {
 	}), a.Rebuild)
 }
 
-func (a *App) writeOutput(site *content.Site) (buildTiming, error) {
+func (a *Generator) writeOutput(site *content.Site) (buildTiming, error) {
 	start := time.Now()
 	if err := a.renderer.RenderSite(site); err != nil {
 		return buildTiming{}, err

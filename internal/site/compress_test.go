@@ -1,4 +1,4 @@
-package cms
+package site
 
 import "testing"
 

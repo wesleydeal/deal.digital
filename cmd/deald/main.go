@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"deal.digital/internal/cms"
 	"deal.digital/internal/content"
+	"deal.digital/internal/site"
 )
 
 func main() {
@@ -22,7 +22,6 @@ func main() {
 	staticDir := flag.String("static", "static", "static directory")
 	templateDir := flag.String("templates", "templates", "template directory")
 	outputDir := flag.String("output", filepath.Join("build", "site"), "rendered site output directory")
-	dataDir := flag.String("data", filepath.Join("build", "data"), "runtime data directory")
 	includeDrafts := flag.Bool("drafts", false, "include draft content")
 	flag.Parse()
 
@@ -37,18 +36,16 @@ func main() {
 		StaticDir:     *staticDir,
 		TemplateDir:   *templateDir,
 		OutputDir:     *outputDir,
-		DataDir:       *dataDir,
 		IncludeDrafts: *includeDrafts,
 	}
 	if command == "build" {
 		opts.CompressOutput = true
 	}
 
-	app, err := cms.NewApp(opts)
+	app, err := site.NewGenerator(opts)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer app.Close()
 
 	ctx := signalContext()
 	switch command {

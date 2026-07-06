@@ -13,7 +13,6 @@ type Options struct {
 	StaticDir      string
 	TemplateDir    string
 	OutputDir      string
-	DataDir        string
 	IncludeDrafts  bool
 	CompressOutput bool
 }

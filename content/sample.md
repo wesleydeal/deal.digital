@@ -14,29 +14,6 @@ This website is best viewed with any browser.
 
 <img src="/badges/anydamn.gif" class="badge"><img src="/badges/right2repair.png" class="badge">
 
-## Counter
-This one is live rather than statically rendered. The value is loaded from SQLite and incremented through µJS.
-
-<div
-	id="sample-counter"
-	mu-trigger="load"
-	mu-url="/_/fragments/sample-counter"
-	mu-target="#sample-counter"
-	mu-mode="update"
-	mu-history="false"
-	mu-scroll="false"
->Loading counter…</div>
-
-<p><button
-	type="button"
-	mu-url="/_/fragments/sample-counter"
-	mu-method="post"
-	mu-target="#sample-counter"
-	mu-mode="update"
-	mu-history="false"
-	mu-scroll="false"
->Increment counter</button></p>
-
 ## Colors
 Set the **primary color** for this page using this or the field in the table below: <input id="primary-color-picker" type="color">
 
