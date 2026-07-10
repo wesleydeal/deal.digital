@@ -19,9 +19,11 @@ It currently does the following:
 - parses existing markdown files with Zola-style TOML frontmatter
 - normalizes pages, sections, and taxonomies into a Go-native site graph
 - supports the current shortcode set: `blockquote`, `fitimg`, `wave`, and `raw`
-- renders HTML into [`build/site`](/home/wesley/deal.digital/build/site)
+- renders each build into a clean staging tree before replacing [`build/site`](/home/wesley/deal.digital/build/site)
 - writes `.gz`, `.br`, and `.zst` sidecar files for generated output assets during `build`, using parallel workers, skipping any compressed variant that would be larger than the source, blacklisting obviously unhelpful formats like SWF/media/archive assets, and only brotli-compressing web-text formats
 - copies static assets and page-bundle assets into the Caddy-served tree
+- writes `/atom.xml` when `generate_feeds = true`; renderable taxonomies with `feed = true` receive `/taxonomy/term/atom.xml`
+- writes `search_index.<language>.json` only when `build_search_index = true`
 
 ## Local Use
 
@@ -29,6 +31,13 @@ Build the site:
 
 ```bash
 go run ./cmd/deald build
+```
+
+Include drafts with a conventional long flag before or after the command:
+
+```bash
+go run ./cmd/deald build --drafts
+go run ./cmd/deald --drafts build
 ```
 
 Run the generator and local file server:
