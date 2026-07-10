@@ -216,41 +216,32 @@ func parseMarkdownDocument(fullPath, relative string) (rawDocument, error) {
 }
 
 func decodeFrontMatter(raw string) (FrontMatter, error) {
-	var input map[string]any
-	if _, err := toml.Decode(raw, &input); err != nil {
+	var fm FrontMatter
+	if _, err := toml.Decode(raw, &fm); err != nil {
 		return FrontMatter{}, err
 	}
-
-	fm := FrontMatter{
-		Title:             lookupString(input, "title"),
-		Date:              lookupTime(input, "date"),
-		Updated:           lookupTime(input, "updated"),
-		Draft:             lookupBool(input, "draft"),
-		Template:          lookupString(input, "template"),
-		PageTemplate:      lookupString(input, "page_template"),
-		InsertAnchorLinks: lookupString(input, "insert_anchor_links"),
-		SortBy:            lookupString(input, "sort_by"),
-		Author:            lookupString(input, "author"),
-		Authors:           lookupStringSlice(input, "authors"),
-		Raw:               lookupBool(input, "raw"),
-		TOC:               lookupBool(input, "toc"),
-		Taxonomies:        map[string][]string{},
-		Extra:             map[string]any{},
+	if fm.Date != nil {
+		t := normalizeTOMLTime(*fm.Date)
+		fm.Date = &t
+	}
+	if fm.Updated != nil {
+		t := normalizeTOMLTime(*fm.Updated)
+		fm.Updated = &t
+	}
+	if fm.Taxonomies == nil {
+		fm.Taxonomies = map[string][]string{}
+	}
+	if fm.Extra == nil {
+		fm.Extra = map[string]any{}
 	}
 	if fm.Author != "" && len(fm.Authors) == 0 {
 		fm.Authors = []string{fm.Author}
 	}
-	if nested, ok := input["taxonomies"].(map[string]any); ok {
-		for key, value := range nested {
-			fm.Taxonomies[key] = anySliceToStrings(value)
-		}
-	}
-	if nested, ok := input["extra"].(map[string]any); ok {
-		for key, value := range nested {
-			fm.Extra[key] = value
-		}
-	}
 
+	var input map[string]any
+	if _, err := toml.Decode(raw, &input); err != nil {
+		return FrontMatter{}, err
+	}
 	known := map[string]struct{}{
 		"title": {}, "date": {}, "updated": {}, "draft": {}, "template": {}, "page_template": {},
 		"insert_anchor_links": {}, "sort_by": {}, "author": {}, "authors": {}, "taxonomies": {},
@@ -263,13 +254,6 @@ func decodeFrontMatter(raw string) (FrontMatter, error) {
 		fm.Extra[key] = value
 	}
 	return fm, nil
-}
-
-func lookupString(input map[string]any, key string) string {
-	if s, ok := stringValue(input[key]); ok {
-		return s
-	}
-	return ""
 }
 
 func stringValue(v any) (string, bool) {
@@ -287,67 +271,11 @@ func StringValue(v any) (string, bool) {
 	return stringValue(v)
 }
 
-func lookupBool(input map[string]any, key string) bool {
-	value, ok := input[key]
-	if !ok {
-		return false
+func normalizeTOMLTime(v time.Time) time.Time {
+	if location := v.Location().String(); location == "date-local" || location == "datetime-local" || v.Location() == time.Local {
+		return time.Date(v.Year(), v.Month(), v.Day(), v.Hour(), v.Minute(), v.Second(), v.Nanosecond(), time.UTC)
 	}
-	b, _ := value.(bool)
-	return b
-}
-
-func lookupStringSlice(input map[string]any, key string) []string {
-	value, ok := input[key]
-	if !ok {
-		return nil
-	}
-	return anySliceToStrings(value)
-}
-
-func anySliceToStrings(value any) []string {
-	switch items := value.(type) {
-	case []string:
-		return slices.Clone(items)
-	case []any:
-		out := make([]string, 0, len(items))
-		for _, item := range items {
-			if s, ok := stringValue(item); ok && s != "" {
-				out = append(out, s)
-			}
-		}
-		return out
-	default:
-		return nil
-	}
-}
-
-func lookupTime(input map[string]any, key string) *time.Time {
-	value, ok := input[key]
-	if !ok {
-		return nil
-	}
-
-	switch v := value.(type) {
-	case time.Time:
-		t := v.UTC()
-		return &t
-	case string:
-		for _, format := range []string{time.DateOnly, time.RFC3339, "2006-01-02 15:04:05", "2006-01-02T15:04:05"} {
-			if parsed, err := time.Parse(format, v); err == nil {
-				t := parsed.UTC()
-				return &t
-			}
-		}
-	default:
-		text := strings.TrimSpace(fmt.Sprint(v))
-		for _, format := range []string{time.DateOnly, time.RFC3339, "2006-01-02 15:04:05", "2006-01-02T15:04:05"} {
-			if parsed, err := time.Parse(format, text); err == nil {
-				t := parsed.UTC()
-				return &t
-			}
-		}
-	}
-	return nil
+	return v.UTC()
 }
 
 func normalizeAuthors(fm FrontMatter) []string {

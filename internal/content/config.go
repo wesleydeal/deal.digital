@@ -2,7 +2,6 @@ package content
 
 import (
 	"os"
-	"path/filepath"
 
 	"github.com/BurntSushi/toml"
 )
@@ -22,23 +21,17 @@ type Config struct {
 	Title            string           `toml:"title"`
 	Description      string           `toml:"description"`
 	DefaultLanguage  string           `toml:"default_language"`
-	OutputDir        string           `toml:"output_dir"`
 	Author           string           `toml:"author"`
 	BuildSearchIndex bool             `toml:"build_search_index"`
 	GenerateFeeds    bool             `toml:"generate_feeds"`
 	Taxonomies       []TaxonomyConfig `toml:"taxonomies"`
 	Extra            map[string]any   `toml:"extra"`
-	Search           SearchConfig     `toml:"search"`
 }
 
 type TaxonomyConfig struct {
 	Name   string `toml:"name"`
 	Feed   bool   `toml:"feed"`
 	Render *bool  `toml:"render"`
-}
-
-type SearchConfig struct {
-	IndexFormat string `toml:"index_format"`
 }
 
 func (c TaxonomyConfig) ShouldRender() bool {
@@ -62,9 +55,6 @@ func LoadConfig(path string) (Config, error) {
 	}
 	if cfg.DefaultLanguage == "" {
 		cfg.DefaultLanguage = "en"
-	}
-	if cfg.OutputDir == "" {
-		cfg.OutputDir = filepath.ToSlash("public")
 	}
 	if cfg.Extra == nil {
 		cfg.Extra = map[string]any{}
