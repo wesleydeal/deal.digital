@@ -12,20 +12,20 @@ import (
 )
 
 type FrontMatter struct {
-	Title             string
-	Date              *time.Time
-	Updated           *time.Time
-	Draft             bool
-	Template          string
-	PageTemplate      string
-	InsertAnchorLinks string
-	SortBy            string
-	Author            string
-	Authors           []string
-	Taxonomies        map[string][]string
-	Extra             map[string]any
-	Raw               bool
-	TOC               bool
+	Title             string              `toml:"title"`
+	Date              *time.Time          `toml:"date"`
+	Updated           *time.Time          `toml:"updated"`
+	Draft             bool                `toml:"draft"`
+	Template          string              `toml:"template"`
+	PageTemplate      string              `toml:"page_template"`
+	InsertAnchorLinks string              `toml:"insert_anchor_links"`
+	SortBy            string              `toml:"sort_by"`
+	Author            string              `toml:"author"`
+	Authors           []string            `toml:"authors"`
+	Taxonomies        map[string][]string `toml:"taxonomies"`
+	Extra             map[string]any      `toml:"extra"`
+	Raw               bool                `toml:"raw"`
+	TOC               bool                `toml:"toc"`
 }
 
 type Page struct {
@@ -92,7 +92,6 @@ type Site struct {
 	Taxonomies      map[string]map[string]*TaxonomyTerm
 	RecentPages     []*Page
 	BuildTime       time.Time
-	RootOutputDir   string
 	SearchIndexName string
 }
 

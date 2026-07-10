@@ -8,7 +8,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"sync"
 	"time"
 
 	"deal.digital/internal/content"
@@ -18,10 +17,7 @@ import (
 
 type Generator struct {
 	opts     content.Options
-	cfg      content.Config
 	renderer *render.Renderer
-	mu       sync.RWMutex
-	site     *content.Site
 }
 
 type buildTiming struct {
@@ -30,13 +26,6 @@ type buildTiming struct {
 }
 
 func NewGenerator(opts content.Options) (*Generator, error) {
-	cfg, err := content.LoadConfig(opts.ConfigPath)
-	if err != nil {
-		return nil, err
-	}
-	if err := os.MkdirAll(opts.OutputDir, 0o755); err != nil {
-		return nil, err
-	}
 	renderer, err := render.NewRenderer(opts.TemplateDir)
 	if err != nil {
 		return nil, err
@@ -44,7 +33,6 @@ func NewGenerator(opts content.Options) (*Generator, error) {
 
 	return &Generator{
 		opts:     opts,
-		cfg:      cfg,
 		renderer: renderer,
 	}, nil
 }
@@ -63,16 +51,25 @@ func (a *Generator) Rebuild(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	siteModel.RootOutputDir = a.opts.OutputDir
-	timings, err := a.writeOutput(siteModel)
+	stagingDir, err := createStagingDir(a.opts.OutputDir)
 	if err != nil {
 		return err
 	}
+	keepStaging := true
+	defer func() {
+		if keepStaging {
+			_ = os.RemoveAll(stagingDir)
+		}
+	}()
 
-	a.mu.Lock()
-	a.cfg = cfg
-	a.site = siteModel
-	a.mu.Unlock()
+	timings, err := a.writeOutput(siteModel, stagingDir)
+	if err != nil {
+		return err
+	}
+	if err := replaceOutput(stagingDir, a.opts.OutputDir); err != nil {
+		return err
+	}
+	keepStaging = false
 	total := time.Since(start).Round(time.Millisecond)
 	renderDur := timings.render.Round(time.Millisecond)
 	if a.opts.CompressOutput {
@@ -92,18 +89,15 @@ func (a *Generator) Watch(ctx context.Context) {
 	}), a.Rebuild)
 }
 
-func (a *Generator) writeOutput(site *content.Site) (buildTiming, error) {
+func (a *Generator) writeOutput(site *content.Site, outputDir string) (buildTiming, error) {
 	start := time.Now()
 	if err := a.renderer.RenderSite(site); err != nil {
 		return buildTiming{}, err
 	}
-	if err := os.MkdirAll(a.opts.OutputDir, 0o755); err != nil {
+	if err := copyTree(a.opts.StaticDir, outputDir, func(string) bool { return true }); err != nil {
 		return buildTiming{}, err
 	}
-	if err := copyTree(a.opts.StaticDir, a.opts.OutputDir, func(string) bool { return true }); err != nil {
-		return buildTiming{}, err
-	}
-	if err := copyTree(a.opts.ContentDir, a.opts.OutputDir, func(rel string) bool {
+	if err := copyTree(a.opts.ContentDir, outputDir, func(rel string) bool {
 		return filepath.Ext(rel) != ".md"
 	}); err != nil {
 		return buildTiming{}, err
@@ -114,7 +108,7 @@ func (a *Generator) writeOutput(site *content.Site) (buildTiming, error) {
 		if err != nil {
 			return buildTiming{}, err
 		}
-		if err := writeRouteDocument(a.opts.OutputDir, section.Route, doc); err != nil {
+		if err := writeRouteDocument(outputDir, section.Route, doc, "section "+section.RelativePath); err != nil {
 			return buildTiming{}, err
 		}
 	}
@@ -123,7 +117,7 @@ func (a *Generator) writeOutput(site *content.Site) (buildTiming, error) {
 		if err != nil {
 			return buildTiming{}, err
 		}
-		if err := writeRouteDocument(a.opts.OutputDir, page.Route, doc); err != nil {
+		if err := writeRouteDocument(outputDir, page.Route, doc, "page "+page.RelativePath); err != nil {
 			return buildTiming{}, err
 		}
 	}
@@ -136,27 +130,56 @@ func (a *Generator) writeOutput(site *content.Site) (buildTiming, error) {
 			if err != nil {
 				return buildTiming{}, err
 			}
-			if err := writeRouteDocument(a.opts.OutputDir, term.Route, doc); err != nil {
+			if err := writeRouteDocument(outputDir, term.Route, doc, "taxonomy "+name+"/"+term.Name); err != nil {
 				return buildTiming{}, err
 			}
 		}
 	}
 
-	if err := render.WriteJSON(filepath.Join(a.opts.OutputDir, site.SearchIndexName), content.SearchDocuments(site)); err != nil {
-		return buildTiming{}, err
+	if site.Config.BuildSearchIndex {
+		searchIndex := filepath.Join(outputDir, site.SearchIndexName)
+		if err := warnOverwrite(searchIndex, "search index"); err != nil {
+			return buildTiming{}, err
+		}
+		if err := render.WriteJSON(searchIndex, content.SearchDocuments(site)); err != nil {
+			return buildTiming{}, err
+		}
 	}
 	notFound, err := a.renderer.RenderNotFoundDocument(site)
 	if err != nil {
 		return buildTiming{}, err
 	}
-	if err := os.WriteFile(filepath.Join(a.opts.OutputDir, "404.html"), notFound, 0o644); err != nil {
+	if err := writeOutputFile(filepath.Join(outputDir, "404.html"), notFound, "404 page"); err != nil {
 		return buildTiming{}, err
+	}
+	if site.Config.GenerateFeeds {
+		feed, err := render.RenderFeed(site, site.Config.Title, "/", site.Pages)
+		if err != nil {
+			return buildTiming{}, err
+		}
+		if err := writeRouteFile(outputDir, "/", "atom.xml", feed, "site feed"); err != nil {
+			return buildTiming{}, err
+		}
+		for name, terms := range site.Taxonomies {
+			for _, term := range terms {
+				if !term.Config.ShouldRender() || !term.Config.Feed {
+					continue
+				}
+				feed, err := render.RenderFeed(site, site.Config.Title+" - "+term.Name, term.Route, term.Pages)
+				if err != nil {
+					return buildTiming{}, err
+				}
+				if err := writeRouteFile(outputDir, term.Route, "atom.xml", feed, "taxonomy feed "+name+"/"+term.Name); err != nil {
+					return buildTiming{}, err
+				}
+			}
+		}
 	}
 
 	timings := buildTiming{render: time.Since(start)}
 	if a.opts.CompressOutput {
 		compressStart := time.Now()
-		if err := compressTree(a.opts.OutputDir, func(done, total int) {
+		if err := compressTree(outputDir, func(done, total int) {
 			log.Printf("compressing output: %d/%d files", done, total)
 		}); err != nil {
 			return buildTiming{}, err
@@ -165,16 +188,53 @@ func (a *Generator) writeOutput(site *content.Site) (buildTiming, error) {
 	}
 	return timings, nil
 }
-func writeRouteDocument(root, route string, doc []byte) error {
-	if route == "/" {
-		return os.WriteFile(filepath.Join(root, "index.html"), doc, 0o644)
+func createStagingDir(outputDir string) (string, error) {
+	outputDir = filepath.Clean(outputDir)
+	parent := filepath.Dir(outputDir)
+	if err := os.MkdirAll(parent, 0o755); err != nil {
+		return "", err
 	}
+	return os.MkdirTemp(parent, "."+filepath.Base(outputDir)+"-")
+}
 
-	output := filepath.Join(root, filepath.FromSlash(strings.Trim(route, "/")), "index.html")
-	if err := os.MkdirAll(filepath.Dir(output), 0o755); err != nil {
+func replaceOutput(stagingDir, outputDir string) error {
+	if err := os.RemoveAll(outputDir); err != nil {
 		return err
 	}
-	return os.WriteFile(output, doc, 0o644)
+	return os.Rename(stagingDir, outputDir)
+}
+
+func writeRouteDocument(root, route string, doc []byte, source string) error {
+	return writeRouteFile(root, route, "index.html", doc, source)
+}
+
+func writeRouteFile(root, route, name string, data []byte, source string) error {
+	output := filepath.Join(root, name)
+	if route != "/" {
+		output = filepath.Join(root, filepath.FromSlash(strings.Trim(route, "/")), name)
+	}
+	return writeOutputFile(output, data, source)
+}
+
+func writeOutputFile(path string, data []byte, source string) error {
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+	if err := warnOverwrite(path, source); err != nil {
+		return err
+	}
+	return os.WriteFile(path, data, 0o644)
+}
+
+func warnOverwrite(path string, source string) error {
+	if _, err := os.Lstat(path); err == nil {
+		log.Printf("warning: %s overwrites %s", source, path)
+		return nil
+	} else if os.IsNotExist(err) {
+		return nil
+	} else {
+		return err
+	}
 }
 
 func copyTree(srcRoot, dstRoot string, include func(rel string) bool) error {
@@ -196,6 +256,9 @@ func copyTree(srcRoot, dstRoot string, include func(rel string) bool) error {
 		if err := os.MkdirAll(filepath.Dir(dst), 0o755); err != nil {
 			return err
 		}
+		if err := warnOverwrite(dst, "asset "+src); err != nil {
+			return err
+		}
 		return copyFile(src, dst)
 	})
 }
@@ -205,11 +268,6 @@ func copyFile(src, dst string) error {
 	if err != nil {
 		return err
 	}
-	dstInfo, err := os.Stat(dst)
-	if err == nil && dstInfo.Size() == srcInfo.Size() && dstInfo.ModTime().Equal(srcInfo.ModTime()) {
-		return nil
-	}
-
 	in, err := os.Open(src)
 	if err != nil {
 		return err
