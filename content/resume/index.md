@@ -1,6 +1,14 @@
 +++
 title = "Wesley Deal"
 insert_anchor = "false"
+
+[variants]
+default = "general"
+items = [
+  { id = "general", label = "General IT" },
+  { id = "neteng", label = "Network Engineering" },
+  { id = "security", label = "Security Engineering" },
+]
 +++
 
   IT Systems Engineer  
