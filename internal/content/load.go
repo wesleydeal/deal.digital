@@ -51,6 +51,9 @@ func LoadSite(cfg Config, opts Options) (*Site, error) {
 		}
 
 		if path.Base(filepathToSlash(rel)) == "_index.md" {
+			if doc.FrontMatter.Variants != nil {
+				return fmt.Errorf("%s: variants are only supported on pages", rel)
+			}
 			route := routeForSection(rel)
 			title := fallbackTitle(doc.FrontMatter.Title, rel)
 			if route == "/" && doc.FrontMatter.Title == "" {
@@ -78,32 +81,38 @@ func LoadSite(cfg Config, opts Options) (*Site, error) {
 		}
 
 		route := routeForPage(rel)
+		variants, defaultVariant, err := pageVariants(route, doc.FrontMatter.Variants)
+		if err != nil {
+			return fmt.Errorf("%s: %w", rel, err)
+		}
 		bundleDir := path.Dir(filepathToSlash(rel))
 		if path.Base(filepathToSlash(rel)) != "index.md" {
 			bundleDir = path.Join(path.Dir(filepathToSlash(rel)), strings.TrimSuffix(path.Base(filepathToSlash(rel)), ".md"))
 		}
 		page := &Page{
-			Title:         fallbackTitle(doc.FrontMatter.Title, rel),
-			Slug:          slugify(titleOrFile(doc.FrontMatter.Title, rel)),
-			Route:         route,
-			Permalink:     permalink(cfg.BaseURL, route),
-			SourcePath:    fullPath,
-			RelativePath:  filepathToSlash(rel),
-			BundleDir:     bundleDir,
-			ParentSection: parentSectionFor(rel),
-			Template:      doc.FrontMatter.Template,
-			PageTemplate:  normalizePageTemplate(doc.FrontMatter.PageTemplate),
-			Author:        doc.FrontMatter.Author,
-			Authors:       normalizeAuthors(doc.FrontMatter),
-			Date:          doc.FrontMatter.Date,
-			Updated:       doc.FrontMatter.Updated,
-			Draft:         doc.FrontMatter.Draft,
-			Raw:           doc.FrontMatter.Raw,
-			TOCEnabled:    doc.FrontMatter.TOC,
-			Taxonomies:    cloneTaxonomies(doc.FrontMatter.Taxonomies),
-			Extra:         cloneMap(doc.FrontMatter.Extra),
-			Body:          doc.Body,
-			Checksum:      checksum(filepathToSlash(rel), doc.Body, fmt.Sprintf("%v", doc.FrontMatter.Extra)),
+			Title:          fallbackTitle(doc.FrontMatter.Title, rel),
+			Slug:           slugify(titleOrFile(doc.FrontMatter.Title, rel)),
+			Route:          route,
+			Permalink:      permalink(cfg.BaseURL, route),
+			SourcePath:     fullPath,
+			RelativePath:   filepathToSlash(rel),
+			BundleDir:      bundleDir,
+			ParentSection:  parentSectionFor(rel),
+			Template:       doc.FrontMatter.Template,
+			PageTemplate:   normalizePageTemplate(doc.FrontMatter.PageTemplate),
+			Author:         doc.FrontMatter.Author,
+			Authors:        normalizeAuthors(doc.FrontMatter),
+			Date:           doc.FrontMatter.Date,
+			Updated:        doc.FrontMatter.Updated,
+			Draft:          doc.FrontMatter.Draft,
+			Raw:            doc.FrontMatter.Raw,
+			TOCEnabled:     doc.FrontMatter.TOC,
+			Variants:       variants,
+			DefaultVariant: defaultVariant,
+			Taxonomies:     cloneTaxonomies(doc.FrontMatter.Taxonomies),
+			Extra:          cloneMap(doc.FrontMatter.Extra),
+			Body:           doc.Body,
+			Checksum:       checksum(filepathToSlash(rel), doc.Body, fmt.Sprintf("%v", doc.FrontMatter.Extra)),
 		}
 		pages = append(pages, page)
 		pageByRoute[route] = page
@@ -244,7 +253,7 @@ func decodeFrontMatter(raw string) (FrontMatter, error) {
 	}
 	known := map[string]struct{}{
 		"title": {}, "date": {}, "updated": {}, "draft": {}, "template": {}, "page_template": {},
-		"insert_anchor_links": {}, "sort_by": {}, "author": {}, "authors": {}, "taxonomies": {},
+		"insert_anchor_links": {}, "sort_by": {}, "author": {}, "authors": {}, "taxonomies": {}, "variants": {},
 		"extra": {}, "raw": {}, "toc": {},
 	}
 	for key, value := range input {
@@ -254,6 +263,57 @@ func decodeFrontMatter(raw string) (FrontMatter, error) {
 		fm.Extra[key] = value
 	}
 	return fm, nil
+}
+
+func pageVariants(route string, config *VariantConfig) ([]PageVariant, string, error) {
+	if config == nil {
+		return nil, "", nil
+	}
+	if config.Default == "" {
+		return nil, "", fmt.Errorf("variants.default is required")
+	}
+	if len(config.Items) == 0 {
+		return nil, "", fmt.Errorf("variants.items must not be empty")
+	}
+
+	seen := map[string]struct{}{}
+	variants := make([]PageVariant, 0, len(config.Items))
+	defaultFound := false
+	for _, item := range config.Items {
+		if !validVariantID(item.ID) {
+			return nil, "", fmt.Errorf("variant id %q must use lowercase letters, numbers, or hyphens", item.ID)
+		}
+		if _, ok := seen[item.ID]; ok {
+			return nil, "", fmt.Errorf("variant id %q is duplicated", item.ID)
+		}
+		if strings.TrimSpace(item.Label) == "" {
+			return nil, "", fmt.Errorf("variant %q must have a label", item.ID)
+		}
+		seen[item.ID] = struct{}{}
+		variant := PageVariant{ID: item.ID, Label: item.Label, Route: route}
+		if item.ID == config.Default {
+			defaultFound = true
+		} else {
+			variant.Route = "/" + strings.Trim(path.Join(strings.Trim(route, "/"), item.ID), "/") + "/"
+		}
+		variants = append(variants, variant)
+	}
+	if !defaultFound {
+		return nil, "", fmt.Errorf("variants.default %q is not declared in variants.items", config.Default)
+	}
+	return variants, config.Default, nil
+}
+
+func validVariantID(id string) bool {
+	if id == "" || id[0] == '-' || id[len(id)-1] == '-' {
+		return false
+	}
+	for _, r := range id {
+		if r != '-' && (r < 'a' || r > 'z') && (r < '0' || r > '9') {
+			return false
+		}
+	}
+	return true
 }
 
 func stringValue(v any) (string, bool) {

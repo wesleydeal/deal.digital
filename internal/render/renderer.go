@@ -124,18 +124,9 @@ func (r *Renderer) RenderSite(site *content.Site) error {
 	}
 
 	for _, page := range site.Pages {
-		var htmlBody, plain string
-		var headings []content.Heading
-		var err error
-
-		if strings.EqualFold(strings.TrimSuffix(page.Template, ".html"), "raw") || page.Raw {
-			htmlBody = r.preprocessShortcodes(page.Body, 0)
-			plain = content.CollapseWhitespace(stripTags(htmlBody))
-		} else {
-			htmlBody, headings, plain, err = r.renderMarkdown(page.Body, 0)
-			if err != nil {
-				return err
-			}
+		htmlBody, headings, plain, err := r.renderPageContent(page, page.DefaultVariant)
+		if err != nil {
+			return err
 		}
 
 		page.HTML = template.HTML(htmlBody)
@@ -155,11 +146,18 @@ func (r *Renderer) loadTemplates() error {
 	return nil
 }
 func (r *Renderer) renderMarkdown(input string, depth int) (string, []content.Heading, string, error) {
+	return r.renderMarkdownWithVariant(input, depth, nil)
+}
+
+func (r *Renderer) renderMarkdownWithVariant(input string, depth int, variant *variantContext) (string, []content.Heading, string, error) {
 	input = strings.TrimSpace(input)
 	if input == "" {
 		return "", nil, "", nil
 	}
-	processed := r.preprocessShortcodes(input, depth)
+	processed, err := r.preprocessShortcodes(input, depth, variant)
+	if err != nil {
+		return "", nil, "", err
+	}
 	source := []byte(processed)
 	reader := text.NewReader(source)
 	doc := r.md.Parser().Parse(reader)
@@ -174,6 +172,18 @@ func (r *Renderer) renderMarkdown(input string, depth int) (string, []content.He
 	headings := extractHeadingsFromHTML(out)
 	plain := content.CollapseWhitespace(stripTags(out))
 	return out, headings, plain, nil
+}
+
+func (r *Renderer) renderPageContent(page *content.Page, variantID string) (string, []content.Heading, string, error) {
+	variant := pageVariantContext(page, variantID)
+	if strings.EqualFold(strings.TrimSuffix(page.Template, ".html"), "raw") || page.Raw {
+		htmlBody, err := r.preprocessShortcodes(page.Body, 0, variant)
+		if err != nil {
+			return "", nil, "", err
+		}
+		return htmlBody, nil, content.CollapseWhitespace(stripTags(htmlBody)), nil
+	}
+	return r.renderMarkdownWithVariant(page.Body, 0, variant)
 }
 
 func addHeadingAnchors(input string) string {
@@ -238,6 +248,24 @@ func inlineMarkdown(input string) template.HTML {
 }
 
 func (r *Renderer) RenderPageDocument(site *content.Site, page *content.Page) ([]byte, error) {
+	return r.renderPageDocument(site, page)
+}
+
+func (r *Renderer) RenderPageVariantDocument(site *content.Site, page *content.Page, variant content.PageVariant) ([]byte, error) {
+	variantPage := *page
+	variantPage.Route = variant.Route
+	variantPage.Permalink = strings.TrimRight(site.Config.BaseURL, "/") + variant.Route
+	htmlBody, headings, plain, err := r.renderPageContent(page, variant.ID)
+	if err != nil {
+		return nil, err
+	}
+	variantPage.HTML = template.HTML(htmlBody)
+	variantPage.Headings = headings
+	variantPage.Plain = plain
+	return r.renderPageDocument(site, &variantPage)
+}
+
+func (r *Renderer) renderPageDocument(site *content.Site, page *content.Page) ([]byte, error) {
 	if strings.EqualFold(strings.TrimSuffix(page.Template, ".html"), "raw") {
 		return trimDocument([]byte(page.HTML)), nil
 	}
@@ -257,6 +285,13 @@ func (r *Renderer) RenderPageDocument(site *content.Site, page *content.Page) ([
 		return nil, err
 	}
 	return trimDocument(buf.Bytes()), nil
+}
+
+func pageVariantContext(page *content.Page, current string) *variantContext {
+	if len(page.Variants) == 0 {
+		return nil
+	}
+	return &variantContext{current: current, variants: page.Variants}
 }
 
 func (r *Renderer) RenderSectionDocument(site *content.Site, section *content.Section) ([]byte, error) {

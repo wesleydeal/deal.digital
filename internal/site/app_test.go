@@ -14,7 +14,7 @@ import (
 )
 
 const testTemplates = `{{define "home"}}home{{end}}
-{{define "page"}}page{{end}}
+{{define "page"}}{{.Page.HTML}}{{end}}
 {{define "blog_page"}}page{{end}}
 {{define "list"}}list{{end}}
 {{define "blog_list"}}list{{end}}
@@ -94,6 +94,60 @@ taxonomies = [{name = "tags", feed = true}]
 	}
 	if err := xml.Unmarshal(feed, &document); err != nil {
 		t.Fatalf("parse feed XML: %v", err)
+	}
+}
+
+func TestRebuildWritesPageVariants(t *testing.T) {
+	app := newTestGenerator(t, `
+base_url = "https://example.test"
+title = "Example"
+default_language = "en"
+`, map[string]string{
+		"_index.md": "+++\ntitle = \"Example\"\n+++\n",
+		"resume/index.md": `+++
+title = "Resume"
+[variants]
+default = "general"
+items = [
+  { id = "general", label = "General IT" },
+  { id = "neteng", label = "Network Engineering" },
+]
++++
+Shared {% variant(include="neteng") %}network{% endvariant %} experience.
+
+{% variant(include="neteng") %}
+* Network-only list item
+{% endvariant %}
+
+{% variant(exclude="neteng") %}General-only text.{% endvariant %}
+
+{{ variant_menu() }}`,
+	})
+	if err := app.Rebuild(context.Background()); err != nil {
+		t.Fatalf("build: %v", err)
+	}
+
+	generalPath := filepath.Join(app.opts.OutputDir, "resume", "index.html")
+	netengPath := filepath.Join(app.opts.OutputDir, "resume", "neteng", "index.html")
+	general, err := os.ReadFile(generalPath)
+	if err != nil {
+		t.Fatalf("read general variant: %v", err)
+	}
+	neteng, err := os.ReadFile(netengPath)
+	if err != nil {
+		t.Fatalf("read network variant: %v", err)
+	}
+	if strings.Contains(string(general), "Network-only") || !strings.Contains(string(general), "General-only text.") {
+		t.Fatalf("general variant content is incorrect: %s", general)
+	}
+	if strings.Contains(string(neteng), "General-only") || !strings.Contains(string(neteng), "Network-only list item") {
+		t.Fatalf("network variant content is incorrect: %s", neteng)
+	}
+	if !strings.Contains(string(general), `<a href="/resume/neteng/">Network Engineering</a>`) || !strings.Contains(string(neteng), `<a href="/resume/">General IT</a>`) {
+		t.Fatalf("variant navigation is incorrect")
+	}
+	if _, err := os.Stat(filepath.Join(app.opts.OutputDir, "resume", "general", "index.html")); !os.IsNotExist(err) {
+		t.Fatalf("default variant duplicate exists: %v", err)
 	}
 }
 

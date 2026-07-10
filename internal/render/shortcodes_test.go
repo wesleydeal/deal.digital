@@ -4,6 +4,8 @@ import (
 	"strings"
 	"testing"
 
+	"deal.digital/internal/content"
+
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting/v2"
@@ -92,5 +94,70 @@ func TestRenderMarkdownRawBlockSupportsLegacySyntax(t *testing.T) {
 	}
 	if strings.Contains(got, "&lt;section") {
 		t.Fatalf("legacy raw block was escaped: %s", got)
+	}
+}
+
+func TestRenderMarkdownVariants(t *testing.T) {
+	r := newTestRenderer()
+	variants := []content.PageVariant{
+		{ID: "general", Label: "General IT", Route: "/resume/"},
+		{ID: "neteng", Label: "Network Engineering", Route: "/resume/neteng/"},
+	}
+	input := strings.TrimSpace(`
+Shared {% variant(include="neteng") %}network{% endvariant %} experience.
+
+{% variant(include="neteng") %}
+* Network-only list item
+{% endvariant %}
+
+{% variant(exclude="neteng") %}General-only text.{% endvariant %}
+
+{{ variant_menu() }}
+`)
+
+	general, _, _, err := r.renderMarkdownWithVariant(input, 0, &variantContext{current: "general", variants: variants})
+	if err != nil {
+		t.Fatalf("render general variant: %v", err)
+	}
+	if !strings.Contains(general, "Shared  experience.") || !strings.Contains(general, "General-only text.") {
+		t.Fatalf("general content missing: %s", general)
+	}
+	if strings.Contains(general, "Network-only") || strings.Contains(general, "network experience") {
+		t.Fatalf("network content leaked into general variant: %s", general)
+	}
+	if !strings.Contains(general, `<menu class="page-variants">`) || !strings.Contains(general, `<span aria-current="page">General IT</span>`) || !strings.Contains(general, `<a href="/resume/neteng/">Network Engineering</a>`) {
+		t.Fatalf("general variant menu is incorrect: %s", general)
+	}
+
+	neteng, _, _, err := r.renderMarkdownWithVariant(input, 0, &variantContext{current: "neteng", variants: variants})
+	if err != nil {
+		t.Fatalf("render network variant: %v", err)
+	}
+	if !strings.Contains(neteng, "network experience") || !strings.Contains(neteng, "Network-only list item") {
+		t.Fatalf("network content missing: %s", neteng)
+	}
+	if strings.Contains(neteng, "General-only") {
+		t.Fatalf("general-only content leaked into network variant: %s", neteng)
+	}
+	if !strings.Contains(neteng, `<a href="/resume/">General IT</a>`) || !strings.Contains(neteng, `<span aria-current="page">Network Engineering</span>`) {
+		t.Fatalf("network variant menu is incorrect: %s", neteng)
+	}
+}
+
+func TestRenderMarkdownVariantsRejectInvalidUsage(t *testing.T) {
+	r := newTestRenderer()
+	context := &variantContext{current: "general", variants: []content.PageVariant{{ID: "general", Label: "General", Route: "/"}}}
+	for _, input := range []string{
+		`{% variant(include="missing") %}Nope{% endvariant %}`,
+		`{% variant(include="general") %}Unclosed`,
+		`{{ variant_menu() }}`,
+	} {
+		variant := context
+		if input == `{{ variant_menu() }}` {
+			variant = nil
+		}
+		if _, _, _, err := r.renderMarkdownWithVariant(input, 0, variant); err == nil {
+			t.Fatalf("invalid variant shortcode was accepted: %s", input)
+		}
 	}
 }

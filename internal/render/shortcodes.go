@@ -6,6 +6,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"deal.digital/internal/content"
 )
 
 var (
@@ -13,6 +15,8 @@ var (
 	inlineWavePattern       = regexp.MustCompile(`\{\{\s*wave\((.*?)\)\s*\}\}`)
 	blockquotePattern       = regexp.MustCompile(`(?s)\{%\s*blockquote\((.*?)\)\s*%\}(.*?)\{%\s*end\s*%\}`)
 	rawBlockPattern         = regexp.MustCompile(`(?s)\{%\s*raw(?:\s*\(\s*\))?\s*%\}(.*?)\{%\s*(?:end|endraw)\s*%\}`)
+	variantBlockPattern     = regexp.MustCompile(`(?s)\{%\s*variant\((.*?)\)\s*%\}(.*?)\{%\s*endvariant\s*%\}`)
+	variantMenuPattern      = regexp.MustCompile(`\{\{\s*variant_menu\(\s*\)\s*\}\}`)
 	shortcodeArgument       = regexp.MustCompile(`([A-Za-z0-9_-]+)\s*=\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|[^,]+)`)
 	standalonePlaceholderRE = regexp.MustCompile(`(?m)<p>\s*(%%SHORTCODE_[0-9]+%%)\s*</p>`)
 )
@@ -20,6 +24,11 @@ var (
 type shortcodeState struct {
 	values map[string]string
 	nextID int
+}
+
+type variantContext struct {
+	current  string
+	variants []content.PageVariant
 }
 
 func newShortcodeState() *shortcodeState {
@@ -44,9 +53,9 @@ func (s *shortcodeState) restore(input string) string {
 	return input
 }
 
-func (r *Renderer) preprocessShortcodes(input string, depth int) string {
+func (r *Renderer) preprocessShortcodes(input string, depth int, variant *variantContext) (string, error) {
 	if depth > 8 {
-		return input
+		return input, nil
 	}
 	state := newShortcodeState()
 
@@ -54,14 +63,28 @@ func (r *Renderer) preprocessShortcodes(input string, depth int) string {
 		body := rawBlockPattern.FindStringSubmatch(match)[1]
 		return state.token(trimRawBlockBody(body))
 	})
+	var err error
+	input, err = filterVariantBlocks(input, variant)
+	if err != nil {
+		return "", err
+	}
+	if variantMenuPattern.MatchString(input) {
+		if variant == nil {
+			return "", fmt.Errorf("variant_menu shortcode requires page variants")
+		}
+		input = variantMenuPattern.ReplaceAllStringFunc(input, func(string) string {
+			return state.token(variantMenuHTML(variant))
+		})
+	}
 
+	var blockquoteErr error
 	input = blockquotePattern.ReplaceAllStringFunc(input, func(match string) string {
 		submatch := blockquotePattern.FindStringSubmatch(match)
 		args := parseShortcodeArgs(submatch[1])
-		bodyHTML, _, plain, err := r.renderMarkdown(strings.TrimSpace(submatch[2]), depth+1)
+		bodyHTML, _, plain, err := r.renderMarkdownWithVariant(strings.TrimSpace(submatch[2]), depth+1, variant)
 		if err != nil {
-			bodyHTML = templateEscape(strings.TrimSpace(submatch[2]))
-			plain = strings.TrimSpace(submatch[2])
+			blockquoteErr = err
+			return match
 		}
 
 		var b strings.Builder
@@ -98,6 +121,9 @@ func (r *Renderer) preprocessShortcodes(input string, depth int) string {
 		}
 		return state.token(b.String())
 	})
+	if blockquoteErr != nil {
+		return "", blockquoteErr
+	}
 
 	input = inlineFitImagePattern.ReplaceAllStringFunc(input, func(match string) string {
 		args := parseShortcodeArgs(inlineFitImagePattern.FindStringSubmatch(match)[1])
@@ -134,7 +160,110 @@ func (r *Renderer) preprocessShortcodes(input string, depth int) string {
 		return state.token(fragment)
 	})
 
-	return state.restore(input)
+	return state.restore(input), nil
+}
+
+func filterVariantBlocks(input string, variant *variantContext) (string, error) {
+	for variantBlockPattern.MatchString(input) {
+		var blockErr error
+		input = variantBlockPattern.ReplaceAllStringFunc(input, func(match string) string {
+			submatch := variantBlockPattern.FindStringSubmatch(match)
+			visible, err := variantVisible(submatch[1], variant)
+			if err != nil {
+				blockErr = err
+				return match
+			}
+			if visible {
+				return submatch[2]
+			}
+			return ""
+		})
+		if blockErr != nil {
+			return "", blockErr
+		}
+	}
+	if strings.Contains(input, "{% variant") || strings.Contains(input, "{% endvariant") {
+		return "", fmt.Errorf("variant shortcode must use {%% variant(...) %%} and {%% endvariant %%}")
+	}
+	return input, nil
+}
+
+func variantVisible(raw string, variant *variantContext) (bool, error) {
+	if variant == nil {
+		return false, fmt.Errorf("variant shortcode requires page variants")
+	}
+	args := parseShortcodeArgs(raw)
+	include, hasInclude := args["include"]
+	exclude, hasExclude := args["exclude"]
+	if len(args) != 1 || hasInclude == hasExclude {
+		return false, fmt.Errorf("variant shortcode requires exactly one include or exclude argument")
+	}
+	targets, err := variantTargets(include)
+	if hasExclude {
+		targets, err = variantTargets(exclude)
+	}
+	if err != nil {
+		return false, err
+	}
+	for _, target := range targets {
+		if !variantExists(target, variant.variants) {
+			return false, fmt.Errorf("variant shortcode references unknown variant %q", target)
+		}
+	}
+	selected := false
+	for _, target := range targets {
+		if target == variant.current {
+			selected = true
+			break
+		}
+	}
+	if hasInclude {
+		return selected, nil
+	}
+	return !selected, nil
+}
+
+func variantTargets(raw string) ([]string, error) {
+	var targets []string
+	for _, part := range strings.Split(raw, ",") {
+		target := strings.TrimSpace(part)
+		if target == "" {
+			return nil, fmt.Errorf("variant shortcode requires at least one variant id")
+		}
+		targets = append(targets, target)
+	}
+	return targets, nil
+}
+
+func variantExists(id string, variants []content.PageVariant) bool {
+	for _, variant := range variants {
+		if variant.ID == id {
+			return true
+		}
+	}
+	return false
+}
+
+func variantMenuHTML(variant *variantContext) string {
+	var b strings.Builder
+	b.WriteString(`<menu class="page-variants">`)
+	for _, item := range variant.variants {
+		b.WriteString(`<li>`)
+		if item.ID == variant.current {
+			b.WriteString(`<span aria-current="page">`)
+			b.WriteString(html.EscapeString(item.Label))
+			b.WriteString(`</span>`)
+		} else {
+			b.WriteString(`<a href="`)
+			b.WriteString(html.EscapeString(item.Route))
+			b.WriteString(`">`)
+			b.WriteString(html.EscapeString(item.Label))
+			b.WriteString(`</a>`)
+		}
+		b.WriteString(`</li>`)
+	}
+	b.WriteString(`</menu>`)
+	return b.String()
 }
 
 func parseShortcodeArgs(raw string) map[string]string {
@@ -159,10 +288,6 @@ func cssDimension(raw string) string {
 		return raw + "px"
 	}
 	return raw
-}
-
-func templateEscape(v string) string {
-	return "<p>" + html.EscapeString(v) + "</p>"
 }
 
 func trimRawBlockBody(body string) string {

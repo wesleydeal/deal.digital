@@ -85,3 +85,37 @@ func TestParseMarkdownDocumentTreatsBareDatesAsUTC(t *testing.T) {
 		}
 	}
 }
+
+func TestPageVariants(t *testing.T) {
+	variants, defaultID, err := pageVariants("/resume/", &VariantConfig{
+		Default: "general",
+		Items: []VariantDefinition{
+			{ID: "general", Label: "General IT"},
+			{ID: "neteng", Label: "Network Engineering"},
+		},
+	})
+	if err != nil {
+		t.Fatalf("page variants: %v", err)
+	}
+	if defaultID != "general" {
+		t.Fatalf("default = %q, want general", defaultID)
+	}
+	if len(variants) != 2 || variants[0].Route != "/resume/" || variants[1].Route != "/resume/neteng/" {
+		t.Fatalf("variants = %#v", variants)
+	}
+}
+
+func TestPageVariantsRejectInvalidMetadata(t *testing.T) {
+	tests := []VariantConfig{
+		{Items: []VariantDefinition{{ID: "general", Label: "General"}}},
+		{Default: "missing", Items: []VariantDefinition{{ID: "general", Label: "General"}}},
+		{Default: "general", Items: []VariantDefinition{{ID: "general", Label: "General"}, {ID: "general", Label: "Duplicate"}}},
+		{Default: "general", Items: []VariantDefinition{{ID: "General", Label: "General"}}},
+		{Default: "general", Items: []VariantDefinition{{ID: "general"}}},
+	}
+	for _, config := range tests {
+		if _, _, err := pageVariants("/resume/", &config); err == nil {
+			t.Fatalf("invalid variants accepted: %#v", config)
+		}
+	}
+}

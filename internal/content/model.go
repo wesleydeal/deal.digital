@@ -23,36 +23,55 @@ type FrontMatter struct {
 	Author            string              `toml:"author"`
 	Authors           []string            `toml:"authors"`
 	Taxonomies        map[string][]string `toml:"taxonomies"`
+	Variants          *VariantConfig      `toml:"variants"`
 	Extra             map[string]any      `toml:"extra"`
 	Raw               bool                `toml:"raw"`
 	TOC               bool                `toml:"toc"`
 }
 
+type VariantConfig struct {
+	Default string              `toml:"default"`
+	Items   []VariantDefinition `toml:"items"`
+}
+
+type VariantDefinition struct {
+	ID    string `toml:"id"`
+	Label string `toml:"label"`
+}
+
+type PageVariant struct {
+	ID    string
+	Label string
+	Route string
+}
+
 type Page struct {
-	Title         string
-	Slug          string
-	Route         string
-	Permalink     string
-	SourcePath    string
-	RelativePath  string
-	BundleDir     string
-	ParentSection string
-	Template      string
-	PageTemplate  string
-	Author        string
-	Authors       []string
-	Date          *time.Time
-	Updated       *time.Time
-	Draft         bool
-	Raw           bool
-	TOCEnabled    bool
-	Taxonomies    map[string][]string
-	Extra         map[string]any
-	Body          string
-	HTML          template.HTML
-	Plain         string
-	Headings      []Heading
-	Checksum      string
+	Title          string
+	Slug           string
+	Route          string
+	Permalink      string
+	SourcePath     string
+	RelativePath   string
+	BundleDir      string
+	ParentSection  string
+	Template       string
+	PageTemplate   string
+	Author         string
+	Authors        []string
+	Date           *time.Time
+	Updated        *time.Time
+	Draft          bool
+	Raw            bool
+	TOCEnabled     bool
+	Variants       []PageVariant
+	DefaultVariant string
+	Taxonomies     map[string][]string
+	Extra          map[string]any
+	Body           string
+	HTML           template.HTML
+	Plain          string
+	Headings       []Heading
+	Checksum       string
 }
 
 type Section struct {

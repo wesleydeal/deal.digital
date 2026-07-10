@@ -120,6 +120,18 @@ func (a *Generator) writeOutput(site *content.Site, outputDir string) (buildTimi
 		if err := writeRouteDocument(outputDir, page.Route, doc, "page "+page.RelativePath); err != nil {
 			return buildTiming{}, err
 		}
+		for _, variant := range page.Variants {
+			if variant.ID == page.DefaultVariant {
+				continue
+			}
+			doc, err := a.renderer.RenderPageVariantDocument(site, page, variant)
+			if err != nil {
+				return buildTiming{}, err
+			}
+			if err := writeRouteDocument(outputDir, variant.Route, doc, "page variant "+page.RelativePath+"/"+variant.ID); err != nil {
+				return buildTiming{}, err
+			}
+		}
 	}
 	for name, terms := range site.Taxonomies {
 		for _, term := range terms {
